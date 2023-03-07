@@ -1,0 +1,22 @@
+# Estrutura de diretórios
+
+- **/maloca-servidor**: pasta raiz
+    - **/docs**: documentação
+    - **/src**: código
+        - **/api**: abriga as diferentes versões da API
+            - **/v1**: versão 1 da API
+                - **/data**: interação com o banco de dados
+                - **/middlewares**: middlewares personalizados
+                - **/routes**: rotas de acesso à API
+                - **/services**: lógica de negócios (intermediário entre /routes e /data)
+                - **/utils**: módulos auxiliares
+                - **/validations**: validação de dados
+                - *index.js*: execução do servidor
+        - **/config**: configuração do banco de dados
+            - *create.sql*: comandos para criação do banco de dados em postgresql
+            - *database.js*: conexão do nodeJS com o postgresql (via pg)
+    - **/tests**: testes (para guiar o desenvolvimento)
+    - *.env*: variáveis de ambiente ("environment variables")
+    - *.eslintrc.json*: configuração de estilo de código
+    - *.gitignore*: lista de caminhos ignorados pelo git ao fazer push
+    - *package.json*: configuração do node js

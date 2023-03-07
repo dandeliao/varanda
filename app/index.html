@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>maloca</title>
+	<link rel="icon" href="/assets/images/maloca.png" type="image/png">
+    <link rel="stylesheet" href="/assets/styles/reset.css">
+	<link rel="stylesheet" id="estilo-app" href="/assets/styles/estilo-0-padrao.css">
+	<link rel="stylesheet" href="/assets/styles/boasVindas.css">
+</head>
+<body>
+
+	<nav id="nav-bar">
+		<div class="nav-group">
+			<img-button id="menu" imagem="/assets/images/menu.svg" descricao="menu"></img-button>
+			<img-button id="inicio" imagem="/assets/images/maloca.svg" descricao="página inicial"></img-button>
+		</div>
+		<div class="nav-group">
+			<span id="view-title" style="vertical-align: middle;">maloca - início</span>
+		</div>
+		<div class="nav-group">
+			<img-button id="editar" class="disabled" imagem="/assets/images/editar.svg" descricao="editar"></img-button>
+			<img-button id="clonar" class="disabled" imagem="/assets/images/clonar.svg" descricao="clonar"></img-button>
+			<img-button id="info" class="disabled" imagem="/assets/images/info.svg" descricao="informação"></img-button>
+		</div>
+	</nav>
+
+	<div id="tab-bar"></div>
+    
+	<maloca-viewer id="viewer" style="background-color: var(--cor-fundo)"></maloca-viewer>
+
+	<footer id="footer">
+		<div class="footer-group">
+            <a href="https://github.com/dandeliao/maloca" style="vertical-align: middle;">contribua</a>
+        </div>
+        <div class="footer-group">
+			<span style="vertical-align: middle;">.</span>
+		</div>
+        <div class="footer-group">
+            <a href="https://www.youtube.com/watch?v=OrQIMUe2uBQ" style="vertical-align: middle;">quem somos nós</a>
+        </div>
+	</footer>
+
+	<script src="/assets/components/imgButton.js"></script>
+	<script src="/assets/components/tab.js"></script>
+	<script src="/assets/components/viewer.js"></script>
+	<script type="module" src="/assets/components/menu.js"></script>
+	<script type="module" src="/assets/app.js"></script>
+
+	<script type="module" src="/assets/blocos/m-bloco.js"></script>
+	<script type="module" src="/assets/blocos/m-comunidades.js"></script>
+	<script type="module" src="/assets/blocos/m-participantes.js"></script>
+	<script type="module" src="/assets/blocos/m-criar-comunidade.js"></script>
+	<script type="module" src="/assets/blocos/m-avatar.js"></script>
+	<script type="module" src="/assets/blocos/m-nome.js"></script>
+	<script type="module" src="/assets/blocos/m-descricao.js"></script>
+	<script type="module" src="/assets/blocos/m-cartao-de-visita.js"></script>
+	<script type="module" src="/assets/blocos/m-adicionar-imagem.js"></script>
+	<script type="module" src="/assets/blocos/m-albuns.js"></script>
+	<script type="module" src="/assets/blocos/m-adicionar-texto.js"></script>
+	<script type="module" src="/assets/blocos/m-blogs.js"></script>
+	<script type="module" src="/assets/blocos/m-blog.js"></script>
+	<script type="module" src="/assets/blocos/m-album.js"></script>
+	<script type="module" src="/assets/blocos/m-imagem.js"></script>
+	<script type="module" src="/assets/blocos/m-texto.js"></script>
+	<script type="module" src="/assets/blocos/m-comentarios.js"></script>
+	<script type="module" src="/assets/blocos/m-adicionar-comentario.js"></script>
+	<script type="module" src="/assets/blocos/m-comentario.js"></script>
+	<script type="module" src="/assets/blocos/m-participar.js"></script>
+	<script type="module" src="/assets/blocos/m-criar-album.js"></script>
+	<script type="module" src="/assets/blocos/m-criar-blog.js"></script>
+	<script type="module" src="/assets/blocos/m-foruns.js"></script>
+	<script type="module" src="/assets/blocos/m-criar-forum.js"></script>
+	<script type="module" src="/assets/blocos/m-forum.js"></script>
+	<script type="module" src="/assets/blocos/m-adicionar-topico.js"></script>
+	<script type="module" src="/assets/blocos/m-topico.js"></script>
+	<script type="module" src="/assets/blocos/m-fundo.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+#bv-hero {
+	text-align: center;
+	margin-bottom: 3rem;
+}
+
+#bv-forms {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}

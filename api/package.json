@@ -1,0 +1,32 @@
+{
+  "name": "maloca-servidor",
+  "version": "1.0.0",
+  "description": "servidor comunitario",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --env node"
+  },
+  "keywords": [],
+  "author": "dandeliao",
+  "license": "ISC",
+  "dependencies": {
+    "connect-pg-simple": "^7.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.3",
+    "formidable": "^2.0.1",
+    "joi": "^17.4.2",
+    "multer": "^1.4.5-lts.1",
+    "mv": "^2.1.1",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "axios": "^0.27.2",
+    "eslint": "^8.18.0",
+    "jest": "^28.1.2",
+    "nodemon": "^2.0.14"
+  }
+}
