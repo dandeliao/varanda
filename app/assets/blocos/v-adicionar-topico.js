@@ -1,4 +1,4 @@
-import MalocaElement from "./MalocaElement.js";
+import MalocaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 import { renderBlocos } from "../utils/rendering.js";
 

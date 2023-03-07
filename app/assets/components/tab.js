@@ -153,4 +153,4 @@ class Tab extends HTMLElement {
 
 }
 
-window.customElements.define('maloca-tab', Tab);
+window.customElements.define('varanda-tab', Tab);

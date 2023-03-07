@@ -23,7 +23,7 @@ export function togglePressed (imgButton) {
 
 export async function renderMenu(estado) {
 
-	let menu = document.createElement('maloca-menu');
+	let menu = document.createElement('varanda-menu');
 	document.body.appendChild(menu);
 	
 	menu.renderizar(estado);
@@ -35,7 +35,7 @@ export async function renderNavBar(estado) {
 	let navBar = document.getElementById('nav-bar');
 
 	// determina os modos habilitados e o título a ser exibido na navBar
-	let titulo = 'maloca';
+	let titulo = 'varanda';
 	switch (estado.view.tipo) {
 		case 'comunidade':
 			let res = await serverFetch(`/pessoas/${estado.auth.id}/objetos/comunidade?id=${estado.view.id}`);
@@ -44,7 +44,7 @@ export async function renderNavBar(estado) {
 			if (habilidades && habilidades.editar) {
 				estado.modos.push('editar');
 			}
-			titulo = estado.view.id ? estado.view.id : 'maloca';
+			titulo = estado.view.id ? estado.view.id : 'varanda';
 			break;
 		case 'pessoa':
 			estado.modos = ['ver', 'menu', 'inicio', 'clonar', 'info'];
@@ -107,7 +107,7 @@ export async function renderTabBar (estado) {
 
 		if (estado.view.paginas) {
 			estado.view.paginas.forEach(p => {
-				let mtab = document.createElement('maloca-tab');
+				let mtab = document.createElement('varanda-tab');
 				mtab.texto = p.titulo;
 				mtab.pageId = p.id;
 				if (p.id === estado.view.paginaAtiva) {
@@ -126,7 +126,7 @@ export async function renderTabBar (estado) {
 				tabBar.children[i].modoEditar = true;
 			}
 			// cria e exibe aba "+" que permite criar nova página
-			let mtabPlus = document.createElement('maloca-tab');
+			let mtabPlus = document.createElement('varanda-tab');
 			mtabPlus.texto = '+';
 			mtabPlus.setAttribute('id', 'nova-pagina');
 			tabBar.appendChild(mtabPlus);

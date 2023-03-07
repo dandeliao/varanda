@@ -1,6 +1,6 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 
-class MCartaoDeVisita extends MalocaElement {
+class VCartaoDeVisita extends VarandaElement {
     constructor() {
         
         let html = `
@@ -40,15 +40,15 @@ class MCartaoDeVisita extends MalocaElement {
 		}
 
 		let divCartao = document.createElement('div');
-		let mFundo = document.createElement('m-fundo');
+		let mFundo = document.createElement('v-fundo');
 		mFundo.setAttribute('id', 'fundo');
 		let divTexto = document.createElement('div');
 		divTexto.setAttribute('id', 'texto');
-		let mAvatar = document.createElement('m-avatar');
+		let mAvatar = document.createElement('v-avatar');
 		let divEspaco = document.createElement('div');
 		divEspaco.setAttribute('id', 'espaco');
-		let mNome = document.createElement('m-nome');
-		let mDescricao = document.createElement('m-descricao');
+		let mNome = document.createElement('v-nome');
+		let mDescricao = document.createElement('v-descricao');
 
 		divCartao.appendChild(mFundo);
 		divTexto.appendChild(divEspaco);
@@ -103,4 +103,4 @@ class MCartaoDeVisita extends MalocaElement {
     }
 }
 
-window.customElements.define('m-cartao-de-visita', MCartaoDeVisita);
+window.customElements.define('v-cartao-de-visita', VCartaoDeVisita);

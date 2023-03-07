@@ -2,10 +2,11 @@ const dataPessoas = require('../data/dataPessoas');
 const dataAutenticacao = require('../data/dataAutenticacao');
 const dataPessoasComunidades = require('../data/dataPessoasComunidades');
 const servicePaginasPessoais = require('./servicePaginasPessoais');
-const utilRandomGenerator = require('../../../utils/utilRandomGenerators');
-const geraHashESalt = require('../../../utils/utilPassword').geraHashESalt;
+const utilRandomGenerator = require('../utils/utilRandomGenerators');
+const geraHashESalt = require('../utils/utilPassword').geraHashESalt;
 const fs = require('fs');
 const path = require('path');
+const staticPath = '../../static';
 
 exports.postRegistro = async function (dados) {
 	const pessoaExistente = await dataPessoas.getPessoa(dados.pessoa_id);
@@ -13,7 +14,7 @@ exports.postRegistro = async function (dados) {
 	const pessoa = {
 		pessoa_id: dados.pessoa_id,
 		nome: dados.nome,
-		descricao: dados.descricao ? dados.descricao : 'Oi! Acabei de chegar na maloca!'
+		descricao: dados.descricao ? dados.descricao : 'Oi! Acabei de chegar na varanda!'
 	};
 	const saltHash = geraHashESalt(dados.senha);
 	const segredos = {
@@ -27,7 +28,7 @@ exports.postRegistro = async function (dados) {
 	await dataAutenticacao.postSegredos(pessoaId, segredos);
 	
 	// cria pastas pessoais
-	const pastaPessoal = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${dados.pessoa_id}`);
+	const pastaPessoal = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${dados.pessoa_id}`);
 	if (!fs.existsSync(pastaPessoal)){
 		fs.mkdirSync(pastaPessoal);
 	}
@@ -43,13 +44,13 @@ exports.postRegistro = async function (dados) {
 	
 	
 	// sorteia e copia avatar padrão para pasta pessoal / imagens
-	let pastaDefault = path.join(path.resolve(__dirname, '../../../../static'), 'default', 'avatarPessoas');
+	let pastaDefault = path.join(path.resolve(__dirname, staticPath), 'default', 'avatarPessoas');
 	let numArquivos = fs.readdirSync(pastaDefault).length;
 	let sorteio = Math.floor(Math.random() * (numArquivos));
 	fs.copyFileSync(path.join(pastaDefault, `${sorteio}.jpg`), path.join(pastaPessoal, 'imagens', 'avatar.jpg'));
 
 	// sorteia e copia fundo padrão para pasta pessoal / imagens
-	pastaDefault = path.join(path.resolve(__dirname, '../../../../static'), 'default', 'fundoPessoas');
+	pastaDefault = path.join(path.resolve(__dirname, staticPath), 'default', 'fundoPessoas');
 	numArquivos = fs.readdirSync(pastaDefault).length;
 	sorteio = Math.floor(Math.random() * (numArquivos));
 	fs.copyFileSync(path.join(pastaDefault, `${sorteio}.jpg`), path.join(pastaPessoal, 'imagens', 'fundo.jpg'));
@@ -63,12 +64,12 @@ exports.postRegistro = async function (dados) {
 		html: `
 		<div id="container">
 
-		<m-cartao-de-visita></m-cartao-de-visita>
+		<v-cartao-de-visita></v-cartao-de-visita>
 		<br>
-		<m-bloco>
+		<v-bloco>
 		<h2>Comunidades:</h2>
-		<m-comunidades></m-comunidades>
-		</m-bloco>
+		<v-comunidades></v-comunidades>
+		</v-bloco>
 		<br>
 		<marquee>"${benjor}" - Jorge Ben Jor</marquee>
 
@@ -88,8 +89,8 @@ exports.postRegistro = async function (dados) {
 	};
 	await servicePaginasPessoais.createPaginaPessoal(dadosPaginaPadrao);
 
-	// cadastra pessoa na comunidade maloca
-	await dataPessoasComunidades.postPessoaComunidade(arrayNovaPessoa.rows[0].pessoa_id, 'maloca', {ver: true, participar: true, editar: false, moderar: false, cuidar: false});
+	// cadastra pessoa na comunidade varanda
+	await dataPessoasComunidades.postPessoaComunidade(arrayNovaPessoa.rows[0].pessoa_id, 'varanda', {ver: true, participar: true, editar: false, moderar: false, cuidar: false});
 
 	return arrayNovaPessoa.rows[0];
 };

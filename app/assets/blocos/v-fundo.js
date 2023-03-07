@@ -1,7 +1,7 @@
 import { estadoPadrao } from "../utils/state.js";
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 
-class MFundo extends MalocaElement {
+class VFundo extends VarandaElement {
     constructor() {
         let html = `
         <div class="bloco">
@@ -43,4 +43,4 @@ class MFundo extends MalocaElement {
     }
 }
 
-window.customElements.define('m-fundo', MFundo);
+window.customElements.define('v-fundo', VFundo);

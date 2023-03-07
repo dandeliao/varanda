@@ -1,7 +1,7 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 
-class MAlbuns extends MalocaElement {
+class VAlbuns extends VarandaElement {
     constructor() {
 
         let html = `
@@ -104,7 +104,7 @@ class MAlbuns extends MalocaElement {
                         modalImagens.style.backgroundColor = "rgba(255, 255, 255, 0)";
                         modalImagens.style.overflowY = "scroll";
     
-                        let album = document.createElement('m-album');
+                        let album = document.createElement('v-album');
                         album.setAttribute(`${tipoLocal}`, idLocal);
                         album.setAttribute('nome', nomeAlbum);
                         modalImagens.appendChild(album);
@@ -139,4 +139,4 @@ class MAlbuns extends MalocaElement {
     }
 }
 
-window.customElements.define('m-albuns', MAlbuns);
+window.customElements.define('v-albuns', VAlbuns);

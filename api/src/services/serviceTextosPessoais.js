@@ -1,6 +1,7 @@
 const dataTextosPessoais = require('../data/dataTextosPessoais');
 const path = require('path');
 const fs = require('fs');
+const staticPath = '../../static';
 
 exports.getBlogsPessoais = async function (pessoaId) {
 	let objetoBlogs = await dataTextosPessoais.getBlogsPessoais(pessoaId);
@@ -34,7 +35,7 @@ exports.getTextoPessoal = async function (pessoaId, textoId) {
 	const blog = objetoTexto.rows[0].blog_pessoal_id;
 	const nomeArquivo = `${objetoTexto.rows[0].texto_pessoal_id}.mkd`;
 
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${pessoaId}`, 'textos', blog, nomeArquivo);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${pessoaId}`, 'textos', blog, nomeArquivo);
 	return caminho;
 };
 
@@ -48,7 +49,7 @@ exports.postTextoPessoal = async function (dados) {
 	const dataResponse = await dataTextosPessoais.createTextoPessoal(dados);
 	const textoId = dataResponse.rows[0].texto_pessoal_id;
 
-	const diretorioDestino = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${dados.pessoa_id}`, 'textos', dados.blog_pessoal_id);
+	const diretorioDestino = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${dados.pessoa_id}`, 'textos', dados.blog_pessoal_id);
 
 	if (!fs.existsSync(diretorioDestino)) {
 		fs.mkdirSync(diretorioDestino);
@@ -77,7 +78,7 @@ exports.deleteTextoPessoal = async function (dados) {
 	const dataResponse = await dataTextosPessoais.deleteTextoPessoal(dados);
 	const nomeArquivo = `${dataResponse.rows[0].texto_pessoal_id}.mkd`;
 	const blog = dataResponse.rows[0].blog;
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${dados.pessoa_id}`, 'textos', blog, nomeArquivo);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${dados.pessoa_id}`, 'textos', blog, nomeArquivo);
 	fs.unlink(caminho, (err) => {
 		if (err) {
 			if (err.code !== 'ENOENT') { // se o erro for 'arquivo não encontrado', não faz nada

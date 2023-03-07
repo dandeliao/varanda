@@ -137,7 +137,7 @@ export async function setState(estado, noPush) {
 		await renderMenu(estado);
 	} else if ((estadoVelho !== null) && (estadoVelho.modoAtivo === 'menu')) {
 		// caso tenha saído do modo menu, remove o menu da DOM
-		document.querySelector('maloca-menu').remove();
+		document.querySelector('varanda-menu').remove();
 	}
 
 	// caso seja a tela de boas-vindas, ativa formulários

@@ -1,7 +1,7 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 
-class MForuns extends MalocaElement {
+class VForuns extends VarandaElement {
     constructor() {
 
         let html = `
@@ -77,7 +77,7 @@ class MForuns extends MalocaElement {
                         modalTopicos.style.backgroundColor = "rgba(255, 255, 255, 0)";
                         modalTopicos.style.overflowY = "scroll";
                         
-                        let elForum = document.createElement('m-forum');
+                        let elForum = document.createElement('v-forum');
                         elForum.setAttribute(`${tipoLocal}`, idLocal);
                         elForum.setAttribute('nome', nomeForum);
                         modalTopicos.appendChild(elForum);
@@ -115,4 +115,4 @@ class MForuns extends MalocaElement {
     }
 }
 
-window.customElements.define('m-foruns', MForuns);
+window.customElements.define('v-foruns', VForuns);

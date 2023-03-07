@@ -39,9 +39,9 @@ export async function router(endereco) {
         tipo:   match.rota.tipo,
         params: getParams(match) // objeto contendo os parâmetros passados no caminho (ex: nome da pessoa ou nome da comunidade)
     }
-    // caso seja '/', retorna o nome da comunidade maloca
+    // caso seja '/', retorna o nome da comunidade varanda
     if ((dadosDoRouter.tipo === 'comunidade') && (!dadosDoRouter.params.nome)) {
-        dadosDoRouter.params.nome = 'maloca';
+        dadosDoRouter.params.nome = 'varanda';
     }
     dadosDoRouter.href = getHref(dadosDoRouter); // adiciona href aos dados
 

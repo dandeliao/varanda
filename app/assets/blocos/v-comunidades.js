@@ -1,7 +1,7 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 
-class MComunidades extends MalocaElement {
+class VComunidades extends VarandaElement {
     constructor() {
 
         let html = `
@@ -83,4 +83,4 @@ class MComunidades extends MalocaElement {
     }
 }
 
-window.customElements.define('m-comunidades', MComunidades);
+window.customElements.define('v-comunidades', VComunidades);

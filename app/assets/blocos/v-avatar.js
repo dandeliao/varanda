@@ -1,7 +1,7 @@
 import { estadoPadrao } from "../utils/state.js";
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 
-class MAvatar extends MalocaElement {
+class VAvatar extends VarandaElement {
     constructor() {
         let html = `
         <div class="bloco">
@@ -79,4 +79,4 @@ class MAvatar extends MalocaElement {
 	}
 }
 
-window.customElements.define('m-avatar', MAvatar);
+window.customElements.define('v-avatar', VAvatar);

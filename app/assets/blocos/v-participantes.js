@@ -1,7 +1,7 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 
-class MParticipantes extends MalocaElement {
+class VParticipantes extends VarandaElement {
     constructor() {
 
         let html = `
@@ -125,4 +125,4 @@ class MParticipantes extends MalocaElement {
     }
 }
 
-window.customElements.define('m-participantes', MParticipantes);
+window.customElements.define('v-participantes', VParticipantes);

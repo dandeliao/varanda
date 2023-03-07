@@ -1,7 +1,7 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 
-class MForum extends MalocaElement {
+class VForum extends VarandaElement {
     constructor() {
 
         let html = `
@@ -25,7 +25,7 @@ class MForum extends MalocaElement {
         let id = estado.view.id;
         let nomeForum = this.getAttribute('nome');
 
-		let elBloco = document.createElement('m-bloco');
+		let elBloco = document.createElement('v-bloco');
 
 		// cria cabeçalho
 		let elNomeForum = document.createElement('h2');
@@ -45,7 +45,7 @@ class MForum extends MalocaElement {
 				let topico = topicos[i];
 
 				// cria elemento com o tópico
-				let elTopico = document.createElement('m-topico');
+				let elTopico = document.createElement('v-topico');
 				let topicoId;
 				topicoId = topico.topico_id;
 				elTopico.setAttribute('numero', topicoId);
@@ -66,7 +66,7 @@ class MForum extends MalocaElement {
 		} else {
 			console.log('Não há topicos para mostrar');
 
-			let elBloco = document.createElement('m-bloco');
+			let elBloco = document.createElement('v-bloco');
 			let aviso = document.createElement('p');
 			aviso.innerText = 'Não há topicos para mostrar';
 			elBloco.appendChild(aviso);
@@ -76,4 +76,4 @@ class MForum extends MalocaElement {
     }
 }
 
-window.customElements.define('m-forum', MForum);
+window.customElements.define('v-forum', VForum);

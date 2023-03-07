@@ -2,6 +2,7 @@ const dataPaginasPessoais = require('../data/dataPaginasPessoais');
 const dataBlocosPaginasPessoais = require('../data/dataBlocosPaginasPessoais');
 const path = require('path');
 const fs = require('fs');
+const staticPath = '../../static'
 
 exports.getPaginasPessoais = async function (pessoaId) {
 	let objetoPaginas = await dataPaginasPessoais.getPaginasPessoais(pessoaId);
@@ -16,7 +17,7 @@ exports.getPaginasPessoais = async function (pessoaId) {
 };
 
 exports.getPaginaPessoal = async function (pessoaId, paginaId) {
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${pessoaId}`, 'paginas', `${paginaId}.html`);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${pessoaId}`, 'paginas', `${paginaId}.html`);
 	return caminho;
 };
 
@@ -32,7 +33,7 @@ exports.createPaginaPessoal = async function (dados) {
 	let blocos = await updateBlocosPaginaPessoal(dados.html, paginaId);
 	let html = await updateHtmlBlocos(dados.html, blocos);
 
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${dados.pessoa_id}`, 'paginas', `${paginaId}.html`);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${dados.pessoa_id}`, 'paginas', `${paginaId}.html`);
 	fs.writeFile(caminho, html, erro => {
 		if (erro) {
 			throw erro;
@@ -48,7 +49,7 @@ exports.editPaginaPessoal = async function (dados) {
 	let blocos = await updateBlocosPaginaPessoal(dados.html, paginaId);
 	let html = await updateHtmlBlocos(dados.html, blocos);
 
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${dados.pessoa_id}`, 'paginas', `${paginaId}.html`);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${dados.pessoa_id}`, 'paginas', `${paginaId}.html`);
 	fs.writeFile(caminho, await html, erro => {
 		if (erro) {
 			throw erro;
@@ -60,7 +61,7 @@ exports.editPaginaPessoal = async function (dados) {
 exports.deletePaginaPessoal = async function (dados) {
 	const dataResponse = await dataPaginasPessoais.deletePaginaPessoal(dados);
 	const paginaId = dataResponse.rows[0].pagina_pessoal_id;
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${dados.pessoa_id}`, 'paginas', `${paginaId}.html`);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${dados.pessoa_id}`, 'paginas', `${paginaId}.html`);
 	fs.unlink(caminho, (err) => {
 		if (err) {
 			if (err.code !== 'ENOENT') { // se o erro for arquivo não encontrado, não faz nada
@@ -78,8 +79,7 @@ async function updateBlocosPaginaPessoal (html, pagina_pessoal_id) {
 	// html já deve chegar validado e sem comentários
 
 	// lê html e captura lista de blocos com seus bloco_id (do nome da tag) e bloco_pagina_pessoal_id (do atributo "m_id")
-	//const blocoRegex = /<(m-(?:\w+-*)+)(?:\s+(?:\w+="(?:\s*\w*(?:-\w*)*\s*(?::*(?:\s*\w+)+;)?)*")*)*>/g; // regex captura formatos <m-nome-do-bloco> e <m-nome-do-bloco prop1="valor" style="margin: 0 auto; font-family: monospace">
-	const blocoRegex = /<(m-(?:\w+-*)+)(?:\s+(?:\w+="(?:\s*[A-Za-zÀ-ü0-9]*(?:-[A-Za-zÀ-ü0-9]*)*\s*(?::*(?:\s*\w+)+;)?)*")*)*>/g; // regex captura formatos <m-nome-do-bloco> e <m-nome-do-bloco prop1="valor" style="margin: 0 auto; font-family: monospace">
+	const blocoRegex = /<(v-(?:\w+-*)+)(?:\s+(?:\w+="(?:\s*[A-Za-zÀ-ü0-9]*(?:-[A-Za-zÀ-ü0-9]*)*\s*(?::*(?:\s*\w+)+;)?)*")*)*>/g; // regex captura formatos <v-nome-do-bloco> e <v-nome-do-bloco prop1="valor" style="margin: 0 auto; font-family: monospace">
 	let blocos = html.matchAll(blocoRegex);
 	let arrayBlocos = [];
 	for (const bloco of blocos) {

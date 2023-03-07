@@ -3,6 +3,7 @@ const dataPessoasComunidades = require('../data/dataPessoasComunidades');
 const dataBlocosPaginasComunitarias = require('../data/dataBlocosPaginasComunitarias');
 const path = require('path');
 const fs = require('fs');
+const staticPath = '../../static';
 
 exports.getPaginasComunitarias = async function (comunidadeId) {
 	let objetoPaginas = await dataPaginasComunitarias.getPaginasComunitarias(comunidadeId);
@@ -17,7 +18,7 @@ exports.getPaginasComunitarias = async function (comunidadeId) {
 };
 
 exports.getPaginaComunitaria = async function (comunidadeId, paginaId) {
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${comunidadeId}`, 'paginas', `${paginaId}.html`);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${comunidadeId}`, 'paginas', `${paginaId}.html`);
 	return caminho;
 
 };
@@ -36,7 +37,7 @@ exports.createPaginaComunitaria = async function (dados, pessoaId) {
 		let blocos = await updateBlocosPaginaComunitaria(dados.html, paginaId);
 		let html = await updateHtmlBlocos(dados.html, blocos);	
 
-		const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${dados.comunidade_id}`, 'paginas', `${paginaId}.html`);
+		const caminho = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${dados.comunidade_id}`, 'paginas', `${paginaId}.html`);
 		fs.writeFile(caminho, html, erro => {
 			if (erro) {
 				throw erro;
@@ -57,7 +58,7 @@ exports.editPaginaComunitaria = async function (dados, pessoaId) {
 		let blocos = await updateBlocosPaginaComunitaria(dados.html, paginaId);
 		let html = await updateHtmlBlocos(dados.html, blocos);	
 
-		const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${dados.comunidade_id}`, 'paginas', `${paginaId}.html`);
+		const caminho = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${dados.comunidade_id}`, 'paginas', `${paginaId}.html`);
 		fs.writeFile(caminho, html, erro => {
 			if (erro) {
 				throw erro;
@@ -74,7 +75,7 @@ exports.deletePaginaComunitaria = async function (dados, pessoaId) {
 	if (dadosPessoaComunidade.rows[0].editar) {
 		const dataResponse = await dataPaginasComunitarias.deletePaginaComunitaria(dados);
 		const paginaId = dataResponse.rows[0].pagina_comunitaria_id;
-		const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${dados.comunidade_id}`, 'paginas', `${paginaId}.html`);
+		const caminho = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${dados.comunidade_id}`, 'paginas', `${paginaId}.html`);
 		fs.unlink(caminho, (err) => {
 			if (err) {
 				if (err.code !== 'ENOENT') { // se o erro for arquivo não encontrado, não faz nada
@@ -95,8 +96,7 @@ async function updateBlocosPaginaComunitaria (html, pagina_comunitaria_id) {
 	// html já deve chegar validado e sem comentários
 
 	// lê html e captura lista de blocos com seus bloco_id (do nome da tag) e bloco_pagina_comunitaria_id (do atributo "m_id")
-	//const blocoRegex = /<(m-(?:\w+-*)+)(?:\s+(?:\w+="(?:\s*\w*(?:-\w*)*\s*(?::*(?:\s*\w+)+;)?)*")*)*>/g; // regex captura formatos <m-nome-do-bloco> e <m-nome-do-bloco prop1="valor" style="margin: 0 auto; font-family: monospace">
-	const blocoRegex = /<(m-(?:\w+-*)+)(?:\s+(?:\w+="(?:\s*[A-Za-zÀ-ü0-9]*(?:-[A-Za-zÀ-ü0-9]*)*\s*(?::*(?:\s*\w+)+;)?)*")*)*>/g; // regex captura formatos <m-nome-do-bloco> e <m-nome-do-bloco prop1="valor" style="margin: 0 auto; font-family: monospace">
+	const blocoRegex = /<(v-(?:\w+-*)+)(?:\s+(?:\w+="(?:\s*[A-Za-zÀ-ü0-9]*(?:-[A-Za-zÀ-ü0-9]*)*\s*(?::*(?:\s*\w+)+;)?)*")*)*>/g; // regex captura formatos <v-nome-do-bloco> e <v-nome-do-bloco prop1="valor" style="margin: 0 auto; font-family: monospace">
 	let blocos = html.matchAll(blocoRegex);
 	let arrayBlocos = [];
 	for (const bloco of blocos) {

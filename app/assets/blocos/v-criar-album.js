@@ -1,12 +1,12 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 import { renderBlocos } from "../utils/rendering.js";
 
-class MCriarBlog extends MalocaElement {
+class VCriarAlbum extends VarandaElement {
     constructor() {
 
         let html = `
-        <div class="criar-blog">
+        <div class="criar-album">
 
             <slot></slot>
 
@@ -39,7 +39,7 @@ class MCriarBlog extends MalocaElement {
 		botaoCriar.style.width = "100%";
 		botaoCriar.style.height = "100%";
 		botaoCriar.style.fontSize = "1rem";
-		botaoCriar.innerText = "criar blog";
+		botaoCriar.innerText = "criar álbum de imagens";
 		this.appendChild(botaoCriar);
 
 		if (!noEvent) {
@@ -55,7 +55,7 @@ class MCriarBlog extends MalocaElement {
 				overlay.style.left = "0px";
 				overlay.style.top = "0px";
 				
-				let modalCriar = document.createElement('m-bloco');
+				let modalCriar = document.createElement('v-bloco');
 				modalCriar.style.display = "block";
 				modalCriar.style.position = "fixed";
 				modalCriar.style.left = "50vw";
@@ -69,10 +69,10 @@ class MCriarBlog extends MalocaElement {
 	
 				let formCriar = document.createElement('form');
 				formCriar.innerHTML = `
-				<h3>Digite os dados do blog:</h3>
+				<h3>Digite os dados do álbum:</h3>
 				<br>
 				<label for="nome" hidden>nome</label>
-				<input type="text" id="nome-blog-novo" placeholder="nome do blog" name="nome" required style="width: 100%; font-size: 1rem; background-color: var(--cor-fundo); color: var(--cor-fonte-view);">
+				<input type="text" id="nome-album-novo" placeholder="nome do álbum" name="nome" required style="width: 100%; font-size: 1rem; background-color: var(--cor-fundo); color: var(--cor-fonte-view);">
 				<br>
 				<br>
 				<br>
@@ -95,15 +95,15 @@ class MCriarBlog extends MalocaElement {
 				formCriar.addEventListener('submit', async e => {
 					e.preventDefault();
 					
-					let dadosNovoBlog = {}
+					let dadosNovoAlbum = {}
 	
 					if (estado.view.tipo === 'comunidade') {
-						dadosNovoBlog.blog_comunitario_id = formCriar.elements['nome'].value;
+						dadosNovoAlbum.album_comunitario_id = formCriar.elements['nome'].value;
 					} else if (estado.view.tipo === 'pessoa') {
-						dadosNovoBlog.blog_pessoal_id = formCriar.elements['nome'].value;
+						dadosNovoAlbum.album_pessoal_id = formCriar.elements['nome'].value;
 					}
 	
-					serverFetch(`/${estado.view.tipo}s/${estado.view.id}/objetos/blog`, 'POST', dadosNovoBlog)
+					serverFetch(`/${estado.view.tipo}s/${estado.view.id}/objetos/album`, 'POST', dadosNovoAlbum)
 						.then(res => res.json())
 						.then(data => {            
 							 renderBlocos(estado);
@@ -114,4 +114,4 @@ class MCriarBlog extends MalocaElement {
     }
 }
 
-window.customElements.define('m-criar-blog', MCriarBlog);
+window.customElements.define('v-criar-album', VCriarAlbum);

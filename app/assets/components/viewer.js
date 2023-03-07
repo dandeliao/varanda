@@ -1,6 +1,6 @@
-const templateMalocaViewer = document.createElement('template');
+const templateViewer = document.createElement('template');
 
-templateMalocaViewer.innerHTML = `
+templateViewer.innerHTML = `
 <style>
 
 * {
@@ -76,11 +76,11 @@ button:active {
 </div>
 `
 
-class MalocaViewer extends HTMLElement {
+class VarandaViewer extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({mode: 'open'});
-		this.shadowRoot.appendChild(templateMalocaViewer.content.cloneNode(true));
+		this.shadowRoot.appendChild(templateViewer.content.cloneNode(true));
 	}
 
 	get html() {
@@ -169,7 +169,7 @@ class MalocaViewer extends HTMLElement {
 		
 		elPrevia.innerHTML = html;
 		
-		let blocoRegex = /<(m-(?:\w+-*)+)(?:\s+(?:\w+="(?:\s*[A-Za-zÀ-ü0-9]*(?:-[A-Za-zÀ-ü0-9]*)*\s*(?::*(?:\s*\w+)+;)?)*")*)*>/g; // regex captura formatos <m-nome-do-bloco> e <m-nome-do-bloco prop1="valor" style="margin: 0 auto; font-family: monospace">
+		let blocoRegex = /<(v-(?:\w+-*)+)(?:\s+(?:\w+="(?:\s*[A-Za-zÀ-ü0-9]*(?:-[A-Za-zÀ-ü0-9]*)*\s*(?::*(?:\s*\w+)+;)?)*")*)*>/g; // regex captura formatos <v-nome-do-bloco> e <v-nome-do-bloco prop1="valor" style="margin: 0 auto; font-family: monospace">
 		let blocos = html.matchAll(blocoRegex);
 		let arrayBlocos = [];
 		for (const bloco of blocos) {
@@ -198,7 +198,7 @@ class MalocaViewer extends HTMLElement {
 
 				e.composedPath().forEach(elemento => {
 					if (elemento.tagName) {
-						if (elemento.tagName.slice(0, 2) === 'M-') {
+						if (elemento.tagName.slice(0, 2) === 'V-') { // V maiúsculo? por quê?
 							console.log(elemento.tagName);
 						}
 					}
@@ -209,4 +209,4 @@ class MalocaViewer extends HTMLElement {
 	} 
 }
 
-window.customElements.define('maloca-viewer', MalocaViewer);
+window.customElements.define('varanda-viewer', VarandaViewer);

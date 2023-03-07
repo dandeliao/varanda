@@ -1,6 +1,6 @@
-import MalocaElement from "./MalocaElement.js"; // ver como essa importação se comporta no cliente
+import VarandaElement from "./VarandaElement.js";
 
-class MBloco extends MalocaElement {
+class VBloco extends VarandaElement {
     constructor() {
         let html = `
         <div class="bloco">
@@ -35,4 +35,4 @@ class MBloco extends MalocaElement {
     }
 }
 
-window.customElements.define('m-bloco', MBloco);
+window.customElements.define('v-bloco', VBloco);

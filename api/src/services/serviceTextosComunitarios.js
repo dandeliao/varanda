@@ -1,6 +1,7 @@
 const dataTextosComunitarios = require('../data/dataTextosComunitarios');
 const path = require('path');
 const fs = require('fs');
+const staticPath = '../../static';
 
 exports.getBlogsComunitarios = async function (comunidadeId) {
 	let objetoBlogs = await dataTextosComunitarios.getBlogsComunitarios(comunidadeId);
@@ -34,7 +35,7 @@ exports.getTextoComunitario = async function (comunidadeId, textoId) {
 	const blog = objetoTexto.rows[0].blog_comunitario_id;
 	const nomeArquivo = `${objetoTexto.rows[0].texto_comunitario_id}.mkd`;
 
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${comunidadeId}`, 'textos', blog, nomeArquivo);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${comunidadeId}`, 'textos', blog, nomeArquivo);
 	return caminho;
 };
 
@@ -48,7 +49,7 @@ exports.postTextoComunitario = async function (dados) {
 	const dataResponse = await dataTextosComunitarios.createTextoComunitario(dados);
 	const textoId = dataResponse.rows[0].texto_comunitario_id;
 
-	const diretorioDestino = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${dados.comunidade_id}`, 'textos', dados.blog_comunitario_id);
+	const diretorioDestino = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${dados.comunidade_id}`, 'textos', dados.blog_comunitario_id);
 
 	if (!fs.existsSync(diretorioDestino)) {
 		fs.mkdirSync(diretorioDestino);
@@ -77,7 +78,7 @@ exports.deleteTextoComunitario = async function (dados) {
 	const dataResponse = await dataTextosComunitarios.deleteTextoComunitario(dados);
 	const nomeArquivo = `${dataResponse.rows[0].texto_comunitario_id}.mkd`;
 	const blog = dataResponse.rows[0].blog;
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${dados.comunidade_id}`, 'textos', blog, nomeArquivo);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${dados.comunidade_id}`, 'textos', blog, nomeArquivo);
 	fs.unlink(caminho, (err) => {
 		if (err) {
 			if (err.code !== 'ENOENT') { // se o erro for 'arquivo não encontrado', não faz nada

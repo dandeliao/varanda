@@ -1,6 +1,7 @@
 const dataImagensComunitarias = require('../data/dataImagensComunitarias');
 const path = require('path');
 const fs = require('fs');
+const staticPath = '../../static'
 
 exports.getAlbunsComunitarios = async function (comunidadeId) {
 	let objetoAlbuns = await dataImagensComunitarias.getAlbunsComunitarios(comunidadeId);
@@ -14,9 +15,9 @@ exports.getCapaAlbumComunitario = async function(comunidadeId, albumId) {
 	if (existeCapa) {
 		let objetoImagem = await dataImagensComunitarias.getImagemComunitaria(comunidadeId, objetoAlbum.rows[0].capa_id);
 		let nomeArquivo = objetoImagem.rows[0].nome_arquivo;
-		caminho = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${comunidadeId}`, 'imagens', objetoAlbum.rows[0].album_comunitario_id, nomeArquivo);
+		caminho = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${comunidadeId}`, 'imagens', objetoAlbum.rows[0].album_comunitario_id, nomeArquivo);
 	} else {
-		caminho = path.join(path.resolve(__dirname, '../../../../static'), 'default', 'album.png');
+		caminho = path.join(path.resolve(__dirname, staticPath), 'default', 'album.png');
 	}
 	return caminho;
 };
@@ -48,7 +49,7 @@ exports.getImagemComunitaria = async function (comunidadeId, imagemId) {
 	const album = objetoImagem.rows[0].album_comunitario_id;
 	const nomeArquivo = objetoImagem.rows[0].nome_arquivo;
 
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${comunidadeId}`, 'imagens', album, nomeArquivo);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${comunidadeId}`, 'imagens', album, nomeArquivo);
 	return caminho;
 };
 
@@ -63,7 +64,7 @@ exports.postImagemComunitaria = async function (dados, dadosArquivo) {
 	// falta verificar autorização (pessoas com habilidade 'participar')
 
 	const caminhoTemp = dadosArquivo.path;
-	const diretorioDestino = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${dados.comunidade_id}`, 'imagens', dados.album_comunitario_id);
+	const diretorioDestino = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${dados.comunidade_id}`, 'imagens', dados.album_comunitario_id);
 	const caminhoDestino = path.join(path.resolve(diretorioDestino, dadosArquivo.originalname));
 
 	if (!fs.existsSync(diretorioDestino)){
@@ -103,7 +104,7 @@ exports.deleteImagemComunitaria = async function (dados) {
 	const dataResponse = await dataImagensComunitarias.deleteImagemComunitaria(dados);
 	const nomeArquivo = dataResponse.rows[0].nome_arquivo;
 	const album = dataResponse.rows[0].album_comunitario_id;
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${dados.comunidade_id}`, 'imagens', album, nomeArquivo);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${dados.comunidade_id}`, 'imagens', album, nomeArquivo);
 	fs.unlink(caminho, (err) => {
 		if (err) {
 			if (err.code !== 'ENOENT') { // se o erro for 'arquivo não encontrado', não faz nada

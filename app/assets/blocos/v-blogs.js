@@ -1,7 +1,7 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 
-class MBlogs extends MalocaElement {
+class VBlogs extends VarandaElement {
     constructor() {
 
         let html = `
@@ -77,7 +77,7 @@ class MBlogs extends MalocaElement {
                         modalTextos.style.backgroundColor = "rgba(255, 255, 255, 0)";
                         modalTextos.style.overflowY = "scroll";
                         
-                        let blog = document.createElement('m-blog');
+                        let blog = document.createElement('v-blog');
                         blog.setAttribute(`${tipoLocal}`, idLocal);
                         blog.setAttribute('nome', nomeBlog);
                         modalTextos.appendChild(blog);
@@ -112,4 +112,4 @@ class MBlogs extends MalocaElement {
     }
 }
 
-window.customElements.define('m-blogs', MBlogs);
+window.customElements.define('v-blogs', VBlogs);

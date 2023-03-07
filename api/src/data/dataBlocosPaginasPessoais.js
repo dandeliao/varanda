@@ -1,4 +1,4 @@
-const pool = require('../../../config/database');
+const pool = require('../config/database');
 
 function getBlocosPaginaPessoal(pagina_pessoal_id) {
 	return pool.query(

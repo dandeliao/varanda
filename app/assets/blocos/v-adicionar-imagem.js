@@ -1,8 +1,8 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 import { renderBlocos } from "../utils/rendering.js";
 
-class MAdicionarImagem extends MalocaElement {
+class VAdicionarImagem extends VarandaElement {
     constructor() {
 
         let html = `
@@ -56,7 +56,7 @@ class MAdicionarImagem extends MalocaElement {
 				overlay.style.left = "0px";
 				overlay.style.top = "0px";
 				
-				let modalAdicionar = document.createElement('m-bloco');
+				let modalAdicionar = document.createElement('v-bloco');
 				modalAdicionar.style.display = "block";
 				modalAdicionar.style.position = "fixed";
 				modalAdicionar.style.left = "50vw";
@@ -81,7 +81,7 @@ class MAdicionarImagem extends MalocaElement {
 				<br>
 				<br>
 				<label for="descricao" hidden>descrição</label>
-				<textarea id="descricao-imagem" placeholder="descreva a imagem para pessoas com deficiência visual. Exemplo: foto de uma árvore alta sem folhas em um parque com grama esverdeada em um dia ensolarado" name="descricao" required style="width: 100%; min-height: 8rem; font-size: 1rem; background-color: var(--cor-fundo); color: var(--cor-fonte-view);"></textarea>
+				<textarea id="descricao-imagem" placeholder="descreva a imagem para pessoas com deficiência visual. Exemplo: foto de uma árvore alta com flores amarelas em um dia ensolarado" name="descricao" required style="width: 100%; min-height: 8rem; font-size: 1rem; background-color: var(--cor-fundo); color: var(--cor-fonte-view);"></textarea>
 				<br>
 				<br>
 				<label for="titulo" hidden>álbum</label>
@@ -145,4 +145,4 @@ class MAdicionarImagem extends MalocaElement {
     }
 }
 
-window.customElements.define('m-adicionar-imagem', MAdicionarImagem);
+window.customElements.define('v-adicionar-imagem', VAdicionarImagem);

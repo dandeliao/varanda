@@ -2,7 +2,7 @@ import { serverFetch } from "../utils/fetching.js";
 import { convertBlobToBase64 } from "../utils/rendering.js";
 
 
-class MalocaMenu extends HTMLElement {
+class VarandaMenu extends HTMLElement {
 	constructor() {
 
 		super();
@@ -163,4 +163,4 @@ class MalocaMenu extends HTMLElement {
 	}
 }
 
-window.customElements.define('maloca-menu', MalocaMenu);
+window.customElements.define('varanda-menu', VarandaMenu);

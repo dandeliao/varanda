@@ -1,4 +1,4 @@
-const pool = require('../../../config/database');
+const pool = require('../config/database');
 
 function getPessoasComunidade(comunidadeId) {
 	return pool.query(

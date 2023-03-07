@@ -1,4 +1,4 @@
-const pool = require('../../../config/database');
+const pool = require('../config/database');
 
 function postSegredos(pessoa_id, segredos) {
 	return pool.query(

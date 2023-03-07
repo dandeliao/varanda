@@ -1,7 +1,7 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 
-class MComentario extends MalocaElement {
+class VComentario extends VarandaElement {
     constructor() {
 
         let html = `
@@ -36,7 +36,7 @@ class MComentario extends MalocaElement {
 		
 		// cria elementos com informações da pessoa que postou
 		let elPessoa = document.createElement('div');
-		let elAvatar = document.createElement('m-avatar');
+		let elAvatar = document.createElement('v-avatar');
 		let elDivNomeArroba = document.createElement('div');
 		let elNome = document.createElement('div');
 		let elArroba = document.createElement('a');
@@ -100,4 +100,4 @@ class MComentario extends MalocaElement {
     }
 }
 
-window.customElements.define('m-comentario', MComentario);
+window.customElements.define('v-comentario', VComentario);

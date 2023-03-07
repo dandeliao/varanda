@@ -1,6 +1,7 @@
 const dataImagensPessoais = require('../data/dataImagensPessoais');
 const path = require('path');
 const fs = require('fs');
+const staticPath = '../../static'
 
 exports.getAlbunsPessoais = async function (pessoaId) {
 	let objetoAlbuns = await dataImagensPessoais.getAlbunsPessoais(pessoaId);
@@ -14,9 +15,9 @@ exports.getCapaAlbumPessoal = async function(pessoaId, albumId) {
 	if (existeCapa) {
 		let objetoImagem = await dataImagensPessoais.getImagemPessoal(pessoaId, objetoAlbum.rows[0].capa_id);
 		let nomeArquivo = objetoImagem.rows[0].nome_arquivo;
-		caminho = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${pessoaId}`, 'imagens', objetoAlbum.rows[0].album_pessoal_id, nomeArquivo);
+		caminho = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${pessoaId}`, 'imagens', objetoAlbum.rows[0].album_pessoal_id, nomeArquivo);
 	} else {
-		caminho = path.join(path.resolve(__dirname, '../../../../static'), 'default', 'album.png');
+		caminho = path.join(path.resolve(__dirname, staticPath), 'default', 'album.png');
 	}
 	return caminho;
 };
@@ -48,7 +49,7 @@ exports.getImagemPessoal = async function (pessoaId, imagemId) {
 	const album = objetoImagem.rows[0].album_pessoal_id;
 	const nomeArquivo = objetoImagem.rows[0].nome_arquivo;
 
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${pessoaId}`, 'imagens', album, nomeArquivo);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${pessoaId}`, 'imagens', album, nomeArquivo);
 	return caminho;
 };
 
@@ -60,7 +61,7 @@ exports.getInfoImagemPessoal = async function (pessoaId, imagemId) {
 exports.postImagemPessoal = async function (dados, dadosArquivo) {
 
 	const caminhoTemp = dadosArquivo.path;
-	const diretorioDestino = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${dados.pessoa_id}`, 'imagens', dados.album_pessoal_id);
+	const diretorioDestino = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${dados.pessoa_id}`, 'imagens', dados.album_pessoal_id);
 	const caminhoDestino = path.join(path.resolve(diretorioDestino, dadosArquivo.originalname));
 
 	if (!fs.existsSync(diretorioDestino)){
@@ -95,7 +96,7 @@ exports.deleteImagemPessoal = async function (dados) {
 	const dataResponse = await dataImagensPessoais.deleteImagemPessoal(dados);
 	const nomeArquivo = dataResponse.rows[0].nome_arquivo;
 	const album = dataResponse.rows[0].album_pessoal_id;
-	const caminho = path.join(path.resolve(__dirname, '../../../../static'), 'pessoas', `${dados.pessoa_id}`, 'imagens', album, nomeArquivo);
+	const caminho = path.join(path.resolve(__dirname, staticPath), 'pessoas', `${dados.pessoa_id}`, 'imagens', album, nomeArquivo);
 	fs.unlink(caminho, (err) => {
 		if (err) {
 			if (err.code !== 'ENOENT') { // se o erro for 'arquivo não encontrado', não faz nada

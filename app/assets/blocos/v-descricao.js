@@ -1,7 +1,7 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 
-class MNome extends MalocaElement {
+class VDescricao extends VarandaElement {
     constructor() {
         let html = `
         <div class="bloco">
@@ -18,17 +18,17 @@ class MNome extends MalocaElement {
 
 	renderizar(estado) {
 		
-		let spanNome = this.shadowRoot.querySelector('span');
+		let spanDescricao = this.shadowRoot.querySelector('span');
 		let	url = `/${estado.view.tipo}s/${estado.view.id}`;
 
 		serverFetch(url, 'GET')
         .then(res => res.json())
         .then(dados => {
-            if (dados.nome) {
-				spanNome.innerText = dados.nome;
+            if (dados.descricao) {
+				spanDescricao.innerText = dados.descricao;
 			}
 		});
     }
 }
 
-window.customElements.define('m-nome', MNome);
+window.customElements.define('v-descricao', VDescricao);

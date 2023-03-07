@@ -1,4 +1,4 @@
-const pool = require('../../../config/database');
+const pool = require('../config/database');
 
 function getBlocosPaginaComunitaria(pagina_comunitaria_id) {
 	return pool.query(

@@ -1,8 +1,8 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 import { renderBlocos } from "../utils/rendering.js";
 
-class MAdicionarTexto extends MalocaElement {
+class VAdicionarTexto extends VarandaElement {
     constructor() {
 
         let html = `
@@ -56,7 +56,7 @@ class MAdicionarTexto extends MalocaElement {
 				overlay.style.left = "0px";
 				overlay.style.top = "0px";
 				
-				let modalAdicionar = document.createElement('m-bloco');
+				let modalAdicionar = document.createElement('v-bloco');
 				modalAdicionar.style.display = "block";
 				modalAdicionar.style.position = "fixed";
 				modalAdicionar.style.left = "50vw";
@@ -123,4 +123,4 @@ class MAdicionarTexto extends MalocaElement {
     }
 }
 
-window.customElements.define('m-adicionar-texto', MAdicionarTexto);
+window.customElements.define('v-adicionar-texto', VAdicionarTexto);

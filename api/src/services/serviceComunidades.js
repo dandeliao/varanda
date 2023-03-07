@@ -4,6 +4,7 @@ const serviceObjetosPessoais = require('./serviceObjetosPessoais');
 const servicePaginasComunitarias = require('./servicePaginasComunitarias');
 const fs = require('fs');
 const path = require('path');
+const staticPath = '../../static';
 
 exports.getComunidades = async function () {
 	const objetoComunidades = await dataComunidades.getComunidades();
@@ -19,7 +20,7 @@ exports.getComunidade = async function (comunidadeId) {
 exports.postComunidade = async function (dados, pessoaId) {
 
 	// verifica habilidade de participar no servidor
-	const superHabilidades = await serviceObjetosPessoais.getComunidadePessoal(pessoaId, 'maloca');
+	const superHabilidades = await serviceObjetosPessoais.getComunidadePessoal(pessoaId, 'varanda');
 	if (superHabilidades.participar) {
 
 		// verifica se comunidade com esse id já existe
@@ -45,7 +46,7 @@ exports.postComunidade = async function (dados, pessoaId) {
 		await dataPessoasComunidades.postPessoaComunidade(pessoaId, arrayNovaComunidade.rows[0].comunidade_id, habilidades);
 		
 		// cria pastas comunitárias
-		const pastaComunitaria = path.join(path.resolve(__dirname, '../../../../static'), 'comunidades', `${arrayNovaComunidade.rows[0].comunidade_id}`);
+		const pastaComunitaria = path.join(path.resolve(__dirname, staticPath), 'comunidades', `${arrayNovaComunidade.rows[0].comunidade_id}`);
 		if (!fs.existsSync(pastaComunitaria)){
 			fs.mkdirSync(pastaComunitaria);
 		}
@@ -60,13 +61,13 @@ exports.postComunidade = async function (dados, pessoaId) {
 		}
 		
 		// sorteia e copia avatar padrão para pasta comunitária / imagens
-		let pastaDefault = path.join(path.resolve(__dirname, '../../../../static'), 'default', 'avatarComunidades');
+		let pastaDefault = path.join(path.resolve(__dirname, staticPath), 'default', 'avatarComunidades');
 		let numArquivos = fs.readdirSync(pastaDefault).length;
 		let sorteio = Math.floor(Math.random() * (numArquivos));
 		fs.copyFileSync(path.join(pastaDefault, `${sorteio}.jpg`), path.join(pastaComunitaria, 'imagens', 'avatar_comum.jpg'));
 
 		// sorteia e copia fundo padrão para pasta comunitária / imagens
-		pastaDefault = path.join(path.resolve(__dirname, '../../../../static'), 'default', 'fundoComunidades');
+		pastaDefault = path.join(path.resolve(__dirname, staticPath), 'default', 'fundoComunidades');
 		numArquivos = fs.readdirSync(pastaDefault).length;
 		sorteio = Math.floor(Math.random() * (numArquivos));
 		fs.copyFileSync(path.join(pastaDefault, `${sorteio}.jpg`), path.join(pastaComunitaria, 'imagens', 'fundo_comum.jpg'));
@@ -79,14 +80,14 @@ exports.postComunidade = async function (dados, pessoaId) {
 			html: `
 			<div id="container">
 
-			<m-cartao-de-visita></m-cartao-de-visita>
+			<v-cartao-de-visita></v-cartao-de-visita>
 
 			<br>
 
-			<m-bloco>
+			<v-bloco>
 			<h2>Participantes:</h2>
-			<m-participantes></m-participantes>
-			</m-bloco>
+			<v-participantes></v-participantes>
+			</v-bloco>
 
 			</div>
 

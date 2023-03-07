@@ -12,61 +12,61 @@ INSERT INTO comunidades (comunidade_id, nome, descricao) VALUES ('maloca', 'Malo
 
 INSERT INTO paginas_comunitarias (comunidade_id, titulo, publica) VALUES('maloca', 'principal', true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-bloco', 'bloco simples, cria uma caixa sombreada para receber qualquer conteúdo', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-bloco', 'bloco simples, cria uma caixa sombreada para receber qualquer conteúdo', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-avatar', 'exibe avatar de pessoa ou comunidade', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-avatar', 'exibe avatar de pessoa ou comunidade', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-nome', 'exibe nome de pessoa ou comunidade', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-nome', 'exibe nome de pessoa ou comunidade', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-descricao', 'exibe descricao de pessoa ou comunidade', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-descricao', 'exibe descricao de pessoa ou comunidade', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-cartao-de-visita', 'cabeçalho para páginas pessoais ou comunitárias', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-cartao-de-visita', 'cabeçalho para páginas pessoais ou comunitárias', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-comunidades', 'exibe lista de comunidades conforme o contexto', true, false);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-comunidades', 'exibe lista de comunidades conforme o contexto', true, false);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-participantes', 'exibe lista de participantes conforme o contexto (apenas em comunidades)', false, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-participantes', 'exibe lista de participantes conforme o contexto (apenas em comunidades)', false, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-criar-comunidade', 'botão que permite criar uma nova comunidade', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-criar-comunidade', 'botão que permite criar uma nova comunidade', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-adicionar-imagem', 'botão que permite adicionar imagem ao banco de dados pessoal ou comunitário', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-adicionar-imagem', 'botão que permite adicionar imagem ao banco de dados pessoal ou comunitário', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-albuns', 'exibe lista de álbuns e permite navegar por imagens pessoais ou comunitárias', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-albuns', 'exibe lista de álbuns e permite navegar por imagens pessoais ou comunitárias', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-album', 'exibe imagens de um álbum específico, pessoal ou comunitário', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-album', 'exibe imagens de um álbum específico, pessoal ou comunitário', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-imagem', 'exibe imagem pessoal ou comunitária', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-imagem', 'exibe imagem pessoal ou comunitária', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-adicionar-texto', 'botão que permite adicionar texto ao banco de dados pessoal ou comunitário', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-adicionar-texto', 'botão que permite adicionar texto ao banco de dados pessoal ou comunitário', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-blogs', 'exibe lista de blogs e permite navegar pelos textos pessoais ou comunitários', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-blogs', 'exibe lista de blogs e permite navegar pelos textos pessoais ou comunitários', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-blog', 'exibe textos de um blog específico, pessoal ou comunitário', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-blog', 'exibe textos de um blog específico, pessoal ou comunitário', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-texto', 'exibe texto pessoal ou comunitário', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-texto', 'exibe texto pessoal ou comunitário', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-comentarios', 'exibe lista de comentários sobre um texto ou imagem (apenas em comunidades)', false, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-comentarios', 'exibe lista de comentários sobre um texto ou imagem (apenas em comunidades)', false, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-adicionar-comentario', 'botão que permite adicionar comentário a um texto ou imagem (apenas em comunidades)', false, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-adicionar-comentario', 'botão que permite adicionar comentário a um texto ou imagem (apenas em comunidades)', false, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-comentario', 'exibe um comentário a partir do seu id (atributo numero) (apenas em comunidades)', false, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-comentario', 'exibe um comentário a partir do seu id (atributo numero) (apenas em comunidades)', false, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-participar', 'botão que permite participar ou sair de uma comunidade (apenas em comunidades)', false, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-participar', 'botão que permite participar ou sair de uma comunidade (apenas em comunidades)', false, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-criar-album', 'botão que permite criar álbum de fotos pessoal ou comunitário', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-criar-album', 'botão que permite criar álbum de fotos pessoal ou comunitário', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-criar-blog', 'botão que permite criar blog pessoal ou comunitário', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-criar-blog', 'botão que permite criar blog pessoal ou comunitário', true, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-foruns', 'exibe lista de fóruns e permite navegar pelos tópicos (apenas em comunidades)', false, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-foruns', 'exibe lista de fóruns e permite navegar pelos tópicos (apenas em comunidades)', false, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-criar-forum', 'botão que permite criar fórum (apenas em comunidades)', false, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-criar-forum', 'botão que permite criar fórum (apenas em comunidades)', false, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-forum', 'exibe tópicos de um fórum específico (apenas em comunidades)', false, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-forum', 'exibe tópicos de um fórum específico (apenas em comunidades)', false, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-adicionar-topico', 'botão que permite adicionar tópico a um fórum (apenas em comunidades)', false, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-adicionar-topico', 'botão que permite adicionar tópico a um fórum (apenas em comunidades)', false, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-topico', 'exibe um tópico a partir do seu id (atributo numero) (apenas em comunidades)', false, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-topico', 'exibe um tópico a partir do seu id (atributo numero) (apenas em comunidades)', false, true);
 
-INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('m-fundo', 'exibe a imagem de fundo da pessoa ou da comunidade', true, true);
+INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-fundo', 'exibe a imagem de fundo da pessoa ou da comunidade', true, true);
 
 - inserir outros blocos que tenham sido criados
 

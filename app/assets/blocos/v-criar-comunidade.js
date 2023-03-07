@@ -1,8 +1,8 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 import { renderBlocos } from "../utils/rendering.js";
 
-class MCriarComunidade extends MalocaElement {
+class VCriarComunidade extends VarandaElement {
     constructor() {
 
         let html = `
@@ -55,7 +55,7 @@ class MCriarComunidade extends MalocaElement {
 				overlay.style.left = "0px";
 				overlay.style.top = "0px";
 				
-				let modalCriar = document.createElement('m-bloco');
+				let modalCriar = document.createElement('v-bloco');
 				modalCriar.style.display = "block";
 				modalCriar.style.position = "fixed";
 				modalCriar.style.left = "50vw";
@@ -118,4 +118,4 @@ class MCriarComunidade extends MalocaElement {
     }
 }
 
-window.customElements.define('m-criar-comunidade', MCriarComunidade);
+window.customElements.define('v-criar-comunidade', VCriarComunidade);

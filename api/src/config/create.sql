@@ -1,4 +1,4 @@
-CREATE DATABASE maloca
+CREATE DATABASE varanda
 
 CREATE TABLE pessoas(
     pessoa_id       VARCHAR(16) PRIMARY KEY NOT NULL,

@@ -8,11 +8,11 @@ const rotasComunidades = require('./routes/routeComunidades');
 const errorHandler = require('./middlewares/errorHandler');
 
 const session = require('express-session');
-const sessionConfig = require('../../config/session'); // objeto com configurações de sessão
+const sessionConfig = require('./config/session'); // objeto com configurações de sessão
 const PostgreSqlStore = require('connect-pg-simple')(session); // para armazenamento de sessão
-const pool = require('../../config/database'); // para armazenamento de sesssão
+const pool = require('./config/database'); // para armazenamento de sesssão
 const passport = require('passport');
-require('../../config/passport');
+require('./config/passport');
 
 const app = express();
 

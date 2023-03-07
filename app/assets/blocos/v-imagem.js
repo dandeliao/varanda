@@ -1,7 +1,7 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 
-class MImagem extends MalocaElement {
+class VImagem extends VarandaElement {
     constructor() {
 
         let html = `
@@ -53,4 +53,4 @@ class MImagem extends MalocaElement {
     }
 }
 
-window.customElements.define('m-imagem', MImagem);
+window.customElements.define('v-imagem', VImagem);

@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     estado.modoAtivo = 'menu';
                     break;
                 case 'inicio':
-                    // abre view da página inicial da maloca
+                    // abre view da página inicial da varanda
                     estado.modoAtivo = 'ver';
                     estado.href = '/';
                     break;

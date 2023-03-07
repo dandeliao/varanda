@@ -1,7 +1,7 @@
-import MalocaElement from "./MalocaElement.js";
+import VarandaElement from "./VarandaElement.js";
 import { serverFetch } from "../utils/fetching.js";
 
-class MTopico extends MalocaElement {
+class VTopico extends VarandaElement {
     constructor() {
 
         let html = `
@@ -44,7 +44,7 @@ class MTopico extends MalocaElement {
 				
 		// cria elementos com informações da pessoa que postou
 		let elPessoa = document.createElement('div');
-		let elAvatar = document.createElement('m-avatar');
+		let elAvatar = document.createElement('v-avatar');
 		let elDivNomeArroba = document.createElement('div');
 		let elNome = document.createElement('div');
 		let elArroba = document.createElement('a');
@@ -123,7 +123,7 @@ class MTopico extends MalocaElement {
 					this.appendChild(elTexto);
 
 					// cria bloco que exibe comentários
-					let elComentarios = document.createElement('m-comentarios');
+					let elComentarios = document.createElement('v-comentarios');
 					elComentarios.setAttribute('topico', topicoID);
 					elComentarios.setAttribute('comunidade', idOrigem);
 					elComentarios.classList.add('secao-comentarios');
@@ -131,7 +131,7 @@ class MTopico extends MalocaElement {
 					elComentarios.renderizar(estado);
 
 					// cria bloco com formulário para adicionar novo comentário
-					let elAdicionar = document.createElement('m-adicionar-comentario');
+					let elAdicionar = document.createElement('v-adicionar-comentario');
 					elAdicionar.setAttribute('topico', topicoID);
 					elAdicionar.setAttribute('comunidade', idOrigem);
 					elAdicionar.classList.add('secao-comentarios');
@@ -153,4 +153,4 @@ class MTopico extends MalocaElement {
     }
 }
 
-window.customElements.define('m-topico', MTopico);
+window.customElements.define('v-topico', VTopico);
