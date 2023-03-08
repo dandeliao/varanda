@@ -6,11 +6,11 @@ DROP TABLE blocos_paginas_comunitarias, blocos_paginas_pessoais, blocos, paginas
 
 - apagar pastas comunitárias em /static/comunidades
 
-- rodar comandos de create.sql, menos o primeiro (create database maloca) pois o banco de dados não foi deletado
+- rodar comandos de create.sql, menos o primeiro (create database varanda) pois o banco de dados não foi deletado
 
-INSERT INTO comunidades (comunidade_id, nome, descricao) VALUES ('maloca', 'Maloca', 'cabana comunitária');
+INSERT INTO comunidades (comunidade_id, nome, descricao) VALUES ('varanda', 'Varanda', 'comunidade digital');
 
-INSERT INTO paginas_comunitarias (comunidade_id, titulo, publica) VALUES('maloca', 'principal', true);
+INSERT INTO paginas_comunitarias (comunidade_id, titulo, publica) VALUES('varanda', 'principal', true);
 
 INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-bloco', 'bloco simples, cria uma caixa sombreada para receber qualquer conteúdo', true, true);
 
@@ -70,15 +70,15 @@ INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-fundo'
 
 - inserir outros blocos que tenham sido criados
 
-- criar usuário *seu_nome* pela interface da maloca
+- criar usuário *seu_nome* pela interface da varanda
 
-- criar pasta /static/comunidades/maloca/
+- criar pasta /static/comunidades/varanda/
 
-- criar pastas imagens, textos e paginas em /static/comunidades/maloca/
+- criar pastas imagens, textos e paginas em /static/comunidades/varanda/
 
-- criar arquivo /static/comunidades/maloca/paginas/1.html
+- criar arquivo /static/comunidades/varanda/paginas/1.html
 
-- copiar arquivos avatar_comum.jpg e fundo_comum.jpg de /static/default/ para /static/comunidades/maloca/imagens/
+- copiar arquivos avatar_comum.jpg e fundo_comum.jpg de /static/default/ para /static/comunidades/varanda/imagens/
 
 UPDATE pessoas_comunidades SET participar = true, editar = true, moderar = true, cuidar = true WHERE pessoa_id = 'seu_nome';
 
