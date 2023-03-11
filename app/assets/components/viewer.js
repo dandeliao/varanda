@@ -36,7 +36,7 @@ main {
 #previa {
 	min-width: 260px;
 	width: 100%;
-	height: 58%;
+	height: 59%;
 	border: 1px solid var(--cor-fonte-view);
 	border-radius: 6px;
 	overflow: auto;
@@ -45,10 +45,9 @@ main {
 #controles {
 	min-width: 260px;
 	width: 100%;
-	height: 38%;
-	border: 1px solid var(--cor-fonte-view);
-	background: var(--cor-fundo-2);
-    color: var(--cor-fonte);
+	height: 39%;
+	background: var(--cor-principal);
+    color: var(--cor-fonte-barra);
 	border-radius: 6px;
 }
 
@@ -57,7 +56,7 @@ main {
 	width: 36%;
 	height: 100%;
 	border: 1px solid var(--cor-fonte-view);
-	borderRadius: 6px;
+	border-radius: 6px;
 	overflow: auto;
 }
 
@@ -283,7 +282,7 @@ class VarandaViewer extends HTMLElement {
 		// 	- itens gerais são necessários?
 		//  - talvez manter apenas "inserir bloco" como item geral
 		// 	- talvez criar bloco v-container e alterá-lo como um bloco normal na renderização de item clicado
-		
+
 		/* // renderiza itens gerais: propriedades da página, inserir bloco
 		let formPagina = document.createElement('form');
 		formPagina.style.border = '1px solid var(--cor-fonte-view)';

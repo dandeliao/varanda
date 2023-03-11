@@ -93,4 +93,5 @@ varanda-viewer {
     width: 100%;
     min-height: 90.5vh;
     padding: 1rem;
+    color: var(--cor-fonte-view);
 }

@@ -9,8 +9,10 @@
     --cor-fundo-2:      #2c2c2c;
     --cor-fonte-view:   #c9c6c4;
     --cor-fonte-barra:  #cbc7c3;
+    
     --familia-fonte:    'Convergence', sans-serif;
     font-family: var(--familia-fonte);
+    
     --estilo-borda:     none;
     --espessura-borda:  0;
     --raio-borda:       0.4rem;
