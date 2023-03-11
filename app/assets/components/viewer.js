@@ -21,20 +21,44 @@ main {
 	flex-direction: row;
 	justify-content: space-around;
 	flex-wrap: wrap;
+	overflow: auto;
+	height: 100%;
+}
+
+#flex-interno {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 60%;
+	height: 100%;
 }
 
 #previa {
-	min-height: 40rem;
 	min-width: 260px;
-	width: 30%;
+	width: 100%;
+	height: 58%;
 	border: 1px solid var(--cor-fonte-view);
+	border-radius: 6px;
+	overflow: auto;
 }
 
 #controles {
-	min-height: 40rem;
 	min-width: 260px;
-	width: 30%;
+	width: 100%;
+	height: 38%;
 	border: 1px solid var(--cor-fonte-view);
+	background: var(--cor-fundo-2);
+    color: var(--cor-fonte);
+	border-radius: 6px;
+}
+
+.codigo {
+	minWidth: 260px;
+	width: 36%;
+	height: 100%;
+	border: 1px solid var(--cor-fonte-view);
+	borderRadius: 6px;
+	overflow: auto;
 }
 
 a {
@@ -119,23 +143,31 @@ class VarandaViewer extends HTMLElement {
 		let elHtml = this.shadowRoot.querySelector('main');
 		elHtml.contentEditable = valor;
 		
-		// exibe/esconde colunas
+		// exibe campos de edição (são 3: html, prévia e controles)
 		if (valor === true) {
+
+			// cria colunas prévia e controles
 			let container = this.shadowRoot.querySelector('#flex-container');
+			let containerInterno = document.createElement('div');
+			containerInterno.setAttribute("id", 'flex-interno');
 			let elPrevia = document.createElement('div');
 			let elControles = document.createElement('div');
 			elPrevia.setAttribute('id', 'previa');
 			elControles.setAttribute('id', 'controles');
-			container.appendChild(elPrevia);
-			container.appendChild(elControles);
+			containerInterno.appendChild(elPrevia);
+			containerInterno.appendChild(elControles);
+			container.appendChild(containerInterno);
 
-			elHtml.style.minWidth = '260px';
-			elHtml.style.width = '30%';
-			elHtml.style.border = '1px solid var(--cor-fonte-view)';
+			// formata coluna html
+			elHtml.classList.add('codigo');
+
+			// ------
+			// Prévia
+			// ------
 
 			this.renderizarPrevia();
-
-			// debounce (espera pessoa parar de digitar para atualizar prévia)
+			
+			// função debounce (espera pessoa parar de digitar para executar comando)
 			function debounce(func, timeout){
 				let timer;
 				return (...args) => {
@@ -143,24 +175,44 @@ class VarandaViewer extends HTMLElement {
 					timer = setTimeout(() => { func.apply(this, args); }, timeout);
 				};
 			}
+			
+			// renderiza prévia sempre que html é alterado (usa debounce)
 			elHtml.addEventListener('keydown', debounce(() => {
 				this.renderizarPrevia(), 2000;
 			}, 2000));
+
+			// ---------
+			// Controles
+			// ---------
 			
+			this.renderizarControles();
+
+			// altera prévia e/ou html quando controles são alterados
+			//	- pensar uso do debounce
+			//  - prévia pode ser alterada diretamente? por exemplo slider para max-width de container
+			function controlaHtml(evento) {
+				console.log("evento: ", evento);
+			}
+			elControles.addEventListener('click', e => controlaHtml(e));
+			elControles.addEventListener('change', e => controlaHtml(e));
+			
+
 		} else {
+
+			// remove prévia e controles
 			let container = this.shadowRoot.querySelector('#flex-container');
+			let containerInterno = this.shadowRoot.querySelector('#flex-interno');
 			let elPrevia = this.shadowRoot.querySelector('#previa');
 			let elControles = this.shadowRoot.querySelector('#controles');
-			if (elPrevia) {
-				container.removeChild(elPrevia);
-			}
-			if (elControles) {
-				container.removeChild(elControles);
+			if (containerInterno) {
+				containerInterno.removeChild(elPrevia);
+				containerInterno.removeChild(elControles);
+				container.removeChild(containerInterno);
 			}
 			
-			elHtml.style.minWidth = '0';
-			elHtml.style.width = '100%';
-			elHtml.style.border = 'none';
+			// limpa formatação da coluna 'html'
+			elHtml.classList.remove('codigo');
+
 		}
 	}
 
@@ -205,18 +257,63 @@ class VarandaViewer extends HTMLElement {
 				e.stopPropagation();
 				e.stopImmediatePropagation();
 				e.preventDefault();
+				this.renderizarControles(e);
 
-				e.composedPath().forEach(elemento => {
-					if (elemento.tagName) {
-						if (elemento.tagName.slice(0, 2) === 'V-') { // V maiúsculo? por quê?
-							console.log(elemento.tagName);
-						}
-					}
-				});
+				
 
 			})
 		});
-	} 
+
+		// reduz o tamanho dos elementos da prévia
+		let children = elPrevia.children;
+		for (let i = 0; i < children.length; i++) {
+			children[i].style.transform = 'scale(0.6)';
+			children[i].style.transformOrigin =  'top center';
+		}
+
+	}
+
+	renderizarControles(evento) {
+
+		console.log("renderizar controles...")
+		
+		// limpa elementos-filhos
+		let elControles = this.shadowRoot.querySelector('#controles');
+		while (elControles.lastChild) {
+			elControles.removeChild(elControles.lastChild);
+		}
+		
+		// pensar:
+		// 	- itens gerais são necessários?
+		//  - talvez manter apenas "inserir bloco" como item geral
+		// 	- talvez criar bloco v-container e alterá-lo como um bloco normal na renderização de item clicado
+		
+		/* // renderiza itens gerais: propriedades da página, inserir bloco
+		let formPagina = document.createElement('form');
+		formPagina.style.border = '1px solid var(--cor-fonte-view)';
+		formPagina.innerHTML = `
+			
+		`;
+		
+		
+		let formInserirBloco = document.createElement('form');
+		formInserirBloco.style.border = '1px solid var(--cor-fonte-view)';
+
+		elControles.appendChild(formPagina);
+		elControles.appendChild(formInserirBloco); */
+
+		// renderizar item clicado (a partir do evento)
+		if (evento) {
+			evento.composedPath().forEach(elemento => {
+				if (elemento.tagName) {
+					if (elemento.tagName.slice(0, 2) === 'V-') {
+						console.log(elemento.tagName);
+						console.log(elemento.getAttribute('m_id'));
+					}
+				}
+			});
+		}
+	}
 }
 
 window.customElements.define('varanda-viewer', VarandaViewer);
