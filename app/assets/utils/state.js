@@ -127,7 +127,6 @@ export async function setState(estado, noPush) {
 				let html = await serverFetch(`/${estado.view.tipo}s/${estado.view.id}/${estado.view.paginaAtiva}`, 'GET'); // solicita html ao servidor
 				viewer.text = await html.text(); // mostra html para edição
 				viewer.editable = true; // habilita edição novamente
-				viewer.focusOnIt();
 			}
 		}
 	}

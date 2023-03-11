@@ -216,10 +216,6 @@ class VarandaViewer extends HTMLElement {
 		}
 	}
 
-	focusOnIt() {
-		this.shadowRoot.querySelector('main').focus();
-	}
-
 	renderizarPrevia() {
 		let elHtml = this.shadowRoot.querySelector('main');
 		let elPrevia = this.shadowRoot.querySelector('#previa');
