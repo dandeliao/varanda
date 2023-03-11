@@ -81,6 +81,16 @@ class VarandaViewer extends HTMLElement {
 		super();
 		this.attachShadow({mode: 'open'});
 		this.shadowRoot.appendChild(templateViewer.content.cloneNode(true));
+
+		// limita o tamanho da view à viewport
+		const navBar = document.getElementById('nav-bar');
+		const tabBar = document.getElementById('tab-bar');
+		const alturaBarras = navBar.offsetHeight + tabBar.offsetHeight;
+		const styleView = window.getComputedStyle(this);
+		const padding = parseInt(styleView.getPropertyValue('padding-top')) + parseInt(styleView.getPropertyValue('padding-bottom'));
+		const alturaView = 100 - (alturaBarras / window.innerHeight) * 100 - (padding / window.innerHeight) * 100;
+		this.style.height = `${alturaView}vh`;
+		this.style.overflow = 'auto';
 	}
 
 	get html() {
