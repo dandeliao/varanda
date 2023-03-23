@@ -110,7 +110,7 @@ class VarandaViewer extends HTMLElement {
 		const tabBar = document.getElementById('tab-bar');
 		const alturaBarras = navBar.offsetHeight + tabBar.offsetHeight;
 		const styleView = window.getComputedStyle(this);
-		const padding = parseInt(styleView.getPropertyValue('padding-top')) + parseInt(styleView.getPropertyValue('padding-bottom'));
+		const padding = parseFloat(styleView.getPropertyValue('padding-top')) + parseFloat(styleView.getPropertyValue('padding-bottom'));
 		const alturaView = 100 - (alturaBarras / window.innerHeight) * 100 - (padding / window.innerHeight) * 100;
 		this.style.height = `${alturaView}vh`;
 		this.style.overflow = 'auto';
@@ -254,7 +254,9 @@ class VarandaViewer extends HTMLElement {
 				e.preventDefault();
 				this.renderizarControles(e);
 
-				
+			// pensar:
+			//   - filtrar arrayBlocos antes do loop para pegar apenas blocos que tem um v_id (aproveitar e mudar essa nomenclatura, é pra ser v_id)
+			//   - arrastar & soltar para alterar posição dos blocos  (eventos mouseDown & mouseUp?)	
 
 			})
 		});
@@ -303,7 +305,7 @@ class VarandaViewer extends HTMLElement {
 				if (elemento.tagName) {
 					if (elemento.tagName.slice(0, 2) === 'V-') {
 						console.log(elemento.tagName);
-						console.log(elemento.getAttribute('m_id'));
+						console.log(elemento.getAttribute('v_id'));
 					}
 				}
 			});

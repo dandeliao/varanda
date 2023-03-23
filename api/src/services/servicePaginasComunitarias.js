@@ -95,7 +95,7 @@ async function updateBlocosPaginaComunitaria (html, pagina_comunitaria_id) {
 
 	// html já deve chegar validado e sem comentários
 
-	// lê html e captura lista de blocos com seus bloco_id (do nome da tag) e bloco_pagina_comunitaria_id (do atributo "m_id")
+	// lê html e captura lista de blocos com seus bloco_id (do nome da tag) e bloco_pagina_comunitaria_id (do atributo "v_id")
 	const blocoRegex = /<(v-(?:\w+-*)+)(?:\s+(?:\w+="(?:\s*[A-Za-zÀ-ü0-9]*(?:-[A-Za-zÀ-ü0-9]*)*\s*(?::*(?:\s*\w+)+;)?)*")*)*>/g; // regex captura formatos <v-nome-do-bloco> e <v-nome-do-bloco prop1="valor" style="margin: 0 auto; font-family: monospace">
 	let blocos = html.matchAll(blocoRegex);
 	let arrayBlocos = [];
@@ -103,7 +103,7 @@ async function updateBlocosPaginaComunitaria (html, pagina_comunitaria_id) {
 		arrayBlocos.push({tag: bloco[0], bloco_id: bloco[1], index: bloco['index']});
 	}
 	console.log('arrayBlocos:', arrayBlocos);
-	const idRegex = /m_id="(\d*)"/g; // regex captura atributo m_id
+	const idRegex = /v_id="(\d*)"/g; // regex captura atributo v_id
 	arrayBlocos.forEach(b => {
 		//let idMatch = idRegex.exec(b.tag);
 		let idMatchAll = b.tag.matchAll(idRegex);
@@ -162,7 +162,7 @@ async function updateBlocosPaginaComunitaria (html, pagina_comunitaria_id) {
 	return arrayBlocos;
 }
 
-// edita html e adiciona propriedade m_id="${bloco_pagina_comunitaria_id}" para cada bloco que não a tem
+// edita html e adiciona propriedade v_id="${bloco_pagina_comunitaria_id}" para cada bloco que não a tem
 async function updateHtmlBlocos(html, blocos) {
 	let aumentoDaString = 0;
 	let novoHtml = html;
@@ -172,7 +172,7 @@ async function updateHtmlBlocos(html, blocos) {
 		let ultimaParte = novoHtml.slice(b.index + b.tag.length + aumentoDaString);
 		let oldBTagLength = b.tag.length;
 		if (b.jaTem === false || null || undefined) {
-			b.tag = b.tag.replace(`${b.bloco_id}`,`${b.bloco_id} m_id="${b.bloco_pagina_comunitaria_id}"`);
+			b.tag = b.tag.replace(`${b.bloco_id}`,`${b.bloco_id} v_id="${b.bloco_pagina_comunitaria_id}"`);
 		}
 		novoHtml = `${primeiraParte}${b.tag}${ultimaParte}`;
 		aumentoDaString += b.tag.length - oldBTagLength;
