@@ -88,7 +88,7 @@ class VarandaMenu extends HTMLElement {
 
 					.gaveta-fechada {
 						transform: translate(-45%, -55%) scale(0);
-						transition: transform ease-out 0.3s;
+						transition: transform ease-out 0.15s;
 					}
 					
 					.gaveta-aberta {
