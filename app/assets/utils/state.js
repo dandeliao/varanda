@@ -1,4 +1,4 @@
-import { renderEstilo, renderMenu, renderNavBar, renderTabBar, renderView } from "./rendering.js";
+import { renderEstilo, renderMenu, renderClonar, renderInfo, renderNavBar, renderTabBar, renderView } from "./rendering.js";
 import { router } from "./routing.js";
 import { serverFetch, putPagina, cadastrar, entrar } from "./fetching.js"
 
@@ -134,9 +134,27 @@ export async function setState(estado, noPush) {
 	// caso seja clique no menu, o renderiza
 	if (estado.modoAtivo === 'menu') {
 		await renderMenu(estado);
-	} else if ((estadoVelho !== null) && (estadoVelho.modoAtivo === 'menu')) {
-		// caso tenha saído do modo menu, remove o menu da DOM
-		document.querySelector('varanda-menu').remove();
+	/* } else if ((estadoVelho !== null) && (estadoVelho.modoAtivo === 'menu')) {
+		// caso tenha saído do modo menu, remove o menu da DOM */
+	} else {
+		if (document.querySelector('varanda-menu')) {
+			document.querySelector('varanda-menu').remove();
+		}
+		// corrigir erro: o menu abre de novo se já estiver aberto e a pessoa clicar na navBar
+	}
+
+	// renderiza modal clonar
+	if (estado.modoAtivo === 'clonar') {
+		await renderClonar(estado);
+	} else {
+
+	}
+
+	// renderiza modal info
+	if (estado.modoAtivo === 'info') {
+		await renderInfo(estado);
+	} else {
+
 	}
 
 	// caso seja a tela de boas-vindas, ativa formulários

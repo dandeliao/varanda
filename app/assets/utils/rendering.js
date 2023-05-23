@@ -22,11 +22,27 @@ export function togglePressed (imgButton) {
 }
 
 export async function renderMenu(estado) {
-
 	let menu = document.createElement('varanda-menu');
 	document.body.appendChild(menu);
-	
 	menu.renderizar(estado);
+}
+
+export async function renderClonar(estado) {
+
+	// solicitar prévia à api
+	// armazenar html da prévia em uma variável
+	// exibir controles e miniatura da prévia
+	// ao alterar controles, solicitar nova prévia à api
+	// ao confirmar clonagem, solicitar clonagem à api
+	// ao cancelar, alterar estado.modoAtivo para 'ver'
+
+}
+
+export async function renderInfo(estado) {
+
+	// solicitar página html de informações à api
+	// exibir página de informações
+	// ao sair, alterar estado.modoAtivo para 'ver'
 
 }
 
