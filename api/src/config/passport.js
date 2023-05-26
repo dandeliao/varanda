@@ -5,7 +5,7 @@ const validaSenha = require('../utils/utilPassword').validaSenha;
 
 // nomes dos campos recebidos do cliente em req.body
 const customFields = {
-	usernameField: 'pessoa_id',
+	usernameField: 'bicho_id',
 	passwordField: 'senha'
 };
 
@@ -17,7 +17,7 @@ passport.use(new LocalStrategy(customFields,
 				// esta query deve ter os dados validados antes.
 				// 		além disso, deve ser feita pela camada 'data'(?).
 				//		reavaliar estrutura de diretórios do projeto.
-				'SELECT * FROM autenticacao WHERE pessoa_id=$1',
+				'SELECT * FROM pessoas WHERE bicho_id=$1',
 				[username]
 			);
 			if(segredos.rows.length > 0) {
@@ -39,7 +39,7 @@ passport.use(new LocalStrategy(customFields,
 ));
 
 passport.serializeUser((user, pronto) => {
-	pronto(null, user.pessoa_id);
+	pronto(null, user.bicho_id);
 });
 
 passport.deserializeUser((userId, pronto) => {
@@ -48,7 +48,7 @@ passport.deserializeUser((userId, pronto) => {
 			// esta query deve ter os dados validados antes?
 			// 		além disso, deve ser feita pela camada 'data'(?).
 			//		reavaliar estrutura de diretórios do projeto.
-			'SELECT * FROM pessoas WHERE pessoa_id=$1',
+			'SELECT * FROM pessoas WHERE bicho_id=$1',
 			[userId]
 		).then(pessoa => {
 			if (pessoa.rows.length > 0) {
