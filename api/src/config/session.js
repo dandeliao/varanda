@@ -8,7 +8,7 @@ const sessionConfig = {
 	saveUninitialized: true,
 	//store: é definido no index.js
 	cookie: {
-		maxAge: 1000 * 60 * 60 * 24 * 14, // 14 dias
+		maxAge: 1000 * 60 * 60 * 24 * 28, // 28 dias
 		sameSite: true,
 		secure: false // habilitar quando ativar https
 	}
