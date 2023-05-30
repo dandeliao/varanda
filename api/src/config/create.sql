@@ -48,7 +48,7 @@ CREATE TABLE sessoes (
 );
 CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON sessoes ("expire");
 
-/* Contexto (páginas) */
+/* Contexto (varandas, páginas) */
 
 CREATE TABLE varandas(
     varanda_id      SERIAL PRIMARY KEY NOT NULL,
@@ -82,6 +82,7 @@ CREATE TABLE edicoes(
     edicao_id       SERIAL PRIMARY KEY NOT NULL,
     pagina_id       SERIAL REFERENCES paginas(pagina_id) ON DELETE CASCADE,
     bicho_id        VARCHAR(16) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
+    texto           TEXT,
     criacao         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
