@@ -90,7 +90,7 @@ CREATE TABLE edicoes(
 
 CREATE TABLE artefatos(
     artefato_id             SERIAL PRIMARY KEY NOT NULL,
-    varanda_contexto_id     VARCHAR(16) REFERENCES varandas(varanda_id) ON DELETE CASCADE,
+    varanda_contexto_id     SERIAL REFERENCES varandas(varanda_id) ON DELETE CASCADE,
     bicho_criador_id        VARCHAR(16) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     em_resposta_a_id        SERIAL REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
     sensivel                BOOLEAN DEFAULT false,
@@ -111,10 +111,10 @@ CREATE TABLE textos(
 ) INHERITS (artefatos);
 
 CREATE TABLE tags(
-    tag_id  VARCHAR(32) PRIMARY KEY NOT NULL
+    tag_id  TEXT PRIMARY KEY NOT NULL
 )
 
 CREATE TABLE tags_artefatos(
-    tag_id          VARCHAR(32) REFERENCES tags(tag_id) ON DELETE CASCADE,
+    tag_id          TEXT REFERENCES tags(tag_id) ON DELETE CASCADE,
     artefato_id     SERIAL REFERENCES artefatos(artefato_id) ON DELETE CASCADE
 )
