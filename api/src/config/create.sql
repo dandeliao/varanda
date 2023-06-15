@@ -20,6 +20,7 @@ CREATE TABLE pessoas(
 ) INHERITS (bichos);
 
 CREATE TABLE comunidades(
+    bicho_criador_id            VARCHAR(16) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     participacao_livre          BOOLEAN DEFAULT false,
     participacao_com_convite    BOOLEAN DEFAULT true,
     periodo_geracao_convite     INT DEFAULT 0
