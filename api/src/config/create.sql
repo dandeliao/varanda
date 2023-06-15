@@ -20,8 +20,9 @@ CREATE TABLE pessoas(
 ) INHERITS (bichos);
 
 CREATE TABLE comunidades(
-    livre_entrada               BOOLEAN DEFAULT false,
-    periodo_geracao_convite     INT DEFAULT 0;
+    participacao_livre          BOOLEAN DEFAULT false,
+    participacao_com_convite    BOOLEAN DEFAULT true,
+    periodo_geracao_convite     INT DEFAULT 0
 ) INHERITS (bichos);
 
 CREATE TABLE convites(
@@ -38,6 +39,15 @@ CREATE TABLE pertencimentos(
     editar          BOOLEAN DEFAULT false,
     moderar         BOOLEAN DEFAULT false,
     representar     BOOLEAN DEFAULT false
+);
+
+CREATE TABLE bichos_padrao(
+    bicho_padrao_id     SERIAL PRIMARY KEY NOT NULL,
+    descricao           VARCHAR(500) DEFAULT 'Olá! Bem-vinde à minha varanda.',
+    avatar              VARCHAR(255),
+    descricao_avatar    VARCHAR(500),
+    fundo               VARCHAR(255),
+    descricao_fundo     VARCHAR(500)
 );
 
 CREATE TABLE sessoes (
