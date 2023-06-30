@@ -1,18 +1,17 @@
 const express = require('express');
-const cors = require('cors');
-
-const rotasPessoas = require('./routes/routePessoas');
-const rotasAutenticacao = require('./routes/routeAutenticacao');
-const rotasComunidades = require('./routes/routeComunidades');
-
-const errorHandler = require('./middlewares/errorHandler');
-
+const rotasBichos = require('./routes/bichos.js');
+const rotasArtefatos = require('./routes/artefatos.js');
+const rotasVarandas = require('./routes/varandas.js');
 const session = require('express-session');
 const sessionConfig = require('./config/session'); // objeto com configurações de sessão
 const PostgreSqlStore = require('connect-pg-simple')(session); // para armazenamento de sessão
 const pool = require('./config/database'); // para armazenamento de sesssão
-const passport = require('passport');
 require('./config/passport');
+const cors = require('cors');
+const errorHandler = require('./middlewares/errorHandler');
+const passport = require('passport');
+require('dotenv').config();
+const PORT = process.env.port || 4000;
 
 const app = express();
 
@@ -23,7 +22,7 @@ const sessionStore = new PostgreSqlStore({
 });
 sessionConfig.store = sessionStore;
 
-// middlewares
+// middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors({
@@ -33,10 +32,12 @@ app.use(cors({
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/comunidades', rotasComunidades);
-app.use('/pessoas', rotasPessoas);
-app.use('/autenticacao', rotasAutenticacao);
 app.use(errorHandler);
+
+// rotas
+app.use('/bichos', 		rotasBichos		);
+app.use('/artefatos', 	rotasArtefatos	);
+app.use('/varandas', 	rotasVarandas	);
 
 // rota padrão fornece informações sobre pessoa logada
 app.get('/', async (req, res, next) => {
@@ -55,5 +56,7 @@ app.get('/', async (req, res, next) => {
 	}
 });
 
-// roda servidor
-app.listen(4000);
+// roda o servidor
+app.listen(PORT, () => {
+	console.log(`Servidor escutando atentamente na porta ${PORT}`);
+});
