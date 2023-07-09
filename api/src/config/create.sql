@@ -27,13 +27,13 @@ CREATE TABLE comunidades(
 ) INHERITS (bichos);
 
 CREATE TABLE convites(
-    convite_id      SERIAL PRIMARY KEY NOT NULL,
+    convite_id      SERIAL PRIMARY KEY DEFAULT gen_random_uuid(),
     bicho_id        VARCHAR(16) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     comunidade_id   VARCHAR(16) REFERENCES comunidades(bicho_id) ON DELETE CASCADE,
-    codigo          CHAR(256) NOT NULL UNIQUE
+    criacao         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE pertencimentos(
+CREATE TABLE relacoes(
     bicho_id        VARCHAR(16) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     comunidade_id   VARCHAR(16) REFERENCES comunidades(bicho_id) ON DELETE CASCADE,
     participar      BOOLEAN DEFAULT true,

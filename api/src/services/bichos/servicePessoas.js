@@ -1,6 +1,4 @@
-const CustomError = require('../utils/CustomError');
 const dataPessoas = require('../../data/bichos/dataPessoas');
-const dataBichos = require('../../data/bichos/dataBichos');
 const geraHashESalt = require('../../utils/utilPassword').geraHashESalt;
 const fs = require('fs');
 const path = require('path');
@@ -8,8 +6,6 @@ const staticPath = '../../static';
 
 exports.registrarPessoa = async function (dados) {
 	
-	const bichoExistente = await dataBichos.getBicho(dados.bicho_id);
-	if (bichoExistente.rowCount !== 0) throw new CustomError('O nome que você está tentando registrar já existe.', 409);
 	let bicho = {
 		bicho_id: dados.bicho_id,
 		nome: dados.nome ? dados.nome : dados.bicho_id,

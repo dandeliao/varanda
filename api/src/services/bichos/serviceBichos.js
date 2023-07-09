@@ -10,7 +10,7 @@ exports.verBichos = async function () {
 
 exports.verBicho = async function (bichoId) {
 	const dataBicho = await dataBichos.getBicho(bichoId);
-	if (dataBicho.rowCount === 0) throw new Error ('Bicho não encontrado.');
+	if (dataBicho.rowCount === 0) return null;
 	return dataBicho.rows[0];
 };
 

@@ -1,71 +1,63 @@
 const express 	= require('express');
 const router 	= express.Router();
 const passport 	= require('passport');
-const tryCatch 	= require('../middlewares/errorHandler');
+const asyncHandler = require('express-async-handler');
 const taAutenticade = require('../middlewares/authentication');
-const { getBichos, 		getBicho, 		getAvatar, 		getFundo, 		getRelacoes,	  getRelacao } 	= require('../controllers/bichos/controllerBichos');
-const { getComunidades,	getComunidade, 	postComunidade, putComunidade, 	deleteComunidade}				= require('../controllers/bichos/controllerComunidades');
-const { getPessoas, 	getPessoa, 		postPessoa, 	putPessoa, 		deletePessoa } 					= require('../controllers/bichos/controllerPessoas');
+const { getBichos, 		getBicho, 		getAvatar, 		getFundo } 							= require('../controllers/bichos/controllerBichos');
+const { getComunidades,	getComunidade, 	postComunidade, putComunidade, 	deleteComunidade }	= require('../controllers/bichos/controllerComunidades');
+const { getPessoas, 	getPessoa, 		postPessoa, 	putPessoa, 		deletePessoa } 		= require('../controllers/bichos/controllerPessoas');
+const { getRelacoes,	getRelacao,		postRelacao,	putRelacao,		deleteRelacao }		= require('../controllers/bichos/controllerRelacoes');
 
 router.use(taAutenticade);
 
 // ---
 // Bichos em geral
 
-router.get('/', 				tryCatch(async (req, res) => {
-	const bichos = await getBichos(req, res);
-	res.status(200).json(bichos);
-}));
+router.get('/', getBichos);
 
-router.get('/:arroba', 			tryCatch(async (req, res) => {
-	const bicho = await getBicho(req, res);
-	res.status(200).json(bicho);
-}));
+router.get('/:arroba', getBicho);
 
-router.get('/:arroba/avatar', 	tryCatch(async (req, res) => {
-	const avatar = await getAvatar(req, res);
-	res.sendFile(avatar);
-}));
+router.get('/:arroba/avatar', getAvatar);
 
-router.get('/:arroba/fundo', 	tryCatch(async (req, res) => {
-	const fundo = await getFundo(req, res);
-	res.sendFile(fundo);
-}));
+router.get('/:arroba/fundo', getFundo);
 
-router.get('/:arroba/relacoes',	tryCatch(async (req, res) => {
-	const relacoes = await getRelacoes(req, res);
-	res.status(200).json(relacoes); 
-}));
+// ---
+// Relações entre bichos
 
-router.get('/:arroba/relacao', 	tryCatch(async (req, res) => { // relacao?bicho_id=nomeDoBicho
-	const relacao = await getRelacao(req, res);
-	res.status(200).json(relacao);
-}));
+router.get('/:arroba/relacoes',	getRelacoes);
+
+router.get('/:arroba/relacao', getRelacao); // relacao?comunidade_id=nomeDaComunidade
+
+router.post('/:arroba/relacao', postRelacao); // relacao?comunidade_id=nomeDaComunidade&convite=codigoDoConvite
+
+router.put('/:arroba/relacao', putRelacao); // relacao?comunidade_id=nomeDaComunidade
+
+router.delete('/:arroba/relacao', deleteRelacao); // relacao?comunidade_id=nomeDaComunidade
 
 // ---
 // Comunidades
 
-router.get('/comunidades', 				tryCatch(async (req, res) => {
+router.get('/comunidades', 				asyncHandler(async (req, res, next) => {
 	const comunidades = await getComunidades(req, res);
 	res.status(200).json(comunidades);
 }));
 
-router.get('/comunidades/:arroba',		tryCatch(async (req, res) => {
+router.get('/comunidades/:arroba',		asyncHandler(async (req, res, next) => {
 	const comunidade = await getComunidade(req, res);
 	res.status(200).json(comunidade);
 }));
 
-router.post('/comunidades', 			tryCatch(async (req, res) => {
+router.post('/comunidades', 			asyncHandler(async (req, res, next) => {
 	const comunidade = await postComunidade(req, res);
 	res.status(201).json(comunidade);
 }));
 
-router.put('/comunidades/:arroba',		tryCatch(async (req, res) => {
+router.put('/comunidades/:arroba',		asyncHandler(async (req, res, next) => {
 	const comunidade = await putComunidade(req, res);
 	res.status(204).json(comunidade);
 }));
 
-router.delete('/comunidades/:arroba',	tryCatch (async (req, res) => {
+router.delete('/comunidades/:arroba',	asyncHandler (async (req, res, next) => {
 	await deleteComunidade(req, res);
 	res.status(204).end();
 }));
@@ -73,27 +65,24 @@ router.delete('/comunidades/:arroba',	tryCatch (async (req, res) => {
 // ---
 // Pessoas
 
-router.get('/pessoas', 				tryCatch(async (req, res) => {
+router.get('/pessoas', 				asyncHandler(async (req, res, next) => {
 	const pessoas = await getPessoas(req, res);
 	res.status(200).json(pessoas);
 }));
 
-router.get('/pessoas/:arroba', 		tryCatch(async (req, res) => {
+router.get('/pessoas/:arroba', 		asyncHandler(async (req, res, next) => {
 	const pessoa = await getPessoa(req, res);
 	res.status(200).json(pessoa);
 }));
 
-router.post('/pessoas', 			tryCatch(async (req, res) => {
-	const novaPessoa = await postPessoa(req, res);
-	res.status(201).json(novaPessoa);
-}));
+router.post('/pessoas', postPessoa);
 
-router.put('/pessoas/:arroba', 		tryCatch (async (req, res) => {
+router.put('/pessoas/:arroba', 		asyncHandler (async (req, res, next) => {
 	const pessoa = await putPessoa(req, res);
 	res.status(204).json(pessoa);
 }));
 
-router.delete('/pessoas/:arroba',	tryCatch (async (req, res) => {
+router.delete('/pessoas/:arroba',	asyncHandler (async (req, res, next) => {
 	await deletePessoa(req, res);
 	res.status(204).end();
 }));

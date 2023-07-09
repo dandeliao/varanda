@@ -27,10 +27,10 @@ exports.getConvitesDoBicho = function (bichoId) {
 	);
 };
 
-exports.postConvite = function (bichoId, comunidadeId, codigo) {
+exports.postConvite = function (bichoId, comunidadeId) {
 	return pool.query(
-		'INSERT INTO convites (bicho_id, comunidade_id, codigo) VALUES ($1, $2, $3) RETURNING *',
-		[bichoId, comunidadeId, codigo]
+		'INSERT INTO convites (bicho_id, comunidade_id) VALUES ($1, $2) RETURNING *',
+		[bichoId, comunidadeId]
 	);
 };
 

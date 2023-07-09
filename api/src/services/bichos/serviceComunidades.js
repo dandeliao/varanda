@@ -4,6 +4,11 @@ const fs = require('fs');
 const path = require('path');
 const staticPath = '../../static';
 
+exports.verComunidade = async function (comunidade_id) {
+	const comunidade = await dataComunidades.getComunidade(comunidade_id);
+	return comunidade.rows[0];
+};
+
 exports.criarComunidade = async function (dados) {
 
 	const bichoExistente = await dataBichos.getBicho(dados.bicho_id);

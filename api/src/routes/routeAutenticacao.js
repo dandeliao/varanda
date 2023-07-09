@@ -3,7 +3,7 @@ const router = express.Router();
 const serviceAutenticacao = require('../services/serviceAutenticacao');
 const passport = require('passport');
 
-router.post('/registro', async (req, res, next) => {
+/* router.post('/registro', async (req, res, next) => {
 	try {
 		// falta fazer validação dos dados antes
 		// (qual a camada responsável por chamar a validação?)
@@ -19,8 +19,8 @@ router.post('/registro', async (req, res, next) => {
 	} catch (erro) {
 		next(erro);
 	}
-});
-
+}); */
+/* 
 router.post('/login', passport.authenticate('local', {
 	failureRedirect: '/autenticacao/login-fracasso',
 	successRedirect: '/autenticacao/login-sucesso'
@@ -53,6 +53,6 @@ router.get('/logout', (req, res, next) => {
 			});
 		}
 	});
-});
+}); */
 
 module.exports = router;
