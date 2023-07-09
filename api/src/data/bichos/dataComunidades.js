@@ -15,15 +15,15 @@ exports.getComunidade = function (bichoId) {
 
 exports.postComunidade = function (bicho) {
 	return pool.query(
-		'INSERT INTO comunidades (bicho_id, nome, descricao) VALUES ($1, $2, $3) RETURNING *',
+		'INSERT INTO comunidades (bicho_id, nome, descricao, bicho_criador_id) VALUES ($1, $2, $3) RETURNING *',
 		[bicho.bicho_id, bicho.nome, bicho.descricao]
 	);
 };
 
 exports.putComunidade = function (comunidade) {
 	return pool.query(
-		'UPDATE comunidades SET nome = $1, descricao = $2, avatar = $3, descricao_avatar = $4, fundo = $5, descricao_fundo = $6, livre_entrada = $7, periodo_geracao_convite = $8 WHERE bicho_id = $9 RETURNING *',
-		[comunidade.nome, comunidade.descricao, comunidade.avatar, comunidade.descricao_avatar, comunidade.fundo, comunidade.descricao_fundo, comunidade.livre_entrada, comunidade.periodo_geracao_convite, comunidade.bicho_id]
+		'UPDATE comunidades SET participacao_livre = $1, participacao_com_convite = $2, periodo_geracao_convite = $3 WHERE bicho_id = $4 RETURNING *',
+		[comunidade.participacao_livre, comunidade.participacao_com_convite, comunidade.periodo_geracao_convite, comunidade.bicho_id]
 	);
 };
 

@@ -1,9 +1,12 @@
 const express 	= require('express');
 const router 	= express.Router();
+const path = require('path');
+const multer = require('multer');
+const update = multer({ dest: path.join(path.resolve(__dirname, '../../static/bichos/temp' )) });
 const passport 	= require('passport');
 const asyncHandler = require('express-async-handler');
 const taAutenticade = require('../middlewares/authentication');
-const { getBichos, 		getBicho, 		getAvatar, 		getFundo } 							= require('../controllers/bichos/controllerBichos');
+const { getBichos, getBicho, putBicho, getAvatar, getFundo, putAvatar, putFundo } 			= require('../controllers/bichos/controllerBichos');
 const { getComunidades,	getComunidade, 	postComunidade, putComunidade, 	deleteComunidade }	= require('../controllers/bichos/controllerComunidades');
 const { getPessoas, 	getPessoa, 		postPessoa, 	putPessoa, 		deletePessoa } 		= require('../controllers/bichos/controllerPessoas');
 const { getRelacoes,	getRelacao,		postRelacao,	putRelacao,		deleteRelacao }		= require('../controllers/bichos/controllerRelacoes');
@@ -17,50 +20,41 @@ router.get('/', getBichos);
 
 router.get('/:arroba', getBicho);
 
+router.put('/:arroba', putBicho); // req.body = {nome, descricao, descricao_avatar, descricao_fundo}
+
 router.get('/:arroba/avatar', getAvatar);
 
 router.get('/:arroba/fundo', getFundo);
+
+router.put('/:arroba/avatar', update.single('arquivo'), putAvatar); // req.body = {descricao_avatar}
+
+router.put('/:arroba/fundo', update.single('arquivo'), putFundo); // req.body = {descricao_fundo}
 
 // ---
 // Relações entre bichos
 
 router.get('/:arroba/relacoes',	getRelacoes);
 
-router.get('/:arroba/relacao', getRelacao); // relacao?comunidade_id=nomeDaComunidade
+router.get('/:arroba/relacao', getRelacao); // relacao?comunidade_id=arrobaDaComunidade
 
-router.post('/:arroba/relacao', postRelacao); // relacao?comunidade_id=nomeDaComunidade&convite=codigoDoConvite
+router.post('/:arroba/relacao', postRelacao); // req.body = {comunidade_id, convite_id}
 
-router.put('/:arroba/relacao', putRelacao); // relacao?comunidade_id=nomeDaComunidade
+router.put('/:arroba/relacao', putRelacao); // relacao?comunidade_id=arrobaDaComunidade | req.body = {participar, editar, moderar, representar}
 
-router.delete('/:arroba/relacao', deleteRelacao); // relacao?comunidade_id=nomeDaComunidade
+router.delete('/:arroba/relacao', deleteRelacao); // relacao?comunidade_id=arrobaDaComunidade
 
 // ---
 // Comunidades
 
-router.get('/comunidades', 				asyncHandler(async (req, res, next) => {
-	const comunidades = await getComunidades(req, res);
-	res.status(200).json(comunidades);
-}));
+router.get('/comunidades', getComunidades);
 
-router.get('/comunidades/:arroba',		asyncHandler(async (req, res, next) => {
-	const comunidade = await getComunidade(req, res);
-	res.status(200).json(comunidade);
-}));
+router.get('/comunidades/:arroba', getComunidade);
 
-router.post('/comunidades', 			asyncHandler(async (req, res, next) => {
-	const comunidade = await postComunidade(req, res);
-	res.status(201).json(comunidade);
-}));
+router.post('/comunidades', postComunidade); // req.body = {bicho_id, nome, descricao, bicho_criador_id}
 
-router.put('/comunidades/:arroba',		asyncHandler(async (req, res, next) => {
-	const comunidade = await putComunidade(req, res);
-	res.status(204).json(comunidade);
-}));
+router.put('/comunidades/:arroba', putComunidade); // req.body = {participacao_livre, participacao_com_convite, periodo_geracao_convite}
 
-router.delete('/comunidades/:arroba',	asyncHandler (async (req, res, next) => {
-	await deleteComunidade(req, res);
-	res.status(204).end();
-}));
+router.delete('/comunidades/:arroba', deleteComunidade);
 
 // ---
 // Pessoas

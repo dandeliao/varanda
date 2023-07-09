@@ -4,6 +4,11 @@ const fs = require('fs');
 const path = require('path');
 const staticPath = '../../static';
 
+exports.verComunidades = async function () {
+	const comunidades = await dataComunidades.getComunidades();
+	return comunidades.rows;
+};
+
 exports.verComunidade = async function (comunidade_id) {
 	const comunidade = await dataComunidades.getComunidade(comunidade_id);
 	return comunidade.rows[0];
@@ -29,4 +34,19 @@ exports.criarComunidade = async function (dados) {
 
 	return await dataComunidades.postComunidade(comunidade).rows[0];
 
+};
+
+exports.editarComunidade = async function (comunidade_id, dados) {
+	const comunidade = await dataComunidades.getComunidade(comunidade_id).rows[0];
+	const novosDados = {
+		bicho_id: comunidade_id,
+		participacao_livre: dados.participacao_livre ? dados.participacao_livre : comunidade.participacao_livre,
+		participacao_com_convite: dados.participacao_com_convite ? dados.participacao_com_convite : comunidade.participacao_com_convite,
+		periodo_geracao_convite: dados.periodo_geracao_convite ? dados.periodo_geracao_convite : comunidade.periodo_geracao_convite
+	};
+	return await dataComunidades.putComunidade(novosDados).rows[0];
+};
+
+exports.deletarComunidade = async function (comunidade_id) {
+	return await dataComunidades.deleteComunidade(comunidade_id).rows[0];
 };
