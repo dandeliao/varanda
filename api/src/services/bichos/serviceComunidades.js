@@ -26,14 +26,14 @@ exports.criarComunidade = async function (dados) {
 		bicho_criador_id: dados.bicho_criador_id
 	};
 
-	// cria pasta do bicho
+	// cria pasta da comunidade
 	const pastaBicho = path.join(path.resolve(__dirname, staticPath), 'bichos', 'em_uso', `${comunidade.bicho_id}`);
 	if (!fs.existsSync(pastaBicho)){
 		fs.mkdirSync(pastaBicho);
 	}
 
-	return await dataComunidades.postComunidade(comunidade).rows[0];
-
+	const novaComunidade = await dataComunidades.postComunidade(comunidade);
+	return novaComunidade.rows[0];
 };
 
 exports.editarComunidade = async function (comunidade_id, dados) {
@@ -44,9 +44,16 @@ exports.editarComunidade = async function (comunidade_id, dados) {
 		participacao_com_convite: dados.participacao_com_convite ? dados.participacao_com_convite : comunidade.participacao_com_convite,
 		periodo_geracao_convite: dados.periodo_geracao_convite ? dados.periodo_geracao_convite : comunidade.periodo_geracao_convite
 	};
-	return await dataComunidades.putComunidade(novosDados).rows[0];
+	const comunidadeEditada = await dataComunidades.putComunidade(novosDados);
+	return comunidadeEditada.rows[0];
 };
 
 exports.deletarComunidade = async function (comunidade_id) {
-	return await dataComunidades.deleteComunidade(comunidade_id).rows[0];
+	const comunidadeDeletada = await dataComunidades.deleteComunidade(comunidade_id);
+	// deleta pasta da comunidade
+	const pastaBicho = path.join(path.resolve(__dirname, staticPath), 'bichos', 'em_uso', `${comunidadeDeletada.bicho_id}`);
+	if (fs.existsSync(pastaBicho)){
+		fs.rmSync(pastaBicho, { recursive: true, force: true });
+	}
+	return comunidadeDeletada.rows[0];
 };

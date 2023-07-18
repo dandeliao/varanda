@@ -29,7 +29,7 @@ exports.putComunidade = function (comunidade) {
 
 exports.deleteComunidade = function (bichoId) {
 	return pool.query(
-		'DELETE FROM comunidades WHERE bicho_id = $1',
+		'DELETE FROM comunidades WHERE bicho_id = $1 RETURNING *',
 		[bichoId]
 	);
 };

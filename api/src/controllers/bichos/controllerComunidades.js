@@ -41,7 +41,10 @@ exports.putComunidade = asyncHandler(async (req, res, next) => { // req.body = {
 exports.deleteComunidade = asyncHandler (async (req, res, next) => {
 	const permissoes = await serviceRelacoes.verRelacao(req.user.bicho_id, req.params.arroba);
 	if (!permissoes.representar) {
-		throw customError(403, `O bicho @${req.user.bicho_id} não pode deletar a comunidade ${req.params.arroba}. Procure representantes da comunidade.`);
+		const permissoesGlobais = await serviceRelacoes.verRelacao(req.user.bicho_id, 'varanda');
+		if (!permissoesGlobais.moderar) {
+			throw customError(403, `O bicho @${req.user.bicho_id} não pode deletar a comunidade ${req.params.arroba}. Procure representantes da comunidade ou a equipe de moderação da instância.`);
+		}
 	}
 	await serviceComunidades.deletarComunidade(req.params.arroba);
 	res.status(204).end();

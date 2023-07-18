@@ -20,6 +20,13 @@ exports.getEmail = function (bichoId) {
 	);
 };
 
+exports.getHashSalt = function (bichoId) {
+	return pool.query(
+		'SELECT hash, salt FROM pessoas WHERE bicho_id = $1',
+		[bichoId]
+	);
+};
+
 exports.postPessoa = function (bicho, segredos) {
 	return pool.query(
 		'INSERT INTO pessoas (bicho_id, nome, descricao, email, hash, salt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING bicho_id',
@@ -36,7 +43,14 @@ exports.putPessoa = function (bicho) {
 
 exports.putSegredos = function (bichoId, segredos) {
 	return pool.query(
-		'UPDATE pessoas SET email = $1, hash = $2, salt = $3, WHERE bicho_id = $4 RETURNING bicho_id',
+		'UPDATE pessoas SET email = $1, hash = $2, salt = $3, WHERE bicho_id = $4 RETURNING bicho_id, email',
 		[segredos.email, segredos.hash, segredos.salt, bichoId]
+	);
+};
+
+exports.deletePessoa = function (bichoId) {
+	return pool.query(
+		'DELETE FROM pessoas WHERE bicho_id = $1 RETURNING bicho_id, nome, descricao, avatar, descricao_avatar, fundo, descricao_fundo, email',
+		[bichoId]	
 	);
 };

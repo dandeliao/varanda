@@ -4,7 +4,6 @@ const path = require('path');
 const multer = require('multer');
 const update = multer({ dest: path.join(path.resolve(__dirname, '../../static/bichos/temp' )) });
 const passport 	= require('passport');
-const asyncHandler = require('express-async-handler');
 const taAutenticade = require('../middlewares/authentication');
 const { getBichos, getBicho, putBicho, getAvatar, getFundo, putAvatar, putFundo } 			= require('../controllers/bichos/controllerBichos');
 const { getComunidades,	getComunidade, 	postComunidade, putComunidade, 	deleteComunidade }	= require('../controllers/bichos/controllerComunidades');
@@ -59,27 +58,15 @@ router.delete('/comunidades/:arroba', deleteComunidade);
 // ---
 // Pessoas
 
-router.get('/pessoas', 				asyncHandler(async (req, res, next) => {
-	const pessoas = await getPessoas(req, res);
-	res.status(200).json(pessoas);
-}));
+router.get('/pessoas', getPessoas);
 
-router.get('/pessoas/:arroba', 		asyncHandler(async (req, res, next) => {
-	const pessoa = await getPessoa(req, res);
-	res.status(200).json(pessoa);
-}));
+router.get('/pessoas/:arroba', getPessoa);
 
-router.post('/pessoas', postPessoa);
+router.post('/pessoas', postPessoa); // req.body = {convite_id}
 
-router.put('/pessoas/:arroba', 		asyncHandler (async (req, res, next) => {
-	const pessoa = await putPessoa(req, res);
-	res.status(204).json(pessoa);
-}));
+router.put('/pessoas/:arroba', putPessoa); // req.body = {nome, descricao, descricao_avatar, descricao_fundo, email, senha}
 
-router.delete('/pessoas/:arroba',	asyncHandler (async (req, res, next) => {
-	await deletePessoa(req, res);
-	res.status(204).end();
-}));
+router.delete('/pessoas/:arroba', deletePessoa);
 
 // ---
 // Autenticação
