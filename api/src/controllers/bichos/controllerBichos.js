@@ -3,6 +3,7 @@ const serviceRelacoes = require('../../services/bichos/serviceRelacoes');
 const asyncHandler = require('express-async-handler');
 const customError = require('http-errors');
 const path = require('path');
+require('dotenv').config();
 
 exports.getBichos = asyncHandler(async (req, res, next) => {
 	const bichos = await serviceBichos.verBichos();
@@ -64,4 +65,18 @@ exports.putFundo = asyncHandler(async (req, res, next) => {
 	if (!dadosArquivo) throw customError(500, 'Houve um erro ao carregar o arquivo. Por favor, tente novamente.');
 	const bichoNovo = await serviceBichos.editarBicho(req.params.arroba, {fundo: dadosArquivo.nome, descricao_fundo: req.body.descricao_fundo});
 	res.status(201).json(bichoNovo);
+});
+
+exports.deleteBicho = asyncHandler(async (req, res, next) => {
+	if (req.user.bicho_id !== req.params.arroba) {
+		const permissoes = await serviceRelacoes.verRelacao(req.user.bicho_id, req.params.arroba);
+		if (!permissoes.representar) {
+			const permissoesGlobais = await serviceRelacoes.verRelacao(req.user.bicho_id, process.env.INSTANCIA_ID);
+			if (!permissoesGlobais.moderar) {
+				throw customError(403, `O bicho @${req.user.bicho_id} não pode deletar a comunidade ${req.params.arroba}. Procure representantes da comunidade ou a equipe de moderação da instância.`);
+			}
+		}
+	}
+	await serviceBichos.deletarBicho(req.params.arroba);
+	res.status(204).end();
 });

@@ -15,7 +15,7 @@ exports.verRelacao = async function (bichoId, comunidadeId) {
 	return relacao.rows[0];
 };
 
-exports.criarRelacao = async function (bichoId, comunidadeId, habilidades) {
+exports.criarRelacao = async function (bichoId, comunidadeId, habilidades) { // habilidades é um objeto {participar: true | false, editar: true | false, moderar: true | false, representar: true | false}
 	const relacao = await dataRelacoes.postRelacao(bichoId, comunidadeId, habilidades);
 	return relacao.rows[0];
 };

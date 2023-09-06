@@ -1,11 +1,11 @@
 const dataBichos = require('../../data/bichos/dataBichos');
 const fs = require('fs');
 const path = require('path');
-const staticPath = '../../static';
+const staticPath = '../../../static';
 
 exports.verBichos = async function () {
-	const dataBichos = await dataBichos.getBichos();
-	return dataBichos.rows;
+	const dados = await dataBichos.getBichos();
+	return dados.rows;
 };
 
 exports.verBicho = async function (bichoId) {
@@ -15,7 +15,7 @@ exports.verBicho = async function (bichoId) {
 };
 
 exports.editarBicho = async function (bichoId, dados) {
-	const bichoVelho = await dataBichos.getBicho(bichoId).rows[0];
+	const bichoVelho = (await dataBichos.getBicho(bichoId)).rows[0];
 	const bicho = {
 		bicho_id: bichoId,
 		nome: dados.nome ? dados.nome : bichoVelho.nome,
@@ -53,4 +53,31 @@ exports.subirFundo = async function (bichoId, arquivo) {
 	});
 
 	return {nome: nomeArquivo};
+};
+
+exports.copiarAvatar = async function (bichoId, caminhoOriginal, nomeArquivo) {
+	const diretorioDestino = path.join(path.resolve(__dirname, staticPath), 'bichos', 'em_uso', bichoId);
+	const caminhoDestino = path.join(path.resolve(diretorioDestino, nomeArquivo));
+
+	fs.copyFileSync(caminhoOriginal, caminhoDestino);
+
+	return {nome: nomeArquivo, diretorio: diretorioDestino};
+};
+
+exports.copiarFundo = async function (bichoId, caminhoOriginal, nomeArquivo) {
+	const diretorioDestino = path.join(path.resolve(__dirname, staticPath), 'bichos', 'em_uso', bichoId);
+	const caminhoDestino = path.join(path.resolve(diretorioDestino, nomeArquivo));
+
+	fs.copyFileSync(caminhoOriginal, caminhoDestino);
+
+	return {nome: nomeArquivo, diretorio: diretorioDestino};
+};
+
+exports.deletarBicho = async function (bichoId) {
+	const bichoDeletado = (await dataBichos.deleteBicho(bichoId)).rows[0];
+	const pastaBicho = path.join(path.resolve(__dirname, staticPath), 'bichos', 'em_uso', `${bichoDeletado.bicho_id}`);
+	if (fs.existsSync(pastaBicho)){
+		fs.rmSync(pastaBicho, { recursive: true, force: true });
+	}
+	return bichoDeletado;
 };

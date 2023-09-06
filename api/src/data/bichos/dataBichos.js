@@ -22,14 +22,14 @@ exports.postBicho = function (bicho) {
 
 exports.putBicho = function (bicho) {
 	return pool.query(
-		'UPDATE bichos SET nome = $1, descricao = $2, avatar = $3, descricao_avatar = $4, fundo = $5, descricao_fundo = $6, WHERE bicho_id = $7 RETURNING *',
+		'UPDATE bichos SET nome = $1, descricao = $2, avatar = $3, descricao_avatar = $4, fundo = $5, descricao_fundo = $6 WHERE bicho_id = $7 RETURNING *',
 		[bicho.nome, bicho.descricao, bicho.avatar, bicho.descricao_avatar, bicho.fundo, bicho.descricao_fundo, bicho.bicho_id]
 	);
 };
 
 exports.deleteBicho = function (bichoId) {
 	return pool.query(
-		'DELETE FROM bichos WHERE bicho_id = $1',
+		'DELETE FROM bichos WHERE bicho_id = $1 RETURNING bicho_id',
 		[bichoId]
 	);
 };

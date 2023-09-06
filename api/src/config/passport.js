@@ -48,7 +48,7 @@ passport.deserializeUser((userId, pronto) => {
 			// esta query deve ter os dados validados antes?
 			// 		além disso, deve ser feita pela camada 'data'(?).
 			//		reavaliar estrutura de diretórios do projeto.
-			'SELECT * FROM pessoas WHERE bicho_id=$1',
+			'SELECT * FROM bichos WHERE bicho_id=$1',
 			[userId]
 		).then(pessoa => {
 			if (pessoa.rows.length > 0) {

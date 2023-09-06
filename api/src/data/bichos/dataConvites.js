@@ -22,14 +22,14 @@ exports.getConvitesParaComunidade = function (comunidadeId) {
 
 exports.getConvitesDoBicho = function (bichoId) {
 	return pool.query(
-		'SELECT * FROM convites WHERE bicho_id = $1',
+		'SELECT * FROM convites WHERE bicho_criador_id = $1',
 		[bichoId]
 	);
 };
 
 exports.postConvite = function (bichoId, comunidadeId) {
 	return pool.query(
-		'INSERT INTO convites (bicho_id, comunidade_id) VALUES ($1, $2) RETURNING *',
+		'INSERT INTO convites (bicho_criador_id, comunidade_id) VALUES ($1, $2) RETURNING *',
 		[bichoId, comunidadeId]
 	);
 };
