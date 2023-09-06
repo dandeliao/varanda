@@ -1,6 +1,19 @@
 # Reiniciar banco de dados
 
-DROP TABLE blocos_paginas_comunitarias, blocos_paginas_pessoais, blocos, paginas_comunitarias, pessoas_comunidades, imagens_comunitarias, textos_comunitarios, albuns_comunitarios, blogs_comunitarios, comunidades, sessoes, paginas_pessoais, imagens_pessoais, textos_pessoais, albuns_pessoais, blogs_pessoais, comentarios, comentarios_imagens_comunitarias, comentarios_textos_comunitarios, autenticacao, pessoas CASCADE;
+DROP TABLE sessoes, relacoes, convites, comunidades, pessoas, bichos_padrao, bichos;
+
+- apagar pastas em /static/bichos/em_uso
+
+- rodar comandos do create.sql, menos o primeiro (create database varanda) pois o banco de dados não foi deletado
+
+INSERT INTO bichos_padrao (descricao, avatar, descricao_avatar, fundo, descricao_fundo) VALUES ('olá! bem-vinde à minha varanda.', '1.jpg', 'foto de um pássaro', '1.jpg', 'ilustração com padrão geométrico repetido');
+INSERT INTO bichos_padrao (descricao, avatar, descricao_avatar, fundo, descricao_fundo) VALUES ('olá! bem-vinde à minha varanda.', '2.jpg', 'foto de um pássaro', '2.jpg', 'ilustração com padrão geométrico repetido');
+INSERT INTO bichos_padrao (descricao, avatar, descricao_avatar, fundo, descricao_fundo) VALUES ('olá! bem-vinde à minha varanda.', '3.jpg', 'foto de um pássaro', '3.jpg', 'ilustração com padrão geométrico repetido');
+INSERT INTO bichos_padrao (descricao, avatar, descricao_avatar, fundo, descricao_fundo) VALUES ('olá! bem-vinde à minha varanda.', '4.jpg', 'foto de um pássaro', '4.jpg', 'ilustração com padrão geométrico repetido');
+INSERT INTO bichos_padrao (descricao, avatar, descricao_avatar, fundo, descricao_fundo) VALUES ('olá! bem-vinde à minha varanda.', '5.jpg', 'foto de um pássaro', '5.jpg', 'ilustração com padrão geométrico repetido');
+INSERT INTO bichos_padrao (descricao, avatar, descricao_avatar, fundo, descricao_fundo) VALUES ('olá! bem-vinde à minha varanda.', '6.jpg', 'foto de um pássaro', '6.jpg', 'ilustração com padrão geométrico repetido');
+
+<!-- DROP TABLE blocos_paginas_comunitarias, blocos_paginas_pessoais, blocos, paginas_comunitarias, pessoas_comunidades, imagens_comunitarias, textos_comunitarios, albuns_comunitarios, blogs_comunitarios, comunidades, sessoes, paginas_pessoais, imagens_pessoais, textos_pessoais, albuns_pessoais, blogs_pessoais, comentarios, comentarios_imagens_comunitarias, comentarios_textos_comunitarios, autenticacao, pessoas CASCADE;
 
 - apagar pastas pessoais em /static/pessoas
 
@@ -82,3 +95,4 @@ INSERT INTO blocos (bloco_id, descricao, pessoal, comunitario) VALUES ('v-fundo'
 
 UPDATE pessoas_comunidades SET participar = true, editar = true, moderar = true, cuidar = true WHERE pessoa_id = 'seu_nome';
 
+ -->
