@@ -1,10 +1,9 @@
-const servicePessoas = require('../../services/bichos/servicePessoas');
-const serviceRecuperacoes = require('../../services/bichos/serviceRecuperacoes');
-const asyncHandler = require('express-async-handler');
-const customError = require('http-errors');
-const path = require('path');
-const fs = require('fs');
-const { transporter } = require('../../config/nodemailer');
+const servicePessoas 									= require('../../services/bichos/servicePessoas');
+const serviceRecuperacoes 								= require('../../services/bichos/serviceRecuperacoes');
+const { validarPostRecuperar, validarPutRecuperar } 	= require('../../validations/validateBichos');
+const asyncHandler 										= require('express-async-handler');
+const customError 										= require('http-errors');
+const { transporter } 									= require('../../config/nodemailer');
 require('dotenv').config();
 
 exports.getRecuperar = asyncHandler(async (req, res, next) => {
@@ -83,12 +82,14 @@ exports.getRecuperar = asyncHandler(async (req, res, next) => {
 	}
 });
 
-exports.postRecuperar = asyncHandler(async (req, res, next) => {
+exports.postRecuperar = asyncHandler(async (req, res, next) => { // req.body = {recuperacao_id}
 
-	// confere código de recuperacao
-	if (!req.body.recuperacao_id) {
-		throw customError(400, 'É necessário um código de recuperação');
+	const { erro, resultado } = validarPostRecuperar(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
 	}
+
 	const recuperacao = await serviceRecuperacoes.verRecuperacao(req.params.arroba);
 	if (req.body.recuperacao_id !== recuperacao.recuperacao_id) {
 		throw customError(400, 'O código de recuperação fornecido não foi encontrado.');
@@ -187,11 +188,12 @@ exports.postRecuperar = asyncHandler(async (req, res, next) => {
 
 });
 
-exports.putRecuperar = asyncHandler(async (req, res, next) => {
+exports.putRecuperar = asyncHandler(async (req, res, next) => { // req.body = {recuperacao_id, senha}
 
-	console.log('entrou em putRecuperar');
-	if (!req.body.recuperacao_id || !req.body.senha) {
-		throw customError(400, 'Falta senha e/ou código de recuperação.');
+	const { erro, resultado } = validarPutRecuperar(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
 	}
 
 	const recuperado = await serviceRecuperacoes.verRecuperacao(req.params.arroba);

@@ -44,9 +44,9 @@ router.delete('/pessoas/:arroba', deletePessoa);
 
 router.get('/pessoas/:arroba/recuperar', getRecuperar);
 
-router.post('/pessoas/:arroba/recuperar', postRecuperar);
+router.post('/pessoas/:arroba/recuperar', postRecuperar); // req.body = {recuperacao_id}
 
-router.put('/pessoas/:arroba/recuperar', putRecuperar);
+router.put('/pessoas/:arroba/recuperar', putRecuperar); // req.body = {recuperacao_id, senha}
 
 // ---
 // Convites

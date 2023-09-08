@@ -1,8 +1,9 @@
-const serviceBichos = require('../../services/bichos/serviceBichos');
-const serviceRelacoes = require('../../services/bichos/serviceRelacoes');
-const asyncHandler = require('express-async-handler');
-const customError = require('http-errors');
-const path = require('path');
+const serviceBichos 											= require('../../services/bichos/serviceBichos');
+const serviceRelacoes 											= require('../../services/bichos/serviceRelacoes');
+const { validarPutBicho, validarPutAvatar, validarPutFundo } 	= require('../../validations/validateBichos');
+const asyncHandler 												= require('express-async-handler');
+const customError	 											= require('http-errors');
+const path 														= require('path');
 require('dotenv').config();
 
 exports.getBichos = asyncHandler(async (req, res, next) => {
@@ -31,6 +32,15 @@ exports.getFundo = asyncHandler(async (req, res, next) => {
 });
 
 exports.putBicho = asyncHandler(async (req, res, next) => { // req.body = {nome, descricao, descricao_avatar, descricao_fundo}
+	
+	const {erro, resultado} = validarPutBicho(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
+
+	console.log(resultado);
+
 	if (req.user.bicho_id !== req.params.arroba) {
 		const permissoes = await serviceRelacoes.verRelacao(req.user.bicho_id, req.params.arroba);
 		if (!permissoes.representar) throw customError(404, `O bicho @${req.user.bicho_id} não pode editar os dados de @${req.params.arroba}.`);
@@ -42,6 +52,13 @@ exports.putBicho = asyncHandler(async (req, res, next) => { // req.body = {nome,
 });
 
 exports.putAvatar = asyncHandler(async (req, res, next) => {
+
+	const {erro, resultado} = validarPutAvatar(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
+
 	if (req.user.bicho_id !== req.params.arroba) {
 		const permissoes = await serviceRelacoes.verRelacao(req.user.bicho_id, req.params.arroba);
 		if (!permissoes.representar) throw customError(404, `O bicho @${req.user.bicho_id} não pode editar os dados de @${req.params.arroba}.`);
@@ -55,6 +72,13 @@ exports.putAvatar = asyncHandler(async (req, res, next) => {
 });
 
 exports.putFundo = asyncHandler(async (req, res, next) => {
+
+	const {erro, resultado} = validarPutFundo(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
+
 	if (req.user.bicho_id !== req.params.arroba) {
 		const permissoes = await serviceRelacoes.verRelacao(req.user.bicho_id, req.params.arroba);
 		if (!permissoes.representar) throw customError(404, `O bicho @${req.user.bicho_id} não pode editar os dados de @${req.params.arroba}.`);

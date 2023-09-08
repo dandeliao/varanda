@@ -1,7 +1,8 @@
-const serviceConvites = require('../../services/bichos/serviceConvites');
-const serviceRelacoes = require('../../services/bichos/serviceRelacoes');
-const asyncHandler = require('express-async-handler');
-const customError = require('http-errors');
+const serviceConvites 								= require('../../services/bichos/serviceConvites');
+const serviceRelacoes 								= require('../../services/bichos/serviceRelacoes');
+const { validarPostConvite, validarDeleteConvite } 	= require('../../validations/validateBichos');
+const asyncHandler 									= require('express-async-handler');
+const customError 									= require('http-errors');
 
 exports.getConvites = asyncHandler(async (req, res, next) => { // convites?comunidade_id=arroba | convites?bicho_criador_id=arroba | nada -> utiliza req.user.bicho_id
 
@@ -34,6 +35,12 @@ exports.getConvites = asyncHandler(async (req, res, next) => { // convites?comun
 
 exports.postConvite = asyncHandler(async (req, res, next) => { // req.body = {comunidade_id, bicho_criador_id} | nada -> utiliza req.user.bicho_id
 
+	const { erro, resultado } = validarPostConvite(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
+
 	if (req.user.bicho_id !== req.body.comunidade_id) {
 		const relacao = await serviceRelacoes.verRelacao(req.user.bicho_id, req.body.comunidade_id);
 		if (!relacao.representar) {
@@ -56,8 +63,10 @@ exports.postConvite = asyncHandler(async (req, res, next) => { // req.body = {co
 
 exports.deleteConvite = asyncHandler(async (req, res, next) => { // req.body = {convite_id}
 
-	if (!req.body.convite_id) {
-		throw customError(400, 'Solicitação não pode ser atendida, falta o código do convite');
+	const { erro, resultado } = validarDeleteConvite(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
 	}
     
 	const convite = await serviceConvites.verConvite(req.body.convite_id);

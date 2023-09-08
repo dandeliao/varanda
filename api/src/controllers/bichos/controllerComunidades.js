@@ -1,9 +1,10 @@
-const serviceComunidades = require('../../services/bichos/serviceComunidades');
-const serviceRelacoes = require('../../services/bichos/serviceRelacoes');
-const serviceBichos =  require('../../services/bichos/serviceBichos');
-const serviceBichosPadrao = require('../../services/bichos/serviceBichosPadrao');
-const asyncHandler = require('express-async-handler');
-const customError = require('http-errors');
+const serviceComunidades 								= require('../../services/bichos/serviceComunidades');
+const serviceRelacoes 									= require('../../services/bichos/serviceRelacoes');
+const serviceBichos 									=  require('../../services/bichos/serviceBichos');
+const serviceBichosPadrao 								= require('../../services/bichos/serviceBichosPadrao');
+const { validarPostComunidade, validarPutComunidade } 	= require('../../validations/validateBichos');
+const asyncHandler 										= require('express-async-handler');
+const customError 										= require('http-errors');
 require('dotenv').config();
 
 exports.getComunidades = asyncHandler(async (req, res, next) => {
@@ -19,7 +20,12 @@ exports.getComunidade = asyncHandler(async (req, res, next) => {
 
 exports.postComunidade = asyncHandler(async (req, res, next) => { // req.body = {bicho_id, nome, descricao, bicho_criador_id}
 
-	console.log(req.body.bicho_id);
+	const { erro, resultado } = validarPostComunidade(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
+
 	const bichoExiste = await serviceBichos.verBicho(req.body.bicho_id);
 	console.log(bichoExiste);
 	if (bichoExiste) throw customError(409, `O apelido @${req.body.bicho_id} já existe. Por favor, escolha outro apelido.`);
@@ -56,6 +62,13 @@ exports.postComunidade = asyncHandler(async (req, res, next) => { // req.body = 
 });
 
 exports.putComunidade = asyncHandler(async (req, res, next) => { // req.body = {participacao_livre, participacao_com_convite, periodo_geracao_convite}
+
+	const { erro, resultado } = validarPutComunidade(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
+
 	const permissoes = await serviceRelacoes.verRelacao(req.user.bicho_id, req.params.arroba);
 	if (!permissoes.moderar) {
 		throw customError(403, `O bicho @${req.user.bicho_id} não pode alterar as opções de entrada na comunidade ${req.params.arroba}. Procure a equipe de moderação da comunidade.`);

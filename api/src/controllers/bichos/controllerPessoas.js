@@ -1,11 +1,12 @@
-const servicePessoas 		= require('../../services/bichos/servicePessoas');
-const serviceBichos 		= require('../../services/bichos/serviceBichos');
-const serviceBichosPadrao 	= require('../../services/bichos/serviceBichosPadrao');
-const serviceConvites 		= require('../../services/bichos/serviceConvites');
-const serviceComunidades 	= require('../../services/bichos/serviceComunidades');
-const serviceRelacoes 		= require('../../services/bichos/serviceRelacoes');
-const asyncHandler 			= require('express-async-handler');
-const customError 			= require('http-errors');
+const servicePessoas 							= require('../../services/bichos/servicePessoas');
+const serviceBichos 							= require('../../services/bichos/serviceBichos');
+const serviceBichosPadrao 						= require('../../services/bichos/serviceBichosPadrao');
+const serviceConvites 							= require('../../services/bichos/serviceConvites');
+const serviceComunidades 						= require('../../services/bichos/serviceComunidades');
+const serviceRelacoes 							= require('../../services/bichos/serviceRelacoes');
+const { validarPostPessoa, validarPutPessoa } 	= require('../../validations/validateBichos');
+const asyncHandler 								= require('express-async-handler');
+const customError 								= require('http-errors');
 require('dotenv').config();
 
 exports.getPessoas = asyncHandler(async (req, res, next) => {
@@ -20,6 +21,13 @@ exports.getPessoa = asyncHandler(async (req, res, next) => {
 });
 
 exports.postPessoa = asyncHandler(async (req, res, next) => {
+
+	const { erro, resultado } = validarPostPessoa(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
+
 	const pessoa = {
 		bicho_id: req.body.bicho_id,
 		nome: req.body.nome,
@@ -91,6 +99,13 @@ exports.postPessoa = asyncHandler(async (req, res, next) => {
 });
 
 exports.putPessoa = asyncHandler(async (req, res, next) => {
+
+	const { erro, resultado } = validarPutPessoa(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
+
 	if (req.user.bicho_id !== req.params.arroba) throw customError(404, `O bicho @${req.user.bicho_id} não pode editar os dados de @${req.params.arroba}.`);
 	const pessoaAntes = await servicePessoas.verPessoa(req.params.arroba);
 	if (!pessoaAntes) throw customError(404, `Pessoa @${req.params.arroba} não encontrada.`);

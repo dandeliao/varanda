@@ -1,8 +1,9 @@
-const serviceRelacoes = require('../../services/bichos/serviceRelacoes');
-const serviceComunidades = require('../../services/bichos/serviceComunidades');
-const serviceConvites = require('../../services/bichos/serviceConvites');
-const asyncHandler = require('express-async-handler');
-const customError = require('http-errors');
+const serviceRelacoes 													= require('../../services/bichos/serviceRelacoes');
+const serviceComunidades 												= require('../../services/bichos/serviceComunidades');
+const serviceConvites 													= require('../../services/bichos/serviceConvites');
+const { validarPostRelacao, validarPutRelacao, validarDeleteRelacao } 	= require('../../validations/validateBichos');
+const asyncHandler 														= require('express-async-handler');
+const customError 														= require('http-errors');
 
 exports.getRelacoes = asyncHandler(async (req, res, next) => { // relacoes?comunidade_id=arrobaDaComunidade (opcional. Se fornecido, mostra relação com essa comunidade apenas)
 
@@ -27,6 +28,12 @@ exports.getRelacoes = asyncHandler(async (req, res, next) => { // relacoes?comun
 });
 
 exports.postRelacao = asyncHandler(async (req, res, next) => { // req.body = {comunidade_id, convite_id}
+
+	const { erro, resultado } = validarPostRelacao(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
 
 	const comunidade = await serviceComunidades.verComunidade(req.body.comunidade_id);
 
@@ -57,6 +64,13 @@ exports.postRelacao = asyncHandler(async (req, res, next) => { // req.body = {co
 });
 
 exports.putRelacao = asyncHandler(async (req, res, next) => { // req.body = {comunidade_id, participar, editar, moderar, representar}
+
+	const { erro, resultado } = validarPutRelacao(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
+
 	const permissoes = await serviceRelacoes.verRelacao(req.user.bicho_id, req.body.comunidade_id);
 	if (!permissoes || !permissoes.moderar) {
 		throw customError(403, `O bicho @${req.user.bicho_id} não pode alterar esta relação. Procure a equipe de moderação da comunidade @${req.query.comunidade_id}.`);
@@ -66,6 +80,13 @@ exports.putRelacao = asyncHandler(async (req, res, next) => { // req.body = {com
 });
 
 exports.deleteRelacao = asyncHandler(async (req, res, next) => { // req.body = {comunidade_id}
+
+	const { erro, resultado } = validarDeleteRelacao(req.body);
+	if (erro) {
+		console.log(erro);
+		return res.status(400).json(erro.details);
+	}
+
 	if (req.user.bicho_id !== req.params.arroba) {
 		const permissoesDeRepresentante = await serviceRelacoes.verRelacao(req.user.bicho_id, req.params.arroba);
 		if (!permissoesDeRepresentante.representar) {
