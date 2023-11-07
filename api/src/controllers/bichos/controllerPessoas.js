@@ -4,6 +4,9 @@ const serviceBichosPadrao 						= require('../../services/bichos/serviceBichosPa
 const serviceConvites 							= require('../../services/bichos/serviceConvites');
 const serviceComunidades 						= require('../../services/bichos/serviceComunidades');
 const serviceRelacoes 							= require('../../services/bichos/serviceRelacoes');
+const serviceVarandas 							= require('../../services/varandas/serviceVarandas');
+const servicePaginasPadrao 						= require('../../services/varandas/servicePaginasPadrao');
+const servicePaginas							= require('../../services/varandas/servicePaginas');
 const { validarPostPessoa, validarPutPessoa } 	= require('../../validations/validateBichos');
 const asyncHandler 								= require('express-async-handler');
 const customError 								= require('http-errors');
@@ -68,6 +71,12 @@ exports.postPessoa = asyncHandler(async (req, res, next) => {
 	await serviceBichos.copiarAvatar(novaPessoa.bicho_id, `${serviceBichosPadrao.caminhoAvatarPadrao}/${bichoPadrao.avatar}`, novaPessoa.avatar);
 	await serviceBichos.copiarFundo(novaPessoa.bicho_id, `${serviceBichosPadrao.caminhoFundoPadrao}/${bichoPadrao.fundo}`, novaPessoa.fundo);
 
+	// cria varanda da pessoa, com página padrão
+	const comunitaria = false;
+	const varanda = (await serviceVarandas.criarVaranda(pessoa.bicho_id, comunitaria)).rows[0];
+	const paginaPadrao = (await servicePaginasPadrao.sortearPaginaPadrao(comunitaria)).rows[0];
+	await servicePaginas.criarPagina(varanda.varanda_id, paginaPadrao);
+
 	// se for o primeiro bicho da instância, cria também a comunidade principal da instância
 	const bichos = await serviceBichos.verBichos();
 	if (bichos.length === 1) {
@@ -120,6 +129,12 @@ exports.deletePessoa = asyncHandler(async (req, res, next) => {
 			throw customError(403, `O bicho @${req.user.bicho_id} não pode remover a pessoa ${req.params.arroba}. Procure a equipe de moderação da instância.`);
 		}
 	}
+
 	await servicePessoas.deletarPessoa(req.params.arroba);
+	
+	// apaga a varanda da pessoa
+	const varanda = await serviceVarandas.verVarandas(req.params.arroba);
+	await serviceVarandas.deletarVaranda(varanda.varanda_id);
+
 	res.status(204).end();
 });

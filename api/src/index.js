@@ -1,7 +1,7 @@
 const express = require('express');
 const rotasBichos = require('./routes/bichos.js');
 //const rotasArtefatos = require('./routes/artefatos.js');
-//const rotasVarandas = require('./routes/varandas.js');
+const rotasVarandas = require('./routes/varandas.js');
 const session = require('express-session');
 const sessionConfig = require('./config/session'); // objeto com configurações de sessão
 const PostgreSqlStore = require('connect-pg-simple')(session); // para armazenamento de sessão
@@ -36,7 +36,7 @@ app.use(passport.session());
 // rotas
 app.use('/bichos', 		rotasBichos		);
 //app.use('/artefatos', 	rotasArtefatos	);
-//app.use('/varandas', 	rotasVarandas	);
+app.use('/varandas', 	rotasVarandas	);
 
 // rota padrão fornece informações sobre pessoa logada
 app.get('/', async (req, res, next) => {

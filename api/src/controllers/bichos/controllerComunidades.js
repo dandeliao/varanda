@@ -2,6 +2,9 @@ const serviceComunidades 								= require('../../services/bichos/serviceComunid
 const serviceRelacoes 									= require('../../services/bichos/serviceRelacoes');
 const serviceBichos 									=  require('../../services/bichos/serviceBichos');
 const serviceBichosPadrao 								= require('../../services/bichos/serviceBichosPadrao');
+const serviceVarandas 									= require('../../services/varandas/serviceVarandas');
+const servicePaginasPadrao 								= require('../../services/varandas/servicePaginasPadrao');
+const servicePaginas									= require('../../services/varandas/servicePaginas');
 const { validarPostComunidade, validarPutComunidade } 	= require('../../validations/validateBichos');
 const asyncHandler 										= require('express-async-handler');
 const customError 										= require('http-errors');
@@ -58,6 +61,13 @@ exports.postComunidade = asyncHandler(async (req, res, next) => { // req.body = 
 	// cria relação entre o bicho criador e a comunidade, com todas as habilidades (participar, editar, moderar e representar)
 	const bichoCriador = req.body.bicho_criador_id ? req.body.bicho_criador_id : req.user.bicho_id;
 	await serviceRelacoes.criarRelacao(bichoCriador, novaComunidade.bicho_id, {participar: true, editar: true, moderar: true, representar: true});
+
+	// cria varanda da comunidade, com página padrão
+	const comunitaria = true;
+	const varanda = (await serviceVarandas.criarVaranda(comunidade.bicho_id, comunitaria)).rows[0];
+	const paginaPadrao = (await servicePaginasPadrao.sortearPaginaPadrao(comunitaria)).rows[0];
+	await servicePaginas.criarPagina(varanda.varanda_id, paginaPadrao);
+
 	res.status(201).json(novaComunidade);
 });
 
@@ -86,6 +96,12 @@ exports.deleteComunidade = asyncHandler (async (req, res, next) => {
 			throw customError(403, `O bicho @${req.user.bicho_id} não pode deletar a comunidade ${req.params.arroba}. Procure representantes da comunidade ou a equipe de moderação da instância.`);
 		}
 	}
+
 	await serviceComunidades.deletarComunidade(req.params.arroba);
+	
+	// apaga a varanda da comunidade
+	const varanda = await serviceVarandas.verVarandas(req.params.arroba);
+	await serviceVarandas.deletarVaranda(varanda.varanda_id);
+	
 	res.status(204).end();
 });

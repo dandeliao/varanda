@@ -70,9 +70,16 @@ CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON sessoes ("expire");
 /* Contexto (varandas, páginas) */
 
 CREATE TABLE varandas(
-    varanda_id      SERIAL PRIMARY KEY NOT NULL,
-    bicho_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
-    comunitaria     BOOLEAN NOT NULL,
+    varanda_id              SERIAL PRIMARY KEY NOT NULL,
+    bicho_id                VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
+    comunitaria             BOOLEAN NOT NULL,
+    aberta                  BOOLEAN NOT NULL DEFAULT true,
+);
+
+CREATE TABLE varandas_padrao(
+    varanda_padrao_id       SERIAL PRIMARY KEY NOT NULL,
+    comunitaria             BOOLEAN NOT NULL,
+    aberta                  BOOLEAN NOT NULL DEFAULT true,
 );
 
 CREATE TABLE paginas(
