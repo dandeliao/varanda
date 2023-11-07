@@ -43,7 +43,7 @@ exports.putBicho = asyncHandler(async (req, res, next) => { // req.body = {nome,
 
 	if (req.user.bicho_id !== req.params.arroba) {
 		const permissoes = await serviceRelacoes.verRelacao(req.user.bicho_id, req.params.arroba);
-		if (!permissoes.representar) throw customError(404, `O bicho @${req.user.bicho_id} não pode editar os dados de @${req.params.arroba}.`);
+		if (!permissoes.representar) throw customError(403, `O bicho @${req.user.bicho_id} não pode editar os dados de @${req.params.arroba}.`);
 	}
 	const bichoAtual = await serviceBichos.verBicho(req.params.arroba);
 	if (!bichoAtual) throw customError(404, `Bicho @${req.params.arroba} não encontrado.`);
@@ -61,7 +61,7 @@ exports.putAvatar = asyncHandler(async (req, res, next) => {
 
 	if (req.user.bicho_id !== req.params.arroba) {
 		const permissoes = await serviceRelacoes.verRelacao(req.user.bicho_id, req.params.arroba);
-		if (!permissoes.representar) throw customError(404, `O bicho @${req.user.bicho_id} não pode editar os dados de @${req.params.arroba}.`);
+		if (!permissoes.representar) throw customError(403, `O bicho @${req.user.bicho_id} não pode editar os dados de @${req.params.arroba}.`);
 	}
 	const bicho = await serviceBichos.verBicho(req.params.arroba);
 	if (!bicho) throw customError(404, `Bicho @${req.params.arroba} não encontrado.`);
@@ -81,7 +81,7 @@ exports.putFundo = asyncHandler(async (req, res, next) => {
 
 	if (req.user.bicho_id !== req.params.arroba) {
 		const permissoes = await serviceRelacoes.verRelacao(req.user.bicho_id, req.params.arroba);
-		if (!permissoes.representar) throw customError(404, `O bicho @${req.user.bicho_id} não pode editar os dados de @${req.params.arroba}.`);
+		if (!permissoes.representar) throw customError(403, `O bicho @${req.user.bicho_id} não pode editar os dados de @${req.params.arroba}.`);
 	}
 	const bicho = await serviceBichos.verBicho(req.params.arroba);
 	if (!bicho) throw customError(404, `Bicho @${req.params.arroba} não encontrado.`);

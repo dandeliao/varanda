@@ -9,7 +9,7 @@ exports.getRelacoes = asyncHandler(async (req, res, next) => { // relacoes?comun
 
 	let relacoes;
 
-	if (req.body.comunidade_id) {
+	if (req.query.comunidade_id) {
 		relacoes = await serviceRelacoes.verRelacao(req.params.arroba, req.query.comunidade_id);
 		if (!relacoes) throw customError(404, `Não foi possível encontrar relação entre o bicho @${req.params.arroba} e a comunidade @${req.query.comunidade_id}`);
 	} else {

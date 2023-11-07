@@ -2,7 +2,6 @@ const express 	= require('express');
 const router 	= express.Router();
 const path = require('path');
 const multer = require('multer');
-const update = multer({ dest: path.join(path.resolve(__dirname, '../../static/bichos/temp' )) });
 const taAutenticade = require('../middlewares/authentication');
 const { getBichos, getBicho, putBicho, getAvatar, getFundo, putAvatar, putFundo, deleteBicho }	= require('../controllers/bichos/controllerBichos');
 const { getComunidades,	getComunidade, 	postComunidade, putComunidade, 	deleteComunidade }	= require('../controllers/bichos/controllerComunidades');
@@ -12,6 +11,28 @@ const { getRelacoes,	        		postRelacao,	putRelacao,		deleteRelacao }		= requ
 const { getConvites,                    postConvite,                    deleteConvite}      = require('../controllers/bichos/controllerConvites');
 
 router.use(taAutenticade);
+
+// configura multer para upload das imagens de avatar e fundo
+const update = multer({
+	dest: path.join(path.resolve(__dirname, '../../static/bichos/temp' )),
+	limits: {
+		fields: 1,
+		//fieldNameSize: 50,
+		fieldSize: 500,
+		fileSize: 15000000, // 15 MB
+	},
+	fileFilter: function(_req, file, cb){
+		const filetypes = /jpeg|jpg|png|gif/;
+		const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+		const mimetype = filetypes.test(file.mimetype);
+
+		if(mimetype && extname){
+			return cb(null, true);
+		} else {
+			return cb(null, false);
+		}
+	}
+});
 
 // ---
 // Comunidades
