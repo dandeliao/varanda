@@ -108,7 +108,10 @@ CREATE TABLE edicoes(
     edicao_id       SERIAL PRIMARY KEY NOT NULL,
     pagina_id       SERIAL REFERENCES paginas(pagina_id) ON DELETE CASCADE,
     bicho_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
-    texto           TEXT,
+    ordem           INTEGER NOT NULL,
+    titulo          VARCHAR(32),
+    publica         BOOLEAN NOT NULL,
+    html            TEXT,
     criacao         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

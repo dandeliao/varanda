@@ -3,12 +3,14 @@ const router 	= express.Router();
 const path = require('path');
 const multer = require('multer');
 const taAutenticade = require('../middlewares/authentication');
-const { getBichos, getBicho, putBicho, getAvatar, getFundo, putAvatar, putFundo, deleteBicho }	= require('../controllers/bichos/controllerBichos');
-const { getComunidades,	getComunidade, 	postComunidade, putComunidade, 	deleteComunidade }	= require('../controllers/bichos/controllerComunidades');
-const { getPessoas, 	getPessoa, 		postPessoa, 	putPessoa, 		deletePessoa } 		= require('../controllers/bichos/controllerPessoas');
-const { getRecuperar,                   postRecuperar,  putRecuperar }                      = require('../controllers/bichos/controllerRecuperar');
-const { getRelacoes,	        		postRelacao,	putRelacao,		deleteRelacao }		= require('../controllers/bichos/controllerRelacoes');
-const { getConvites,                    postConvite,                    deleteConvite}      = require('../controllers/bichos/controllerConvites');
+
+// Controllers
+const { getBichos, 		getBicho, getAvatar, getFundo, 						putBicho, putAvatar, putFundo,	deleteBicho 		} = require('../controllers/bichos/controllerBichos');
+const { getComunidades,	getComunidade, 					postComunidade, 	putComunidade, 					deleteComunidade 	} = require('../controllers/bichos/controllerComunidades');
+const { getPessoas, 	getPessoa, 						postPessoa, 		putPessoa, 						deletePessoa 		} = require('../controllers/bichos/controllerPessoas');
+const { getRecuperar,                   				postRecuperar,		putRecuperar 										} = require('../controllers/bichos/controllerRecuperar');
+const { getRelacoes,	        						postRelacao,		putRelacao,						deleteRelacao 		} = require('../controllers/bichos/controllerRelacoes');
+const { getConvites,                    				postConvite,        	       						deleteConvite		} = require('../controllers/bichos/controllerConvites');
 
 router.use(taAutenticade);
 

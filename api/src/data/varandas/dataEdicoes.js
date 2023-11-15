@@ -14,10 +14,10 @@ exports.getEdicao = function (edicaoId) {
 	);
 };
 
-exports.createEdicao = function (paginaId, bichoId, texto) {
+exports.createEdicao = function (bichoId, pagina, html) {
 	return pool.query(
-		'INSERT INTO edicoes (pagina_id, bicho_id, texto) VALUES ($1, $2, $3) RETURNING *',
-		[paginaId, bichoId, texto]
+		'INSERT INTO edicoes (pagina_id, bicho_id, ordem, titulo, publica, html) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+		[pagina.pagina_id, bichoId, pagina.ordem, pagina.titulo, pagina.publica, html]
 	);
 };
 

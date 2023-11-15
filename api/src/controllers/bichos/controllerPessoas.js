@@ -7,6 +7,7 @@ const serviceRelacoes 							= require('../../services/bichos/serviceRelacoes');
 const serviceVarandas 							= require('../../services/varandas/serviceVarandas');
 const servicePaginasPadrao 						= require('../../services/varandas/servicePaginasPadrao');
 const servicePaginas							= require('../../services/varandas/servicePaginas');
+const serviceEdicoes							= require('../../services/varandas/serviceEdicoes');
 const { validarPostPessoa, validarPutPessoa } 	= require('../../validations/validateBichos');
 const asyncHandler 								= require('express-async-handler');
 const customError 								= require('http-errors');
@@ -71,12 +72,6 @@ exports.postPessoa = asyncHandler(async (req, res, next) => {
 	await serviceBichos.copiarAvatar(novaPessoa.bicho_id, `${serviceBichosPadrao.caminhoAvatarPadrao}/${bichoPadrao.avatar}`, novaPessoa.avatar);
 	await serviceBichos.copiarFundo(novaPessoa.bicho_id, `${serviceBichosPadrao.caminhoFundoPadrao}/${bichoPadrao.fundo}`, novaPessoa.fundo);
 
-	// cria varanda da pessoa, com página padrão
-	const comunitaria = false;
-	const varanda = (await serviceVarandas.criarVaranda(pessoa.bicho_id, comunitaria)).rows[0];
-	const paginaPadrao = (await servicePaginasPadrao.sortearPaginaPadrao(comunitaria)).rows[0];
-	await servicePaginas.criarPagina(varanda.varanda_id, paginaPadrao);
-
 	// se for o primeiro bicho da instância, cria também a comunidade principal da instância
 	const bichos = await serviceBichos.verBichos();
 	if (bichos.length === 1) {
@@ -103,6 +98,13 @@ exports.postPessoa = asyncHandler(async (req, res, next) => {
 	} else {
 		await serviceRelacoes.criarRelacao(pessoa.bicho_id, process.env.INSTANCIA_ID, {participar: true, editar: false, moderar: false, representar: false});
 	}
+
+	// cria varanda da pessoa, com página padrão
+	const comunitaria = false;
+	const varanda = await serviceVarandas.criarVaranda(pessoa.bicho_id, comunitaria);
+	const paginaPadrao = await servicePaginasPadrao.sortearPaginaPadrao(comunitaria);
+	const novaPagina = await servicePaginas.criarPagina(varanda.varanda_id, paginaPadrao);
+	await serviceEdicoes.criarEdicao(pessoa.bicho_id, novaPagina, paginaPadrao.html);
 
 	res.status(201).json(novaPessoa);
 });

@@ -2,17 +2,17 @@ const pool = require('../../config/database');
 
 exports.getVarandas = function (comunitaria, aberta) {
 	let resultado;
-	if (comunitaria && aberta) {
+	if (comunitaria !== null && aberta !== null) {
 		resultado = pool.query(
 			'SELECT * FROM varandas WHERE comunitaria = $1 AND aberta = $2',
 			[comunitaria, aberta]
 		);
-	} else if (comunitaria) {
+	} else if (comunitaria !== null) {
 		resultado = pool.query(
 			'SELECT * FROM varandas WHERE comunitaria = $1',
 			[comunitaria]		
 		);
-	} else if (aberta) {
+	} else if (aberta !== null) {
 		resultado = pool.query(
 			'SELECT * FROM varandas WHERE aberta = $1',
 			[aberta]		

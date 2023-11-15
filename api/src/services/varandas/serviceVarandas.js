@@ -19,14 +19,14 @@ exports.verVaranda = async function (varanda_id) {
 
 exports.criarVaranda = async function (bicho_id, comunitaria) {
 
+	const novaVaranda = (await dataVarandas.createVaranda(bicho_id, comunitaria)).rows[0];
+	console.log(novaVaranda);
+
 	// cria pasta da varanda
-	const pastaVaranda = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${bicho_id}`);
+	const pastaVaranda = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${novaVaranda.varanda_id}`);
 	if (!fs.existsSync(pastaVaranda)){
 		fs.mkdirSync(pastaVaranda);
 	}
-
-	let novaVaranda = (await dataVarandas.createVaranda(bicho_id, comunitaria)).rows[0];
-	console.log(novaVaranda);
 
 	return novaVaranda;
 };
@@ -39,7 +39,7 @@ exports.editarVaranda = async function (varanda_id, dados) {
 exports.deletarVaranda = async function (varanda_id) {
 	const varandaDeletada = (await dataVarandas.deletarVaranda(varanda_id)).rows[0];
 
-	const pastaVaranda = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${varandaDeletada.bicho_id}`);
+	const pastaVaranda = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${varandaDeletada.varanda_id}`);
 	fs.rmdirSync(pastaVaranda, {recursive: true, force: true});
 
 	return varandaDeletada;
