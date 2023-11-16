@@ -1,41 +1,76 @@
-// Este trabalho vai em parte para o controlador (nova página)
-// e em parte para o serviço de criar página, na pasta varandas
-// e em parte para o serviço de pertencimentos
+const randomGenerators = require('../../utils/utilRandomGenerators');
 
-/* exports.gerarPaginaPadrao = async function () {
+exports.gerarPaginaPadrao = async function (comunitaria) {
+	let dadosPaginaPadrao;
 
-	// cria página pessoal padrão
-	let benjor = utilRandomGenerator.geraBenJor();
-	const dadosPaginaPadrao = {
-		titulo: 'Sobre mim',
-		publica: false,
-		html: `
-		<div id="container">
+	if (comunitaria) {
+		// cria página comunitária padrão
+		let emoji = randomGenerators.geraEmoji();
+		dadosPaginaPadrao = {
+			titulo: 'Início',
+			publica: false,
+			html: `
+			<div id="container">
 
-		<v-cartao-de-visita></v-cartao-de-visita>
-		<br>
-		<v-bloco>
-		<h2>Comunidades:</h2>
-		<v-comunidades></v-comunidades>
-		</v-bloco>
-		<br>
-		<marquee>"${benjor}" - Jorge Ben Jor</marquee>
+			<v-cartao-de-visita></v-cartao-de-visita>
+			<br>
+			<v-bloco>
+			<h2>Participantes:</h2>
+			<v-participantes></v-participantes>
+			</v-bloco>
+			<br>
+			<marquee>esta comunidade foi benzida com ${emoji} e está pronta para receber pessoas</marquee>
 
-		</div>
-		
-		<style>
+			</div>
+			
+			<style>
 
-		#container {
-			display: block;
-			max-width: 960px;
-			margin: 0 auto;
-			text-align: center;
-		}
+			#container {
+				display: block;
+				max-width: 960px;
+				margin: 0 auto;
+				text-align: center;
+			}
 
-		</style>
-		`
-	};
+			</style>
+			`
+		};
+	} else {
+		// cria página pessoal padrão
+		let emoji = randomGenerators.geraEmoji();
+		dadosPaginaPadrao = {
+			titulo: 'Início',
+			publica: false,
+			html: `
+			<div id="container">
+
+			<v-cartao-de-visita></v-cartao-de-visita>
+			<br>
+			<v-bloco>
+			<h2>Comunidades:</h2>
+			<v-comunidades></v-comunidades>
+			</v-bloco>
+			<br>
+			<marquee>meu emoji da sorte é ${emoji}</marquee>
+
+			</div>
+			
+			<style>
+
+			#container {
+				display: block;
+				max-width: 960px;
+				margin: 0 auto;
+				text-align: center;
+			}
+
+			</style>
+			`
+		};
+	}
+
+	
 
 	return dadosPaginaPadrao;
 
-}; */
+};

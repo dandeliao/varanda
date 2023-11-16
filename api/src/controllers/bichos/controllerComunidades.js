@@ -66,7 +66,7 @@ exports.postComunidade = asyncHandler(async (req, res, next) => { // req.body = 
 	// cria varanda da comunidade, com página padrão
 	const comunitaria = true;
 	const varanda = await serviceVarandas.criarVaranda(comunidade.bicho_id, comunitaria);
-	const paginaPadrao = await servicePaginasPadrao.sortearPaginaPadrao(comunitaria);
+	const paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
 	const novaPagina = await servicePaginas.criarPagina(varanda.varanda_id, paginaPadrao, paginaPadrao.html);
 	await serviceEdicoes.criarEdicao(bichoCriadorId, novaPagina, paginaPadrao.html);
 

@@ -76,12 +76,6 @@ CREATE TABLE varandas(
     aberta                  BOOLEAN NOT NULL DEFAULT true,
 );
 
-CREATE TABLE varandas_padrao(
-    varanda_padrao_id       SERIAL PRIMARY KEY NOT NULL,
-    comunitaria             BOOLEAN NOT NULL,
-    aberta                  BOOLEAN NOT NULL DEFAULT true,
-);
-
 CREATE TABLE paginas(
     pagina_id       SERIAL PRIMARY KEY NOT NULL,
     varanda_id      INT REFERENCES varandas(varanda_id) ON DELETE CASCADE,

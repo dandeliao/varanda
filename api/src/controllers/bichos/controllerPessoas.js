@@ -102,7 +102,7 @@ exports.postPessoa = asyncHandler(async (req, res, next) => {
 	// cria varanda da pessoa, com página padrão
 	const comunitaria = false;
 	const varanda = await serviceVarandas.criarVaranda(pessoa.bicho_id, comunitaria);
-	const paginaPadrao = await servicePaginasPadrao.sortearPaginaPadrao(comunitaria);
+	const paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
 	const novaPagina = await servicePaginas.criarPagina(varanda.varanda_id, paginaPadrao);
 	await serviceEdicoes.criarEdicao(pessoa.bicho_id, novaPagina, paginaPadrao.html);
 

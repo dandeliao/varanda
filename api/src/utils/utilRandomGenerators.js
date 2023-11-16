@@ -54,10 +54,17 @@ function geraBenJor() {
 	return benjores[sorteio];
 }
 
+function geraEmoji() {
+	let emojis = ['🌜', '🌞', '🌱', '🌿', '🌶️', '🌽', '🍀', '🍍', '🍄', '🎭', '🎨', '🎱', '🎲', '🎺', '🏐', '🏹', '🐚', '👾', '👢', '💌', '💩', '💾', '🚂', '🚲', '🛠️', '🛸', '🛹', '🛼', '🥁', '🥑', '🥕', '🥢', '🧦', '🧢', '🧭', '🧲', '🧵', '🧶', '🧷', '🧸', '🧹', '🩴', '🩹', '🪄', '🪗', '🫖', '🌈', '🌂', '♠️', '♦️', '♥️', '♣️', '☂️', '⌛️'];
+	let sorteio = Math.floor(Math.random() * (emojis.length));
+	return emojis[sorteio];
+}
+
 module.exports = {
 	geraString,
 	geraPessoa,
 	geraSenha,
 	geraEmail,
-	geraBenJor
+	geraBenJor,
+	geraEmoji
 };
