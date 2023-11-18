@@ -14,12 +14,12 @@ exports.createBlocoPagina = function (paginaId, blocoId) {
 	);
 };
 
-exports.editBlocoPagina = function (paginaId, blocoId, blocoPaginaId){
+/* exports.editBlocoPagina = function (paginaId, blocoId, blocoPaginaId){
 	return pool.query(
 		'UPDATE blocos_paginas SET pagina_id = $1, bloco_id = $2 WHERE bloco_pagina_id = $3 RETURNING *',
 		[paginaId, blocoId, blocoPaginaId]	
 	);
-};
+}; */
 
 exports.deleteBlocoPagina = function (blocoPaginaId) {
 	return pool.query(

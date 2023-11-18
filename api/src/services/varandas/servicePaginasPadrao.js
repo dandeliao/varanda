@@ -4,7 +4,7 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 	let dadosPaginaPadrao;
 
 	if (comunitaria) {
-		// cria página comunitária padrão
+		// cria página padrão comunitária
 		let emoji = randomGenerators.geraEmoji();
 		dadosPaginaPadrao = {
 			titulo: 'Início',
@@ -36,7 +36,7 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 			`
 		};
 	} else {
-		// cria página pessoal padrão
+		// cria página padrão pessoal
 		let emoji = randomGenerators.geraEmoji();
 		dadosPaginaPadrao = {
 			titulo: 'Início',

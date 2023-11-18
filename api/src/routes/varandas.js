@@ -3,10 +3,10 @@ const router 	= express.Router();
 const taAutenticade = require('../middlewares/authentication');
 
 // Controllers
-const { getBlocos,      getBlocosEmUso, postBlocoEmUso,             deleteBlocoEmUso    } = require('../controllers/varandas/controllerBlocos');
-const { getVarandas,    getVaranda,                     putVaranda,                     } = require('../controllers/varandas/controllerVarandas');
-const { getPaginas,     getPagina,      postPagina,     putPagina,  deletePagina        } = require('../controllers/varandas/controllerPaginas');
-const { getEdicoes,                                                 deleteEdicoes       } = require('../controllers/varandas/controllerEdicoes');
+const { getBlocos,      getBloco, getBlocosEmUso,                                               } = require('../controllers/varandas/controllerBlocos');
+const { getVarandas,    getVaranda,                                 putVaranda                  } = require('../controllers/varandas/controllerVarandas');
+const { getPaginas,     getPagina,                  postPagina,     putPagina,  deletePagina    } = require('../controllers/varandas/controllerPaginas');
+const { getEdicoes,                                                             deleteEdicoes   } = require('../controllers/varandas/controllerEdicoes');
 
 router.use(taAutenticade);
 
@@ -14,6 +14,8 @@ router.use(taAutenticade);
 // Blocos em geral
 
 router.get('/blocos', getBlocos); // ?comunitario=boolean (opcional)
+
+router.get('/bloco', getBloco); // ?bloco_id=IdDoBloco
 
 // ---
 // Varandas
@@ -48,11 +50,6 @@ router.delete('/:varanda_id/edicoes', deleteEdicoes); // ?pagina_id=idDaPagina&e
 // Blocos nas páginas/varandas
 
 router.get('/:varanda_id/blocos', getBlocosEmUso); // ?pagina_id=idDaPagina
-
-router.post('/:varanda_id/blocos', postBlocoEmUso); // req.body = {pagina_id, bloco_id}
-
-router.delete('/:varanda_id/blocos', deleteBlocoEmUso); // ?bloco_pagina_id=idDoBlocoNaPagina
-
 
 
 module.exports = router;
