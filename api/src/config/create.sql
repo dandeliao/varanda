@@ -1,5 +1,6 @@
 CREATE DATABASE varanda
 
+/* ---------------- */
 /* Agência (bichos) */
 
 CREATE TABLE bichos(
@@ -67,10 +68,11 @@ CREATE TABLE sessoes (
 );
 CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON sessoes ("expire");
 
+/* ---------------------------- */
 /* Contexto (varandas, páginas) */
 
 CREATE TABLE varandas(
-    varanda_id              SERIAL PRIMARY KEY NOT NULL,
+    varanda_id              SERIAL PRIMARY KEY NOT NULL, /* faz sentido? PK poderia ser FK bicho_id */
     bicho_id                VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     comunitaria             BOOLEAN NOT NULL,
     aberta                  BOOLEAN NOT NULL DEFAULT true,
@@ -78,7 +80,7 @@ CREATE TABLE varandas(
 
 CREATE TABLE paginas(
     pagina_id       SERIAL PRIMARY KEY NOT NULL,
-    varanda_id      INT REFERENCES varandas(varanda_id) ON DELETE CASCADE,
+    varanda_id      INTEGER REFERENCES varandas(varanda_id) ON DELETE CASCADE,
     ordem           SERIAL NOT NULL,
     titulo          VARCHAR(32),
     publica         BOOLEAN DEFAULT false,
@@ -95,12 +97,12 @@ CREATE TABLE blocos(
 CREATE TABLE blocos_paginas(
     bloco_pagina_id     SERIAL PRIMARY KEY NOT NULL,
     bloco_id            VARCHAR(32) REFERENCES blocos(bloco_id) ON DELETE SET NULL,
-    pagina_id           SERIAL REFERENCES paginas(pagina_id) ON DELETE CASCADE
+    pagina_id           INTEGER REFERENCES paginas(pagina_id) ON DELETE CASCADE
 );
 
 CREATE TABLE edicoes(
     edicao_id       SERIAL PRIMARY KEY NOT NULL,
-    pagina_id       SERIAL REFERENCES paginas(pagina_id) ON DELETE CASCADE,
+    pagina_id       INTEGER REFERENCES paginas(pagina_id) ON DELETE CASCADE,
     bicho_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     ordem           INTEGER NOT NULL,
     titulo          VARCHAR(32),
@@ -109,29 +111,65 @@ CREATE TABLE edicoes(
     criacao         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+/* ----------------- */
 /* Valor (artefatos) */
+
+/* CREATE TABLE licencas(
+    licenca_id              SERIAL PRIMARY KEY NOT NULL,
+    nome                    TEXT NOT NULL,
+    link                    TEXT,
+    descricao               TEXT
+); */
 
 CREATE TABLE artefatos(
     artefato_id             SERIAL PRIMARY KEY NOT NULL,
-    varanda_contexto_id     SERIAL REFERENCES varandas(varanda_id) ON DELETE CASCADE,
+    varanda_contexto_id     INTEGER REFERENCES varandas(varanda_id) ON DELETE CASCADE,
     bicho_criador_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
-    em_resposta_a_id        SERIAL REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    em_resposta_a_id        INTEGER REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
     sensivel                BOOLEAN DEFAULT false,
     aviso_de_conteudo       VARCHAR(150),
+    respondivel             BOOLEAN DEFAULT true,
     publico                 BOOLEAN DEFAULT false,
     indexavel               BOOLEAN DEFAULT false,
-    data_criacao            TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+    arquivo                 BOOLEAN DEFAULT false,
+    denuncia                BOOLEAN DEFAULT false,
+    /* licenca                 INTEGER REFERENCES licencas(licenca_id) DEFAULT 1 ON DELETE SET NULL, */
+    criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE arquivos(
+    artefato_id             INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
     nome_arquivo            VARCHAR(255) NOT NULL,
+    extensao                VARCHAR(16),
     descricao               VARCHAR(500)
-) INHERITS (artefatos);
+);
 
 CREATE TABLE textos(
-    titulo  VARCHAR(150),
-    texto   TEXT
-) INHERITS (artefatos);
+    artefato_id             INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    titulo                  VARCHAR(150),
+    texto                   TEXT
+);
+
+CREATE TABLE denuncias(
+    denuncia_id             INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    denunciado_id           INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE
+    
+);
+
+CREATE TABLE edicoes_artefatos(
+    respondivel             BOOLEAN,
+    sensivel                BOOLEAN,
+    aviso_de_conteudo       VARCHAR(150),
+    respondivel             BOOLEAN,
+    publico                 BOOLEAN,
+    indexavel               BOOLEAN,
+    /* licenca                 INTEGER REFERENCES licencas(licenca_id) ON DELETE SET NULL, */
+    nome_arquivo            VARCHAR(255),
+    descricao               VARCHAR(500),
+    titulo                  VARCHAR(150),
+    texto                   TEXT
+    criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE tags(
     tag_id  TEXT PRIMARY KEY NOT NULL
