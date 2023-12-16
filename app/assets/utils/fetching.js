@@ -23,6 +23,7 @@ export async function serverFetch (caminho, metodo, dados, contentType) {
 		requestObject.headers = { 'Content-Type': contentType };
 	}
 
+	console.log(`${urlApi}${caminho}`, requestObject);
 	return await fetch(`${urlApi}${caminho}`, requestObject);
 
 }
@@ -52,13 +53,13 @@ export async function cadastrar(form) {
 
 	if (form.elements['senha'].value === form.elements['senha2'].value) {
 		const dados = {
-			pessoa_id: form.elements['nome'].value,
+			bicho_id: form.elements['nome'].value,
 			nome: form.elements['nome'].value,
 			email: form.elements['email'].value,
 			senha: form.elements['senha'].value
 		}
 
-		fetch(`${urlApi}/autenticacao/registro`, {
+		fetch(`${urlApi}/bichos/pessoas`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -85,11 +86,11 @@ export async function entrar(form) {
 	const urlApi = estadoPadrao.urlServidor;
 
 	const dados = {
-		pessoa_id: form.elements['nome'].value,
+		bicho_id: form.elements['nome'].value,
 		senha: form.elements['senha'].value
 	}
 
-	let res = await fetch(`${urlApi}/autenticacao/login`, {
+	let res = await fetch(`${urlApi}/login`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
