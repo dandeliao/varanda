@@ -71,7 +71,7 @@ router.delete('/tags/:tag_id/artefato/:artefato_id', deleteTagArtefato); // ?bic
 // ---
 // Artefatos
 
-router.get('/', getArtefatos); // ?varanda_contexto_id=comunidade&em_resposta_a_id=IdDoArtefato&tags=tag1+tag2&arquivo=boolean&bicho_id=IdDoBicho (bicho_id é opcional. Por padrão usa req.user.bicho_id) (não retornar denúncias) (só retornar não-indexáveis se o bicho_id == varanda_contexto_id)
+router.get('/', getArtefatos); // ?varanda_contexto_id=comunidade&em_resposta_a_id=IdDoArtefato&tags=tag1+tag2&arquivo=boolean&bicho_criador_id=IdDoBicho&bicho_id=IdDoBicho (bicho_id é opcional. Por padrão usa req.user.bicho_id) (não retornar denúncias) (só retornar não-indexáveis se o bicho_id == varanda_contexto_id)
 
 router.get('/:artefato_id', getArtefato); // ?bicho_id=IdDoBicho (bicho_id é opcional. Por padrão, usa req.user.bicho_id)
 
