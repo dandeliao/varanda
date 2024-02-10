@@ -1,0 +1,11 @@
+<div id="varanda-geral-menu">
+    <header>
+        <button hx-get="/blocos/menu-geral" hx-swap="delete" hx-target="#varanda-geral-menu" style="width: 24px; margin:0.5rem;">x</button>
+        <span>{{varanda.bicho_id}}</span>
+    </header>
+    <nav id="varanda-geral-itens">
+        <a href="/">Início</a>
+        <a href="/{{usuarie.bicho_id}}">Meu perfil</a>
+        <a href="/autenticacao/logout">Sair</a>
+    </nav>
+</div>

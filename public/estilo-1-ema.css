@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Convergence&display=swap');
+
+:root {
+    --cor-principal:    #3a3336;
+    --cor-destaque:     #4b4b55;
+    --cor-gris:         #363636;
+    --cor-gris-2:       #202020;
+    --cor-fundo:        #222121;
+    --cor-fundo-2:      #2c2c2c;
+    --cor-fonte-view:   #c9c6c4;
+    --cor-fonte-barra:  #cbc7c3;
+    
+    --familia-fonte:    'Convergence', sans-serif;
+    font-family: var(--familia-fonte);
+    
+    --estilo-borda:     none;
+    --espessura-borda:  0;
+    --raio-borda:       0.4rem;
+    --sombreado: 2px 3px 4px rgba(26, 26, 26, 0.2);;
+}
+
+h1              { font-size: 2.3rem;   margin: .28rem 0 }
+h2              { font-size: 1.6rem; margin: .33rem 0 }
+h3              { font-size: 1.2rem; margin: .4rem 0 }
+h4              { font-size: 1rem;   margin: .5rem 0 }
+h5              { font-size: .85rem; margin: .62rem 0 }
+h6              { font-size: .75rem; margin: .8rem 0 }
+h1, h2, h3, h4,
+h5, h6          { font-weight: bolder }
+
+a {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: overline;
+}
+
+#nav-bar {
+    overflow: hidden;
+    position: fixed;
+    height: 2rem;
+	width: 100%;
+    background-color: var(--cor-principal);
+    color: var(--cor-fonte-barra);
+    display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+    z-index: 100;
+}
+
+#nav-bar .nav-group {
+    display: inline-block;
+    height: 100%;
+    width: auto;
+    padding: 0.2rem 0.4rem;
+}
+
+
+img-button {
+    display: inline-block;
+    height: 100%;
+    width: auto;
+}
+
+#tab-bar {
+    position: fixed;
+    top: 2rem;
+    padding: 0;
+    display: none;
+    height: 2rem;
+    font-size: 0.85rem;
+    width: 100%;
+    background-color: var(--cor-principal);
+    color: var(--cor-fonte-view);
+    z-index: 80;
+}
+
+#tab-bar.active {
+    display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: stretch;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+varanda-viewer {
+    position: relative;
+    top: 4rem;
+    display: inline-block;
+    width: 100%;
+    min-height: 90.5vh;
+    padding: 1rem;
+    color: var(--cor-fonte-view);
+}

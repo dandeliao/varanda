@@ -1,0 +1,33 @@
+<header id="varanda-barra">
+
+    <button id="varanda-botao-geral" onclick="alternaMenuGeral()">v</button>
+    <nav id="varanda-menu-geral">
+        <a href="/">Início</a>
+        <a href="/{{usuarie.bicho_id}}">Meu perfil</a>
+        <a href="/autenticacao/logout">Sair</a>
+    </nav>
+    
+    <a id="varanda-titulo" href="/{{varanda.bicho_id}}" style="color=var(--cor-fonte-barra); text-decoration=none;">{{varanda.bicho_id}}</a>
+    
+    <button id="varanda-botao-contexto" onclick="alternaMenuContexto()">v</button>
+    <nav id="varanda-menu-contexto">
+        <a href="/{{varanda.bicho_id}}/editar">Editar</a>
+        <a href="/{{varanda.bicho_id}}/clonar">Clonar</a>
+        <a href="/{{varanda.bicho_id}}/sobre">Sobre</a>
+    </nav>
+
+</header>
+
+<script>
+
+    function alternaMenuGeral () {
+        document.querySelector('#varanda-botao-geral').classList.toggle('pressionado');
+        document.querySelector('#varanda-menu-geral').classList.toggle('aberto');
+    }
+
+    function alternaMenuContexto () {
+        document.querySelector('#varanda-botao-contexto').classList.toggle('pressionado');
+        document.querySelector('#varanda-menu-contexto').classList.toggle('aberto');
+    }
+
+</script>

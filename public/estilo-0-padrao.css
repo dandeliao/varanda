@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Convergence&display=swap');
+
+:root {
+    --altura-barra:     2.4rem;
+    --cor-principal:    #e0b6bc;
+    --cor-destaque:     #a990b0;
+    --cor-gris:         #d0c7c7;
+    --cor-gris-2:       #6e6e6e;
+    --cor-fundo:        #f0f0f0;
+    --cor-fundo-2:      #e5e5e5;
+    --cor-fonte-view:   #2e2e2e;
+    --cor-fonte-barra:  #272727;
+    --familia-fonte:    'Convergence', sans-serif;
+    font-family: var(--familia-fonte);
+    --estilo-borda:     none;
+    --espessura-borda:  0;
+    --raio-borda:       0.4rem;
+    --sombreado: 2px 3px 4px rgba(26, 26, 26, 0.2);
+    font-size: 1em;
+}
+
+h1              { font-size: calc(1.8rem +  1.3vw); margin: calc(.28rem + 0.56vw) 0 }
+h2              { font-size: calc(1.3rem +  0.9vw); margin: calc(.35rem +  0.7vw) 0 }
+h3              { font-size: calc(1.1rem + 0.75vw); margin: calc(.4rem  +  0.75vw) 0 }
+h4              { font-size: calc(.95rem +  0.5vw); margin: calc(.5rem  + 0.8vw) 0 }
+h5              { font-size: calc(.87rem + 0.35vw); margin: calc(.62rem + 0.84vw) 0 }
+h6              { font-size: calc( .8rem + 0.25vw); margin: calc(.8rem  + 0.87vw) 0 }
+h1, h2, h3, h4,
+h5, h6          { font-weight: bolder }
+
+/* --- */
+/* decoração da barra (geral) */
+
+#varanda-barra {
+    /*z-index: 100;*/
+    overflow: hidden;
+    /*position: fixed;*/
+    
+    height: var(--altura-barra);
+	width: 100%;
+    background-color: var(--cor-principal);
+    color: var(--cor-fonte-barra);
+    text-align: center;
+    padding: 0 0.5rem;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    align-items: center;
+}
+
+#varanda-botao-geral {
+    grid-column: 1 / span 1;
+    width: 24px;
+}
+
+#varanda-titulo {
+    grid-column: 2 / span 1;
+}
+
+#varanda-botao-contexto {
+    grid-column: 3 / span 1;
+    width: 24px;
+    justify-self: end;
+}
+
+/* --- */
+/* responsividade e funcionalidade da barra e de seus elementos */
+
+#varanda-barra > button {
+    display: none;
+}
+
+#varanda-barra > nav {
+    display: flex;
+    flex-direction: row;
+    gap: 0.8rem;
+}
+
+#varanda-menu-geral {
+    justify-content: flex-start;
+}
+
+#varanda-menu-contexto {
+    justify-content: flex-end;
+}
+
+@media screen and (max-width: 600px) {
+    
+    #varanda-barra > button {
+        display: inline-block;
+        border-style: outset;
+    }
+
+    #varanda-barra > button.pressionado {
+        border-style: inset;
+    }
+
+    #varanda-barra > nav {
+        display: none;
+    }
+
+    #varanda-barra > nav.aberto {
+        display: block;
+        z-index: 420;
+        position: fixed;
+        width: 100%;
+        left: 0;
+        top: var(--altura-barra);
+        background-color: var(--cor-principal);
+        color: var(--cor-fonte-barra);
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        justify-content: flex-start;
+    }
+
+    #varanda-menu-geral.aberto {
+        text-align: left;
+    }
+
+    #varanda-menu-contexto.aberto {
+        text-align: right;
+    }
+
+}
