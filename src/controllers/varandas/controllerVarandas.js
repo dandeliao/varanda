@@ -36,7 +36,8 @@ exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id
 
     res.render(view, {
 		varanda: {
-			bicho_id: varanda_id
+			bicho_id: varanda_id,
+			pagina_id: varanda_id
 		},
         usuarie: {
 			logade: req.isAuthenticated(),

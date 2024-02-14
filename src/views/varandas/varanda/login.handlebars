@@ -2,15 +2,6 @@
 	<h1>Bem-vinde de volta!</h1>
 </div>
 
-{{#if flash_message}}
-    <dialog open>
-		<p>{{flash_message}}</p>
-		<form method="dialog" hx-boost="false">
-    		<button>entendi!</button>
-  		</form>
-	</dialog>
-{{/if}}
-
 <form id="form-login" action="/autenticacao/login" method="post">
 		<h3>Digite os dados para entrar</h3>
 		<label for="bicho_id" hidden>nome de perfil</label>

@@ -9,11 +9,23 @@
     <title>{{varanda.bicho_id}}</title>
 </head>
 <body hx-boost="true">
+ 
     {{#if usuarie.logade}}
         {{> barra}}
     {{/if}}
+ 
+    {{#if flash_message}}
+        <dialog open>
+            <p>{{flash_message}}</p>
+            <form method="dialog" hx-boost="false">
+                <button>entendi!</button>
+            </form>
+        </dialog>
+    {{/if}}
+ 
     <main id="varanda-janela">
         {{{body}}}
     </main>
+
 </body>
 </html>

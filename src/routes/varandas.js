@@ -2,7 +2,7 @@ const express 	= require('express');
 const router 	= express.Router();
 
 const { getVaranda, postCadastro, putVaranda } = require('../controllers/varandas/controllerVarandas');
-const { getPagina, postPagina, putPagina, deletePagina } = require('../controllers/varandas/controllerPaginas');
+const { getPagina, getAcaoPagina, postPagina, putPagina, deletePagina } = require('../controllers/varandas/controllerPaginas');
 
 router.get('/', getVaranda);
 router.post('/', postCadastro);
@@ -10,6 +10,7 @@ router.get('/:bicho_id', getVaranda);
 router.put('/:bicho_id', putVaranda);
 
 router.get('/:bicho_id/:pagina_id', getPagina);
+router.get('/:bicho_id/:pagina_id/:acao', getAcaoPagina);
 router.post('/:bicho_id/pagina', postPagina);
 router.put('/:bicho_id/:pagina_id', putPagina);
 router.delete('/:bicho_id/:pagina_id', deletePagina);

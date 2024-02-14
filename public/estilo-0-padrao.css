@@ -56,6 +56,8 @@ h5, h6          { font-weight: bolder }
 
 #varanda-titulo {
     grid-column: 2 / span 1;
+    text-decoration: none;
+    color: var(--cor-fonte-barra);
 }
 
 #varanda-botao-contexto {
@@ -85,7 +87,7 @@ h5, h6          { font-weight: bolder }
     justify-content: flex-end;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 860px) {
     
     #varanda-barra > button {
         display: inline-block;
@@ -110,10 +112,15 @@ h5, h6          { font-weight: bolder }
         background-color: var(--cor-principal);
         color: var(--cor-fonte-barra);
         padding: 0.5rem;
-        display: flex;
+        /* display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        justify-content: flex-start;
+        justify-content: flex-start; */
+    }
+
+    #varanda-barra > nav.aberto > a {
+        display: block;
+        margin: 0 0 0.5rem 0;
     }
 
     #varanda-menu-geral.aberto {
