@@ -6,7 +6,7 @@ const passport = require('passport');
 /* router.use(taAutenticade); */
 
 router.post('/login', passport.authenticate('local', {
-	failureRedirect: '/varanda/login',
+	failureRedirect: '/varanda/entrar',
 	failureFlash: true, // testar flash message, ver localização pt-br
 	successRedirect: '/'
 }));

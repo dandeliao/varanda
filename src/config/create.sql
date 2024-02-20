@@ -16,7 +16,7 @@ CREATE TABLE bichos(
 
 CREATE TABLE pessoas(
     bicho_id        VARCHAR(32) PRIMARY KEY REFERENCES bichos(bicho_id) ON DELETE CASCADE,
-    email           VARCHAR UNIQUE NOT NULL,
+    email           VARCHAR,
     hash            VARCHAR NOT NULL,
     salt            VARCHAR NOT NULL
 );

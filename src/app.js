@@ -6,6 +6,7 @@ const PostgreSqlStore 	    = require('connect-pg-simple')(session); // para arma
 const pool 				    = require('./config/database.js'); // para armazenamento de sesssão
 const passport 			    = require('passport');
 const flash 			    = require('connect-flash');
+const global				= require('./middlewares/globalVariables.js');
 const customError 		    = require('http-errors');
 const rotasVarandas 		= require('./routes/varandas.js');
 const rotasAutenticacao 	= require('./routes/autenticacao.js');
@@ -44,6 +45,7 @@ app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+app.use(global.flashMessages);
 
 // rotas
 app.use('/autenticacao',	rotasAutenticacao	);

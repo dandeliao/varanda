@@ -1,22 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Convergence&display=swap');
 
 :root {
-    --altura-barra:     2.4rem;
-    --cor-principal:    #e0b6bc;
-    --cor-destaque:     #a990b0;
-    --cor-gris:         #d0c7c7;
-    --cor-gris-2:       #6e6e6e;
-    --cor-fundo:        #f0f0f0;
-    --cor-fundo-2:      #e5e5e5;
-    --cor-fonte-view:   #2e2e2e;
-    --cor-fonte-barra:  #272727;
-    --familia-fonte:    'Convergence', sans-serif;
-    font-family: var(--familia-fonte);
-    --estilo-borda:     none;
-    --espessura-borda:  0;
-    --raio-borda:       0.4rem;
-    --sombreado: 2px 3px 4px rgba(26, 26, 26, 0.2);
-    font-size: 1em;
+    --altura-barra:         2.2rem;
+    --altura-barra-mobile:  3rem;
+    --cor-principal:        #e0b6bc;
+    --cor-destaque:         #a990b0;
+    --cor-gris:             #d0c7c7;
+    --cor-gris-2:           #6e6e6e;
+    --cor-fundo:            #f0f0f0;
+    --cor-fundo-2:          #e5e5e5;
+    --cor-fonte-view:       #2e2e2e;
+    --cor-fonte-barra:      #272727;
+    --familia-fonte:        'Convergence', sans-serif;
+    font-family:            var(--familia-fonte);
+    --estilo-borda:         none;
+    --espessura-borda:      0;
+    --raio-borda:           0.4rem;
+    --sombreado:            2px 3px 4px rgba(26, 26, 26, 0.2);
+    font-size:              1em;
 }
 
 h1              { font-size: calc(1.8rem +  1.3vw); margin: calc(.28rem + 0.56vw) 0 }
@@ -41,6 +42,7 @@ h5, h6          { font-weight: bolder }
     background-color: var(--cor-principal);
     color: var(--cor-fonte-barra);
     text-align: center;
+    font-size: 1rem;
     padding: 0 0.5rem;
 
     display: grid;
@@ -51,7 +53,6 @@ h5, h6          { font-weight: bolder }
 
 #varanda-botao-geral {
     grid-column: 1 / span 1;
-    width: 24px;
 }
 
 #varanda-titulo {
@@ -62,7 +63,6 @@ h5, h6          { font-weight: bolder }
 
 #varanda-botao-contexto {
     grid-column: 3 / span 1;
-    width: 24px;
     justify-self: end;
 }
 
@@ -87,15 +87,28 @@ h5, h6          { font-weight: bolder }
     justify-content: flex-end;
 }
 
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 859px) {
     
+    #varanda-barra {
+        height: var(--altura-barra-mobile);
+        font-size: 1.15rem;
+    }
+
     #varanda-barra > button {
         display: inline-block;
-        border-style: outset;
+        border-style: none;
+        padding: 0;
+        background-color: var(--cor-principal);
+        width: 34px;
+        height: 34px;
     }
 
     #varanda-barra > button.pressionado {
         border-style: inset;
+    }
+
+    #varanda-barra > button > svg {
+        vertical-align: middle;
     }
 
     #varanda-barra > nav {
@@ -108,10 +121,10 @@ h5, h6          { font-weight: bolder }
         position: fixed;
         width: 100%;
         left: 0;
-        top: var(--altura-barra);
+        top: var(--altura-barra-mobile);
         background-color: var(--cor-principal);
         color: var(--cor-fonte-barra);
-        padding: 0.5rem;
+        padding: 0.8rem;
         /* display: flex;
         flex-direction: column;
         gap: 0.5rem;
@@ -120,7 +133,8 @@ h5, h6          { font-weight: bolder }
 
     #varanda-barra > nav.aberto > a {
         display: block;
-        margin: 0 0 0.5rem 0;
+        margin: 0 0 0.8rem 0;
+        font-size: 1.15rem;
     }
 
     #varanda-menu-geral.aberto {
@@ -131,4 +145,14 @@ h5, h6          { font-weight: bolder }
         text-align: right;
     }
 
+}
+
+.oculto-aos-olhos:not(:focus):not(:active) {
+    clip: rect(0 0 0 0);
+    clip-path: inset(100%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
 }

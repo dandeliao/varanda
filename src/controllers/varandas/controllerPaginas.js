@@ -1,85 +1,48 @@
-const asyncHandler 				= require('express-async-handler');
-const customError	 			= require('http-errors');
-const serviceRelacoes			= require('../../services/bichos/serviceRelacoes');
+const asyncHandler 							= require('express-async-handler');
+const customError	 						= require('http-errors');
+const serviceRelacoes						= require('../../services/bichos/serviceRelacoes');
+const { params, renderiza, bicho_agente }	= require('../../utils/utilControllers');
 require('dotenv').config();
 
 exports.getPagina = asyncHandler(async (req, res, next) => {
     
-    const varanda_id = req.params.bicho_id;
-	const pagina_id = req.params.pagina_id;
-    const view = `varandas/${varanda_id}/${pagina_id}`;
+    const { varanda_id, pagina_id } = params(req);
 
-    let usuarie_id;
-	if (req.isAuthenticated()) {
-		usuarie_id = req.user.bicho_id;
-		if(req.query.bicho_id) {
-			const permissoesBicho = await serviceRelacoes.verRelacao(req.user.bicho_id, req.query.bicho_id);
-			if (permissoesBicho.representar) usuarie_id = req.query.bicho_id;
-		}
+    let usuarie_id = await bicho_agente(req);
+
+	let view;
+	switch (pagina_id) {
+		case 'clonar':
+		case 'bisbilhotar':
+			view = `blocos/${pagina_id}`;
+			break;
+		default:
+			view = `varandas/${varanda_id}/${pagina_id}`;
+			break;
 	}
 
-	let flash_message;
-	if (req.flash) {
-		flash_message = req.flash('message')[0];
-	} else {
-		flash_message = req.session.flash.error ? req.session.flash.error[0] : null; // flash message da sessão (confirmação de login, por exemplo)
-	}
+	renderiza(req, res, varanda_id, pagina_id, usuarie_id, view);
 
-    res.render(view, {
-        varanda: {
-            bicho_id: varanda_id,
-            pagina_id: pagina_id
-        },
-        usuarie: {
-			logade: req.isAuthenticated(),
-            bicho_id: usuarie_id
-        },
-		query: req.query ? req.query : null,
-        flash_message: flash_message
-    });
 });
 
-exports.getAcaoPagina = asyncHandler(async (req, res, next) => {
-	const varanda_id = req.params.bicho_id;
-	const { pagina_id, acao } = req.params;
-    let view = `blocos/${acao}`;
+exports.getEditarPagina = asyncHandler(async (req, res, next) => {
+	
+	const { varanda_id, pagina_id } = params(req);
 
-    let usuarie_id;
-	if (req.isAuthenticated()) {
-		usuarie_id = req.user.bicho_id;
-		if(req.query.bicho_id) {
-			const permissoesBicho = await serviceRelacoes.verRelacao(req.user.bicho_id, req.query.bicho_id);
-			if (permissoesBicho.representar) usuarie_id = req.query.bicho_id;
-		}
-	}
+    let view = 'blocos/editar';
+
+	let usuarie_id = await bicho_agente(req);
 
 	if (usuarie_id !== varanda_id) {
-		const permissoesEditore = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
-		if (!permissoesEditore || !permissoesEditore.editar) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
+		if (!permissoes || !permissoes.editar) {
 			req.flash('message', `Você não pode editar ${varanda_id}.`);
-			view = `varandas/${varanda_id}/${pagina_id}`
+			return res.redirect(`/${varanda_id}`);
 		}
 	}
 
-	let flash_message;
-	if (req.flash) {
-		flash_message = req.flash('message')[0];
-	} else {
-		flash_message = req.session.flash.error ? req.session.flash.error[0] : null; // flash message da sessão (confirmação de login, por exemplo)
-	}
+	renderiza(req, res, varanda_id, pagina_id, usuarie_id, view);
 
-    res.render(view, {
-        varanda: {
-            bicho_id: varanda_id,
-            pagina_id: pagina_id
-        },
-        usuarie: {
-			logade: req.isAuthenticated(),
-            bicho_id: usuarie_id
-        },
-		query: req.query ? req.query : null,
-        flash_message: flash_message
-    });
 });
 
 exports.postPagina = asyncHandler(async (req, res, next) => {

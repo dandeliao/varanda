@@ -17,6 +17,7 @@
     {{#if flash_message}}
         <dialog open>
             <p>{{flash_message}}</p>
+            <br>
             <form method="dialog" hx-boost="false">
                 <button>entendi!</button>
             </form>
@@ -28,4 +29,17 @@
     </main>
 
 </body>
+
+{{#if usuarie.logade}}
+    <script>
+        window.addEventListener('pageshow', limpaBarra());
+        function limpaBarra () {
+            document.querySelector('#varanda-botao-contexto').classList.remove('pressionado');
+            document.querySelector('#varanda-menu-contexto').classList.remove('aberto');
+            document.querySelector('#varanda-botao-geral').classList.remove('pressionado');
+            document.querySelector('#varanda-menu-geral').classList.remove('aberto');
+        }
+    </script>
+{{/if}}
+
 </html>

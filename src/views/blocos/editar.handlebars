@@ -1,24 +1,26 @@
-{{#if flash_message}}
-    <dialog open>
-		<p>{{flash_message}}</p>
-		<form method="dialog" hx-boost="false">
-    		<button>entendi!</button>
-  		</form>
-	</dialog>
-{{/if}}
+<h3>Editar página atual:</h3>
+<form id="form-editar" action="/{{varanda.bicho_id}}/{{pagina.pagina_id}}" method="put">
+	<label for="titulo" hidden>título da página "{{pagina.pagina_id}}"</label>
+	<input type="text" id="titulo-pagina" value="{{pagina.pagina_id}}" name="titulo" required>
+	<label for="html" hidden>html da página "{{pagina.pagina_id}}"</label>
+	<textarea id="html-pagina" value="{{pagina.html}}" name="html" required></textarea>
 
-<form id="form-editar" action="/{{varanda.bicho_id}}/{{varanda.pagina_id}}" method="put">
-		<label for="titulo" hidden>título da página "{{varanda.pagina_id}}"</label>
-		<input type="text" id="titulo-pagina" value="{{varanda.pagina_id}}" name="titulo" required>
-		<label for="html" hidden>html da página "{{varanda.pagina_id}}"</label>
-    	<textarea id="html-pagina" value="{{varanda.pagina_html}}" name="html" required></textarea>
-
-		<button type="submit">salvar</button>
+	<button type="submit">salvar</button>
 </form>
-
+<hr>
+<h3>Editar outra página desta varanda:</h3>
+<ul>
+	<li><a href=".../editar">obter lista de páginas aqui</a></li>
+</ul>
+<hr>
+<h3>Criar nova página:</h3>
+<form id="form-nova-pagina" action="/{{varanda.bicho_id}}" method="post">
+	<label for="titulo-nova-pagina" hidden>título da nova página</label>
+	<input type="text" id="titulo-nova-pagina" placeholder="titulo-da-nova-pagina" name="titulo-nova-pagina" required>
+	<button type="submit">criar</button>
+</form>
 <style>
-
-	#form-login {
+	#form-editar, #form-nova-pagina {
         max-width: 360px;
 		margin: 0 auto;
 		display: flex;

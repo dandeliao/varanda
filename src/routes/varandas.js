@@ -1,19 +1,22 @@
 const express 	= require('express');
 const router 	= express.Router();
+require('dotenv').config();
 
-const { getVaranda, postCadastro, putVaranda } = require('../controllers/varandas/controllerVarandas');
-const { getPagina, getAcaoPagina, postPagina, putPagina, deletePagina } = require('../controllers/varandas/controllerPaginas');
+const { getVaranda, postVaranda,     postCadastro,  putVaranda, deleteVaranda   } = require('../controllers/varandas/controllerVarandas');
+const { getPagina,  getEditarPagina, postPagina,    putPagina,  deletePagina    } = require('../controllers/varandas/controllerPaginas');
 
-router.get('/', getVaranda);
-router.post('/', postCadastro);
-router.get('/:bicho_id', getVaranda);
-router.put('/:bicho_id', putVaranda);
+router.get   ('/',             getVaranda);
+router.get   ('/:bicho_id',    getVaranda);
+router.post  ('/',            postVaranda);
+router.post  ('/cadastrar',  postCadastro);
+router.put   ('/:bicho_id',    putVaranda);
+router.delete('/:bicho_id', deleteVaranda);
 
-router.get('/:bicho_id/:pagina_id', getPagina);
-router.get('/:bicho_id/:pagina_id/:acao', getAcaoPagina);
-router.post('/:bicho_id/pagina', postPagina);
-router.put('/:bicho_id/:pagina_id', putPagina);
-router.delete('/:bicho_id/:pagina_id', deletePagina);
+router.get   ('/:bicho_id/:pagina_id',          getPagina);
+router.get   ('/:bicho_id/:pagina_id/editar',   getEditarPagina)
+router.post  ('/:bicho_id',                     postPagina);
+router.put   ('/:bicho_id/:pagina_id',          putPagina);
+router.delete('/:bicho_id/:pagina_id',          deletePagina);
 
 
 /*

@@ -7,7 +7,7 @@ const validar = (schema) => (payload) =>
 const schemaPostPessoa = Joi.object({
 	// bicho_id, nome, email, senha, convite_id
 	bicho_id: Joi.string().min(3).max(32).required(),
-	email: Joi.string().email().required(),
+	email: Joi.string().email(),
 	senha: Joi.string().min(8).required(),
 	confirma_senha: Joi.string().valid(Joi.ref('senha')).required(),
 	convite_id: Joi.string().guid().required()

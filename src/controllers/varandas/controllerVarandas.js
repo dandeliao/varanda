@@ -11,41 +11,26 @@ const servicePaginasPadrao 						= require('../../services/varandas/servicePagin
 const servicePaginas							= require('../../services/varandas/servicePaginas');
 const serviceEdicoes							= require('../../services/varandas/serviceEdicoes');
 const { validarPostPessoa, validarPutPessoa } 	= require('../../validations/validateBichos');
+const { params, renderiza }						= require('../../utils/utilControllers');
 require('dotenv').config();
 
 exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id == varanda_id; query.bicho_id == usuarie_id
 
-    const varanda_id = req.params.bicho_id ? req.params.bicho_id : process.env.INSTANCIA_ID;
-    const view = `varandas/${varanda_id}/${varanda_id}`
+	const { varanda_id } = params(req);
+
+	const view = `varandas/${varanda_id}/inicio`
 
 	let usuarie_id;
 	if (req.isAuthenticated()) {
 		usuarie_id = req.user.bicho_id;
 		if(req.query.bicho_id) {
-			const permissoesBicho = await serviceRelacoes.verRelacao(req.user.bicho_id, req.query.bicho_id);
+			const permissoesBicho = await serviceRelacoes.verRelacao(usuarie_id, req.query.bicho_id);
 			if (permissoesBicho.representar) usuarie_id = req.query.bicho_id;
 		}
 	}
 
-	let flash_message;
-	if (req.flash) {
-		flash_message = req.flash('message')[0];
-	} else {
-		flash_message = req.session.flash.error ? req.session.flash.error[0] : null; // flash message da sessão (confirmação de login, por exemplo)
-	}
-
-    res.render(view, {
-		varanda: {
-			bicho_id: varanda_id,
-			pagina_id: varanda_id
-		},
-        usuarie: {
-			logade: req.isAuthenticated(),
-            bicho_id: usuarie_id
-        },
-		query: req.query ? req.query : null,
-        flash_message: flash_message
-    });
+	renderiza(req, res, varanda_id, 'inicio', usuarie_id, view);
+	
 });
 
 exports.postCadastro = asyncHandler(async (req, res, next) => {
@@ -54,10 +39,10 @@ exports.postCadastro = asyncHandler(async (req, res, next) => {
     console.log([value, error.message]);
 	if (error) {
 	    req.flash('message', error.message);
-        return res.redirect('/varanda/cadastro');
+        return res.redirect('/varanda/cadastrar');
 	} else {
         req.flash('message', 'Cadastro realizado com sucesso! Agora é só entrar.')
-        return res.redirect('/varanda/login');
+        return res.redirect('/varanda/entrar');
     }
 
 	/* const pessoa = {
@@ -138,7 +123,15 @@ exports.postCadastro = asyncHandler(async (req, res, next) => {
 
 });
 
+exports.postVaranda = asyncHandler(async (req, res, next) => {
+
+});
+
 exports.putVaranda = asyncHandler(async (req, res, next) => { // :bicho_id
 
     
+});
+
+exports.deleteVaranda = asyncHandler(async (req, res, next) => { // :bicho_id
+
 });

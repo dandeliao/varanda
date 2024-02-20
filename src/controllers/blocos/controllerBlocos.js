@@ -1,12 +1,14 @@
-const asyncHandler 				                = require('express-async-handler');
+const asyncHandler 	= require('express-async-handler');
+const { renderiza } = require('../../utils/utilControllers');
 require('dotenv').config();
 
 exports.getBloco = asyncHandler(async (req, res, next) => {
 
     const bloco_id = req.params.bloco_id;
-    const bloco = `blocos/${bloco_id}`
+    const view = `blocos/${bloco_id}`;
 
-    const varanda_id = req.query.varanda ? req.query.varanda : null
+    const varanda_id = req.query.varanda ? req.query.varanda : null;
+	const pagina_id	 = req.query.pagina ? req.query.pagina : null;
 
 	let usuarie_id;
 	if (req.isAuthenticated()) {
@@ -17,26 +19,7 @@ exports.getBloco = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	let flash_message;
-	if (req.flash) {
-		flash_message = req.flash('message')[0];
-	} else {
-		flash_message = req.session.flash.error ? req.session.flash.error[0] : null; // flash message da sessão (confirmação de login, por exemplo)
-	}
-
-    res.render(`blocos/${bloco_id}`, {
-        layout: false,
-        varanda: {
-            bicho_id: varanda_id
-        },
-        usuarie: {
-			logade: req.isAuthenticated(),
-            bicho_id: usuarie_id
-        },
-		query: req.query ? req.query : null,
-        flash_message: flash_message
-    });
-
-    /* res.render(`blocos/${req.params.bloco_id}`, {usuarie: {bicho_id: req.user.bicho_id}}); */
+	renderiza(req, res, varanda_id, pagina_id, usuarie_id, view, false);
+	return;
 
 });
