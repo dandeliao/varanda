@@ -1,0 +1,28 @@
+<div id="hero">
+	<h1>Bem-vinde de volta!</h1>
+</div>
+
+<form id="form-login" action="/autenticacao/login" method="post">
+		<h3>Digite os dados para entrar</h3>
+		<label for="bicho_id" hidden>nome de perfil</label>
+		<input type="text" id="nome-login" placeholder="nome de perfil" name="bicho_id" required>
+		<label for="senha" hidden>senha</label>
+		<input type="password" id="senha-login" placeholder="senha" name="senha" required>
+		<button type="submit">entrar</button>
+</form>
+
+<style>
+	#hero {
+		text-align: center;
+	}
+
+	#form-login {
+        max-width: 360px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+	}
+</style>

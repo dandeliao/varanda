@@ -1,6 +1,5 @@
-api/node_modules/
-api/package-lock.json
-api/.env
-api/static/*
-app/node_modules/
-app/package-lock.json
+legacy/
+node_modules/
+package-lock.json
+.env
+user_content/*

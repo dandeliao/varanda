@@ -1,0 +1,40 @@
+<div id="hero">
+	<h1>Bem-vinde à Varanda</h1>
+</div>
+
+<form id="form-cadastro" action="/cadastrar" method="post">
+    <h3>Crie um perfil</h3>
+    <label for="bicho_id" hidden>nome</label>
+    <input type="text" id="nome-cadastro" placeholder="nome_na_varanda" name="bicho_id" required>
+    <label for="email" hidden>e-mail</label>
+    <input type="text" id="email-cadastro" placeholder="e-mail" name="email" required>
+    <label for="senha" hidden>senha</label>
+    <input type="password" id="senha-cadastro" placeholder="senha" name="senha" required>
+    <label for="confirma_senha" hidden>confirme sua senha</label>
+    <input type="password" id="senha2-cadastro" placeholder="confirme sua senha" name="confirma_senha" required>
+    {{#if query.convite}}
+    <input type="text" id="convite-cadastro" name="convite_id" value="{{query.convite}}" readonly hidden>
+    {{/if}}
+    {{#if flash_message}}
+    <p style="color:darkred">Por favor, tente novamente. {{flash_message}}</p>
+    {{/if}}
+    <button type="submit">cadastrar</button>
+</form>
+
+
+
+<style>
+	#hero {
+		text-align: center;
+	}
+
+	#form-cadastro {
+        max-width: 360px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+	}
+</style>
