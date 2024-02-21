@@ -1,4 +1,3 @@
-<h3>Editar página atual:</h3>
 <form id="form-editar" action="/{{varanda.bicho_id}}/{{pagina.pagina_id}}" method="put">
 	<label for="titulo" hidden>título da página "{{pagina.pagina_id}}"</label>
 	<input type="text" id="titulo-pagina" value="{{pagina.pagina_id}}" name="titulo" required>
@@ -7,18 +6,7 @@
 
 	<button type="submit">salvar</button>
 </form>
-<hr>
-<h3>Editar outra página desta varanda:</h3>
-<ul>
-	<li><a href=".../editar">obter lista de páginas aqui</a></li>
-</ul>
-<hr>
-<h3>Criar nova página:</h3>
-<form id="form-nova-pagina" action="/{{varanda.bicho_id}}" method="post">
-	<label for="titulo-nova-pagina" hidden>título da nova página</label>
-	<input type="text" id="titulo-nova-pagina" placeholder="titulo-da-nova-pagina" name="titulo-nova-pagina" required>
-	<button type="submit">criar</button>
-</form>
+
 <style>
 	#form-editar, #form-nova-pagina {
         max-width: 360px;
