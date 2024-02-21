@@ -14,9 +14,19 @@
         {{> barra}}
     {{/if}}
  
-    {{#if flash_message}}
+    {{#if flash.aviso}}
         <dialog open>
-            <p>{{flash_message}}</p>
+            <p>{{flash.aviso}}</p>
+            <br>
+            <form method="dialog" hx-boost="false">
+                <button>entendi!</button>
+            </form>
+        </dialog>
+    {{/if}}
+
+    {{#if flash.erro}}
+        <dialog open>
+            <p>{{flash.erro}}</p>
             <br>
             <form method="dialog" hx-boost="false">
                 <button>entendi!</button>

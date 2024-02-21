@@ -21,16 +21,7 @@ exports.bicho_agente = async (req) => {
     return usuarie_id;
 }
 
-exports.renderiza = (req, res, varanda_id, pagina_id, usuarie_id, view, layout) => {
-    /* let flash_message;
-	if (req.flash) {
-		flash_message = req.flash('message')[0];
-	} else {
-		flash_message = req.session.flash.error ? req.session.flash.error[0] : null; // flash message da sessão (confirmação de login, por exemplo)
-	} */
-
-    console.log('---');
-    console.log(res.locals.flash_message);
+exports.objetoRenderizavel = (req, res, varanda_id, pagina_id, usuarie_id, layout) => {
 
     let obj_render =  {
         varanda: {
@@ -43,15 +34,16 @@ exports.renderiza = (req, res, varanda_id, pagina_id, usuarie_id, view, layout) 
 			logade: req.isAuthenticated(),
             bicho_id: usuarie_id
         },
+        flash: {
+            aviso: res.locals.flash_message,
+            erro: res.locals.flash_error
+        },
 		query: req.query ? req.query : null,
-        flash_message: res.locals.flash_message
     }
 
     if (layout !== undefined) {
         obj_render.layout = layout;
     }
 
-    res.render(view, obj_render);
-
-    return;
+    return obj_render;
 };

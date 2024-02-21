@@ -11,7 +11,7 @@ const servicePaginasPadrao 						= require('../../services/varandas/servicePagin
 const servicePaginas							= require('../../services/varandas/servicePaginas');
 const serviceEdicoes							= require('../../services/varandas/serviceEdicoes');
 const { validarPostPessoa, validarPutPessoa } 	= require('../../validations/validateBichos');
-const { params, renderiza }						= require('../../utils/utilControllers');
+const { params, objetoRenderizavel }			= require('../../utils/utilControllers');
 require('dotenv').config();
 
 exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id == varanda_id; query.bicho_id == usuarie_id
@@ -29,7 +29,8 @@ exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id
 		}
 	}
 
-	renderiza(req, res, varanda_id, 'inicio', usuarie_id, view);
+	const obj_render = objetoRenderizavel(req, res, varanda_id, 'inicio', usuarie_id);
+	res.render(view, obj_render);
 	
 });
 
@@ -38,7 +39,7 @@ exports.postCadastro = asyncHandler(async (req, res, next) => {
     const { value, error } = validarPostPessoa(req.body);
     console.log([value, error.message]);
 	if (error) {
-	    req.flash('message', error.message);
+	    req.flash('error', error.message);
         return res.redirect('/varanda/cadastrar');
 	} else {
         req.flash('message', 'Cadastro realizado com sucesso! Agora é só entrar.')
