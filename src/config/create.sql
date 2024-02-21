@@ -26,7 +26,6 @@ CREATE TABLE comunidades(
     bicho_criador_id            VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     participacao_livre          BOOLEAN DEFAULT false,
     participacao_com_convite    BOOLEAN DEFAULT true,
-    periodo_geracao_convite     INT DEFAULT 0
 );
 
 CREATE TABLE convites(
@@ -48,7 +47,8 @@ CREATE TABLE relacoes(
     participar      BOOLEAN DEFAULT true,
     editar          BOOLEAN DEFAULT false,
     moderar         BOOLEAN DEFAULT false,
-    representar     BOOLEAN DEFAULT false
+    representar     BOOLEAN DEFAULT false,
+    PRIMARY KEY(bicho_id, comunidade_id)
 );
 
 CREATE TABLE bichos_padrao(
@@ -69,22 +69,16 @@ CREATE TABLE sessoes (
 CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON sessoes ("expire");
 
 /* ---------------------------- */
-/* Contexto (varandas, páginas) */
-
-CREATE TABLE varandas(
-    varanda_id              SERIAL PRIMARY KEY NOT NULL, /* faz sentido? PK poderia ser FK bicho_id */
-    bicho_id                VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
-    comunitaria             BOOLEAN NOT NULL,
-    aberta                  BOOLEAN NOT NULL DEFAULT true,
-);
+/* Contexto (páginas) */
 
 CREATE TABLE paginas(
-    pagina_id       SERIAL PRIMARY KEY NOT NULL,
-    varanda_id      INTEGER REFERENCES varandas(varanda_id) ON DELETE CASCADE,
-    ordem           SERIAL NOT NULL,
+    pagina_id       VARCHAR(32),
+    varanda_id      VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     titulo          VARCHAR(32),
+    html            TEXT,
     publica         BOOLEAN DEFAULT false,
-    criacao         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+    criacao         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(pagina_id, varanda_id)
 );
 
 CREATE TABLE blocos(
@@ -94,17 +88,18 @@ CREATE TABLE blocos(
     criacao             TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE blocos_paginas(
-    bloco_pagina_id     SERIAL PRIMARY KEY NOT NULL,
+CREATE TABLE blocos_na_pagina(
+    bloco_na_pagina_id  SERIAL PRIMARY KEY NOT NULL,
     bloco_id            VARCHAR(32) REFERENCES blocos(bloco_id) ON DELETE SET NULL,
-    pagina_id           INTEGER REFERENCES paginas(pagina_id) ON DELETE CASCADE
+    pagina_id           VARCHAR(32) REFERENCES paginas(pagina_id) ON DELETE CASCADE,
+    varanda_id          VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE
 );
 
 CREATE TABLE edicoes(
     edicao_id       SERIAL PRIMARY KEY NOT NULL,
-    pagina_id       INTEGER REFERENCES paginas(pagina_id) ON DELETE CASCADE,
-    bicho_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
-    ordem           INTEGER NOT NULL,
+    pagina_id       VARCHAR(32) REFERENCES paginas(pagina_id) ON DELETE CASCADE,
+    varanda_id      VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
+    bicho_editor_id VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     titulo          VARCHAR(32),
     publica         BOOLEAN NOT NULL,
     html            TEXT,
