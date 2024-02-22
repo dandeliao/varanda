@@ -34,7 +34,7 @@
         </dialog>
     {{/if}}
  
-    <main id="varanda-janela">
+    <main id="varanda-janela" {{#unless usuarie.logade}}class="sem-login"{{/unless}}>
         {{{body}}}
     </main>
 

@@ -30,12 +30,14 @@ h1, h2, h3, h4,
 h5, h6          { font-weight: bolder }
 
 /* --- */
-/* decoração da barra (geral) */
+/* decoração da barra */
 
 #varanda-barra {
-    /*z-index: 100;*/
+    z-index: 420;
     overflow: hidden;
-    /*position: fixed;*/
+    position: fixed;
+    top: 0;
+    left: 0;
     
     height: var(--altura-barra);
 	width: 100%;
@@ -66,7 +68,6 @@ h5, h6          { font-weight: bolder }
     justify-self: end;
 }
 
-/* --- */
 /* responsividade e funcionalidade da barra e de seus elementos */
 
 #varanda-barra > button {
@@ -145,6 +146,34 @@ h5, h6          { font-weight: bolder }
         text-align: right;
     }
 
+}
+
+/* --- */
+/* decoração da área principal */
+
+#varanda-janela {
+    position: relative;
+    z-index: 0;
+    top: var(--altura-barra);
+    left: 0;
+    width: auto;
+}
+
+#varanda-janela.sem-login {
+    position: static;
+}
+
+@media screen and (max-width: 859px) {
+    #varanda-janela {
+        top: var(--altura-barra-mobile);
+    }
+}
+
+/* --- */
+/* auxiliares */
+
+dialog {
+    z-index: 9000;
 }
 
 .oculto-aos-olhos:not(:focus):not(:active) {

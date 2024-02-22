@@ -31,6 +31,8 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 	
 	const { varanda_id, pagina_id } = params(req);
 
+	/* falta validar (validação putVaranda) */
+
     let view = 'blocos/editar';
 
 	let usuarie_id = await bicho_agente(req);
@@ -43,10 +45,10 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	let pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
+	//let pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
 
 	let obj_render = objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
-	obj_render.pagina.html = pagina.html;
+	//obj_render.pagina.html = pagina.html;
 
 	res.render(view, obj_render);
 
