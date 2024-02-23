@@ -10,25 +10,14 @@ const serviceVarandas 							= require('../../services/varandas/serviceVarandas'
 const servicePaginasPadrao 						= require('../../services/varandas/servicePaginasPadrao');
 const servicePaginas							= require('../../services/varandas/servicePaginas');
 const serviceEdicoes							= require('../../services/varandas/serviceEdicoes');
-const { validarPostPessoa, validarPutPessoa } 	= require('../../validations/validateBichos');
-const { params, objetoRenderizavel }			= require('../../utils/utilControllers');
+const { params, objetoRenderizavel, quemEstaAgindo }	= require('../../utils/utilControllers');
 require('dotenv').config();
 
 exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id == varanda_id; query.bicho_id == usuarie_id
 
 	const { varanda_id } = params(req);
-
 	const view = `varandas/${varanda_id}/inicio`
-
-	let usuarie_id;
-	if (req.isAuthenticated()) {
-		usuarie_id = req.user.bicho_id;
-		if(req.query.bicho_id) {
-			const permissoesBicho = await serviceRelacoes.verRelacao(usuarie_id, req.query.bicho_id);
-			if (permissoesBicho.representar) usuarie_id = req.query.bicho_id;
-		}
-	}
-
+	const usuarie_id = await quemEstaAgindo(req);
 	const obj_render = objetoRenderizavel(req, res, varanda_id, 'inicio', usuarie_id);
 	res.render(view, obj_render);
 	

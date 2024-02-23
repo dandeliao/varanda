@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 const staticPath = `../../../${process.env.CONTENT_FOLDER}`;
+const pastaViews 	= `../../views`;
 
 exports.verPessoas = async function() {
 	const pessoas = await dataPessoas.getPessoas();
@@ -37,6 +38,12 @@ exports.registrarPessoa = async function (dados) {
 	const pastaBicho = path.join(path.resolve(__dirname, staticPath), 'bichos', 'em_uso', `${bicho.bicho_id}`);
 	if (!fs.existsSync(pastaBicho)){
 		fs.mkdirSync(pastaBicho);
+	}
+
+	// cria pasta das views (handlebars) do bicho
+	const pastaVaranda = path.join(path.resolve(__dirname, pastaViews), 'varandas', `${bicho.bicho_id}`);
+	if (!fs.existsSync(pastaVaranda)){
+		fs.mkdirSync(pastaVaranda);
 	}
 
 	let novoBicho = (await dataBichos.postBicho(bicho)).rows[0];

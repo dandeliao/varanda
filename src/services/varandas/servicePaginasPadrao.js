@@ -7,12 +7,11 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 		// cria página padrão comunitária
 		let emoji = randomGenerators.geraEmoji();
 		dadosPaginaPadrao = {
-			titulo: 'Início',
-			publica: false,
+			titulo: 'inicio',
 			html: `
 			<div id="container">
 
-			<v-cartao-de-visita></v-cartao-de-visita>
+			<div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
 			<br>
 			<v-bloco>
 			<h2>Participantes:</h2>
@@ -39,12 +38,11 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 		// cria página padrão pessoal
 		let emoji = randomGenerators.geraEmoji();
 		dadosPaginaPadrao = {
-			titulo: 'Início',
-			publica: false,
+			titulo: 'inicio',
 			html: `
 			<div id="container">
 
-			<v-cartao-de-visita></v-cartao-de-visita>
+			<div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
 			<br>
 			<v-bloco>
 			<h2>Comunidades:</h2>

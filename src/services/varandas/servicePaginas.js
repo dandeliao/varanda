@@ -1,8 +1,10 @@
-const dataPaginas = require('../../data/varandas/dataPaginas');
-const fs = require('fs');
-const path = require('path');
+const dataPaginas 					= require('../../data/varandas/dataPaginas');
+const fs 							= require('fs');
+const path 							= require('path');
+const { editarArquivoHandlebars,
+		deletarArquivoHandlebars, 
+		htmlParaHandlebars }		= require('../../utils/utilArquivos');
 require('dotenv').config();
-const staticPath = `../../../${process.env.CONTENT_FOLDER}`;
 
 exports.verPaginas = async function (varanda_id, pagina_id, publica) {
 	let resposta;
@@ -19,45 +21,34 @@ exports.verPaginas = async function (varanda_id, pagina_id, publica) {
 
 exports.criarPagina = async function (varanda_id, dados) {
 
-	let novaPagina = (await dataPaginas.createPagina(varanda_id, {titulo: dados.titulo, publica: dados.publica})).rows[0];
+	const pagina = {
+		titulo: 	dados.titulo,
+		publica: 	dados.publica ? dados.publica : true,
+		html:		dados.html
+	}
 
-	// cria arquivo html da página
-	const caminho = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${varanda_id}`, `${novaPagina.pagina_id}.html`);
-	fs.writeFile(caminho, dados.html, erro => {
-		if (erro) {
-			throw erro;
-		}
-	});
+	let novaPagina = (await dataPaginas.createPagina(varanda_id, pagina)).rows[0];
+	novaPagina.handlebars = htmlParaHandlebars(novaPagina.html);
+	console.log('novaPagina:', novaPagina);
+	editarArquivoHandlebars(varanda_id, novaPagina);
 
 	return novaPagina;
 };
 
 exports.editarPagina = async function (pagina_id, dados) {
-	const paginaEditada = await dataPaginas.editPagina(pagina_id, {titulo: dados.titulo, publica: dados.publica});
 	
-	// edita arquivo html da página
-	const caminho = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${paginaEditada.varanda_id}`, `${pagina_id}.html`);
-	fs.writeFile(caminho, dados.html, erro => {
-		if (erro) {
-			throw erro;
-		}
-	});
+	const paginaOriginal = (await dataPaginas.getPagina(pagina_id)).rows[0];
+	let paginaEditada = (await dataPaginas.editPagina(pagina_id, {titulo: dados.titulo, publica: dados.publica, html: dados.html})).rows[0];
+	paginaEditada.handlebars = htmlParaHandlebars(paginaEditada.html);
+	editarArquivoHandlebars(varanda_id, paginaEditada, paginaOriginal);
 
-	return paginaEditada.rows[0];
+	return paginaEditada;
 };
 
 exports.deletarPagina = async function (pagina_id) {
-	const paginaDeletada = (await dataPaginas.deletarPagina(pagina_id)).rows[0];
 
-	// deleta o arquivo html da página
-	const caminhoPagina = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${paginaDeletada.varanda_id}` `${pagina_id}.html`);
-	fs.unlink(caminhoPagina, (err) => {
-		if (err) {
-			if (err.code !== 'ENOENT') { // se o erro for arquivo não encontrado, não faz nada
-				throw err;
-			}
-		}
-	});
+	const paginaDeletada = (await dataPaginas.deletePagina(pagina_id)).rows[0];
+	deletarArquivoHandlebars(varanda_id, encodeURIComponent(paginaDeletada.titulo));
 
 	return paginaDeletada;
 };

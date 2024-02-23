@@ -72,13 +72,12 @@ CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON sessoes ("expire");
 /* Contexto (páginas) */
 
 CREATE TABLE paginas(
-    pagina_id       VARCHAR(32),
+    pagina_id       SERIAL PRIMARY KEY NOT NULL,
     varanda_id      VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     titulo          VARCHAR(32),
     html            TEXT,
-    publica         BOOLEAN DEFAULT false,
-    criacao         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY(pagina_id, varanda_id)
+    publica         BOOLEAN DEFAULT true,
+    criacao         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE blocos(
@@ -97,8 +96,7 @@ CREATE TABLE blocos_na_pagina(
 
 CREATE TABLE edicoes(
     edicao_id       SERIAL PRIMARY KEY NOT NULL,
-    pagina_id       VARCHAR(32) REFERENCES paginas(pagina_id) ON DELETE CASCADE,
-    varanda_id      VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
+    pagina_id       INTEGER REFERENCES paginas(pagina_id) ON DELETE CASCADE,
     bicho_editor_id VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     titulo          VARCHAR(32),
     publica         BOOLEAN NOT NULL,

@@ -2,14 +2,14 @@ const asyncHandler 									= require('express-async-handler');
 const customError	 								= require('http-errors');
 const serviceRelacoes								= require('../../services/bichos/serviceRelacoes');
 const servicePaginas								= require('../../services/varandas/servicePaginas');
-const { params, objetoRenderizavel, bicho_agente }	= require('../../utils/utilControllers');
+const { params, objetoRenderizavel, quemEstaAgindo } = require('../../utils/utilControllers');
 require('dotenv').config();
 
 exports.getPagina = asyncHandler(async (req, res, next) => {
     
     const { varanda_id, pagina_id } = params(req);
 
-    let usuarie_id = await bicho_agente(req);
+    let usuarie_id = await quemEstaAgindo(req);
 
 	let view;
 	switch (pagina_id) {
@@ -35,7 +35,7 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 
     let view = 'blocos/editar';
 
-	let usuarie_id = await bicho_agente(req);
+	let usuarie_id = await quemEstaAgindo(req);
 
 	if (usuarie_id !== varanda_id) {
 		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);

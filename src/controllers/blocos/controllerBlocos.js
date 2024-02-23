@@ -1,5 +1,5 @@
-const asyncHandler 	= require('express-async-handler');
-const { objetoRenderizavel } = require('../../utils/utilControllers');
+const asyncHandler = require('express-async-handler');
+const { objetoRenderizavel, objetoRenderizavelBloco, quemEstaAgindo } 	= require('../../utils/utilControllers');
 require('dotenv').config();
 
 exports.getBloco = asyncHandler(async (req, res, next) => {
@@ -10,18 +10,11 @@ exports.getBloco = asyncHandler(async (req, res, next) => {
     const varanda_id = req.query.varanda ? req.query.varanda : null;
 	const pagina_id	 = req.query.pagina ? req.query.pagina : null;
 
-	let usuarie_id;
-	if (req.isAuthenticated()) {
-		usuarie_id = req.user.bicho_id;
-		if(req.query.bicho_id) {
-			const permissoesBicho = await serviceRelacoes.verRelacao(req.user.bicho_id, req.query.bicho_id);
-			if (permissoesBicho.representar) {
-				usuarie_id = req.query.bicho_id;
-			}
-		}
-	}
+	const usuarie_id = await quemEstaAgindo(req);
 
-	const obj_render = objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id, false);
+	let obj_render = objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id, false);
+	obj_render = await objetoRenderizavelBloco(obj_render);
+
 	res.render(view, obj_render);
 
 });

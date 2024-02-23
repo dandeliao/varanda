@@ -79,19 +79,19 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 			const convite = await serviceConvites.verConvite(req.body.convite_id);
 			if (!convite || convite.comunidade_id !== process.env.INSTANCIA_ID) {
 				req.flash ('erro', `O cadastro falhou. O seu convite para ${process.env.INSTANCIA_ID} não é válido ou já foi usado.`);
-				res.redirect('/');
+				return res.redirect('/');
 			}
 			await serviceConvites.deletarConvite(req.body.convite_id);
 		} else {
 			req.flash('erro', 'O cadastro falhou. Você precisa de um convite para se cadastrar.');
-			res.redirect('/');
+			return res.redirect('/');
 		}
 	}
 	
 	const bichoExiste = await serviceBichos.verBicho(pessoa.bicho_id);
 	if (bichoExiste) {
 		req.flash('erro', `O apelido @${pessoa.bicho_id} já existe. Por favor, escolha outro apelido.`)
-		res.redirect(`/autenticacao/cadastro?convite=${req.body.convite_id}`);
+		return res.redirect(`/autenticacao/cadastro?convite=${req.body.convite_id}`);
 	}
 	
 	await servicePessoas.registrarPessoa(pessoa);
@@ -137,12 +137,14 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 	// cria varanda da pessoa, com página padrão
 	const comunitaria = false;
 	//const varanda = await serviceVarandas.criarVaranda(pessoa.bicho_id, comunitaria);
-	const paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
+	let paginaPadrao = {};
+	paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
+	console.log('paginaPadrao:', paginaPadrao);
 	const novaPagina = await servicePaginas.criarPagina(pessoa.bicho_id, paginaPadrao);
 	await serviceEdicoes.criarEdicao(pessoa.bicho_id, novaPagina, paginaPadrao.html);
 
 	req.flash('aviso', 'Cadastro realizado com sucesso! Agora é só entrar!');
-	res.redirect('/autenticacao/login');
+	return res.redirect('/autenticacao/login');
 
 }));
 

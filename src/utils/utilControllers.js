@@ -1,4 +1,5 @@
-const serviceRelacoes = require('../services/bichos/serviceRelacoes');
+const serviceRelacoes   = require('../services/bichos/serviceRelacoes');
+const serviceBichos     = require('../services/bichos/serviceBichos');
 
 exports.params = (req) => {
     const varanda_id = req.params.bicho_id ? req.params.bicho_id : process.env.INSTANCIA_ID;
@@ -8,18 +9,6 @@ exports.params = (req) => {
         pagina_id: pagina_id
     };
 };
-
-exports.bicho_agente = async (req) => {
-    let usuarie_id;
-	if (req.isAuthenticated()) {
-		usuarie_id = req.user.bicho_id;
-		if(req.query.bicho_id) {
-			const permissoesBicho = await serviceRelacoes.verRelacao(usuarie_id, req.query.bicho_id);
-			if (permissoesBicho.representar) usuarie_id = req.query.bicho_id;
-		}
-	}
-    return usuarie_id;
-}
 
 exports.objetoRenderizavel = (req, res, varanda_id, pagina_id, usuarie_id, layout) => {
 
@@ -38,6 +27,9 @@ exports.objetoRenderizavel = (req, res, varanda_id, pagina_id, usuarie_id, layou
             aviso: res.locals.flash_message,
             erro: res.locals.flash_error
         },
+        bloco: {
+
+        },
 		query: req.query ? req.query : null,
     }
 
@@ -46,4 +38,31 @@ exports.objetoRenderizavel = (req, res, varanda_id, pagina_id, usuarie_id, layou
     }
 
     return obj_render;
+};
+
+exports.objetoRenderizavelBloco = async (obj_render) => {
+
+    console.log('obj_render:', obj_render);
+
+    let bicho = {};
+    if (obj_render.query.bicho) {
+        bicho = await serviceBichos.verBicho(obj_render.query.bicho);
+        console.log('bicho:', bicho);
+    }
+
+    obj_render.bloco = bicho;
+    console.log(obj_render);
+    return obj_render;
+}
+
+exports.quemEstaAgindo = async (req) => {
+    let usuarie_id;
+	if (req.isAuthenticated()) {
+		usuarie_id = req.user.bicho_id; // usuárie logade (req.user)
+		if(req.query.bicho_id) {        // bicho declarado na query (req.query)
+			const permissoesBicho = await serviceRelacoes.verRelacao(req.user.bicho_id, req.query.bicho_id);
+			if (permissoesBicho.representar) usuarie_id = req.query.bicho_id;
+		}
+	}
+    return usuarie_id;
 };
