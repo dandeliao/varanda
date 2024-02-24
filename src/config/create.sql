@@ -84,6 +84,7 @@ CREATE TABLE blocos(
     bloco_id            VARCHAR(32) PRIMARY KEY NOT NULL,
     descricao           VARCHAR(500) NOT NULL,
     comunitario         BOOLEAN NOT NULL,
+    variaveis           TEXT ARRAY,
     criacao             TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -1,4 +1,4 @@
-<form action="/{{varanda.bicho_id}}/{{pagina.pagina_id}}" method="put">
+<form action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
 	
 	<label for="titulo" hidden>título da página "{{pagina.pagina_id}}"</label>
 	<input type="text" id="titulo-pagina" value="{{pagina.pagina_id}}" name="titulo" required>
@@ -6,7 +6,7 @@
 	<textarea id="html-pagina" name="html" required>{{pagina.html}}</textarea>
 
 	<button type="submit">salvar</button>
-	<button hx-get="/{{varanda.bicho_id}}/{{pagina.pagina_id}}" hx-target="body">cancelar</button>
+	<button hx-get="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" hx-target="body" hx-push-url="true">cancelar</button>
 
 </form>
 

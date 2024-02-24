@@ -13,7 +13,7 @@ exports.getBloco = asyncHandler(async (req, res, next) => {
 	const usuarie_id = await quemEstaAgindo(req);
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id, false);
-	obj_render = await objetoRenderizavelBloco(obj_render);
+	obj_render = await objetoRenderizavelBloco(obj_render, bloco_id);
 
 	res.render(view, obj_render);
 

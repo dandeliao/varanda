@@ -7,7 +7,7 @@ const { editarArquivoHandlebars,
 const { vidParaId }					= require('../../utils/utilControllers');
 require('dotenv').config();
 
-exports.verPaginas = async function (varanda_id, pagina_id, publica = null) {
+exports.verPaginas = async function (varanda_id, pagina_id = null, publica = null) {
 	let resposta;
 	if (pagina_id !== null) {
 		const pagina_vid = `${varanda_id}/${pagina_id}`;
@@ -32,7 +32,6 @@ exports.criarPagina = async function (varanda_id, dados) {
 
 	let novaPagina = (await dataPaginas.createPagina(varanda_id, pagina)).rows[0];
 	novaPagina.handlebars = htmlParaHandlebars(novaPagina.html);
-	console.log('novaPagina:', novaPagina);
 	editarArquivoHandlebars(varanda_id, novaPagina);
 
 	return novaPagina;

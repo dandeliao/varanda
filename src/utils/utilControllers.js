@@ -1,5 +1,7 @@
 const serviceRelacoes   = require('../services/bichos/serviceRelacoes');
 const serviceBichos     = require('../services/bichos/serviceBichos');
+const serviceBlocos     = require('../services/varandas/serviceBlocos');
+const servicePaginas    = require('../services/varandas/servicePaginas');
 
 exports.params = (req) => {
     const varanda_id = req.params.bicho_id ? req.params.bicho_id : process.env.INSTANCIA_ID;
@@ -40,18 +42,33 @@ exports.objetoRenderizavel = async (req, res, varanda_id, pagina_id, usuarie_id,
     return obj_render;
 };
 
-exports.objetoRenderizavelBloco = async (obj_render) => {
+exports.objetoRenderizavelBloco = async (obj_render, bloco_id) => {
 
-    console.log('obj_render:', obj_render);
+    const bloco = await serviceBlocos.verBloco(bloco_id);
 
-    let bicho = {};
-    if (obj_render.query.bicho) {
-        bicho = await serviceBichos.verBicho(obj_render.query.bicho);
-        console.log('bicho:', bicho);
+    let dados = {};
+    for(let variavel of bloco.variaveis) {
+        switch(variavel){
+            case 'bicho':
+                if (obj_render.query.bicho) {
+                    const bicho = await serviceBichos.verBicho(obj_render.query.bicho);
+                    dados = Object.assign({bicho: bicho});
+                }
+                break;
+            case 'paginas':
+                if (obj_render.varanda.varanda_id) {
+                    const paginas = await servicePaginas.verPaginas(obj_render.varanda.varanda_id);
+                    dados = Object.assign({paginas: paginas});
+                }
+                break;
+            default:
+                if (obj_render.query[variavel]) {
+                    dados[variavel] = obj_render.query[variavel];
+                }
+        }
     }
 
-    obj_render.bloco = bicho;
-    console.log(obj_render);
+    obj_render.bloco = dados;
     return obj_render;
 }
 

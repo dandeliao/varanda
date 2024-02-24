@@ -2,14 +2,15 @@ const express 	= require('express');
 const router 	= express.Router();
 require('dotenv').config();
 
-const { getVaranda, postVaranda,                    putVaranda, deleteVaranda   } = require('../controllers/varandas/controllerVarandas');
-const { getPagina,  getEditarPagina, postPagina,    putPagina,  deletePagina    } = require('../controllers/varandas/controllerPaginas');
+const { getVaranda, getFutricarVaranda, postVaranda,    putVaranda, deleteVaranda   } = require('../controllers/varandas/controllerVarandas');
+const { getPagina,  getEditarPagina,    postPagina,     putPagina,  deletePagina    } = require('../controllers/varandas/controllerPaginas');
 
-router.get   ('/',             getVaranda);
-router.get   ('/:bicho_id',    getVaranda);
-router.post  ('/',            postVaranda);
-router.put   ('/:bicho_id',    putVaranda);
-router.delete('/:bicho_id', deleteVaranda);
+router.get   ('/',                      getVaranda);
+router.get   ('/:bicho_id',             getVaranda);
+router.get   ('/:bicho_id/futricar',    getFutricarVaranda);
+router.post  ('/',                      postVaranda);
+router.put   ('/:bicho_id',             putVaranda);
+router.delete('/:bicho_id',             deleteVaranda);
 
 router.get   ('/:bicho_id/:pagina_id',          getPagina);
 router.get   ('/:bicho_id/:pagina_id/editar',   getEditarPagina)

@@ -23,6 +23,29 @@ exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id
 	
 });
 
+exports.getFutricarVaranda = asyncHandler(async (req, res, next) => {
+
+	const { varanda_id } = params(req);
+	const pagina_id = 'futricar';
+    let view = 'blocos/futricar';
+	let usuarie_id = await quemEstaAgindo(req);
+
+	if (usuarie_id !== varanda_id) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
+		if (!permissoes || !permissoes.participar) {
+			req.flash('error', `Você não pode futricar ${varanda_id}.`);
+			return res.redirect(`/${varanda_id}`);
+		}
+	}
+
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	const paginas = await servicePaginas.verPaginas(varanda_id);
+	obj_render.bloco.paginas = paginas;
+
+	res.render(view, obj_render);
+
+});
+
 exports.postVaranda = asyncHandler(async (req, res, next) => {
 
 });

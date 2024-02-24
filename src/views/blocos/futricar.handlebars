@@ -1,3 +1,10 @@
-<h1>{{varanda.bicho_id}}</h1>
-<h2>Detalhes:</h2>
-<p>blá blá blá</p>
+<div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
+<div>
+    <h2>Páginas de {{varanda.bicho_id}}</h2>
+    <ul>
+        {{#each bloco.paginas}}
+            <li><a href="/{{this.pagina_vid}}">{{this.titulo}}</a> <button hx-delete="/{{this.pagina_vid}}" hx-target="body">Remover página</button></li>
+        {{/each}}
+    </ul>
+    <button hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
+</div>

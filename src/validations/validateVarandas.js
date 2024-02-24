@@ -22,15 +22,14 @@ const schemaPostPagina = Joi.object({
 });
 
 const schemaPutPagina = Joi.object({
-	// pagina_id, titulo, publica, ordem, html, bicho_id
-	pagina_id: Joi.number().integer().required(),
+	// pagina_vid, varanda_id, titulo, publica, html
+	pagina_vid: Joi.string().required(),
+	varanda_id: Joi.string().max(32),
 	titulo: Joi.string().max(32),
 	publica: Joi.boolean(),
-	ordem: Joi.number().integer(),
-	html: Joi.htmlInput().allowedTags(),
-	bicho_id: Joi.string().min(1).max(32)
+	html: Joi.htmlInput().allowedTags()
 });
 
 exports.validarPutVaranda = validar(schemaPutVaranda);
-exports.schemaPostPagina = validar(schemaPostPagina);
-exports.schemaPutPagina = validar(schemaPutPagina);
+exports.validarPostPagina = validar(schemaPostPagina);
+exports.validarPutPagina = validar(schemaPutPagina);

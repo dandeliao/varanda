@@ -1,14 +1,15 @@
 <div class="bloco">
-
+	{{#with bloco.bicho}}
     <div class="imagens">
-        <img class="fundo" src="/artefatos/{{bloco.bicho_id}}/{{bloco.fundo}}" alt="{{bloco.descricao_fundo}}" title="{{bloco.descricao_fundo}}" />
-        <img class="avatar" src="/artefatos/{{bloco.bicho_id}}/{{bloco.avatar}}" alt="{{bloco.descricao_avatar}}" title="{{bloco.descricao_avatar}}"/>
+        <img class="fundo" src="/artefatos/{{bicho_id}}/{{fundo}}" alt="{{descricao_fundo}}" title="{{descricao_fundo}}" />
+        <img class="avatar" src="/artefatos/{{bicho_id}}/{{avatar}}" alt="{{descricao_avatar}}" title="{{descricao_avatar}}"/>
     </div>        
     <div class="texto">
-        <h2>{{bloco.nome}}</h2>
-        <h6>@{{bloco.bicho_id}}</h6>
-        <p>{{bloco.descricao}}</p>
+        <h2>{{nome}}</h2>
+        <h6>@{{bicho_id}}</h6>
+        <p>{{descricao}}</p>
     </div>
+	{{/with}}
 
     <style>
     .bloco {
