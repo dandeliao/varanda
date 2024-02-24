@@ -18,7 +18,7 @@ exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id
 	const { varanda_id } = params(req);
 	const view = `varandas/${varanda_id}/inicio`
 	const usuarie_id = await quemEstaAgindo(req);
-	const obj_render = objetoRenderizavel(req, res, varanda_id, 'inicio', usuarie_id);
+	const obj_render = await objetoRenderizavel(req, res, varanda_id, 'inicio', usuarie_id);
 	res.render(view, obj_render);
 	
 });

@@ -10,7 +10,7 @@ exports.params = (req) => {
     };
 };
 
-exports.objetoRenderizavel = (req, res, varanda_id, pagina_id, usuarie_id, layout) => {
+exports.objetoRenderizavel = async (req, res, varanda_id, pagina_id, usuarie_id, layout) => {
 
     let obj_render =  {
         varanda: {
@@ -65,4 +65,8 @@ exports.quemEstaAgindo = async (req) => {
 		}
 	}
     return usuarie_id;
+};
+
+exports.vidParaId = (pagina) => {
+    return pagina.pagina_vid.match(/[^\/]*$/g)[0];
 };

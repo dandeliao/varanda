@@ -22,13 +22,15 @@ exports.getPagina = asyncHandler(async (req, res, next) => {
 			break;
 	}
 
-	const obj_render = objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	const obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
 	res.render(view, obj_render);
 
 });
 
 exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 	
+	/* é preciso pensar na relação entre pagina_id e a url da pagina. talvez usar url completa da pagina como id no banco de dados */
+
 	const { varanda_id, pagina_id } = params(req);
 
 	/* falta validar (validação putVaranda) */
@@ -45,23 +47,24 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	//let pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
-
-	let obj_render = objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
-	//obj_render.pagina.html = pagina.html;
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	const pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
+	console.log('pagina:', pagina);
+	obj_render.pagina.html = pagina.html;
+	console.log('obj_render:', obj_render);
 
 	res.render(view, obj_render);
 
 });
 
 exports.postPagina = asyncHandler(async (req, res, next) => {
-    
+
 });
 
 exports.putPagina = asyncHandler(async (req, res, next) => {
-    
+    // fazer putPagina
 });
 
 exports.deletePagina = asyncHandler(async (req, res, next) => {
-    
+
 });

@@ -1,5 +1,8 @@
 const htmlInput = require('joi-html-input');
 const Joi = require('joi').extend(htmlInput);
+const palavrasReservadas = ['inicio', 'editar', 'clonar', 'futricar'];
+
+// a fazer: usar palavrasReservadas para validacoes
 
 const validar = (schema) => (payload) =>
 	schema.validate(payload, { abortEarly: false });

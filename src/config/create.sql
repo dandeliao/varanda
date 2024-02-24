@@ -72,7 +72,7 @@ CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON sessoes ("expire");
 /* Contexto (páginas) */
 
 CREATE TABLE paginas(
-    pagina_id       SERIAL PRIMARY KEY NOT NULL,
+    pagina_vid      TEXT PRIMARY KEY NOT NULL,
     varanda_id      VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     titulo          VARCHAR(32),
     html            TEXT,

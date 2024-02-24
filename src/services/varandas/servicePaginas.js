@@ -4,12 +4,14 @@ const path 							= require('path');
 const { editarArquivoHandlebars,
 		deletarArquivoHandlebars, 
 		htmlParaHandlebars }		= require('../../utils/utilArquivos');
+const { vidParaId }					= require('../../utils/utilControllers');
 require('dotenv').config();
 
-exports.verPaginas = async function (varanda_id, pagina_id, publica) {
+exports.verPaginas = async function (varanda_id, pagina_id, publica = null) {
 	let resposta;
 	if (pagina_id !== null) {
-		const pagina = await dataPaginas.getPagina(pagina_id);
+		const pagina_vid = `${varanda_id}/${pagina_id}`;
+		const pagina = await dataPaginas.getPagina(pagina_vid);
 		resposta = pagina.rows[0];
 	} else {
 		const paginas = await dataPaginas.getPaginas(varanda_id, publica);
@@ -22,6 +24,7 @@ exports.verPaginas = async function (varanda_id, pagina_id, publica) {
 exports.criarPagina = async function (varanda_id, dados) {
 
 	const pagina = {
+		pagina_vid:	`${varanda_id}/${encodeURIComponent(dados.titulo)}`,
 		titulo: 	dados.titulo,
 		publica: 	dados.publica ? dados.publica : true,
 		html:		dados.html
@@ -35,20 +38,22 @@ exports.criarPagina = async function (varanda_id, dados) {
 	return novaPagina;
 };
 
-exports.editarPagina = async function (pagina_id, dados) {
+exports.editarPagina = async function (varanda_id, pagina_id, dados) {
 	
-	const paginaOriginal = (await dataPaginas.getPagina(pagina_id)).rows[0];
-	let paginaEditada = (await dataPaginas.editPagina(pagina_id, {titulo: dados.titulo, publica: dados.publica, html: dados.html})).rows[0];
+	const pagina_vid = `${varanda_id}/${pagina_id}`;
+
+	let paginaEditada = (await dataPaginas.editPagina(pagina_vid, {titulo: dados.titulo, publica: dados.publica, html: dados.html})).rows[0];
 	paginaEditada.handlebars = htmlParaHandlebars(paginaEditada.html);
-	editarArquivoHandlebars(varanda_id, paginaEditada, paginaOriginal);
+	editarArquivoHandlebars(varanda_id, paginaEditada);
 
 	return paginaEditada;
 };
 
-exports.deletarPagina = async function (pagina_id) {
+exports.deletarPagina = async function (varanda_id, pagina_id) {
 
-	const paginaDeletada = (await dataPaginas.deletePagina(pagina_id)).rows[0];
-	deletarArquivoHandlebars(varanda_id, encodeURIComponent(paginaDeletada.titulo));
+	const pagina_vid = `${varanda_id}/${pagina_id}`;
+	const paginaDeletada = (await dataPaginas.deletePagina(pagina_vid)).rows[0];
+	deletarArquivoHandlebars(varanda_id, vidParaId(paginaDeletada.pagina_vid));
 
 	return paginaDeletada;
 };

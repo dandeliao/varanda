@@ -139,6 +139,7 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 	//const varanda = await serviceVarandas.criarVaranda(pessoa.bicho_id, comunitaria);
 	let paginaPadrao = {};
 	paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
+	paginaPadrao.pagina_vid = `${pessoa.bicho_id}/inicio`;
 	console.log('paginaPadrao:', paginaPadrao);
 	const novaPagina = await servicePaginas.criarPagina(pessoa.bicho_id, paginaPadrao);
 	await serviceEdicoes.criarEdicao(pessoa.bicho_id, novaPagina, paginaPadrao.html);
