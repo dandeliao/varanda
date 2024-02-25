@@ -1,0 +1,25 @@
+<form action="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" method="{{metodo}}">
+	
+    <label for="bicho_id" hidden>arroba"</label>
+	<span>@</span><input type="text" id="arroba-bicho" value="{{varanda.bicho_id}}" name="bicho_id" required>
+	<label for="nome" hidden>nome</label>
+	<input type="text" id="nome-bicho" value="{{varanda.nome}}" name="nome" required>
+	<label for="descricao" hidden>descrição do bicho</label>
+	<textarea id="descricao-bicho" name="descricao">descreva...</textarea>
+
+	<button type="submit">salvar</button>
+	<button hx-get="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" hx-target="body" hx-push-url="true">cancelar</button>
+
+</form>
+
+<style>
+	form {
+        max-width: 360px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+	}
+</style>

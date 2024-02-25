@@ -32,8 +32,6 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 
 	const { varanda_id, pagina_id } = params(req);
 
-	console.log(pagina_id);
-
 	if (['editar', 'clonar', 'futricar'].includes(pagina_id)) {
 		req.flash('error', `Você não pode editar a página ${pagina_id}`);
 		return res.redirect(`/${varanda_id}`);

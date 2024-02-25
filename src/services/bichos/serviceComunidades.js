@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 const staticPath = `../../../${process.env.CONTENT_FOLDER}`;
+const caminhoHandlebars = `../../views`
 
 exports.verComunidades = async function () {
 	const comunidades = await dataComunidades.getComunidades();
@@ -26,10 +27,14 @@ exports.criarComunidade = async function (dados, bichoCriadorId) {
 		descricao: dados.descricao ? dados.descricao : `Oi! Bem-vinde à comunidade ${dados.nome ? dados.nome : dados.bicho_id}.`
 	};
 
-	// cria pasta da comunidade
+	// cria pastas da comunidade
 	const pastaBicho = path.join(path.resolve(__dirname, staticPath), 'bichos', 'em_uso', `${bicho.bicho_id}`);
 	if (!fs.existsSync(pastaBicho)){
 		fs.mkdirSync(pastaBicho);
+	}
+	const pastaHandlebars = path.join(path.resolve(__dirname, caminhoHandlebars), 'varandas', `${bicho.bicho_id}`);
+	if (!fs.existsSync(pastaHandlebars)){
+		fs.mkdirSync(pastaHandlebars);
 	}
 
 	let novoBicho = (await dataBichos.postBicho(bicho)).rows[0];
