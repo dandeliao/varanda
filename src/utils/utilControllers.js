@@ -5,7 +5,7 @@ const servicePaginas    = require('../services/varandas/servicePaginas');
 
 exports.params = (req) => {
     const varanda_id = req.params.bicho_id ? req.params.bicho_id : process.env.INSTANCIA_ID;
-	const pagina_id = req.params.pagina_id ? req.params.pagina_id : 'inicio';
+	const pagina_id = req.params.pagina_id ? encodeURIComponent(req.params.pagina_id) : 'inicio';
     return {
         varanda_id: varanda_id,
         pagina_id: pagina_id
@@ -14,12 +14,14 @@ exports.params = (req) => {
 
 exports.objetoRenderizavel = async (req, res, varanda_id, pagina_id, usuarie_id, layout) => {
 
+    const pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
     let obj_render =  {
         varanda: {
             bicho_id: varanda_id
         },
 		pagina: {
-            pagina_id: pagina_id
+            pagina_id: pagina_id,
+            titulo: pagina ? pagina.titulo : null
 		},
         usuarie: {
 			logade: req.isAuthenticated(),
@@ -84,6 +86,6 @@ exports.quemEstaAgindo = async (req) => {
     return usuarie_id;
 };
 
-exports.vidParaId = (pagina) => {
-    return pagina.pagina_vid.match(/[^\/]*$/g)[0];
+exports.vidParaId = (vid) => {
+    return vid.match(/[^\/]*$/g)[0];
 };

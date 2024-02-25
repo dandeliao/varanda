@@ -3,7 +3,7 @@ const customError	 								= require('http-errors');
 const serviceRelacoes								= require('../../services/bichos/serviceRelacoes');
 const servicePaginas								= require('../../services/varandas/servicePaginas');
 const serviceEdicoes								= require('../../services/varandas/serviceEdicoes');
-const { validarPutPagina }							= require('../../validations/validateVarandas');
+const { validarPutPagina, validarPostPagina }		= require('../../validations/validateVarandas');
 const { params, objetoRenderizavel, quemEstaAgindo } = require('../../utils/utilControllers');
 require('dotenv').config();
 
@@ -65,8 +65,47 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 });
 
 exports.postPagina = asyncHandler(async (req, res, next) => {
-	console.log('entrou em postPagina');
-	// proibir postar pagina com o nome "nova_pagina"
+	
+	const { titulo, html, publica } = req.body;
+	const varanda_id = req.params.bicho_id;
+
+	if (['editar', 'clonar', 'futricar', 'nova_pagina'].includes(encodeURIComponent(titulo))) {
+		req.flash('error', `Você não pode criar uma página com o título ${titulo}.`);
+		return res.redirect(`/${varanda_id}/nova_pagina/editar`);
+	}
+
+	const pagina = {
+		varanda_id: varanda_id,
+		titulo: titulo,
+		publica: publica,
+		html: html
+	}
+
+	const { value, error } = validarPostPagina(pagina);
+	if (error) {
+	    req.flash('error', error.message);
+        return res.redirect(303, `/${varanda_id}/nova_pagina/editar`);
+	}
+	
+	let usuarie_id = await quemEstaAgindo(req);
+
+	if (usuarie_id !== varanda_id) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
+		if (!permissoes || !permissoes.editar) {
+			req.flash('error', `Você não pode criar páginas em ${varanda_id}.`);
+			return res.redirect(303, `/${varanda_id}`);
+		}
+	}
+
+	console.log('varanda_id:', varanda_id);
+	console.log('pagina:', pagina);
+	const paginaCriada = await servicePaginas.criarPagina(varanda_id, pagina);
+	console.log('paginaCriada:', paginaCriada);
+	await serviceEdicoes.criarEdicao(usuarie_id, paginaCriada, paginaCriada.html);
+
+	req.flash('aviso', 'A página foi criada com sucesso!');
+	return res.redirect(303, `/${paginaCriada.pagina_vid}`);
+
 });
 
 exports.putPagina = asyncHandler(async (req, res, next) => {
@@ -86,6 +125,7 @@ exports.putPagina = asyncHandler(async (req, res, next) => {
 	    req.flash('error', error.message);
         return res.redirect(303, `/${varanda_id}/${pagina_id}`);
 	}
+	
 	let usuarie_id = await quemEstaAgindo(req);
 
 	if (usuarie_id !== varanda_id) {
@@ -104,5 +144,20 @@ exports.putPagina = asyncHandler(async (req, res, next) => {
 });
 
 exports.deletePagina = asyncHandler(async (req, res, next) => {
-	console.log('entrou em deletePagina');
+	const { varanda_id, pagina_id } = params(req);
+	
+	let usuarie_id = await quemEstaAgindo(req);
+
+	if (usuarie_id !== varanda_id) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
+		if (!permissoes || !permissoes.editar || !permissoes.moderar) {
+			req.flash('error', `Você não pode apagar páginas de ${varanda_id}.`);
+			return res.redirect(303, `/${varanda_id}/${pagina_id}`);
+		}
+	}
+
+	await servicePaginas.deletarPagina(varanda_id, pagina_id);
+
+	req.flash('aviso', 'A página foi removida com sucesso!');
+	return res.redirect(303, `/${varanda_id}/futricar`);
 });

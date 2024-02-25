@@ -15,10 +15,10 @@ const schemaPutVaranda = Joi.object({
 
 const schemaPostPagina = Joi.object({
 	// titulo, publica, html, bicho_id
+	varanda_id: Joi.string().max(32),
 	titulo: Joi.string().max(32),
 	publica: Joi.boolean(),
 	html: Joi.htmlInput().allowedTags(),
-	bicho_id: Joi.string().min(1).max(32)
 });
 
 const schemaPutPagina = Joi.object({

@@ -1,7 +1,7 @@
 <form action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
 	
 	<label for="titulo" hidden>título da página "{{pagina.pagina_id}}"</label>
-	<input type="text" id="titulo-pagina" value="{{pagina.pagina_id}}" name="titulo" required>
+	<input type="text" id="titulo-pagina" value="{{pagina.titulo}}" name="titulo" required>
 	<label for="html" hidden>html da página "{{pagina.pagina_id}}"</label>
 	<textarea id="html-pagina" name="html" required>{{pagina.html}}</textarea>
 
