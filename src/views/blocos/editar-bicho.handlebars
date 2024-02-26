@@ -1,11 +1,13 @@
 <form action="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" method="{{metodo}}">
 	
-    <label for="bicho_id" hidden>arroba"</label>
+    {{#if nova_comunidade}}
+	<label for="bicho_id" hidden>arroba</label>
 	<span>@</span><input type="text" id="arroba-bicho" value="{{varanda.bicho_id}}" name="bicho_id" required>
+	{{/if}}
 	<label for="nome" hidden>nome</label>
-	<input type="text" id="nome-bicho" value="{{varanda.nome}}" name="nome" required>
+	<input type="text" id="nome-bicho" value="{{varanda.bicho.nome}}" name="nome" required>
 	<label for="descricao" hidden>descrição do bicho</label>
-	<textarea id="descricao-bicho" name="descricao">descreva...</textarea>
+	<textarea id="descricao-bicho" name="descricao">{{varanda.bicho.descricao}}</textarea>
 
 	<button type="submit">salvar</button>
 	<button hx-get="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" hx-target="body" hx-push-url="true">cancelar</button>

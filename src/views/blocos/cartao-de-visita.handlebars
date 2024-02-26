@@ -1,15 +1,17 @@
 <div class="bloco">
 	{{#with bloco.bicho}}
-    <div class="imagens">
-        <img class="fundo" src="/artefatos/{{bicho_id}}/{{fundo}}" alt="{{descricao_fundo}}" title="{{descricao_fundo}}" />
-        <img class="avatar" src="/artefatos/{{bicho_id}}/{{avatar}}" alt="{{descricao_avatar}}" title="{{descricao_avatar}}"/>
-    </div>        
-    <div class="texto">
+    <div class="fundo" style="background-image: url(/{{bicho_id}}/fundo);" alt="{{descricao_fundo}}" title="{{descricao_fundo}}"></div>
+    <div class="informacao">
+		<img class="avatar" src="/{{bicho_id}}/avatar" alt="{{descricao_avatar}}" title="{{descricao_avatar}}"/>
         <h2>{{nome}}</h2>
-        <h6>@{{bicho_id}}</h6>
+        <a href="/{{bicho_id}}">@{{bicho_id}}</a>
         <p>{{descricao}}</p>
     </div>
 	{{/with}}
+	<p>{{bloco.futricar}}</p>
+	{{#if bloco.futricar}}
+	<a href="/{{bloco.bicho.bicho_id}}/editar-bicho">Editar bicho</a>
+	{{/if}}
 
     <style>
     .bloco {
@@ -18,8 +20,9 @@
         position:   relative;
         margin:     0 auto;
         width:      100%;
+		max-width: 	97vw;
         
-        background-color:   var(--cor-fundo-2);
+        background-color:   var(--cor-fundo);
         color:              var(--cor-fonte);
         font-family:        var(--familia-fonte);
         box-shadow:         var(--sombreado);
@@ -28,6 +31,18 @@
         border-radius:      var(--raio-borda);
         border-color:       var(--cor-principal);
     }
+	.fundo {
+		max-width: 100%;
+		height: 120px;
+	}
+	.avatar{
+		max-width: 64px;
+		border-radius: 100%;
+	}
+	.informacao{
+		position: relative;
+		top: -2rem;
+	}
     </style>
 
 </div>

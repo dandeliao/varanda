@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const { objetoRenderizavel, objetoRenderizavelBloco, quemEstaAgindo } 	= require('../../utils/utilControllers');
+const { objetoRenderizavel, objetoRenderizavelBloco, quemEstaAgindo } 	= require('../utils/utilControllers');
 require('dotenv').config();
 
 exports.getBloco = asyncHandler(async (req, res, next) => {

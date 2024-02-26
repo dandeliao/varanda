@@ -1,7 +1,7 @@
 const express 	= require('express');
 const router 	= express.Router();
 
-const { getBloco } = require('../controllers/blocos/controllerBlocos');
+const { getBloco } = require('../controllers/controllerBlocos');
 
 router.get('/:bloco_id', getBloco);
 

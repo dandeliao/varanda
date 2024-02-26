@@ -1,17 +1,14 @@
 const asyncHandler 				                = require('express-async-handler');
 const customError	 			                = require('http-errors');
-const servicePessoas 							= require('../../services/bichos/servicePessoas');
-const serviceBichos 							= require('../../services/bichos/serviceBichos');
-const serviceBichosPadrao 						= require('../../services/bichos/serviceBichosPadrao');
-const serviceConvites 							= require('../../services/bichos/serviceConvites');
-const serviceComunidades 						= require('../../services/bichos/serviceComunidades');
-const serviceRelacoes 							= require('../../services/bichos/serviceRelacoes');
-const serviceVarandas 							= require('../../services/varandas/serviceVarandas');
-const servicePaginasPadrao 						= require('../../services/varandas/servicePaginasPadrao');
-const servicePaginas							= require('../../services/varandas/servicePaginas');
-const serviceEdicoes							= require('../../services/varandas/serviceEdicoes');
-const { validarPostComunidade }					= require('../../validations/validateBichos');
-const { params, objetoRenderizavel, quemEstaAgindo }	= require('../../utils/utilControllers');
+const serviceBichos 							= require('../services/bichos/serviceBichos');
+const serviceBichosPadrao 						= require('../services/bichos/serviceBichosPadrao');
+const serviceComunidades 						= require('../services/bichos/serviceComunidades');
+const serviceRelacoes 							= require('../services/bichos/serviceRelacoes');
+const servicePaginasPadrao 						= require('../services/varandas/servicePaginasPadrao');
+const servicePaginas							= require('../services/varandas/servicePaginas');
+const serviceEdicoes							= require('../services/varandas/serviceEdicoes');
+const { validarPostComunidade, validarPutBicho }							= require('../validations/validateBichos');
+const { params, objetoRenderizavel, quemEstaAgindo, palavrasReservadas }	= require('../utils/utilControllers');
 require('dotenv').config();
 
 exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id == varanda_id; query.bicho_id == usuarie_id
@@ -22,41 +19,6 @@ exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id
 	const obj_render = await objetoRenderizavel(req, res, varanda_id, 'inicio', usuarie_id);
 	res.render(view, obj_render);
 	
-});
-
-exports.getFutricarVaranda = asyncHandler(async (req, res, next) => {
-
-	const { varanda_id } = params(req);
-	const pagina_id = 'futricar';
-    let view = 'blocos/futricar';
-	const usuarie_id = await quemEstaAgindo(req);
-
-	if (usuarie_id !== varanda_id) {
-		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
-		if (!permissoes || !permissoes.participar) {
-			req.flash('error', `Você não pode futricar ${varanda_id}.`);
-			return res.redirect(`/${varanda_id}`);
-		}
-	}
-
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
-	const paginas = await servicePaginas.verPaginas(varanda_id);
-	obj_render.bloco.paginas = paginas;
-
-	res.render(view, obj_render);
-
-});
-
-exports.getCriarComunidade = asyncHandler(async (req, res, next) => {
-
-    let view = 'blocos/editar-bicho';
-	const usuarie_id = await quemEstaAgindo(req);
-
-	let obj_render = await objetoRenderizavel(req, res, 'nova_comunidade', 'criar-comunidade', usuarie_id);
-	obj_render.metodo = 'post';	
-	obj_render.nova_comunidade = true;
-
-	res.render(view, obj_render);
 });
 
 exports.postVaranda = asyncHandler(async (req, res, next) => {
@@ -70,10 +32,15 @@ exports.postVaranda = asyncHandler(async (req, res, next) => {
 		bicho_criador_id:	usuarie_id
 	}
 
-	const { erro, resultado } = validarPostComunidade(req.body);
+	const { erro, resultado } = validarPostComunidade(bicho);
 	if (erro) {
 		req.flash('erro', `Erro ao validar as informações da nova comunidade. Detalhes: ${erro.details}`);
 		req.redirect('/criar-comunidade');
+	}
+
+	if (palavrasReservadas().includes(bicho.bicho_id)) {
+		req.flash('error', `Já existe um bicho com a arroba ${bicho.bicho_id}.`);
+		return res.redirect(`/criar-comunidade`);
 	}
 
 	const bichoExiste = await serviceBichos.verBicho(req.body.bicho_id);
@@ -112,10 +79,44 @@ exports.postVaranda = asyncHandler(async (req, res, next) => {
 
 });
 
-exports.putVaranda = asyncHandler(async (req, res, next) => { // :bicho_id
-    // esta rota será acessada por um bloco (do tipo formulário, dentro de futricar), não por uma página própria. Portanto, não precisa criar getEditarVaranda.
+exports.putVaranda = asyncHandler(async (req, res, next) => {
+    
+	const { varanda_id, pagina_id } = params(req);
+	let bichoOriginal = await serviceBichos.verBicho(varanda_id);
+	const comunidade = await serviceComunidades.verComunidade(varanda_id);
+	if (comunidade) {
+		bichoOriginal.participacao_livre = comunidade.participacao_livre,
+		bichoOriginal.participacao_com_convite = comunidade.participacao_com_convite
+	}
+	const bicho = {
+		nome: 						req.body.nome ? req.body.nome : bichoOriginal.nome,
+		descricao:					req.body.descricao ? req.body.descricao : bichoOriginal.descricao,
+		participacao_livre: 		req.body.participacao_livre ? req.body.participacao_livre : bichoOriginal.participacao_livre,
+		participacao_com_convite:	req.body.participacao_com_convite ? req.body.participacao_com_convite : bichoOriginal.participacao_com_convite
+	}
+
+	const { value, error } = validarPutBicho(bicho);
+	if (error) {
+	    req.flash('error', `Erro ao validar as informações. Detalhes: ${error.message}`);
+        return res.redirect(303, `/${varanda_id}`);
+	}
+	
+	let usuarie_id = await quemEstaAgindo(req);
+
+	if (usuarie_id !== varanda_id) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
+		if (!permissoes || !permissoes.representar) {
+			req.flash('error', `Você não pode editar o perfil de ${varanda_id}.`);
+			return res.redirect(303, `/${varanda_id}`);
+		}
+	}
+
+	await serviceBichos.editarBicho(varanda_id, bicho);
+
+	req.flash('aviso', 'O perfil foi editado com sucesso!');
+	return res.redirect(303, `/${varanda_id}`);
 });
 
-exports.deleteVaranda = asyncHandler(async (req, res, next) => { // :bicho_id
+exports.deleteVaranda = asyncHandler(async (req, res, next) => {
 
 });

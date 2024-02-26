@@ -1,10 +1,10 @@
 const asyncHandler 									= require('express-async-handler');
 const customError	 								= require('http-errors');
-const serviceRelacoes								= require('../../services/bichos/serviceRelacoes');
-const servicePaginas								= require('../../services/varandas/servicePaginas');
-const serviceEdicoes								= require('../../services/varandas/serviceEdicoes');
-const { validarPutPagina, validarPostPagina }		= require('../../validations/validateVarandas');
-const { params, objetoRenderizavel, quemEstaAgindo } = require('../../utils/utilControllers');
+const serviceRelacoes								= require('../services/bichos/serviceRelacoes');
+const servicePaginas								= require('../services/varandas/servicePaginas');
+const serviceEdicoes								= require('../services/varandas/serviceEdicoes');
+const { validarPutPagina, validarPostPagina }		= require('../validations/validateVarandas');
+const { params, objetoRenderizavel, quemEstaAgindo, palavrasReservadas } = require('../utils/utilControllers');
 require('dotenv').config();
 
 exports.getPagina = asyncHandler(async (req, res, next) => {
@@ -28,46 +28,12 @@ exports.getPagina = asyncHandler(async (req, res, next) => {
 
 });
 
-exports.getEditarPagina = asyncHandler(async (req, res, next) => {
-
-	const { varanda_id, pagina_id } = params(req);
-
-	if (['editar', 'clonar', 'futricar'].includes(pagina_id)) {
-		req.flash('error', `Você não pode editar a página ${pagina_id}`);
-		return res.redirect(`/${varanda_id}`);
-	}
-
-    let view = 'blocos/editar';
-	let usuarie_id = await quemEstaAgindo(req);
-
-	if (usuarie_id !== varanda_id) {
-		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
-		if (!permissoes || !permissoes.editar) {
-			req.flash('error', `Você não pode editar ${varanda_id}.`);
-			return res.redirect(`/${varanda_id}/${pagina_id}`);
-		}
-	}
-
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
-	if (pagina_id !== 'nova_pagina'){
-		const pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
-		obj_render.pagina.html = pagina.html;
-		obj_render.metodo = 'put';	
-	} else {
-		obj_render.nova_pagina = true;
-		obj_render.metodo = 'post';
-	}
-
-	res.render(view, obj_render);
-
-});
-
 exports.postPagina = asyncHandler(async (req, res, next) => {
 	
 	const { titulo, html, publica } = req.body;
 	const varanda_id = req.params.bicho_id;
 
-	if (['editar', 'clonar', 'futricar', 'nova_pagina'].includes(encodeURIComponent(titulo))) {
+	if (palavrasReservadas().includes(encodeURIComponent(titulo))) {
 		req.flash('error', `Você não pode criar uma página com o título ${titulo}.`);
 		return res.redirect(`/${varanda_id}/nova_pagina/editar`);
 	}

@@ -2,14 +2,20 @@ const express 	= require('express');
 const router 	= express.Router();
 require('dotenv').config();
 
-const { getVaranda, getFutricarVaranda, getCriarComunidade, postVaranda,    putVaranda, deleteVaranda   } = require('../controllers/varandas/controllerVarandas');
-const { getPagina,  getEditarPagina,                        postPagina,     putPagina,  deletePagina    } = require('../controllers/varandas/controllerPaginas');
+const { getVaranda, postVaranda,    putVaranda, deleteVaranda   } = require('../controllers/controllerVarandas');
+const { getPagina,  postPagina,     putPagina,  deletePagina    } = require('../controllers/controllerPaginas');
+const {             postParticipar                              } = require('../controllers/controllerRelacoes');
+const { getFutricarVaranda, getCriarComunidade, getAvatar, getFundo, getEditarBicho, getEditarPagina } = require('../controllers/controllerReservadas');
 
 router.get   ('/',                      getVaranda);
 router.get   ('/criar-comunidade',      getCriarComunidade);
 router.get   ('/:bicho_id',             getVaranda);
 router.get   ('/:bicho_id/futricar',    getFutricarVaranda);
+router.get   ('/:bicho_id/editar-bicho',getEditarBicho);
+router.get   ('/:bicho_id/avatar',      getAvatar);
+router.get   ('/:bicho_id/fundo',       getFundo);
 router.post  ('/',                      postVaranda);
+router.post  ('/:bicho_id/participar',  postParticipar);
 router.put   ('/:bicho_id',             putVaranda);
 router.delete('/:bicho_id',             deleteVaranda);
 

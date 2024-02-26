@@ -43,7 +43,9 @@ const schemaPutBicho = Joi.object({
 	nome: Joi.string().max(64),
 	descricao: Joi.string().max(500),
 	descricao_avatar: Joi.string().max(500),
-	descricao_fundo: Joi.string().max(500)
+	descricao_fundo: Joi.string().max(500),
+	participacao_livre: Joi.boolean(),
+	participacao_com_convite: Joi.boolean()
 });
 
 const schemaPutAvatar = Joi.object({

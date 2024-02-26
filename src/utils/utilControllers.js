@@ -89,3 +89,7 @@ exports.quemEstaAgindo = async (req) => {
 exports.vidParaId = (vid) => {
     return vid.match(/[^\/]*$/g)[0];
 };
+
+exports.palavrasReservadas = () => {
+    return ['editar', 'clonar', 'futricar', 'avatar', 'fundo', 'criar-comunidade', 'nova_pagina', 'nova_comunidade'];
+};

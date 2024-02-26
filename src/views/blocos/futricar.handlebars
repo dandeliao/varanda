@@ -1,4 +1,5 @@
-<div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
+<p>{{bloco.futricar}}</p>
+<div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}{{#if bloco.futricar}}&futricar=true{{/if}}" hx-trigger="load"></div>
 <div>
     <h2>Páginas de {{varanda.bicho_id}}</h2>
     <ul>
