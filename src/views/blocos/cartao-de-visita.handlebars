@@ -1,14 +1,13 @@
 <div class="bloco">
 	{{#with bloco.bicho}}
-    <div class="fundo" style="background-image: url(/{{bicho_id}}/fundo);" alt="{{descricao_fundo}}" title="{{descricao_fundo}}"></div>
+    <div hx-get="/blocos/fundo?bicho={{bicho_id}}" hx-trigger="load"></div>
     <div class="informacao">
-		<img class="avatar" src="/{{bicho_id}}/avatar" alt="{{descricao_avatar}}" title="{{descricao_avatar}}"/>
+		<div hx-get="/blocos/avatar?bicho={{bicho_id}}" hx-trigger="load"></div>
         <h2>{{nome}}</h2>
         <a href="/{{bicho_id}}">@{{bicho_id}}</a>
         <p>{{descricao}}</p>
     </div>
 	{{/with}}
-	<p>{{bloco.futricar}}</p>
 	{{#if bloco.futricar}}
 	<a href="/{{bloco.bicho.bicho_id}}/editar-bicho">Editar bicho</a>
 	{{/if}}

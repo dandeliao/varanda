@@ -1,11 +1,45 @@
-<p>{{bloco.futricar}}</p>
+<h1>Futricando @{{varanda.bicho_id}}</h1>
 <div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}{{#if bloco.futricar}}&futricar=true{{/if}}" hx-trigger="load"></div>
 <div>
-    <h2>Páginas de {{varanda.bicho_id}}</h2>
+    <h2>Páginas</h2>
     <ul>
         {{#each bloco.paginas}}
             <li><a href="/{{this.pagina_vid}}">{{this.titulo}}</a> <button hx-delete="/{{this.pagina_vid}}" hx-target="body">Remover página</button></li>
         {{/each}}
     </ul>
     <button hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
+    <br>
+    {{#if bloco.participantes}}
+    <h2>Participantes</h2>
+    <ul class="lista-bichos">
+        {{#each bloco.participantes}}
+        <li class="item-bicho"><a href="/{{this.bicho_id}}"><span hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span></a><p><a href="/{{this.bicho_id}}">@{{this.bicho_id}}</a></p></li>
+        {{/each}}
+    </ul>
+    {{/if}}
+    {{#if bloco.comunidades}}
+    <h2>Comunidades</h2>
+    <ul class="lista-bichos">
+        {{#each bloco.comunidades}}
+        <li class="item-bicho"><a href="/{{this.comunidade_id}}"><span hx-get="/blocos/avatar?bicho={{this.comunidade_id}}" hx-trigger="load"></span></a><p><a href="/{{this.comunidade_id}}">@{{this.comunidade_id}}</a></p></li>
+        {{/each}}
+    </ul>
+    {{/if}}
 </div>
+
+<style>
+
+    h1{
+        text-align: center;
+    }
+
+    .lista-bichos {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .item-bicho {
+        list-style: none;
+    }
+</style>

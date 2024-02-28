@@ -66,7 +66,10 @@ exports.postVaranda = asyncHandler(async (req, res, next) => {
 	// cria relação entre o bicho criador e a comunidade, com todas as habilidades (participar, editar, moderar e representar)
 	await serviceRelacoes.criarRelacao(usuarie_id, novaComunidade.bicho_id, {participar: true, editar: true, moderar: true, representar: true});
 
-	// cria varanda da comunidade, com página padrão
+	// cria relação entre a comunidade e a instância, com a habilidade de participar
+	await serviceRelacoes.criarRelacao(novaComunidade.bicho_id, process.env.INSTANCIA_ID, {participar: true, editar: false, moderar: false, representar: false});
+
+	// cria página inicial da comunidade, com página padrão
 	const comunitaria = true;
 	let paginaPadrao = {};
 	paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);

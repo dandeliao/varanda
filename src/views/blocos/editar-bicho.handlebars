@@ -1,3 +1,22 @@
+
+{{#unless nova_comunidade}}
+<div id="visualiza-fundo" hx-get="/blocos/fundo?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="innerHtml"></div>
+<form action="/{{varanda.bicho_id}}/fundo" method="put" enctype="multipart/form-data" hx-target="#visualiza-fundo" hx-push-url="false">
+	<label for="fundo">Escolha a imagem de fundo</label>
+	<input id="input-fundo" name="fundo" type="file" />
+	<label for="descricao_fundo" hidden>Descreva a imagem</label>
+	<textarea id="descricao-fundo" name="descricao_fundo" placeholder="Ilustração de uma praia ensolarada com guarda-sóis coloridos."></textarea>
+	<button type="submit">Salvar</button>
+</form>
+<form action="/{{varanda.bicho_id}}/avatar" method="put" enctype="multipart/form-data" hx-target="#visualiza-avatar" hx-push-url="false">
+	<div id="visualiza-avatar" hx-get="/blocos/avatar?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="innerHtml"></div>
+	<label for="avatar">Escolha a imagem de perfil</label>
+	<input id="input-avatar" name="avatar" type="file" />
+	<label for="descricao_avatar" hidden>Descreva a imagem</label>
+	<textarea id="descricao-avatar" name="descricao_avatar" placeholder="Foto de um gato cinza de olhos amarelos com uma expressão de espanto."></textarea>
+	<button type="submit">Salvar</button>
+</form>
+{{/unless}}
 <form action="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" method="{{metodo}}">
 	
     {{#if nova_comunidade}}
@@ -24,4 +43,23 @@
         align-items: center;
         gap: 1rem;
 	}
+	.fundo {
+		max-width: 100%;
+		height: 120px;
+	}
+	.avatar{
+		max-width: 64px;
+		border-radius: 100%;
+	}
 </style>
+
+<script>
+	document.getElementById('input-fundo').addEventListener('change', function(event) {
+		let src = URL.createObjectURL(event.target.files[0]);
+  		document.getElementById('visualiza-fundo').childNodes[0].style.backgroundImage = `url(${src})`;
+	});
+	document.getElementById('input-avatar').addEventListener('change', function(event) {
+		let src = URL.createObjectURL(event.target.files[0]);
+  		document.getElementById('visualiza-avatar').childNodes[0].src = src;
+	});
+</script>

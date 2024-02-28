@@ -24,7 +24,7 @@ CREATE TABLE pessoas(
 CREATE TABLE comunidades(
     bicho_id                    VARCHAR(32) PRIMARY KEY REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     bicho_criador_id            VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
-    participacao_livre          BOOLEAN DEFAULT false,
+    participacao_livre          BOOLEAN DEFAULT true,
     participacao_com_convite    BOOLEAN DEFAULT true,
 );
 
@@ -108,13 +108,6 @@ CREATE TABLE edicoes(
 /* ----------------- */
 /* Valor (artefatos) */
 
-/* CREATE TABLE licencas(
-    licenca_id              SERIAL PRIMARY KEY NOT NULL,
-    nome                    TEXT NOT NULL,
-    link                    TEXT,
-    descricao               TEXT
-); */
-
 CREATE TABLE artefatos(
     artefato_id             SERIAL PRIMARY KEY NOT NULL,
     varanda_contexto_id     INTEGER REFERENCES varandas(varanda_id) ON DELETE CASCADE,
@@ -127,7 +120,6 @@ CREATE TABLE artefatos(
     indexavel               BOOLEAN DEFAULT false,
     arquivo                 BOOLEAN DEFAULT false,
     denuncia                BOOLEAN DEFAULT false,
-    /* licenca                 INTEGER REFERENCES licencas(licenca_id) DEFAULT 1 ON DELETE SET NULL, */
     criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -157,7 +149,6 @@ CREATE TABLE edicoes_artefatos(
     respondivel             BOOLEAN,
     publico                 BOOLEAN,
     indexavel               BOOLEAN,
-    /* licenca                 INTEGER REFERENCES licencas(licenca_id) ON DELETE SET NULL, */
     nome_arquivo            VARCHAR(255),
     descricao               VARCHAR(500),
     titulo                  VARCHAR(150),

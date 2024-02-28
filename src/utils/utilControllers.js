@@ -15,13 +15,13 @@ exports.params = (req) => {
 exports.objetoRenderizavel = async (req, res, varanda_id, pagina_id, usuarie_id, layout) => {
 
     const pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
+    const varanda = await serviceBichos.verBicho(varanda_id);
     let obj_render =  {
-        varanda: {
-            bicho_id: varanda_id
-        },
+        varanda: varanda,
 		pagina: {
             pagina_id: pagina_id,
-            titulo: pagina ? pagina.titulo : null
+            titulo: pagina ? pagina.titulo : null,
+            publica: pagina ? pagina.publica : null,
 		},
         usuarie: {
 			logade: req.isAuthenticated(),
@@ -31,9 +31,7 @@ exports.objetoRenderizavel = async (req, res, varanda_id, pagina_id, usuarie_id,
             aviso: res.locals.flash_message,
             erro: res.locals.flash_error
         },
-        bloco: {
-
-        },
+        bloco: {},
 		query: req.query ? req.query : null,
     }
 
