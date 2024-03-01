@@ -61,10 +61,7 @@ exports.postPagina = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	console.log('varanda_id:', varanda_id);
-	console.log('pagina:', pagina);
 	const paginaCriada = await servicePaginas.criarPagina(varanda_id, pagina);
-	console.log('paginaCriada:', paginaCriada);
 	await serviceEdicoes.criarEdicao(usuarie_id, paginaCriada, paginaCriada.html);
 
 	req.flash('aviso', 'A página foi criada com sucesso!');

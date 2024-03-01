@@ -25,7 +25,7 @@ const update = multer({
 		fileSize: 15000000, // 15 MB
 	},
 	fileFilter: function(_req, file, cb){
-		const filetypes = /jpeg|jpg|png|gif/;
+		const filetypes = /jpeg|jpg|png|gif|svg/;
 		const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
 		const mimetype = filetypes.test(file.mimetype);
 

@@ -1,23 +1,32 @@
+<br>
 <form action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
 	
-	<label for="titulo" hidden>título da página "{{pagina.pagina_id}}"</label>
+	<label for="titulo">Título da página:</label>
 	<input type="text" id="titulo-pagina" value="{{pagina.titulo}}" name="titulo" required>
-	<label for="html" hidden>html da página "{{pagina.pagina_id}}"</label>
+	<label for="html">Html da página:</label>
 	<textarea id="html-pagina" name="html" required>{{pagina.html}}</textarea>
 
-	<button type="submit">salvar</button>
-	<button hx-get="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" hx-target="body" hx-push-url="true">cancelar</button>
+	<button type="submit">Salvar</button>
+	<button hx-get="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" hx-target="body" hx-push-url="true">Voltar</button>
 
 </form>
 
 <style>
 	form {
-        max-width: 360px;
+        max-width: 860px;
+		width: 100%;
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
         align-items: center;
         gap: 1rem;
+	}
+	form > #titulo-pagina{
+		width: 100%;
+	}
+	form > textarea {
+		width: 100%;
+		min-height: 50vh;
 	}
 </style>

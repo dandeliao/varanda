@@ -5,7 +5,8 @@
     --altura-barra-mobile:  3rem;
     --cor-principal:        #e0b6bc;
     --cor-destaque:         #a990b0;
-    --cor-gris:             #d0c7c7;
+    --cor-destaque-2:       #023774;
+    --cor-gris:             #fff3f3;
     --cor-gris-2:           #6e6e6e;
     --cor-fundo:            #f0f0f0;
     --cor-fundo-2:          #e5e5e5;
@@ -28,6 +29,20 @@ h5              { font-size: calc(.87rem + 0.35vw); margin: calc(.62rem + 0.84vw
 h6              { font-size: calc( .8rem + 0.25vw); margin: calc(.8rem  + 0.87vw) 0 }
 h1, h2, h3, h4,
 h5, h6          { font-weight: bolder }
+
+a {
+    color: var(--cor-destaque-2);
+}
+
+button {
+    min-height: 2.2rem;
+    padding: 0.5rem;
+    font-family: var(--familia-fonte);
+    color: var(--cor-fonte-view);
+    background-color: var(--cor-fundo-2);
+    font-size: 0.9rem;
+    border-radius: 6px;
+}
 
 /* --- */
 /* decoração da barra */
@@ -59,8 +74,6 @@ h5, h6          { font-weight: bolder }
 
 #varanda-titulo {
     grid-column: 2 / span 1;
-    text-decoration: none;
-    color: var(--cor-fonte-barra);
 }
 
 #varanda-botao-contexto {
@@ -184,4 +197,60 @@ dialog {
     position: absolute;
     white-space: nowrap;
     width: 1px;
+}
+
+.bloco {
+    box-sizing: border-box;
+    display:    block;
+    position:   relative;
+    margin:     0 auto;
+    width:      100%;
+    max-width: 	960px;
+    padding:    0.8rem;
+    background-color:   var(--cor-fundo);
+    color:              var(--cor-fonte);
+    font-family:        var(--familia-fonte);
+    box-shadow:         var(--sombreado);
+    border-style:       var(--estilo-borda);
+    border-width:       var(--espessura-borda);
+    border-radius:      var(--raio-borda);
+    border-color:       var(--cor-principal);
+}
+
+.pagina {
+    display: block;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.avatar-redondo{
+    display: inline-block;
+    height: 80px;
+    width: 80px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.avatar-quadrado{
+    display: inline-block;
+    height: 80px;
+    width: 80px;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.pequeno {
+    height: 32px;
+    width: 32px;
+}
+
+.centralizado {
+    display: block;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 859px) {
+    .bloco {
+        max-width: 	94vw;
+    }
 }

@@ -49,7 +49,6 @@ exports.putAvatar = asyncHandler(async (req, res, next) => {
 	let view = 'blocos/avatar';
 	let obj_render = await objetoRenderizavel(req, res, arroba, 'editar-bicho', usuarie_id, false);
 	obj_render.bloco.bicho = bichoEditado;
-	console.log(obj_render);
 	res.render(view, obj_render);
 
 });
@@ -99,20 +98,18 @@ exports.putFundo = asyncHandler(async (req, res, next) => {
 });
 
 exports.getFutricarVaranda = asyncHandler(async (req, res, next) => {
-	const { varanda_id } = params(req);
+	const varanda_id = req.params.bicho_id;
 	const pagina_id = 'futricar';
     let view = 'blocos/futricar';
 	const usuarie_id = await quemEstaAgindo(req);
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
-	const paginas = await servicePaginas.verPaginas(varanda_id);
+	obj_render = await objetoRenderizavelBloco(obj_render, 'futricar');
 	const comunidades = await serviceRelacoes.verComunidadesDoBicho(varanda_id);
 	const participantes = await serviceRelacoes.verBichosNaComunidade(varanda_id);
 	obj_render.bloco.futricar = true;
-	obj_render.bloco.paginas = paginas;
 	obj_render.bloco.comunidades = comunidades;
 	obj_render.bloco.participantes = participantes;
-
 	res.render(view, obj_render);
 });
 
@@ -128,7 +125,7 @@ exports.getCriarComunidade = asyncHandler(async (req, res, next) => {
 });
 
 exports.getEditarBicho = asyncHandler(async (req, res, next) => {
-	let view = 'blocos/editar-bicho';
+	let view = `blocos/editar-bicho`;
 	const { varanda_id, pagina_id } = params(req);
 	const usuarie_id = await quemEstaAgindo(req);
 
@@ -141,10 +138,13 @@ exports.getEditarBicho = asyncHandler(async (req, res, next) => {
 	}
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	obj_render.query.bicho = varanda_id;
+	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-bicho');
 	const bicho = await serviceBichos.verBicho(varanda_id);
 	obj_render.varanda.bicho = bicho;
 	obj_render.metodo = 'put';	
 
+	console.log(obj_render);
 	res.render(view, obj_render);
 });
 
@@ -172,9 +172,7 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
 	if (pagina_id !== 'nova_pagina'){
-		console.log({varanda_id, pagina_id});
 		const pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
-		console.log(pagina);
 		obj_render.pagina.html = pagina.html;
 		obj_render.metodo = 'put';	
 	} else {

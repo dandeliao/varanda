@@ -1,5 +1,6 @@
 const serviceRelacoes   = require('../services/bichos/serviceRelacoes');
 const serviceBichos     = require('../services/bichos/serviceBichos');
+const serviceComunidades = require('../services/bichos/serviceComunidades');
 const serviceBlocos     = require('../services/varandas/serviceBlocos');
 const servicePaginas    = require('../services/varandas/servicePaginas');
 
@@ -45,20 +46,36 @@ exports.objetoRenderizavel = async (req, res, varanda_id, pagina_id, usuarie_id,
 exports.objetoRenderizavelBloco = async (obj_render, bloco_id) => {
 
     const bloco = await serviceBlocos.verBloco(bloco_id);
-
+    
     let dados = {};
     for(let variavel of bloco.variaveis) {
         switch(variavel){
             case 'bicho':
                 if (obj_render.query.bicho) {
-                    const bicho = await serviceBichos.verBicho(obj_render.query.bicho);
-                    dados = Object.assign({bicho: bicho});
+                    let bicho = {};
+                    const comunidade = await serviceComunidades.verComunidade(obj_render.query.bicho);
+                    if (comunidade) {
+                        bicho = comunidade;
+                        bicho.comunitario = true;
+                    } else {
+                        bicho = await serviceBichos.verBicho(obj_render.query.bicho);
+                    }
+                    dados.bicho = bicho;
                 }
                 break;
             case 'paginas':
-                if (obj_render.varanda.varanda_id) {
-                    const paginas = await servicePaginas.verPaginas(obj_render.varanda.varanda_id);
-                    dados = Object.assign({paginas: paginas});
+                if (obj_render.varanda.bicho_id) {
+                    const paginas = await servicePaginas.verPaginas(obj_render.varanda.bicho_id);
+                    console.log(paginas);
+                    dados.paginas = paginas;
+                }
+                break;
+            case 'relacao':
+                if (obj_render.query.bicho) {
+                    let relacao = await serviceRelacoes.verRelacao(obj_render.usuarie.bicho_id, obj_render.query.bicho);
+                    if (relacao !== undefined) {
+                        dados.relacao = relacao;
+                    }
                 }
                 break;
             default:

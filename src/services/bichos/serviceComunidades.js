@@ -51,17 +51,12 @@ exports.criarComunidade = async function (dados, bichoCriadorId) {
 };
 
 exports.editarComunidade = async function (comunidade_id, dados) {
-	console.log('entrou em service editarComunidade');
-	console.log(dados);
 	const comunidade = (await dataComunidades.getComunidade(comunidade_id)).rows[0];
-	console.log(comunidade);
 	const novosDados = {
 		bicho_id: comunidade_id,
-		participacao_livre: dados.participacao_livre != null ? dados.participacao_livre : comunidade.participacao_livre,
+		participacao_livre: dados.participacao_livre !== null ? dados.participacao_livre : comunidade.participacao_livre,
 		participacao_com_convite: dados.participacao_com_convite != null ? dados.participacao_com_convite : comunidade.participacao_com_convite,
-		periodo_geracao_convite: dados.periodo_geracao_convite ? dados.periodo_geracao_convite : comunidade.periodo_geracao_convite
 	};
-	console.log(novosDados);
 	const comunidadeEditada = await dataComunidades.putComunidade(novosDados);
 	return comunidadeEditada.rows[0];
 };

@@ -91,12 +91,15 @@ exports.putVaranda = asyncHandler(async (req, res, next) => {
 		bichoOriginal.participacao_livre = comunidade.participacao_livre,
 		bichoOriginal.participacao_com_convite = comunidade.participacao_com_convite
 	}
+
 	const bicho = {
 		nome: 						req.body.nome ? req.body.nome : bichoOriginal.nome,
 		descricao:					req.body.descricao ? req.body.descricao : bichoOriginal.descricao,
-		participacao_livre: 		req.body.participacao_livre ? req.body.participacao_livre : bichoOriginal.participacao_livre,
-		participacao_com_convite:	req.body.participacao_com_convite ? req.body.participacao_com_convite : bichoOriginal.participacao_com_convite
+		participacao_livre: 		req.body.participacao_livre !== undefined ? true : false,
+		participacao_com_convite:	req.body.participacao_com_convite ? true : false
 	}
+
+	console.log(bicho);
 
 	const { value, error } = validarPutBicho(bicho);
 	if (error) {
@@ -115,6 +118,9 @@ exports.putVaranda = asyncHandler(async (req, res, next) => {
 	}
 
 	await serviceBichos.editarBicho(varanda_id, bicho);
+	if (comunidade) {
+		await serviceComunidades.editarComunidade(varanda_id, bicho);
+	}
 
 	req.flash('aviso', 'O perfil foi editado com sucesso!');
 	return res.redirect(303, `/${varanda_id}`);

@@ -1,47 +1,47 @@
-<div class="bloco">
+<div class="bloco cartao">
 	{{#with bloco.bicho}}
     <div hx-get="/blocos/fundo?bicho={{bicho_id}}" hx-trigger="load"></div>
+	<div class="avatar-redondo avatar-no-cartao" hx-get="/blocos/avatar?bicho={{bicho_id}}" hx-trigger="load"></div>
     <div class="informacao">
-		<div hx-get="/blocos/avatar?bicho={{bicho_id}}" hx-trigger="load"></div>
         <h2>{{nome}}</h2>
         <a href="/{{bicho_id}}">@{{bicho_id}}</a>
+		<br><br>
         <p>{{descricao}}</p>
     </div>
 	{{/with}}
 	{{#if bloco.futricar}}
-	<a href="/{{bloco.bicho.bicho_id}}/editar-bicho">Editar bicho</a>
+	<br>
+	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar bicho</button>
+	{{!-- <a href="/{{bloco.bicho.bicho_id}}/editar-bicho">Editar bicho</a> --}}
 	{{/if}}
+	{{#unless bloco.relacao.participar}}
+	{{#if bloco.bicho.comunidade.participacao_livre}}
+	<form action="/{{bloco.bicho.bicho_id}}/participar" method="post">
+		<button type="submit">Participar</button>
+	</form>
+	{{/if}}
+	{{/unless}}
 
     <style>
-    .bloco {
-        box-sizing: border-box;
-        display:    block;
-        position:   relative;
-        margin:     0 auto;
-        width:      100%;
-		max-width: 	97vw;
-        
-        background-color:   var(--cor-fundo);
-        color:              var(--cor-fonte);
-        font-family:        var(--familia-fonte);
-        box-shadow:         var(--sombreado);
-        border-style:       var(--estilo-borda);
-        border-width:       var(--espessura-borda);
-        border-radius:      var(--raio-borda);
-        border-color:       var(--cor-principal);
+    .cartao {
+		text-align: center;
     }
-	.fundo {
-		max-width: 100%;
-		height: 120px;
-	}
-	.avatar{
-		max-width: 64px;
-		border-radius: 100%;
-	}
+
 	.informacao{
-		position: relative;
-		top: -2rem;
+		margin-top: 42px;
 	}
+
+	.avatar-no-cartao {
+		display: block;
+		position: absolute;
+		top: 90px;
+		margin-left: auto;
+		margin-right: auto;
+		left: 0;
+		right: 0;
+		text-align: center;
+	}
+
     </style>
 
 </div>
