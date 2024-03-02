@@ -58,7 +58,7 @@ exports.getFundo = asyncHandler(async (req, res, next) => {
 	const bicho = await serviceBichos.verBicho(arroba);
 	if (!bicho) {
 		req.flash('erro', `Bicho @${arroba} não encontrado.`);
-		return res.send(404);
+		return res.sendStatus(404);
 	}
 	const fundo = path.join(path.resolve(__dirname, '../../'), 'user_content', 'bichos', 'em_uso', arroba, bicho.fundo);
 	res.sendFile(fundo);

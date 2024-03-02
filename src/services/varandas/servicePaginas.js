@@ -2,9 +2,9 @@ const dataPaginas 					= require('../../data/varandas/dataPaginas');
 const fs 							= require('fs');
 const path 							= require('path');
 const { editarArquivoHandlebars,
-		deletarArquivoHandlebars, 
-		htmlParaHandlebars }		= require('../../utils/utilArquivos');
-const { vidParaId }					= require('../../utils/utilControllers');
+		deletarArquivoHandlebars }	= require('../../utils/utilArquivos');
+const { vidParaId, sanitizarHtml,
+		htmlParaHtmx }				= require('../../utils/utilParsers');
 require('dotenv').config();
 
 exports.verPaginas = async function (varanda_id, pagina_id = null, publica = null) {
@@ -27,11 +27,11 @@ exports.criarPagina = async function (varanda_id, dados) {
 		pagina_vid:	`${varanda_id}/${encodeURIComponent(dados.titulo)}`,
 		titulo: 	dados.titulo,
 		publica: 	dados.publica ? dados.publica : true,
-		html:		dados.html
+		html:		await sanitizarHtml(dados.html, dados.comunitaria)
 	}
 
 	let novaPagina = (await dataPaginas.createPagina(varanda_id, pagina)).rows[0];
-	novaPagina.handlebars = htmlParaHandlebars(novaPagina.html);
+	novaPagina.handlebars = htmlParaHtmx(novaPagina.html);
 	editarArquivoHandlebars(varanda_id, novaPagina);
 
 	return novaPagina;
@@ -41,8 +41,9 @@ exports.editarPagina = async function (varanda_id, pagina_id, dados) {
 	
 	const pagina_vid = `${varanda_id}/${pagina_id}`;
 
+	dados.html = await sanitizarHtml(dados.html, dados.comunitaria);
 	let paginaEditada = (await dataPaginas.editPagina(pagina_vid, {titulo: dados.titulo, publica: dados.publica, html: dados.html})).rows[0];
-	paginaEditada.handlebars = htmlParaHandlebars(paginaEditada.html);
+	paginaEditada.handlebars = htmlParaHtmx(paginaEditada.html);
 	editarArquivoHandlebars(varanda_id, paginaEditada);
 
 	return paginaEditada;

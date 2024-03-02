@@ -3,6 +3,7 @@ const customError	 								= require('http-errors');
 const serviceRelacoes								= require('../services/bichos/serviceRelacoes');
 const servicePaginas								= require('../services/varandas/servicePaginas');
 const serviceEdicoes								= require('../services/varandas/serviceEdicoes');
+const serviceComunidades							= require('../services/bichos/serviceComunidades');
 const { validarPutPagina, validarPostPagina }		= require('../validations/validateVarandas');
 const { params, objetoRenderizavel, quemEstaAgindo, palavrasReservadas } = require('../utils/utilControllers');
 require('dotenv').config();
@@ -38,7 +39,7 @@ exports.postPagina = asyncHandler(async (req, res, next) => {
 		return res.redirect(`/${varanda_id}/nova_pagina/editar`);
 	}
 
-	const pagina = {
+	let pagina = {
 		varanda_id: varanda_id,
 		titulo: titulo,
 		publica: publica,
@@ -50,6 +51,9 @@ exports.postPagina = asyncHandler(async (req, res, next) => {
 	    req.flash('error', error.message);
         return res.redirect(303, `/${varanda_id}/nova_pagina/editar`);
 	}
+
+	const comunidade = await serviceComunidades.verComunidade(varanda_id);
+	pagina.comunitaria = comunidade ? true : false;
 	
 	let usuarie_id = await quemEstaAgindo(req);
 
@@ -73,7 +77,7 @@ exports.putPagina = asyncHandler(async (req, res, next) => {
     
 	const { varanda_id, pagina_id } = params(req);
 	const paginaOriginal = await servicePaginas.verPaginas(varanda_id, pagina_id);
-	const pagina = {
+	let pagina = {
 		pagina_vid: paginaOriginal.pagina_vid,
 		varanda_id: varanda_id,
 		titulo: req.body.titulo ? req.body.titulo: paginaOriginal.titulo,
@@ -96,6 +100,9 @@ exports.putPagina = asyncHandler(async (req, res, next) => {
 			return res.redirect(303, `/${varanda_id}/${pagina_id}`);
 		}
 	}
+
+	const comunidade = await serviceComunidades.verComunidade(varanda_id);
+	pagina.comunitaria = comunidade ? true : false;
 
 	const paginaEditada = await servicePaginas.editarPagina(varanda_id, pagina_id, pagina);
 	await serviceEdicoes.criarEdicao(usuarie_id, paginaEditada, paginaEditada.html);

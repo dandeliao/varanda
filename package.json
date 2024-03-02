@@ -25,6 +25,7 @@
     "joi-translation-pt-br": "^0.0.10",
     "multer": "^1.4.5-lts.1",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "sanitize-html": "^2.12.1"
   }
 }
