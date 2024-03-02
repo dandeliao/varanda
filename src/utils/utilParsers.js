@@ -3,7 +3,7 @@ const sanitize = require('sanitize-html');
 
 exports.sanitizarHtml = async (html, comunitaria) => {
 
-    allowedTags = [
+    let allowedTags = [
         "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
         "h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
         "dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p", "pre",
@@ -13,11 +13,15 @@ exports.sanitizarHtml = async (html, comunitaria) => {
         "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr",
 
     ];
-    // adiciona tags no formato v-nome-do-bloco às tags permitidas
+
+    let selfClosing = [ 'img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta' ];
+
+    // adiciona tags no formato v-nome-do-bloco às tags permitidas e às self-closing tags
     let comunitario = comunitaria ? null : false;
     const blocos = await serviceBlocos.verBlocos(comunitario);
     for (let bloco of blocos) {
         allowedTags.push(`v-${bloco.bloco_id}`);
+        selfClosing.push(`v-${bloco.bloco_id}`);
     }
 
     // cria objeto com atributos permitidos para cada tag
@@ -26,27 +30,45 @@ exports.sanitizarHtml = async (html, comunitaria) => {
         // We don't currently allow img itself by default, but
         // these attributes would make sense if we did.
         img: [ 'src', 'srcset', 'alt', 'title', 'width', 'height', 'loading' ],
-        '*': ['dado-*']
+        '*': ['class', 'dado-*']
     };
     
     return sanitize(html, {
         allowedTags: allowedTags,
+        selfClosing: selfClosing,
         allowedAttributes: allowedAttributes
     });
 };
 
 exports.htmlParaHtmx = (html) => {
-    const blocoRegex = /<v-(\w+-*)+(?:\s+dado-(\w+-*)+\s*(?:="([^"]*)")?)?(?:\s+dado-(\w+-*)+\s*(?:="([^"]*)")?)?(?:\s+dado-(\w+-*)+\s*(?:="([^"]*)")?)?(?:\s+dado-(\w+-*)+\s*(?:="([^"]*)")?)?>[^<]*<\/v-(\w+-*)+>/g;
-        // regex captura formatos <v-nome-do-bloco> e <v-nome-do-bloco dado-prop1="valor" dado-prop2="quem@ta.com  _onde@tu.net">
+    
+    const blocoRegex = /<v-(\w+-*)+(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?\s*\/>/g;
+        // regex captura formatos <v-nome-do-bloco /> e <v-nome-do-bloco dado-prop1="valor" dado-prop2="quem@ta.com  _onde@tu.net" dado-prop3 />
 
-    let htmx = html.replace(blocoRegex, `<div hx-get="/blocos/$1?$2=$3&$4=$5&$6=$7&$8=$9" hx-trigger="load"></div>`);
-    htmx = htmx.replace(/(?:&=)*/g, '');
-    htmx = htmx.replace(/=&/g, '&');
-    htmx = htmx.replace(/=</g, '<');
-    htmx = htmx.replace(/\?</g, '<');
-    console.log(htmx);
-
-    return htmx;
+    // substitui tags customizadas <v-bloco /> por divs htmx
+    return html.replace(blocoRegex, (match, p1, p2, p3, p4, p5, p6, p7, p8, p9, offset, string) => {       
+        // abre div htmx
+        let divHtmx = `<div hx-get="/blocos/${p1}`;
+        // se existem atributos, os inclui na div htmx
+        const captured = [p1, [p2, p3], [p4, p5], [p6, p7], [p8, p9]];
+        if (p2 || p4 || p6 || p8 ) {
+            divHtmx = divHtmx + '?';
+            for (let i = 1; i < captured.length; i++) {
+                if (captured[i][0]) {
+                    divHtmx = divHtmx + `${captured[i][0]}`;
+                    if (captured[i][1]) {
+                        divHtmx = divHtmx + `=${captured[i][1]}`;
+                    }
+                    if (captured[i+1][0]) {
+                        divHtmx = divHtmx + '&';
+                    }
+                }
+            };
+        }
+        // fecha div htmx
+        divHtmx = divHtmx + `" hx-trigger="load"></div>`;
+        return divHtmx;
+    });
 };
 
 exports.vidParaId = (vid) => {
