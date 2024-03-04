@@ -28,22 +28,86 @@ exports.sanitizarHtml = async (html, comunitaria) => {
     // cria objeto com atributos permitidos para cada tag
     const allowedAttributes = {
         a: [ 'href', 'name', 'target' ],
+
         // We don't currently allow img itself by default, but
         // these attributes would make sense if we did.
         img: [ 'src', 'srcset', 'alt', 'title', 'width', 'height', 'loading' ],
-        '*': ['class', 'dado-*']
+
+        '*': ['class', 'style', 'dado-*']
+    };
+
+    // cria objeto com estilos CSS permitidos para cada tag
+    const allowedStyles = {
+        '*': {
+            // Cor e decoração
+            'color': [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/],
+            'background-color': [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/],
+            'box-shadow': [/^(?:(?:#(0x)?[0-9a-f]+\s*)+|(?:rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)\s*)+|(?:(?:-*\d+.*(?:px|rem|em|%)*)\s*)+|(?:inset)?\s*)+$/],
+
+            // Fonte e texto
+            'font-size': [/^\d+.*\d*(?:px|rem|em|%)$/],
+            'font-family': [/^serif$/, /^sans-serif$/, /^monospace$/, /^cursive$/, /^fantasy$/, /^system-ui$/, /^emoji$/, /^math$/, /^fangsong$/],
+            'font-style': [/^normal$/, /^italic$/, /^oblique$/],
+            'font-weight': [/^normal$/, /^bold$/, /^bolder$/, /^lighter$/],
+            'text-align': [/^left$/, /^right$/, /^center$/, /^start$/, /^end$/, /^justify$/, /^justify-all$/],
+            'line-height': [/^\d+(?:px|rem|em|%)$/],
+            
+            // Margem, padding e borda
+            'margin': [/^(?:(?:(?:\d+(?:px|rem|em|%)*)|auto)\s*)+$/],
+            'margin-top': [/^(?:(?:(?:\d+(?:px|rem|em|%)*)|auto)\s*)+$/],
+            'margin-left': [/^(?:(?:(?:\d+(?:px|rem|em|%)*)|auto)\s*)+$/],
+            'margin-bottom': [/^(?:(?:(?:\d+(?:px|rem|em|%)*)|auto)\s*)+$/],
+            'margin-right': [/^(?:(?:(?:\d+(?:px|rem|em|%)*)|auto)\s*)+$/],
+            'padding': [/^(?:(?:(?:\d+(?:px|rem|em|%)*))\s*)+$/],
+            'padding-top': [/^(?:(?:(?:\d+(?:px|rem|em|%)*))\s*)+$/],
+            'padding-left': [/^(?:(?:(?:\d+(?:px|rem|em|%)*))\s*)+$/],
+            'padding-bottom': [/^(?:(?:(?:\d+(?:px|rem|em|%)*))\s*)+$/],
+            'padding-right': [/^(?:(?:(?:\d+(?:px|rem|em|%)*))\s*)+$/],
+            'border': [/^(?:(?:#(0x)?[0-9a-f]+\s*)+|(?:rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)\s*)+|(?:(?:(?:\d+(?:px|rem|em|%)*)|thin|thick|medium)\s*)+|(?:none)*\s*(?:hidden)*\s*(?:dotted)*\s*(?:dashed)*\s*(?:solid)*\s*(?:double)*\s*(?:groove)*\s*(?:ridge)*\s*(?:inset)*\s*(?:outset)*\s*)+$/],
+            'border-top': [/^(?:(?:#(0x)?[0-9a-f]+\s*)+|(?:rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)\s*)+|(?:(?:(?:\d+(?:px|rem|em|%)*)|thin|thick|medium)\s*)+|(?:none)*\s*(?:hidden)*\s*(?:dotted)*\s*(?:dashed)*\s*(?:solid)*\s*(?:double)*\s*(?:groove)*\s*(?:ridge)*\s*(?:inset)*\s*(?:outset)*\s*)+$/],
+            'border-left': [/^(?:(?:#(0x)?[0-9a-f]+\s*)+|(?:rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)\s*)+|(?:(?:(?:\d+(?:px|rem|em|%)*)|thin|thick|medium)\s*)+|(?:none)*\s*(?:hidden)*\s*(?:dotted)*\s*(?:dashed)*\s*(?:solid)*\s*(?:double)*\s*(?:groove)*\s*(?:ridge)*\s*(?:inset)*\s*(?:outset)*\s*)+$/],
+            'border-bottom': [/^(?:(?:#(0x)?[0-9a-f]+\s*)+|(?:rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)\s*)+|(?:(?:(?:\d+(?:px|rem|em|%)*)|thin|thick|medium)\s*)+|(?:none)*\s*(?:hidden)*\s*(?:dotted)*\s*(?:dashed)*\s*(?:solid)*\s*(?:double)*\s*(?:groove)*\s*(?:ridge)*\s*(?:inset)*\s*(?:outset)*\s*)+$/],
+            'border-right': [/^(?:(?:#(0x)?[0-9a-f]+\s*)+|(?:rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)\s*)+|(?:(?:(?:\d+(?:px|rem|em|%)*)|thin|thick|medium)\s*)+|(?:none)*\s*(?:hidden)*\s*(?:dotted)*\s*(?:dashed)*\s*(?:solid)*\s*(?:double)*\s*(?:groove)*\s*(?:ridge)*\s*(?:inset)*\s*(?:outset)*\s*)+$/],
+            'border-color': [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/],
+            'border-style': [/^none$/, /^hidden$/, /^dotted$/, /^dashed$/, /^solid$/, /^double$/, /^groove$/, /^ridge$/, /^inset$/, /^outset$/],
+            'border-width': [/^(?:(?:(?:\d+(?:px|rem|em|%)*)|thin|thick|medium)\s*)+$/],
+            'border-radius': [/^(?:(?:(?:\d+(?:px|rem|em|%)*))\s*)+$/],
+
+            // Tamanho
+            'max-width': [/^\d+(?:px|rem|em|%)$/],
+            'max-height': [/^\d+(?:px|rem|em|%)$/],
+
+            // Flex-box
+            'flex-direction': [/^row$/, /^row-reverse$/, /^column$/, /^column-reverse$/],
+            'flex-wrap': [/^nowrap$/, /^wrap$/, /^wrap-reverse$/],
+            'justify-content': [/^flex-start$/, /^flex-end$/, /^center$/, /^space-between$/, /^space-around$/, /^space-evenly$/, /^start$/, /^end$/, /^left$/],
+            'align-items': [/^stretch$/, /^flex-start$/, /^flex-end$/, /^center$/, /^baseline$/, /^first\sbaseline$/, /^last\sbaseline$/, /^start$/, /^end$/, /^self-start$/, /^self-end$/],
+            'align-content': [/^flex-start$/, /^flex-end4/, /^center$/, /^space-between$/, /^space-around$/, /^space-evenly$/, /^stretch$/, /^start$/, /^end$/, /^baseline$/, /^first\sbaseline$/, /^last\sbaseline$/],
+            'gap': [/^\d+(?:px|em|%)$/],
+            'row-gap': [/^\d+(?:px|rem|em|%)$/],
+            'column-gap': [/^\d+(?:px|rem|em|%)$/],
+            'order': [/^d+$/],
+            'flex-grow': [/^d+$/],
+            'flex-shrink': [/^d+$/],
+            'align-self': [/^auto$/, /^flex-start$/, /^flex-end$/, /^center$/, /^baseline$/, /^stretch$/],
+
+            // Outras
+            'display': [/^înline$/, /^inline-block$/, /^block$/, /^flex$/],
+            'overflow': [/^visible$/, /^hidden$/, /^clip$/, /^scroll$/, /^auto$/],
+        }
     };
     
     return sanitize(html, {
         allowedTags: allowedTags,
         selfClosing: selfClosing,
-        allowedAttributes: allowedAttributes
+        allowedAttributes: allowedAttributes,
+        allowedStyles: allowedStyles,
     });
 };
 
 exports.htmlParaHtmx = async (html, varanda_id) => {
     
-    const blocoRegex = /<v-(\w+-*)+(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?\s*\/>/g;
+    const blocoRegex = /<v-((?:\w+-*)+)(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?\s*\/>/g;
         // regex captura formatos <v-nome-do-bloco /> e <v-nome-do-bloco dado-prop1="valor" dado-prop2="quem@ta.com  _onde@tu.net" dado-prop3 />
 
     // substitui tags customizadas <v-bloco /> por divs htmx
@@ -59,7 +123,6 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
             divHtmx = divHtmx + '?';
             for (let i = 1; i < captured.length; i++) {
                 if (captured[i][0]) {
-                    console.log('captured[i][0]', captured[i][0]);
                     if (captured[i][0] === 'bicho') temBicho = true;
                     divHtmx = divHtmx + `${captured[i][0]}`;
                     if (captured[i][1]) {
@@ -75,10 +138,6 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
         if (!temBicho) {
             const bloco = await serviceBlocos.verBloco(p1);
             if (bloco) {
-                console.log('não achou bicho');
-                console.log('p1:', p1);
-                console.log('match:', match);
-                console.log('bloco:', bloco);
                 if (bloco.variaveis.includes('bicho')) {
                     if (p2 || p4 || p6 || p8 ) {
                         divHtmx = divHtmx + '&';
@@ -91,7 +150,6 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
         }
         // fecha div htmx
         divHtmx = divHtmx + `" hx-trigger="load"></div>`;
-        console.log('divHtmx:', divHtmx);
         return divHtmx;
     });
 };

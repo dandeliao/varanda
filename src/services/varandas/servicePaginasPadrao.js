@@ -8,14 +8,26 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 		let emoji = randomGenerators.geraEmoji();
 		dadosPaginaPadrao = {
 			titulo: 'inicio',
-			html: `<div id="container">\n<div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>\n<br>\n<marquee>esta comunidade foi benzida com ${emoji} e está pronta para receber pessoas</marquee>\n</div>\n<style>\n#container {\ndisplay: block;\nmax-width: 960px;\nmargin: 0 auto;\ntext-align: center;\n}\n</style>`
+			html: `<div class="pagina">
+  <v-cartao-de-visita />
+  <br>
+  <div class="bloco">
+    <p>esta comunidade foi benzida com ${emoji} e está pronta para receber pessoas</p>
+  </div>
+</div>`
 		};
 	} else {
 		// cria página padrão pessoal
 		let emoji = randomGenerators.geraEmoji();
 		dadosPaginaPadrao = {
 			titulo: 'inicio',
-			html: `<div id="container">\n<div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>\n<br>\n<marquee>meu emoji da sorte é ${emoji}</marquee>\n</div>\n<style>\n#container {\ndisplay: block;\nmax-width: 960px;\nmargin: 0 auto;\ntext-align: center;\n}\n</style>`
+			html: `<div class="pagina">
+  <v-cartao-de-visita />
+  <br>
+  <div class="bloco">
+    <p>meu emoji da sorte é ${emoji}</p>
+  </div>
+</div>`
 		};
 	}
 

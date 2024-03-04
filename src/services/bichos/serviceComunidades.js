@@ -38,9 +38,7 @@ exports.criarComunidade = async function (dados, bichoCriadorId) {
 	}
 
 	let novoBicho = (await dataBichos.postBicho(bicho)).rows[0];
-	console.log(novoBicho);
 	const novaComunidade = (await dataComunidades.postComunidade(dados.bicho_id, bichoCriadorId)).rows[0];
-	console.log(novaComunidade);
 	
 	novoBicho.bicho_criador_id = novaComunidade.bicho_criador_id;
 	novoBicho.participacao_livre = novaComunidade.participacao_livre;

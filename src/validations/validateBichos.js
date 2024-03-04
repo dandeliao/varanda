@@ -46,12 +46,12 @@ exports.schemaPutBicho = Joi.object().keys({
 
 exports.schemaPutAvatar = Joi.object().keys({
 	// descricao_avatar
-	descricao_avatar: Joi.string().max(500)
+	descricao_avatar: Joi.string().min(0).max(500)
 });
 
 exports.schemaPutFundo = Joi.object().keys({
 	// descricao_fundo
-	descricao_fundo: Joi.string().max(500)
+	descricao_fundo: Joi.string().min(0).max(500)
 });
 
 exports.schemaPostConvite = Joi.object().keys({

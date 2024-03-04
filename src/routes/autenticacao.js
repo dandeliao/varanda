@@ -7,19 +7,20 @@ const serviceRelacoes 		= require('../services/bichos/serviceRelacoes');
 const servicePaginasPadrao 	= require('../services/varandas/servicePaginasPadrao');
 const servicePaginas		= require('../services/varandas/servicePaginas');
 const serviceEdicoes		= require('../services/varandas/serviceEdicoes');
-const { validarPostPessoa }	= require('../validations/validateBichos');
+const { schemaPostPessoa }	= require('../validations/validateBichos');
 const asyncHandler 			= require('express-async-handler');
 const express 				= require('express');
 const router 				= express.Router();
 const passport 				= require('passport');
+const { messages } 			= require('joi-translation-pt-br');
 require('dotenv').config();
 
 router.get('/login', (req, res) => {
 
 	res.render('autenticacao/login', {
 		flash: {
-            aviso: res.locals.flash_message,
-            erro: res.locals.flash_error
+            aviso: res.locals.flash_aviso,
+            erro: res.locals.flash_erro
         },
 		query: req.query ? req.query : null
 	});
@@ -48,8 +49,8 @@ router.get('/cadastro', (req, res) => {
 
 	res.render('autenticacao/cadastro', {
 		flash: {
-            aviso: res.locals.flash_message,
-            erro: res.locals.flash_error
+            aviso: res.locals.flash_aviso,
+            erro: res.locals.flash_erro
         },
 		query: req.query ? req.query : null
 	});
@@ -58,10 +59,10 @@ router.get('/cadastro', (req, res) => {
 
 router.post('/cadastro', asyncHandler( async (req, res) => {
 
-    const { value, error } = validarPostPessoa(req.body);
+    const { value, error } = schemaPostPessoa.validate(req.body, { messages });
     
 	if (error) {
-	    req.flash('erro', error.message);
+	    req.flash('erro', error.details[0].message);
         return res.redirect(303, '/autenticacao/cadastro');
 	}
 
