@@ -221,6 +221,7 @@ dialog {
     display: block;
     max-width: 960px;
     margin: 0 auto;
+    text-align: center;
 }
 
 .avatar-redondo{
@@ -247,6 +248,7 @@ dialog {
 .centralizado {
     display: block;
     margin: 0 auto;
+    text-align: center;
 }
 
 @media screen and (max-width: 859px) {
