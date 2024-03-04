@@ -13,9 +13,9 @@ exports.verEdicoes = async function (pagina_id, edicao_id) {
 };
 
 
-exports.criarEdicao = async function (bicho_id, pagina, html) {
+exports.criarEdicao = async function (bicho_editor_id, pagina, html) {
 
-	let novaEdicao = await dataEdicoes.createEdicao(bicho_id, pagina, html);
+	let novaEdicao = await dataEdicoes.createEdicao(bicho_editor_id, pagina, html);
 
 	return novaEdicao.rows[0];
 };

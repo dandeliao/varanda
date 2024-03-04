@@ -5,7 +5,8 @@
     --altura-barra-mobile:  3rem;
     --cor-principal:        #e0b6bc;
     --cor-destaque:         #a990b0;
-    --cor-gris:             #d0c7c7;
+    --cor-destaque-2:       #023774;
+    --cor-gris:             #fff3f3;
     --cor-gris-2:           #6e6e6e;
     --cor-fundo:            #f0f0f0;
     --cor-fundo-2:          #e5e5e5;
@@ -29,13 +30,29 @@ h6              { font-size: calc( .8rem + 0.25vw); margin: calc(.8rem  + 0.87vw
 h1, h2, h3, h4,
 h5, h6          { font-weight: bolder }
 
+a {
+    color: var(--cor-destaque-2);
+}
+
+button {
+    min-height: 2.2rem;
+    padding: 0.5rem;
+    font-family: var(--familia-fonte);
+    color: var(--cor-fonte-view);
+    background-color: var(--cor-fundo-2);
+    font-size: 0.9rem;
+    border-radius: 5px;
+}
+
 /* --- */
-/* decoração da barra (geral) */
+/* decoração da barra */
 
 #varanda-barra {
-    /*z-index: 100;*/
+    z-index: 420;
     overflow: hidden;
-    /*position: fixed;*/
+    position: fixed;
+    top: 0;
+    left: 0;
     
     height: var(--altura-barra);
 	width: 100%;
@@ -57,8 +74,6 @@ h5, h6          { font-weight: bolder }
 
 #varanda-titulo {
     grid-column: 2 / span 1;
-    text-decoration: none;
-    color: var(--cor-fonte-barra);
 }
 
 #varanda-botao-contexto {
@@ -66,7 +81,6 @@ h5, h6          { font-weight: bolder }
     justify-self: end;
 }
 
-/* --- */
 /* responsividade e funcionalidade da barra e de seus elementos */
 
 #varanda-barra > button {
@@ -147,6 +161,34 @@ h5, h6          { font-weight: bolder }
 
 }
 
+/* --- */
+/* decoração da área principal */
+
+#varanda-janela {
+    position: relative;
+    z-index: 0;
+    top: var(--altura-barra);
+    left: 0;
+    width: auto;
+}
+
+#varanda-janela.sem-login {
+    position: static;
+}
+
+@media screen and (max-width: 859px) {
+    #varanda-janela {
+        top: var(--altura-barra-mobile);
+    }
+}
+
+/* --- */
+/* auxiliares */
+
+dialog {
+    z-index: 9000;
+}
+
 .oculto-aos-olhos:not(:focus):not(:active) {
     clip: rect(0 0 0 0);
     clip-path: inset(100%);
@@ -155,4 +197,60 @@ h5, h6          { font-weight: bolder }
     position: absolute;
     white-space: nowrap;
     width: 1px;
+}
+
+.bloco {
+    box-sizing: border-box;
+    display:    block;
+    position:   relative;
+    margin:     0 auto;
+    width:      100%;
+    max-width: 	960px;
+    padding:    0.8rem;
+    background-color:   var(--cor-fundo);
+    color:              var(--cor-fonte);
+    font-family:        var(--familia-fonte);
+    box-shadow:         var(--sombreado);
+    border-style:       var(--estilo-borda);
+    border-width:       var(--espessura-borda);
+    border-radius:      var(--raio-borda);
+    border-color:       var(--cor-principal);
+}
+
+.pagina {
+    display: block;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.avatar-redondo{
+    display: inline-block;
+    height: 80px;
+    width: 80px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.avatar-quadrado{
+    display: inline-block;
+    height: 80px;
+    width: 80px;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.pequeno {
+    height: 32px;
+    width: 32px;
+}
+
+.centralizado {
+    display: block;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 859px) {
+    .bloco {
+        max-width: 	94vw;
+    }
 }

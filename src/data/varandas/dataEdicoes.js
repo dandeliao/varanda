@@ -16,8 +16,8 @@ exports.getEdicao = function (edicaoId) {
 
 exports.createEdicao = function (bichoId, pagina, html) {
 	return pool.query(
-		'INSERT INTO edicoes (pagina_id, bicho_id, ordem, titulo, publica, html) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-		[pagina.pagina_id, bichoId, pagina.ordem, pagina.titulo, pagina.publica, html]
+		'INSERT INTO edicoes (pagina_id, bicho_editor_id, titulo, publica, html) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+		[pagina.pagina_id, bichoId, pagina.titulo, pagina.publica, html]
 	);
 };
 

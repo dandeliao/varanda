@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 const staticPath = `../../../${process.env.CONTENT_FOLDER}`;
+const caminhoBichos = '../../../user_content/bichos/em_uso';
 
 exports.verBichos = async function () {
 	const dados = await dataBichos.getBichos();
@@ -32,7 +33,7 @@ exports.editarBicho = async function (bichoId, dados) {
 
 exports.subirAvatar = async function (bichoId, arquivo) {
 	const caminhoTemporario = arquivo.path;
-	const diretorioDestino = path.join(path.resolve(__dirname, staticPath), 'bichos', 'em_uso', bichoId);
+	const diretorioDestino = path.join(path.resolve(__dirname, caminhoBichos), bichoId);
 	const nomeArquivo = `avatar.${path.extname(arquivo.originalname).toLowerCase()}`;
 	const caminhoDestino = path.join(path.resolve(diretorioDestino, nomeArquivo));
 

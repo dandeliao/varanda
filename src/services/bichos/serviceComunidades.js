@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 const staticPath = `../../../${process.env.CONTENT_FOLDER}`;
+const caminhoHandlebars = `../../views`
 
 exports.verComunidades = async function () {
 	const comunidades = await dataComunidades.getComunidades();
@@ -26,10 +27,14 @@ exports.criarComunidade = async function (dados, bichoCriadorId) {
 		descricao: dados.descricao ? dados.descricao : `Oi! Bem-vinde à comunidade ${dados.nome ? dados.nome : dados.bicho_id}.`
 	};
 
-	// cria pasta da comunidade
+	// cria pastas da comunidade
 	const pastaBicho = path.join(path.resolve(__dirname, staticPath), 'bichos', 'em_uso', `${bicho.bicho_id}`);
 	if (!fs.existsSync(pastaBicho)){
 		fs.mkdirSync(pastaBicho);
+	}
+	const pastaHandlebars = path.join(path.resolve(__dirname, caminhoHandlebars), 'varandas', `${bicho.bicho_id}`);
+	if (!fs.existsSync(pastaHandlebars)){
+		fs.mkdirSync(pastaHandlebars);
 	}
 
 	let novoBicho = (await dataBichos.postBicho(bicho)).rows[0];
@@ -46,17 +51,12 @@ exports.criarComunidade = async function (dados, bichoCriadorId) {
 };
 
 exports.editarComunidade = async function (comunidade_id, dados) {
-	console.log('entrou em service editarComunidade');
-	console.log(dados);
 	const comunidade = (await dataComunidades.getComunidade(comunidade_id)).rows[0];
-	console.log(comunidade);
 	const novosDados = {
 		bicho_id: comunidade_id,
-		participacao_livre: dados.participacao_livre != null ? dados.participacao_livre : comunidade.participacao_livre,
+		participacao_livre: dados.participacao_livre !== null ? dados.participacao_livre : comunidade.participacao_livre,
 		participacao_com_convite: dados.participacao_com_convite != null ? dados.participacao_com_convite : comunidade.participacao_com_convite,
-		periodo_geracao_convite: dados.periodo_geracao_convite ? dados.periodo_geracao_convite : comunidade.periodo_geracao_convite
 	};
-	console.log(novosDados);
 	const comunidadeEditada = await dataComunidades.putComunidade(novosDados);
 	return comunidadeEditada.rows[0];
 };

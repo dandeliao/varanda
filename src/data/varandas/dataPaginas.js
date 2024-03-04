@@ -16,30 +16,30 @@ exports.getPaginas = function (varandaId, publica) {
 	return resultado;
 };
 
-exports.getPagina = function (paginaId) {
+exports.getPagina = function (paginaVid) {
 	return pool.query(
-		'SELECT * FROM paginas WHERE pagina_id = $1',
-		[paginaId]
+		'SELECT * FROM paginas WHERE pagina_vid = $1',
+		[paginaVid]
 	);
 };
 
 exports.createPagina = function (varanda_id, pagina) {
 	return pool.query(
-		'INSERT INTO paginas (varanda_id, titulo, publica) VALUES ($1, $2, $3) RETURNING *',
-		[varanda_id, pagina.titulo, pagina.publica]
+		'INSERT INTO paginas (pagina_vid, varanda_id, titulo, publica, html) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+		[pagina.pagina_vid, varanda_id, pagina.titulo, pagina.publica, pagina.html]
 	);
 };
 
-exports.editPagina = function (pagina_id, pagina){
+exports.editPagina = function (pagina_vid, pagina){
 	return pool.query(
-		'UPDATE paginas SET titulo = $1, publica = $2 WHERE pagina_id = $3 RETURNING *',
-		[pagina.titulo, pagina.publica, pagina_id]	
+		'UPDATE paginas SET titulo = $1, publica = $2, html = $3 WHERE pagina_vid = $4 RETURNING *',
+		[pagina.titulo, pagina.publica, pagina.html, pagina_vid]	
 	);
 };
 
-exports.deletePagina = function (pagina){
+exports.deletePagina = function (pagina_vid){
 	return pool.query(
-		'DELETE FROM paginas WHERE varanda_id = $1 AND pagina_id = $2 RETURNING *',
-		[pagina.varanda_id, pagina.pagina_id]
+		'DELETE FROM paginas WHERE pagina_vid = $1 RETURNING *',
+		[pagina_vid]
 	);
 };

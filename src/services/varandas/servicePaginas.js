@@ -1,13 +1,17 @@
-const dataPaginas = require('../../data/varandas/dataPaginas');
-const fs = require('fs');
-const path = require('path');
+const dataPaginas 					= require('../../data/varandas/dataPaginas');
+const fs 							= require('fs');
+const path 							= require('path');
+const { editarArquivoHandlebars,
+		deletarArquivoHandlebars }	= require('../../utils/utilArquivos');
+const { vidParaId, sanitizarHtml,
+		htmlParaHtmx }				= require('../../utils/utilParsers');
 require('dotenv').config();
-const staticPath = `../../../${process.env.CONTENT_FOLDER}`;
 
-exports.verPaginas = async function (varanda_id, pagina_id, publica) {
+exports.verPaginas = async function (varanda_id, pagina_id = null, publica = null) {
 	let resposta;
 	if (pagina_id !== null) {
-		const pagina = await dataPaginas.getPagina(pagina_id);
+		const pagina_vid = `${varanda_id}/${pagina_id}`;
+		const pagina = await dataPaginas.getPagina(pagina_vid);
 		resposta = pagina.rows[0];
 	} else {
 		const paginas = await dataPaginas.getPaginas(varanda_id, publica);
@@ -19,45 +23,37 @@ exports.verPaginas = async function (varanda_id, pagina_id, publica) {
 
 exports.criarPagina = async function (varanda_id, dados) {
 
-	let novaPagina = (await dataPaginas.createPagina(varanda_id, {titulo: dados.titulo, publica: dados.publica})).rows[0];
+	const pagina = {
+		pagina_vid:	`${varanda_id}/${encodeURIComponent(dados.titulo)}`,
+		titulo: 	dados.titulo,
+		publica: 	dados.publica ? dados.publica : true,
+		html:		await sanitizarHtml(dados.html, dados.comunitaria)
+	}
 
-	// cria arquivo html da página
-	const caminho = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${varanda_id}`, `${novaPagina.pagina_id}.html`);
-	fs.writeFile(caminho, dados.html, erro => {
-		if (erro) {
-			throw erro;
-		}
-	});
+	let novaPagina = (await dataPaginas.createPagina(varanda_id, pagina)).rows[0];
+	novaPagina.handlebars = await htmlParaHtmx(novaPagina.html), varanda_id;
+	editarArquivoHandlebars(varanda_id, novaPagina);
 
 	return novaPagina;
 };
 
-exports.editarPagina = async function (pagina_id, dados) {
-	const paginaEditada = await dataPaginas.editPagina(pagina_id, {titulo: dados.titulo, publica: dados.publica});
+exports.editarPagina = async function (varanda_id, pagina_id, dados) {
 	
-	// edita arquivo html da página
-	const caminho = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${paginaEditada.varanda_id}`, `${pagina_id}.html`);
-	fs.writeFile(caminho, dados.html, erro => {
-		if (erro) {
-			throw erro;
-		}
-	});
+	const pagina_vid = `${varanda_id}/${pagina_id}`;
 
-	return paginaEditada.rows[0];
+	dados.html = await sanitizarHtml(dados.html, dados.comunitaria);
+	let paginaEditada = (await dataPaginas.editPagina(pagina_vid, {titulo: dados.titulo, publica: dados.publica, html: dados.html})).rows[0];
+	paginaEditada.handlebars = await htmlParaHtmx(paginaEditada.html, varanda_id);
+	editarArquivoHandlebars(varanda_id, paginaEditada);
+
+	return paginaEditada;
 };
 
-exports.deletarPagina = async function (pagina_id) {
-	const paginaDeletada = (await dataPaginas.deletarPagina(pagina_id)).rows[0];
+exports.deletarPagina = async function (varanda_id, pagina_id) {
 
-	// deleta o arquivo html da página
-	const caminhoPagina = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${paginaDeletada.varanda_id}` `${pagina_id}.html`);
-	fs.unlink(caminhoPagina, (err) => {
-		if (err) {
-			if (err.code !== 'ENOENT') { // se o erro for arquivo não encontrado, não faz nada
-				throw err;
-			}
-		}
-	});
+	const pagina_vid = `${varanda_id}/${pagina_id}`;
+	const paginaDeletada = (await dataPaginas.deletePagina(pagina_vid)).rows[0];
+	deletarArquivoHandlebars(varanda_id, vidParaId(paginaDeletada.pagina_vid));
 
 	return paginaDeletada;
 };

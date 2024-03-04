@@ -1,0 +1,117 @@
+<div class="bloco cartao">
+	{{#with bloco.bicho}}
+    <div hx-get="/blocos/fundo?bicho={{bicho_id}}" hx-trigger="load"></div>
+	<div class="avatar-redondo avatar-no-cartao" hx-get="/blocos/avatar?bicho={{bicho_id}}" hx-trigger="load"></div>
+    <div class="informacao">
+        <h2>{{nome}}</h2>
+        <a href="/{{bicho_id}}">@{{bicho_id}}</a>
+		<br><br>
+        <p>{{descricao}}</p>
+    </div>
+	{{/with}}
+	{{#if bloco.futricar}}
+	<br>
+	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar bicho</button>
+	{{!-- <a href="/{{bloco.bicho.bicho_id}}/editar-bicho">Editar bicho</a> --}}
+	{{/if}}
+	{{#unless bloco.relacao.participar}}
+	{{#if bloco.bicho.comunidade.participacao_livre}}
+	<form action="/{{bloco.bicho.bicho_id}}/participar" method="post">
+		<button type="submit">Participar</button>
+	</form>
+	{{/if}}
+	{{/unless}}
+
+    <style>
+    .cartao {
+		text-align: center;
+    }
+
+	.informacao{
+		margin-top: 42px;
+	}
+
+	.avatar-no-cartao {
+		display: block;
+		position: absolute;
+		top: 90px;
+		margin-left: auto;
+		margin-right: auto;
+		left: 0;
+		right: 0;
+		text-align: center;
+	}
+
+    </style>
+
+</div>
+        
+	{{!-- renderizar(estado) {
+		
+		while (this.lastChild) {
+			this.removeChild(this.lastChild);
+		}
+
+		let divCartao = document.createElement('div');
+		let mFundo = document.createElement('v-fundo');
+		mFundo.setAttribute('id', 'fundo');
+		let divTexto = document.createElement('div');
+		divTexto.setAttribute('id', 'texto');
+		let mAvatar = document.createElement('v-avatar');
+		let divEspaco = document.createElement('div');
+		divEspaco.setAttribute('id', 'espaco');
+		let mNome = document.createElement('v-nome');
+		let mDescricao = document.createElement('v-descricao');
+
+		divCartao.appendChild(mFundo);
+		divTexto.appendChild(divEspaco);
+		divTexto.appendChild(mNome);
+		divTexto.appendChild(mDescricao);
+		divCartao.appendChild(divTexto);
+		divCartao.appendChild(mAvatar);
+
+		this.style.display = 'block';
+
+		divCartao.style.position = 'relative';
+
+		mFundo.style.height = '7.2rem'
+		mFundo.style.display = 'block';
+		mFundo.style.position = 'relative';
+		mFundo.style.width = '100%';
+
+		divTexto.style.position = 'relative';
+		divTexto.style.boxSizing = 'border-box';
+		divTexto.style.width = '100%';
+		divTexto.style.textAlign = 'left';
+
+		divEspaco.style.display = 'inline-block';
+		divEspaco.style.width = '132px';
+		divEspaco.style.height = '3.5rem';
+		
+		mNome.style.display = 'inline-block';
+		mNome.style.fontWeight = 'bold';
+		mNome.style.fontSize = '1.6rem';
+		mNome.style.verticalAlign = 'top';
+		mNome.style.padding = '0.68rem 1.5rem';
+
+		mDescricao.style.display = 'block';
+		mDescricao.style.fontSize = '0.96rem';
+		mDescricao.style.textAlign = 'left';
+		mDescricao.style.padding = '0.68rem 1.5rem 1.5rem';
+
+		mAvatar.style.display = 'block';
+		mAvatar.style.position = 'absolute';
+		mAvatar.style.maxWidth = '128px';
+		mAvatar.style.top = '7.2rem';
+		mAvatar.style.transform = 'translate(15%, -60%)';
+		mAvatar.style.zIndex = '2';
+
+		this.appendChild(divCartao);
+
+		mFundo.renderizar(estado);
+		mAvatar.renderizar(estado);
+		mNome.renderizar(estado);
+		mDescricao.renderizar(estado);
+
+    }
+} --}}

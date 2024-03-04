@@ -21,7 +21,6 @@ exports.verVaranda = async function (varanda_id) {
 exports.criarVaranda = async function (bicho_id, comunitaria) {
 
 	const novaVaranda = (await dataVarandas.createVaranda(bicho_id, comunitaria)).rows[0];
-	console.log(novaVaranda);
 
 	// cria pasta da varanda
 	const pastaVaranda = path.join(path.resolve(__dirname, staticPath), 'varandas', 'em_uso', `${novaVaranda.varanda_id}`);

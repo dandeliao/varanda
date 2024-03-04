@@ -1,32 +1,32 @@
-<h3>Editar página atual:</h3>
-<form id="form-editar" action="/{{varanda.bicho_id}}/{{pagina.pagina_id}}" method="put">
-	<label for="titulo" hidden>título da página "{{pagina.pagina_id}}"</label>
-	<input type="text" id="titulo-pagina" value="{{pagina.pagina_id}}" name="titulo" required>
-	<label for="html" hidden>html da página "{{pagina.pagina_id}}"</label>
-	<textarea id="html-pagina" value="{{pagina.html}}" name="html" required></textarea>
+<br>
+<form action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
+	
+	<label for="titulo">Título da página:</label>
+	<input type="text" id="titulo-pagina" value="{{pagina.titulo}}" name="titulo" required>
+	<label for="html">Html da página:</label>
+	<textarea id="html-pagina" name="html" required>{{pagina.html}}</textarea>
 
-	<button type="submit">salvar</button>
+	<button type="submit">Salvar</button>
+	<button hx-get="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" hx-target="body" hx-push-url="true">Voltar</button>
+
 </form>
-<hr>
-<h3>Editar outra página desta varanda:</h3>
-<ul>
-	<li><a href=".../editar">obter lista de páginas aqui</a></li>
-</ul>
-<hr>
-<h3>Criar nova página:</h3>
-<form id="form-nova-pagina" action="/{{varanda.bicho_id}}" method="post">
-	<label for="titulo-nova-pagina" hidden>título da nova página</label>
-	<input type="text" id="titulo-nova-pagina" placeholder="titulo-da-nova-pagina" name="titulo-nova-pagina" required>
-	<button type="submit">criar</button>
-</form>
+
 <style>
-	#form-editar, #form-nova-pagina {
-        max-width: 360px;
+	form {
+        max-width: 860px;
+		width: 100%;
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
         align-items: center;
         gap: 1rem;
+	}
+	form > #titulo-pagina{
+		width: 100%;
+	}
+	form > textarea {
+		width: 100%;
+		min-height: 50vh;
 	}
 </style>

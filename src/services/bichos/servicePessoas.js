@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 const staticPath = `../../../${process.env.CONTENT_FOLDER}`;
+const pastaViews 	= `../../views`;
 
 exports.verPessoas = async function() {
 	const pessoas = await dataPessoas.getPessoas();
@@ -39,6 +40,12 @@ exports.registrarPessoa = async function (dados) {
 		fs.mkdirSync(pastaBicho);
 	}
 
+	// cria pasta das views (handlebars) do bicho
+	const pastaVaranda = path.join(path.resolve(__dirname, pastaViews), 'varandas', `${bicho.bicho_id}`);
+	if (!fs.existsSync(pastaVaranda)){
+		fs.mkdirSync(pastaVaranda);
+	}
+
 	let novoBicho = (await dataBichos.postBicho(bicho)).rows[0];
 	const novaPessoa = (await dataPessoas.postPessoa(bicho.bicho_id, segredos)).rows[0];
 
@@ -49,7 +56,6 @@ exports.registrarPessoa = async function (dados) {
 
 exports.editarSegredos = async function (bicho_id, dados) {
 	const emailVelho = (await dataPessoas.getEmail(bicho_id)).rows[0].email;
-	console.log('emailVelho:', emailVelho);
 	let saltHash = (await dataPessoas.getHashSalt(bicho_id)).rows[0];
 	if (dados.senha) {
 		saltHash = geraHashESalt(dados.senha);
@@ -60,8 +66,6 @@ exports.editarSegredos = async function (bicho_id, dados) {
 		salt: saltHash.salt
 	};
 	const pessoaEditada = await dataPessoas.putPessoa(bicho_id, segredos);
-	console.log('pessoaEditada:', pessoaEditada);
-	console.log('rows[0]:', pessoaEditada.rows[0]);
 	return pessoaEditada.rows[0];
 };
 

@@ -22,7 +22,7 @@ exports.postComunidade = function (bichoId, bichoCriadorId) {
 
 exports.putComunidade = function (comunidade) {
 	return pool.query(
-		'UPDATE comunidades SET participacao_livre = $1, participacao_com_convite = $2, periodo_geracao_convite = $3 WHERE bicho_id = $4 RETURNING *',
-		[comunidade.participacao_livre, comunidade.participacao_com_convite, comunidade.periodo_geracao_convite, comunidade.bicho_id]
+		'UPDATE comunidades SET participacao_livre = $1, participacao_com_convite = $2 WHERE bicho_id = $3 RETURNING *',
+		[comunidade.participacao_livre, comunidade.participacao_com_convite, comunidade.bicho_id]
 	);
 };
