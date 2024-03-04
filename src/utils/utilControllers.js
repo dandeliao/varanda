@@ -58,6 +58,9 @@ exports.objetoRenderizavelBloco = async (obj_render, bloco_id) => {
                 if (comunidade) {
                     bicho = comunidade;
                     bicho.comunitario = true;
+                    if (comunidade.bicho_id === process.env.INSTANCIA_ID) {
+                        bicho.instancia = true;
+                    }
                 } else {
                     bicho = await serviceBichos.verBicho(bicho_id);
                 }

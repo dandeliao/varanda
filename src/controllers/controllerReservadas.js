@@ -35,6 +35,14 @@ exports.getFundo = asyncHandler(async (req, res, next) => {
 	res.sendFile(fundo);
 });
 
+exports.getPreferencias = asyncHandler(async (req, res, next) => {
+	const view = 'blocos/preferencias';
+	const usuarie_id = await quemEstaAgindo(req);
+	let obj_render = await objetoRenderizavel(req, res, null, null, usuarie_id);
+	obj_render = await objetoRenderizavelBloco(obj_render, 'preferencias');
+	res.render(view, obj_render);
+});
+
 exports.getFutricarVaranda = asyncHandler(async (req, res, next) => {
 	const varanda_id = req.params.bicho_id;
 	const pagina_id = 'futricar';

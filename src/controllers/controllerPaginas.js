@@ -113,7 +113,7 @@ exports.putPagina = asyncHandler(async (req, res, next) => {
 	const paginaEditada = await servicePaginas.editarPagina(varanda_id, pagina_id, pagina);
 	await serviceEdicoes.criarEdicao(usuarie_id, paginaEditada, paginaEditada.html);
 
-	req.flash('aviso', 'A página foi editada com sucesso!');
+	//req.flash('aviso', 'A página foi editada com sucesso!');
 	return res.redirect(303, `/${varanda_id}/${pagina_id}`);
 });
 

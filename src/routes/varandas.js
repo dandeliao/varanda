@@ -9,6 +9,7 @@ const { getPagina,          postPagina,     putPagina,  deletePagina    } = requ
 const {                     postParticipar, 			deleteRelacao   } = require('../controllers/controllerRelacoes');
 const { getFutricarVaranda,
         getCriarComunidade,
+		getPreferencias,
         getEditarBicho,
         getEditarPagina, 
         getAvatar,                          putAvatar,
@@ -38,6 +39,7 @@ const update = multer({
 });
 
 router.get   ('/',                      getVaranda);
+router.get	 ('/preferencias',			getPreferencias);
 router.get   ('/criar-comunidade',      getCriarComunidade);
 router.get   ('/:bicho_id',             getVaranda);
 router.get   ('/:bicho_id/futricar',    getFutricarVaranda);
