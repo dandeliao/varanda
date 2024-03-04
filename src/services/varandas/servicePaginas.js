@@ -31,7 +31,7 @@ exports.criarPagina = async function (varanda_id, dados) {
 	}
 
 	let novaPagina = (await dataPaginas.createPagina(varanda_id, pagina)).rows[0];
-	novaPagina.handlebars = await htmlParaHtmx(novaPagina.html), varanda_id;
+	novaPagina.handlebars = await htmlParaHtmx(novaPagina.html, varanda_id);
 	editarArquivoHandlebars(varanda_id, novaPagina);
 
 	return novaPagina;
