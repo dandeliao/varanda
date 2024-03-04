@@ -1,4 +1,5 @@
 <div class="bloco cartao">
+	
 	{{#with bloco.bicho}}
     <div hx-get="/blocos/fundo?bicho={{bicho_id}}" hx-trigger="load"></div>
 	<div class="avatar-redondo avatar-no-cartao" hx-get="/blocos/avatar?bicho={{bicho_id}}" hx-trigger="load"></div>
@@ -9,18 +10,23 @@
         <p>{{descricao}}</p>
     </div>
 	{{/with}}
+	
+	<br><br>
+
 	{{#if bloco.futricar}}
-	<br>
 	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar perfil</button>
 	{{#if bloco.bicho.comunitario}}
+	{{#if bloco.relacao.participar}}
+	{{#unless bloco.bicho.instancia}}
 	<button hx-delete="/{{bloco.bicho.bicho_id}}/relacao" hx-target="body" hx-push-url="true">Sair da comunidade</button>
+	{{/unless}}
 	{{/if}}
 	{{/if}}
+	{{/if}}
+
 	{{#unless bloco.relacao.participar}}
-	{{#if bloco.bicho.comunidade.participacao_livre}}
-	<form action="/{{bloco.bicho.bicho_id}}/participar" method="post">
-		<button type="submit">Participar</button>
-	</form>
+	{{#if bloco.bicho.participacao_livre}}
+	<button hx-post="/{{bloco.bicho.bicho_id}}/participar" hx-target="body" hx-push-url="true">Participar</button>
 	{{/if}}
 	{{/unless}}
 
