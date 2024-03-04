@@ -88,13 +88,6 @@ CREATE TABLE blocos(
     criacao             TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE blocos_na_pagina(
-    bloco_na_pagina_id  SERIAL PRIMARY KEY NOT NULL,
-    bloco_id            VARCHAR(32) REFERENCES blocos(bloco_id) ON DELETE SET NULL,
-    pagina_id           VARCHAR(32) REFERENCES paginas(pagina_id) ON DELETE CASCADE,
-    varanda_id          VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE
-);
-
 CREATE TABLE edicoes(
     edicao_id       SERIAL PRIMARY KEY NOT NULL,
     pagina_id       INTEGER REFERENCES paginas(pagina_id) ON DELETE CASCADE,

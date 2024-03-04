@@ -29,8 +29,8 @@ exports.objetoRenderizavel = async (req, res, varanda_id, pagina_id, usuarie_id,
             bicho_id: usuarie_id
         },
         flash: {
-            aviso: res.locals.flash_message,
-            erro: res.locals.flash_error
+            aviso: res.locals.flash_aviso,
+            erro: res.locals.flash_erro
         },
         bloco: {},
 		query: req.query ? req.query : null,
@@ -51,17 +51,17 @@ exports.objetoRenderizavelBloco = async (obj_render, bloco_id) => {
     for(let variavel of bloco.variaveis) {
         switch(variavel){
             case 'bicho':
-                if (obj_render.query.bicho) {
-                    let bicho = {};
-                    const comunidade = await serviceComunidades.verComunidade(obj_render.query.bicho);
-                    if (comunidade) {
-                        bicho = comunidade;
-                        bicho.comunitario = true;
-                    } else {
-                        bicho = await serviceBichos.verBicho(obj_render.query.bicho);
-                    }
-                    dados.bicho = bicho;
+                let bicho_id = obj_render.query.bicho ? obj_render.query.bicho : obj_render.varanda.bicho_id;
+                
+                let bicho = {};
+                const comunidade = await serviceComunidades.verComunidade(bicho_id);
+                if (comunidade) {
+                    bicho = comunidade;
+                    bicho.comunitario = true;
+                } else {
+                    bicho = await serviceBichos.verBicho(bicho_id);
                 }
+                dados.bicho = bicho;
                 break;
             case 'paginas':
                 if (obj_render.varanda.bicho_id) {

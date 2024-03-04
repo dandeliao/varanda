@@ -31,7 +31,7 @@ exports.criarPagina = async function (varanda_id, dados) {
 	}
 
 	let novaPagina = (await dataPaginas.createPagina(varanda_id, pagina)).rows[0];
-	novaPagina.handlebars = htmlParaHtmx(novaPagina.html);
+	novaPagina.handlebars = await htmlParaHtmx(novaPagina.html), varanda_id;
 	editarArquivoHandlebars(varanda_id, novaPagina);
 
 	return novaPagina;
@@ -43,7 +43,7 @@ exports.editarPagina = async function (varanda_id, pagina_id, dados) {
 
 	dados.html = await sanitizarHtml(dados.html, dados.comunitaria);
 	let paginaEditada = (await dataPaginas.editPagina(pagina_vid, {titulo: dados.titulo, publica: dados.publica, html: dados.html})).rows[0];
-	paginaEditada.handlebars = htmlParaHtmx(paginaEditada.html);
+	paginaEditada.handlebars = await htmlParaHtmx(paginaEditada.html, varanda_id);
 	editarArquivoHandlebars(varanda_id, paginaEditada);
 
 	return paginaEditada;

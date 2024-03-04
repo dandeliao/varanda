@@ -11,12 +11,12 @@ exports.postParticipar = asyncHandler(async (req, res, next) => {
 
 	const comunidade = await serviceComunidades.verComunidade(varanda_id);
 	if (!comunidade.participacao_livre) {
-		req.flash('error', `A comunidade @${varanda_id} está com as inscrições fechadas.`);
-		return res.redirect(`/${varanda_id}`);
+		req.flash('erro', `A comunidade @${varanda_id} está com as inscrições fechadas.`);
+		return res.redirect(303, `/${varanda_id}`);
 	}
 
 	await serviceRelacoes.criarRelacao(usuarie_id, varanda_id, {participar: true, editar: false, moderar: false, representar: false});
 
 	req.flash('aviso', `Agora você está participando de @${varanda_id}`);
-	res.redirect(`/${varanda_id}`);
+	res.redirect(303, `/${varanda_id}`);
 });

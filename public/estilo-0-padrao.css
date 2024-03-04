@@ -41,7 +41,7 @@ button {
     color: var(--cor-fonte-view);
     background-color: var(--cor-fundo-2);
     font-size: 0.9rem;
-    border-radius: 6px;
+    border-radius: 5px;
 }
 
 /* --- */

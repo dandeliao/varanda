@@ -1,5 +1,4 @@
 const asyncHandler 				                = require('express-async-handler');
-const customError	 			                = require('http-errors');
 const serviceBichos 							= require('../services/bichos/serviceBichos');
 const serviceBichosPadrao 						= require('../services/bichos/serviceBichosPadrao');
 const serviceComunidades 						= require('../services/bichos/serviceComunidades');
@@ -7,8 +6,10 @@ const serviceRelacoes 							= require('../services/bichos/serviceRelacoes');
 const servicePaginasPadrao 						= require('../services/varandas/servicePaginasPadrao');
 const servicePaginas							= require('../services/varandas/servicePaginas');
 const serviceEdicoes							= require('../services/varandas/serviceEdicoes');
-const { validarPostComunidade, validarPutBicho }							= require('../validations/validateBichos');
-const { params, objetoRenderizavel, quemEstaAgindo, palavrasReservadas }	= require('../utils/utilControllers');
+const { schemaPostComunidade, schemaPutBicho }	= require('../validations/validateBichos');
+const { params, objetoRenderizavel, quemEstaAgindo, palavrasReservadas } = require('../utils/utilControllers');
+const Joi = require('joi');
+const { messages } = require('joi-translation-pt-br');
 require('dotenv').config();
 
 exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id == varanda_id; query.bicho_id == usuarie_id
@@ -32,21 +33,21 @@ exports.postVaranda = asyncHandler(async (req, res, next) => {
 		bicho_criador_id:	usuarie_id
 	}
 
-	const { erro, resultado } = validarPostComunidade(bicho);
-	if (erro) {
-		req.flash('erro', `Erro ao validar as informações da nova comunidade. Detalhes: ${erro.details}`);
-		req.redirect('/criar-comunidade');
+	const { error, value } = schemaPostComunidade.validate(bicho, { messages });
+	if (error) {
+		req.flash('erro', `Erro ao validar as informações da nova comunidade. Detalhes: ${error.details[0].message}`);
+		return res.redirect(303, '/criar-comunidade');
 	}
 
 	if (palavrasReservadas().includes(bicho.bicho_id)) {
-		req.flash('error', `Já existe um bicho com a arroba ${bicho.bicho_id}.`);
-		return res.redirect(`/criar-comunidade`);
+		req.flash('erro', `Você não pode criar um bicho com o nome de perfil @${bicho.bicho_id}.`);
+		return res.redirect(303, `/criar-comunidade`);
 	}
 
 	const bichoExiste = await serviceBichos.verBicho(req.body.bicho_id);
 	if (bichoExiste) {
 		req.flash('erro', `O bicho @${req.body.bicho_id} já existe. Por favor, escolha outra arroba.`);
-		res.redirect('/criar-comunidade');
+		return res.redirect(303, '/criar-comunidade');
 	}
 
 	const comunidade = await serviceComunidades.criarComunidade(bicho, bicho.bicho_criador_id);
@@ -78,7 +79,7 @@ exports.postVaranda = asyncHandler(async (req, res, next) => {
 	await serviceEdicoes.criarEdicao(comunidade.bicho_id, novaPagina, paginaPadrao.html);
 
 	req.flash('aviso', 'Comunidade criada com sucesso!');
-	return res.redirect(`/${comunidade.bicho_id}`);
+	return res.redirect(303, `/${comunidade.bicho_id}`);
 
 });
 
@@ -99,11 +100,9 @@ exports.putVaranda = asyncHandler(async (req, res, next) => {
 		participacao_com_convite:	req.body.participacao_com_convite ? true : false
 	}
 
-	console.log(bicho);
-
-	const { value, error } = validarPutBicho(bicho);
+	const { error, value } = schemaPutBicho.validate(bicho, { messages });
 	if (error) {
-	    req.flash('error', `Erro ao validar as informações. Detalhes: ${error.message}`);
+	    req.flash('erro', `Erro ao validar as informações. Detalhes: ${error.details[0].message}`);
         return res.redirect(303, `/${varanda_id}`);
 	}
 	
@@ -112,7 +111,7 @@ exports.putVaranda = asyncHandler(async (req, res, next) => {
 	if (usuarie_id !== varanda_id) {
 		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
 		if (!permissoes || !permissoes.representar) {
-			req.flash('error', `Você não pode editar o perfil de ${varanda_id}.`);
+			req.flash('erro', `Você não pode editar o perfil de ${varanda_id}.`);
 			return res.redirect(303, `/${varanda_id}`);
 		}
 	}
@@ -128,4 +127,20 @@ exports.putVaranda = asyncHandler(async (req, res, next) => {
 
 exports.deleteVaranda = asyncHandler(async (req, res, next) => {
 
+	const { varanda_id, pagina_id } = params(req);
+	let usuarie_id = await quemEstaAgindo(req);
+
+	if (usuarie_id !== varanda_id) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
+		if (!permissoes.representar) {
+			const permissoesGlobais = await serviceRelacoes.verRelacao(usuarie_id, process.env.INSTANCIA_ID);
+			if (!permissoesGlobais.moderar) {
+				req.flash('erro', `O bicho @${req.user.bicho_id} não pode deletar @${varanda_id}. Procure representantes da comunidade ou a equipe de moderação da instância.`)
+				res.redirect(303, `/varandas/${varanda_id}`);
+			}
+		}
+	}
+	await serviceBichos.deletarBicho(varanda_id);
+	res.flash('aviso', `@${varanda_id} deletada com sucesso.`);
+	res.redirect(303, `/`);
 });

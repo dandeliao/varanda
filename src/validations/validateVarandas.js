@@ -4,24 +4,21 @@ const palavrasReservadas = ['inicio', 'editar', 'clonar', 'futricar'];
 
 // a fazer: usar palavrasReservadas para validacoes
 
-const validar = (schema) => (payload) =>
-	schema.validate(payload, { abortEarly: false });
-
-const schemaPutVaranda = Joi.object({
+exports.schemaPutVaranda = Joi.object().keys({
 	// aberta, bicho_id
 	aberta: Joi.boolean().required(),
 	bicho_id: Joi.string().min(1).max(32),
 });
 
-const schemaPostPagina = Joi.object({
+exports.schemaPostPagina = Joi.object().keys({
 	// titulo, publica, html, bicho_id
 	varanda_id: Joi.string().max(32),
-	titulo: Joi.string().max(32),
+	titulo: Joi.string().min(1).max(32),
 	publica: Joi.boolean(),
 	html: Joi.htmlInput().allowedTags(),
 });
 
-const schemaPutPagina = Joi.object({
+exports.schemaPutPagina = Joi.object().keys({
 	// pagina_vid, varanda_id, titulo, publica, html
 	pagina_vid: Joi.string().required(),
 	varanda_id: Joi.string().max(32),
@@ -29,7 +26,3 @@ const schemaPutPagina = Joi.object({
 	publica: Joi.boolean(),
 	html: Joi.htmlInput().allowedTags()
 });
-
-exports.validarPutVaranda = validar(schemaPutVaranda);
-exports.validarPostPagina = validar(schemaPostPagina);
-exports.validarPutPagina = validar(schemaPutPagina);

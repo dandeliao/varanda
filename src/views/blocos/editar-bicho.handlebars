@@ -6,7 +6,7 @@
 <h1>Editar bicho</h1>
 <br>
 {{/unless}}
-<form class="bloco" action="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" method="{{metodo}}" hx-swap="none">
+<form class="bloco" action="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" method="{{metodo}}" {{#unless nova_comunidade}}hx-swap="none"{{/unless}}>
 	{{#unless nova_comunidade}}
 	<h2>Apresentação</h2>
 	{{/unless}}
@@ -39,7 +39,7 @@
 </form>
 <br>
 {{#unless nova_comunidade}}
-<form class="bloco" action="/{{varanda.bicho_id}}/fundo" method="put" enctype="multipart/form-data" hx-target="#visualiza-fundo" hx-push-url="false">
+<form id="form-fundo" class="bloco" action="/{{varanda.bicho_id}}/fundo" method="put" enctype="multipart/form-data" hx-target="#visualiza-fundo" hx-push-url="false">
 	<h2>Imagem de fundo</h2>
 	<label for="fundo" hidden>Escolher arquivo para imagem de fundo</label>
 	<input id="input-fundo" name="fundo" type="file" />
@@ -52,7 +52,7 @@
 	<button class="centralizado" type="submit">Salvar</button>
 </form>
 <br>
-<form class="bloco" action="/{{varanda.bicho_id}}/avatar" method="put" enctype="multipart/form-data" hx-target="#visualiza-avatar" hx-push-url="false">
+<form id="form-avatar" class="bloco" action="/{{varanda.bicho_id}}/avatar" method="put" enctype="multipart/form-data" hx-target="#visualiza-avatar" hx-push-url="false">
 	<h2>Imagem de perfil</h2>
 	<label for="avatar" hidden>Escolher arquivo para imagem de perfil</label>
 	<input id="input-avatar" name="avatar" type="file" />
@@ -107,7 +107,9 @@
 
 </style>
 
+{{#unless nova_comunidade}}
 <script>
+
 	document.getElementById('input-fundo').addEventListener('change', function(event) {
 		let src = URL.createObjectURL(event.target.files[0]);
   		document.getElementById('visualiza-fundo').childNodes[0].style.backgroundImage = `url(${src})`;
@@ -116,4 +118,20 @@
 		let src = URL.createObjectURL(event.target.files[0]);
   		document.getElementById('visualiza-avatar').childNodes[0].src = src;
 	});
+	document.getElementById('form-avatar').addEventListener('submit', function(event) {
+		event.preventDefault();
+		let form = new FormData();
+		form.append('descricao_avatar', document.getElementById('descricao-avatar').value);
+		form.append('avatar', document.getElementById('avatar').files[0]);
+		form.submit();
+	});
+	document.getElementById('form-fundo').addEventListener('submit', function(event) {
+		event.preventDefault();
+		let form = new FormData();
+		form.append('descricao_fundo', document.getElementById('descricao-fundo').value);
+		form.append('fundo', document.getElementById('fundo').files[0]);
+		form.submit();
+	});
+	
 </script>
+{{/unless}}

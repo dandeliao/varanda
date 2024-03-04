@@ -11,9 +11,9 @@ const customError 		    = require('http-errors');
 const rotasVarandas 		= require('./routes/varandas.js');
 const rotasAutenticacao 	= require('./routes/autenticacao.js');
 const rotasBlocos			= require('./routes/blocos.js');
-//const rotasBichos 			= require('./routes/bichos.js');
-//const rotasArtefatos 		= require('./routes/artefatos.js');
+const rotasArtefatos 		= require('./routes/artefatos.js');
 const path					= require('path');
+const { errorHandler } = require('./middlewares/errorHandler.js');
 require('./config/passport.js');
 require('dotenv').config();
 
@@ -51,20 +51,10 @@ app.use(global.flashMessages);
 app.use('/autenticacao',	rotasAutenticacao	);
 app.use('/blocos', 			rotasBlocos			);
 app.use('/',		 		rotasVarandas		);
-/* app.use('/bichos', 			rotasBichos			);
-app.use('/artefatos', 		rotasArtefatos		); */
+app.use('/artefatos', 		rotasArtefatos		);
 
 // tratamento de erros
-// !!! modificar resposta para ser html, não JSON
-/* app.use((req, res, next) => {
-	next(customError(404, 'Página não encontrada.'));
-});
-app.use((error, req, res, next) => {
-	res.status(error.status || 500).json({
-		status: error.status,
-		message: error.message
-	});
-}); */
+app.use(errorHandler);
 
 // roda o servidor
 app.listen(PORT, () => {
