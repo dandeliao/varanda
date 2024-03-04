@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const { getVaranda,         postVaranda,    putVaranda, deleteVaranda   } = require('../controllers/controllerVarandas');
 const { getPagina,          postPagina,     putPagina,  deletePagina    } = require('../controllers/controllerPaginas');
-const {                     postParticipar                              } = require('../controllers/controllerRelacoes');
+const {                     postParticipar, 			deleteRelacao   } = require('../controllers/controllerRelacoes');
 const { getFutricarVaranda,
         getCriarComunidade,
         getEditarBicho,
@@ -46,13 +46,15 @@ router.get   ('/:bicho_id/avatar',      getAvatar);
 router.get   ('/:bicho_id/fundo',       getFundo);
 
 router.post  ('/',                      postVaranda);
-router.post  ('/:bicho_id/participar',  postParticipar);
 router.put   ('/:bicho_id/avatar',
               update.single('avatar'),  putAvatar);
 router.put   ('/:bicho_id/fundo',
               update.single('fundo'),   putFundo);
 router.put   ('/:bicho_id',             putVaranda);
 router.delete('/:bicho_id',             deleteVaranda);
+
+router.post  ('/:bicho_id/participar',  postParticipar);
+router.delete('/:bicho_id/relacao',		deleteRelacao);
 
 router.get   ('/:bicho_id/:pagina_id',          getPagina);
 router.get   ('/:bicho_id/:pagina_id/editar',   getEditarPagina);

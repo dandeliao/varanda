@@ -11,8 +11,10 @@
 	{{/with}}
 	{{#if bloco.futricar}}
 	<br>
-	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar bicho</button>
-	{{!-- <a href="/{{bloco.bicho.bicho_id}}/editar-bicho">Editar bicho</a> --}}
+	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar perfil</button>
+	{{#if bloco.bicho.comunitario}}
+	<button hx-delete="/{{bloco.bicho.bicho_id}}/relacao" hx-target="body" hx-push-url="true">Sair da comunidade</button>
+	{{/if}}
 	{{/if}}
 	{{#unless bloco.relacao.participar}}
 	{{#if bloco.bicho.comunidade.participacao_livre}}
