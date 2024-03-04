@@ -66,7 +66,6 @@ exports.objetoRenderizavelBloco = async (obj_render, bloco_id) => {
             case 'paginas':
                 if (obj_render.varanda.bicho_id) {
                     const paginas = await servicePaginas.verPaginas(obj_render.varanda.bicho_id);
-                    console.log(paginas);
                     dados.paginas = paginas;
                 }
                 break;

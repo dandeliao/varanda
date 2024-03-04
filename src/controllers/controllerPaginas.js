@@ -6,7 +6,6 @@ const serviceEdicoes								= require('../services/varandas/serviceEdicoes');
 const serviceComunidades							= require('../services/bichos/serviceComunidades');
 const { schemaPutPagina, schemaPostPagina }			= require('../validations/validateVarandas');
 const { params, objetoRenderizavel, quemEstaAgindo, palavrasReservadas } = require('../utils/utilControllers');
-const Joi = require('joi');
 const { messages } = require('joi-translation-pt-br');
 require('dotenv').config();
 
@@ -85,7 +84,6 @@ exports.putPagina = asyncHandler(async (req, res, next) => {
     
 	const { varanda_id, pagina_id } = params(req);
 	const paginaOriginal = await servicePaginas.verPaginas(varanda_id, pagina_id);
-	console.log(req.body);
 	let pagina = {
 		pagina_vid: paginaOriginal.pagina_vid,
 		varanda_id: varanda_id,
@@ -93,11 +91,8 @@ exports.putPagina = asyncHandler(async (req, res, next) => {
 		publica: req.body.publica ? req.body.publica : paginaOriginal.publica,
 		html: req.body.html ? req.body.html : paginaOriginal.html
 	}
-	console.log(pagina);
 	const { error, value } = schemaPutPagina.validate(pagina, { messages });
-	console.log('value:', error);
 	if (error) {
-		console.log('message:', error.details[0].message);
 	    req.flash('erro', error.details[0].message);
         return res.redirect(303, `/${pagina.pagina_vid}/editar`);
 	}

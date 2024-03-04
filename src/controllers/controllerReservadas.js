@@ -4,7 +4,6 @@ const serviceRelacoes 									= require('../services/bichos/serviceRelacoes');
 const servicePaginas									= require('../services/varandas/servicePaginas');
 const { params, objetoRenderizavel, quemEstaAgindo, palavrasReservadas, objetoRenderizavelBloco } = require('../utils/utilControllers');
 const { schemaPutAvatar, schemaPutFundo }				= require('../validations/validateBichos');
-const Joi = require('joi');
 const { messages } = require('joi-translation-pt-br');
 const fs = require('fs');
 const path = require('path');

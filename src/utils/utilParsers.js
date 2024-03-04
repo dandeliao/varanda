@@ -59,7 +59,6 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
             divHtmx = divHtmx + '?';
             for (let i = 1; i < captured.length; i++) {
                 if (captured[i][0]) {
-                    console.log('captured[i][0]', captured[i][0]);
                     if (captured[i][0] === 'bicho') temBicho = true;
                     divHtmx = divHtmx + `${captured[i][0]}`;
                     if (captured[i][1]) {
@@ -75,10 +74,6 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
         if (!temBicho) {
             const bloco = await serviceBlocos.verBloco(p1);
             if (bloco) {
-                console.log('não achou bicho');
-                console.log('p1:', p1);
-                console.log('match:', match);
-                console.log('bloco:', bloco);
                 if (bloco.variaveis.includes('bicho')) {
                     if (p2 || p4 || p6 || p8 ) {
                         divHtmx = divHtmx + '&';
@@ -91,7 +86,6 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
         }
         // fecha div htmx
         divHtmx = divHtmx + `" hx-trigger="load"></div>`;
-        console.log('divHtmx:', divHtmx);
         return divHtmx;
     });
 };
