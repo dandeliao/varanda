@@ -1,3 +1,4 @@
+<div class="pagina">
 {{#if nova_comunidade}}
 <h1>Criar comunidade</h1>
 <br>
@@ -70,8 +71,12 @@
 <br>
 <button class="centralizado" hx-get="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" hx-target="body" hx-push-url="true">Voltar</button>
 <br><br>
+</div>
 
 <style>
+	.pagina {
+		text-align: left;
+	}
 	h1 {
 		text-align: center;
 	}
