@@ -3,6 +3,7 @@ const serviceBichos     = require('../services/bichos/serviceBichos');
 const serviceComunidades = require('../services/bichos/serviceComunidades');
 const serviceBlocos     = require('../services/varandas/serviceBlocos');
 const servicePaginas    = require('../services/varandas/servicePaginas');
+const servicePreferencias = require('../services/bichos/servicePreferencias');
 
 exports.params = (req) => {
     const varanda_id = req.params.bicho_id ? req.params.bicho_id : process.env.INSTANCIA_ID;
@@ -17,6 +18,7 @@ exports.objetoRenderizavel = async (req, res, varanda_id, pagina_id, usuarie_id,
 
     const pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
     const varanda = await serviceBichos.verBicho(varanda_id);
+    const preferencias = await servicePreferencias.verPreferencias(usuarie_id);
     let obj_render =  {
         varanda: varanda,
 		pagina: {
@@ -32,6 +34,7 @@ exports.objetoRenderizavel = async (req, res, varanda_id, pagina_id, usuarie_id,
             aviso: res.locals.flash_aviso,
             erro: res.locals.flash_erro
         },
+        preferencias: preferencias,
         bloco: {},
 		query: req.query ? req.query : null,
     }
@@ -104,5 +107,5 @@ exports.quemEstaAgindo = async (req) => {
 };
 
 exports.palavrasReservadas = () => {
-    return ['editar', 'clonar', 'futricar', 'avatar', 'fundo', 'criar-comunidade', 'nova_pagina', 'nova_comunidade'];
+    return ['editar', 'clonar', 'futricar', 'avatar', 'fundo', 'preferencias', 'editar-preferencias', 'criar-comunidade', 'nova_pagina', 'nova_comunidade'];
 };

@@ -1,6 +1,7 @@
 const asyncHandler 				                		= require('express-async-handler');
 const serviceBichos 									= require('../services/bichos/serviceBichos');
 const serviceRelacoes 									= require('../services/bichos/serviceRelacoes');
+const servicePreferencias								= require('../services/bichos/servicePreferencias');
 const servicePaginas									= require('../services/varandas/servicePaginas');
 const { params, objetoRenderizavel, quemEstaAgindo, palavrasReservadas, objetoRenderizavelBloco } = require('../utils/utilControllers');
 const { schemaPutAvatar, schemaPutFundo }				= require('../validations/validateBichos');
@@ -36,10 +37,24 @@ exports.getFundo = asyncHandler(async (req, res, next) => {
 });
 
 exports.getPreferencias = asyncHandler(async (req, res, next) => {
-	const view = 'blocos/preferencias';
+	const usuarie_id = await quemEstaAgindo(req);
+
+	const preferencias = await servicePreferencias.verPreferencias(usuarie_id);
+	if (!preferencias){
+		req.flash('erro', `Preferências de @${usuarie_id} não encontradas.`);
+		return res.sendStatus(404);
+	}
+	res.status(200).json(preferencias);
+});
+
+exports.getEditarPreferencias = asyncHandler(async (req, res, next) => {
+	const view = 'blocos/editar-preferencias';
 	const usuarie_id = await quemEstaAgindo(req);
 	let obj_render = await objetoRenderizavel(req, res, null, null, usuarie_id);
-	obj_render = await objetoRenderizavelBloco(obj_render, 'preferencias');
+	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-preferencias');
+	obj_render.varanda = {
+		bicho_id: usuarie_id
+	}
 	res.render(view, obj_render);
 });
 

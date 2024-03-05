@@ -10,6 +10,7 @@ const {                     postParticipar, 			deleteRelacao   } = require('../c
 const { getFutricarVaranda,
         getCriarComunidade,
 		getPreferencias,
+		getEditarPreferencias,
         getEditarBicho,
         getEditarPagina, 
         getAvatar,                          putAvatar,
@@ -39,7 +40,8 @@ const update = multer({
 });
 
 router.get   ('/',                      getVaranda);
-router.get	 ('/preferencias',			getPreferencias);
+router.get   ('/preferencias',			getPreferencias); // esta rota retorna JSON
+router.get	 ('/editar-preferencias',	getEditarPreferencias);
 router.get   ('/criar-comunidade',      getCriarComunidade);
 router.get   ('/:bicho_id',             getVaranda);
 router.get   ('/:bicho_id/futricar',    getFutricarVaranda);
