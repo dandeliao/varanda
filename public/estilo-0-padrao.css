@@ -1,47 +1,62 @@
-@import url('https://fonts.googleapis.com/css2?family=Convergence&display=swap');
-
-:root {
-    --altura-barra:         2.2rem;
-    --altura-barra-mobile:  3rem;
-    --cor-principal:        #e0b6bc;
-    --cor-destaque:         #a990b0;
-    --cor-destaque-2:       #023774;
-    --cor-gris:             #fff3f3;
-    --cor-gris-2:           #6e6e6e;
-    --cor-fundo:            #f0f0f0;
-    --cor-fundo-2:          #e5e5e5;
-    --cor-fonte-view:       #2e2e2e;
-    --cor-fonte-barra:      #272727;
-    --familia-fonte:        'Convergence', sans-serif;
-    font-family:            var(--familia-fonte);
-    --estilo-borda:         none;
-    --espessura-borda:      0;
-    --raio-borda:           0.4rem;
-    --sombreado:            2px 3px 4px rgba(26, 26, 26, 0.2);
-    font-size:              1em;
-}
-
-h1              { font-size: calc(1.8rem +  1.3vw); margin: calc(.28rem + 0.56vw) 0 }
-h2              { font-size: calc(1.3rem +  0.9vw); margin: calc(.35rem +  0.7vw) 0 }
-h3              { font-size: calc(1.1rem + 0.75vw); margin: calc(.4rem  +  0.75vw) 0 }
-h4              { font-size: calc(.95rem +  0.5vw); margin: calc(.5rem  + 0.8vw) 0 }
-h5              { font-size: calc(.87rem + 0.35vw); margin: calc(.62rem + 0.84vw) 0 }
-h6              { font-size: calc( .8rem + 0.25vw); margin: calc(.8rem  + 0.87vw) 0 }
+h1              { font-size: calc(1.8rem +  1.3vw); margin: 0 0 calc(.28rem + 0.56vw) 0 }
+h2              { font-size: calc(1.3rem +  0.9vw); margin: 0 0 calc(.35rem +  0.7vw) 0 }
+h3              { font-size: calc(1.1rem + 0.75vw); margin: 0 0 calc(.4rem  +  0.75vw) 0 }
+h4              { font-size: calc(.95rem +  0.5vw); margin: 0 0 calc(.5rem  + 0.8vw) 0 }
+h5              { font-size: calc(.87rem + 0.35vw); margin: 0 0 calc(.62rem + 0.84vw) 0 }
+h6              { font-size: calc( .8rem + 0.25vw); margin: 0 0 calc(.8rem  + 0.87vw) 0 }
 h1, h2, h3, h4,
 h5, h6          { font-weight: bolder }
+
+main {
+    color: var(--cor-fonte-view);
+    background-color: var(--cor-fundo-2);
+    min-height: 100vh;
+}
 
 a {
     color: var(--cor-destaque-2);
 }
 
+a:visited {
+    color: var(--cor-fonte-barra);
+}
+
 button {
     min-height: 2.2rem;
-    padding: 0.5rem;
+    padding: 0.7rem 0.4rem;
     font-family: var(--familia-fonte);
     color: var(--cor-fonte-view);
-    background-color: var(--cor-fundo-2);
+    background-color: var(--cor-fundo);
     font-size: 0.9rem;
     border-radius: 5px;
+    border-color: var(--cor-destaque);
+    border-width: 3px;
+}
+
+svg {
+    color: var(--cor-destaque-2);
+}
+
+input[type="text"], input[type="password"], textarea {
+    background-color: var(--cor-fundo-2);
+    color: var(--cor-fonte-view);
+    border-color: var(--cor-fonte-barra);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
+    padding: 0.6rem 0.4rem;
+    font-size: 0.9rem;
+    line-height: 1.5rem;
+}
+
+dialog {
+    background-color: var(--cor-fundo);
+    color: var(--cor-fonte-view);
+    border-style: dashed;
+    border-width: 2px;
+    border-radius: 5px;
+    top: 0.9rem;
+    text-align: center;
 }
 
 /* --- */
@@ -205,7 +220,7 @@ dialog {
     position:   relative;
     margin:     0 auto;
     width:      100%;
-    max-width: 	960px;
+    max-width: 	1200px;
     padding:    0.8rem;
     background-color:   var(--cor-fundo);
     color:              var(--cor-fonte);
@@ -219,9 +234,10 @@ dialog {
 
 .pagina {
     display: block;
-    max-width: 960px;
+    max-width: 1200px;
     margin: 0 auto;
     text-align: center;
+    padding: 1rem 0;
 }
 
 .avatar-redondo{

@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Convergence&display=swap');
+
+:root {
+    --altura-barra:         2.2rem;
+    --altura-barra-mobile:  3rem;
+    --cor-principal:        #e0b6bc;
+    --cor-destaque:         #968e95;
+    --cor-destaque-2:       #582029; /* 0f3c70 */
+    --cor-gris:             #fff3f3;
+    --cor-gris-2:           #6e6e6e;
+    --cor-fundo:            #efefef;
+    --cor-fundo-2:          #e0e0e0;
+    --cor-fonte-view:       #202020;
+    --cor-fonte-barra:      #202020;
+
+    --familia-fonte:        'Convergence', sans-serif;
+    font-family:            var(--familia-fonte);
+    
+    --estilo-borda:         none;
+    --espessura-borda:      0;
+    --raio-borda:           0.4rem;
+    --sombreado:            2px 3px 4px rgba(26, 26, 26, 0.2);
+    font-size:              1em;
+}
