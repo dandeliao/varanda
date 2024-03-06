@@ -12,7 +12,8 @@ const { getFutricarVaranda,
 		getPreferencias,
 		getEditarPreferencias,
         getEditarBicho,
-        getEditarPagina, 
+        getEditarPagina,
+											putPreferencias, 
         getAvatar,                          putAvatar,
         getFundo,                           putFundo,                   } = require('../controllers/controllerReservadas');
 
@@ -39,21 +40,22 @@ const update = multer({
 	}
 });
 
-router.get   ('/',                      getVaranda);
-router.get   ('/preferencias',			getPreferencias); // esta rota retorna JSON
-router.get	 ('/editar-preferencias',	getEditarPreferencias);
-router.get   ('/criar-comunidade',      getCriarComunidade);
-router.get   ('/:bicho_id',             getVaranda);
-router.get   ('/:bicho_id/futricar',    getFutricarVaranda);
-router.get   ('/:bicho_id/editar-bicho',getEditarBicho);
-router.get   ('/:bicho_id/avatar',      getAvatar);
-router.get   ('/:bicho_id/fundo',       getFundo);
+router.get   ('/',                      		getVaranda);
+router.get   ('/preferencias',					getPreferencias); // esta rota retorna JSON
+router.get   ('/criar-comunidade',      		getCriarComunidade);
+router.get   ('/:bicho_id',             		getVaranda);
+router.get   ('/:bicho_id/futricar',    		getFutricarVaranda);
+router.get   ('/:bicho_id/editar-bicho',		getEditarBicho);
+router.get	 ('/:bicho_id/editar-preferencias',	getEditarPreferencias);
+router.get   ('/:bicho_id/avatar',      		getAvatar);
+router.get   ('/:bicho_id/fundo',       		getFundo);
 
 router.post  ('/',                      postVaranda);
 router.put   ('/:bicho_id/avatar',
               update.single('avatar'),  putAvatar);
 router.put   ('/:bicho_id/fundo',
               update.single('fundo'),   putFundo);
+router.put	 ('/:bicho_id/preferencias',putPreferencias);
 router.put   ('/:bicho_id',             putVaranda);
 router.delete('/:bicho_id',             deleteVaranda);
 

@@ -34,7 +34,12 @@ exports.objetoRenderizavel = async (req, res, varanda_id, pagina_id, usuarie_id,
             aviso: res.locals.flash_aviso,
             erro: res.locals.flash_erro
         },
-        preferencias: preferencias,
+        preferencias: {
+            tema: {
+                zero: preferencias ? (preferencias.tema === 0 ? true : false) : false,
+                um: preferencias ? (preferencias.tema === 1 ? true : false) : false
+            }
+        },
         bloco: {},
 		query: req.query ? req.query : null,
     }

@@ -17,6 +17,6 @@ exports.postPreferencias = function (bichoId, preferencias) {
 exports.putPreferencias = function (bichoId, preferencias) {
 	return pool.query(
 		'UPDATE preferencias SET tema = $1 WHERE bicho_id = $2 RETURNING *',
-		[bichoId, preferencias.tema]
+		[preferencias.tema, bichoId]
 	);
 };

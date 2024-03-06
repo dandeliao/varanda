@@ -3,8 +3,10 @@ const serviceBichos 									= require('../services/bichos/serviceBichos');
 const serviceRelacoes 									= require('../services/bichos/serviceRelacoes');
 const servicePreferencias								= require('../services/bichos/servicePreferencias');
 const servicePaginas									= require('../services/varandas/servicePaginas');
-const { params, objetoRenderizavel, quemEstaAgindo, palavrasReservadas, objetoRenderizavelBloco } = require('../utils/utilControllers');
-const { schemaPutAvatar, schemaPutFundo }				= require('../validations/validateBichos');
+const { params, objetoRenderizavel, quemEstaAgindo,
+		palavrasReservadas, objetoRenderizavelBloco } 	= require('../utils/utilControllers');
+const { schemaPutAvatar, schemaPutFundo,
+		schemaPutPreferencias } 						= require('../validations/validateBichos');
 const { messages } = require('joi-translation-pt-br');
 const fs = require('fs');
 const path = require('path');
@@ -50,11 +52,19 @@ exports.getPreferencias = asyncHandler(async (req, res, next) => {
 exports.getEditarPreferencias = asyncHandler(async (req, res, next) => {
 	const view = 'blocos/editar-preferencias';
 	const usuarie_id = await quemEstaAgindo(req);
-	let obj_render = await objetoRenderizavel(req, res, null, null, usuarie_id);
-	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-preferencias');
-	obj_render.varanda = {
-		bicho_id: usuarie_id
+	const { varanda_id, pagina_id } = params(req);
+
+	if (usuarie_id !== varanda_id) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
+		if (!permissoes || !permissoes.representar) {
+			req.flash('erro', `Você não pode editar as preferências de ${varanda_id}.`);
+			return res.redirect(`/${varanda_id}`);
+		}
 	}
+
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	obj_render.query.bicho = varanda_id;
+	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-preferencias');
 	res.render(view, obj_render);
 });
 
@@ -238,4 +248,37 @@ exports.putFundo = asyncHandler(async (req, res, next) => {
 	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-bicho');
 	obj_render.bloco.bicho = bichoEditado;
 	res.render(view, obj_render);
+});
+
+exports.putPreferencias = asyncHandler(async (req, res, next) => {
+	
+	const arroba = req.params.bicho_id;
+	const preferencias = {
+		tema: req.body.tema === '1' ? 1 : 0
+	}
+	const {error} = schemaPutPreferencias.validate(preferencias, { messages });
+	if (error) {
+		req.flash('erro', `Erro ao validar as informações. Detalhes:${error.details[0].message}`);
+		return res.redirect(303, `/${arroba}`);
+	}
+
+	const usuarie_id = await quemEstaAgindo(req);
+
+	if (usuarie_id !== arroba) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, arroba);
+		if (!permissoes.representar) {
+			req.flash('erro', `Você não pode editar as preferências de @${arroba}.`);
+			return res.redirect(303, `/${arroba}`);
+		}
+	}
+	const bicho = await serviceBichos.verBicho(arroba);
+	if (!bicho) {
+		req.flash('erro', `Bicho @${req.params.arroba} não encontrado.`);
+		return res.redirect(303, '/');
+	}
+
+	const preferenciasEditadas = await servicePreferencias.editarPreferencias(arroba, preferencias);
+	
+	req.flash('aviso', 'As preferências foram atualizadas com sucesso!');
+	return res.redirect(303, `/${arroba}/editar-preferencias`);
 });

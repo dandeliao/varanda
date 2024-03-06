@@ -54,6 +54,11 @@ exports.schemaPutFundo = Joi.object().keys({
 	descricao_fundo: Joi.string().min(0).max(500)
 });
 
+exports.schemaPutPreferencias = Joi.object().keys({
+	// número do tema
+	tema: Joi.number().integer().min(0).max(3).required()
+});
+
 exports.schemaPostConvite = Joi.object().keys({
 	// comunidade_id, bicho_criador_id
 	comunidade_id: Joi.string().min(1).max(32).required(),
