@@ -1,17 +1,42 @@
-<br>
-<form action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
-	
-	<label for="titulo">Título da página:</label>
-	<input type="text" id="titulo-pagina" value="{{pagina.titulo}}" name="titulo" required>
-	<label for="html">Html da página:</label>
-	<textarea id="html-pagina" name="html" required>{{pagina.html}}</textarea>
+<div class="pagina">
+	<header class="bloco">
+		{{#unless nova_pagina}}
+        <h1>Editando a página "{{pagina.titulo}}"</h1>
+		{{/unless}}
+		{{#if nova_pagina}}
+		<h1>Criando uma página em @{{varanda.bicho_id}}</h1>
+		{{/if}}
+        <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
+    </header>
+	<br>
+	<form class="bloco" action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
+		
+		<label for="titulo">Título da página:</label>
+		<input type="text" id="titulo-pagina" value="{{pagina.titulo}}" name="titulo" required>
+		<br><br>
+		<label for="html">Html da página:</label>
+		<textarea id="html-pagina" name="html" required>{{pagina.html}}</textarea>
 
-	<button type="submit">Salvar</button>
-	<button hx-get="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" hx-target="body" hx-push-url="true">Voltar</button>
+		<button type="submit">Salvar</button>
+		<button hx-get="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" hx-target="body" hx-push-url="true">Voltar</button>
 
-</form>
+	</form>
+</div>
 
 <style>
+	.pagina {
+		text-align: left;
+	}
+	.pagina header {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.8rem 1rem;
+        align-items: center;
+    }
+	h1 {
+		text-align: center;
+		align-self: stretch;
+	}
 	form {
         max-width: 860px;
 		width: 100%;

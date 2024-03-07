@@ -21,6 +21,11 @@ CREATE TABLE pessoas(
     salt            VARCHAR NOT NULL
 );
 
+CREATE TABLE preferencias(
+    bicho_id        VARCHAR(32) PRIMARY KEY REFERENCES bichos(bicho_id) ON DELETE CASCADE,
+    tema            INTEGER NOT NULL DEFAULT 0
+);
+
 CREATE TABLE comunidades(
     bicho_id                    VARCHAR(32) PRIMARY KEY REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     bicho_criador_id            VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,

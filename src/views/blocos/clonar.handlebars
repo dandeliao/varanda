@@ -1,0 +1,67 @@
+<div class="pagina">
+    <header class="bloco">
+        <h1>Clonar @{{varanda.bicho_id}}</h1>
+        <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
+    </header>
+    <br>
+    <form class="bloco" action="/{{varanda.bicho_id}}/clonar" method="post">
+        <fieldset name="paginas">
+            <legend>Páginas a clonar:</legend>
+            {{#each bloco.paginas}}
+            <input type="checkbox" name="{{this.pagina_vid}}" checked>
+            <label for="{{this.pagina_vid}}">{{this.titulo}}</label>
+            <br>
+            {{/each}}
+        </fieldset>
+        <br><br>
+        <fieldset>
+            <legend>Nova comunidade:</legend>
+            <br>
+            <label for="bicho_id">Nome de perfil (@):</label>
+            <input class="campo" type="text" id="arroba-bicho" placeholder="clube-de-leitura" name="bicho_id" required>
+            <br><br>
+            <label for="nome">Nome:</label>
+            <input class="campo" type="text" id="nome-bicho" placeholder="Clube de Leitura" name="nome" required>
+            <br><br>
+            <label for="descricao">Descrição:</label>
+            <textarea class="campo" id="descricao-bicho" placeholder="Não sabe o que ler? Vem com a gente!" name="descricao" ></textarea>
+        </fieldset>
+        <br><br>
+        <button class="centralizado" type="submit">Clonar</button>
+    </form>
+    <br>
+</div>
+
+<style>
+	.pagina {
+		text-align: left;
+	}
+    .pagina header {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 1rem;
+        align-items: center;
+    }
+	h1 {
+		text-align: center;
+        align-self: stretch;
+	}
+	form {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+	form > textarea {
+		width: 100%;
+		min-height: 10vh;
+	}
+	form .campo {
+		width: 100%;
+	}
+    textarea {
+        min-height: 6rem;
+    }
+
+</style>

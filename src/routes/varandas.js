@@ -10,10 +10,13 @@ const {                     postParticipar, 			deleteRelacao   } = require('../c
 const { getFutricarVaranda,
         getCriarComunidade,
 		getPreferencias,
+		getEditarPreferencias,
         getEditarBicho,
-        getEditarPagina, 
+        getEditarPagina,
+											putPreferencias, 
         getAvatar,                          putAvatar,
-        getFundo,                           putFundo,                   } = require('../controllers/controllerReservadas');
+        getFundo,                           putFundo,
+							postClonar,				                  	} = require('../controllers/controllerReservadas');
 
 
 // configura multer para upload das imagens de avatar e fundo
@@ -38,24 +41,27 @@ const update = multer({
 	}
 });
 
-router.get   ('/',                      getVaranda);
-router.get	 ('/preferencias',			getPreferencias);
-router.get   ('/criar-comunidade',      getCriarComunidade);
-router.get   ('/:bicho_id',             getVaranda);
-router.get   ('/:bicho_id/futricar',    getFutricarVaranda);
-router.get   ('/:bicho_id/editar-bicho',getEditarBicho);
-router.get   ('/:bicho_id/avatar',      getAvatar);
-router.get   ('/:bicho_id/fundo',       getFundo);
+router.get   ('/',                      		getVaranda);
+router.get   ('/preferencias',					getPreferencias); // esta rota retorna JSON
+router.get   ('/criar-comunidade',      		getCriarComunidade);
+router.get   ('/:bicho_id',             		getVaranda);
+router.get   ('/:bicho_id/futricar',    		getFutricarVaranda);
+router.get   ('/:bicho_id/editar-bicho',		getEditarBicho);
+router.get	 ('/:bicho_id/editar-preferencias',	getEditarPreferencias);
+router.get   ('/:bicho_id/avatar',      		getAvatar);
+router.get   ('/:bicho_id/fundo',       		getFundo);
 
 router.post  ('/',                      postVaranda);
 router.put   ('/:bicho_id/avatar',
               update.single('avatar'),  putAvatar);
 router.put   ('/:bicho_id/fundo',
               update.single('fundo'),   putFundo);
+router.put	 ('/:bicho_id/preferencias',putPreferencias);
 router.put   ('/:bicho_id',             putVaranda);
 router.delete('/:bicho_id',             deleteVaranda);
 
 router.post  ('/:bicho_id/participar',  postParticipar);
+router.post  ('/:bicho_id/clonar',		postClonar);
 router.delete('/:bicho_id/relacao',		deleteRelacao);
 
 router.get   ('/:bicho_id/:pagina_id',          getPagina);

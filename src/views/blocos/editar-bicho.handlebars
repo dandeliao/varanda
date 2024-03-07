@@ -1,79 +1,95 @@
-{{#if nova_comunidade}}
-<h1>Criar comunidade</h1>
-<br>
-{{/if}}
-{{#unless nova_comunidade}}
-<h1>Editar bicho</h1>
-<br>
-{{/unless}}
-<form class="bloco" action="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" method="{{metodo}}" {{#unless nova_comunidade}}hx-swap="none"{{/unless}}>
+<div class="pagina">
+	<header class="bloco">
+		{{#if nova_comunidade}}
+		<h1>Criar Comunidade</h1>
+		<br>
+		{{/if}}
+		{{#unless nova_comunidade}}
+		<h1>Editar Perfil de @{{bloco.bicho.bicho_id}}</h1>
+		<br>
+		{{/unless}}
+        <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
+    </header>
+	<br>
+	<form class="bloco" action="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" method="{{metodo}}" {{#unless nova_comunidade}}hx-swap="none"{{/unless}}>
+		{{#unless nova_comunidade}}
+		<h2>Apresentação</h2>
+		{{/unless}}
+		{{#if nova_comunidade}}
+		<label for="bicho_id" hidden>Nome de perfil</label>
+		<div>
+			<span>@:</span>
+			<input class="campo" type="text" id="arroba-bicho" value="{{bloco.bicho.bicho_id}}" name="bicho_id" required>
+		</div>
+		<br>
+		{{/if}}
+		<label for="nome">Nome:</label>
+		<input class="campo" type="text" id="nome-bicho" value="{{bloco.bicho.nome}}" name="nome" required>
+		<br>
+		<br>
+		<label for="descricao">Descrição:</label>
+		<textarea class="campo" id="descricao-bicho" name="descricao">{{bloco.bicho.descricao}}</textarea>
+		{{#unless nova_comunidade}}
+		{{#if bloco.bicho.comunitario}}
+		<input type="checkbox" name="participacao_livre" {{#if bloco.bicho.participacao_livre}}checked{{/if}}>
+		<label for="participacao_livre">Participação livre</label>
+		<br>
+		<input type="checkbox" name="participacao_com_convite" {{#if bloco.bicho.participacao_com_convite}}checked{{/if}}>
+		<label for="participacao_com_convite">Participação com convite</label>
+		{{/if}}
+		{{/unless}}
+		<br>
+		<br>
+		<button class="centralizado" type="submit">salvar</button>
+	</form>
+	<br>
 	{{#unless nova_comunidade}}
-	<h2>Apresentação</h2>
+	<form id="form-fundo" class="bloco" action="/{{varanda.bicho_id}}/fundo" method="put" enctype="multipart/form-data" hx-push-url="true">
+		<h2>Imagem de fundo</h2>
+		<div id="visualiza-fundo" hx-get="/blocos/fundo?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="innerHtml" hx-push-url="false"></div>
+		<br>
+		<label for="descricao_fundo">Descrição da imagem:</label>
+		<textarea class="campo" id="descricao-fundo" name="descricao_fundo" placeholder="Ilustração de uma praia ensolarada com guarda-sóis coloridos.">{{bloco.bicho.descricao_fundo}}</textarea>
+		<br><br>
+		<label for="fundo" hidden>Escolher arquivo para imagem de fundo</label>
+		<input id="input-fundo" name="fundo" type="file" />
+		<br><br>
+		<button class="centralizado" type="submit">Salvar</button>
+	</form>
+	<br>
+	<form id="form-avatar" class="bloco" action="/{{varanda.bicho_id}}/avatar" method="put" enctype="multipart/form-data" hx-push-url="true">
+		<h2>Imagem de perfil</h2>
+		<div class="avatar-quadrado" id="visualiza-avatar" hx-get="/blocos/avatar?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="innerHtml" hx-push-url="false"></div>
+		<br><br>
+		<label for="descricao_avatar">Descrição da imagem:</label>
+		<textarea class="campo" id="descricao-avatar" name="descricao_avatar" placeholder="Foto de um gato cinza de olhos amarelos com uma expressão de espanto.">{{bloco.bicho.descricao_avatar}}</textarea>
+		<br><br>
+		<label for="avatar" hidden>Escolher arquivo para imagem de perfil</label>
+		<input id="input-avatar" name="avatar" type="file" />
+		<br><br>
+		<button class="centralizado" type="submit">Salvar</button>
+	</form>
+	<br>
 	{{/unless}}
-    {{#if nova_comunidade}}
-	<label for="bicho_id" hidden>Nome de perfil</label>
-	<div>
-		<span>@:</span>
-		<input class="campo" type="text" id="arroba-bicho" value="{{bloco.bicho.bicho_id}}" name="bicho_id" required>
-	</div>
-	<br>
-	{{/if}}
-	<label for="nome">Nome:</label>
-	<input class="campo" type="text" id="nome-bicho" value="{{bloco.bicho.nome}}" name="nome" required>
-	<br>
-	<br>
-	<label for="descricao">Descrição:</label>
-	<textarea class="campo" id="descricao-bicho" name="descricao">{{bloco.bicho.descricao}}</textarea>
-	{{#unless nova_comunidade}}
-	{{#if bloco.bicho.comunitario}}
-	<input type="checkbox" name="participacao_livre" {{#if bloco.bicho.participacao_livre}}checked{{/if}}>
-	<label for="participacao_livre">Participação livre</label>
-	<br>
-	<input type="checkbox" name="participacao_com_convite" {{#if bloco.bicho.participacao_com_convite}}checked{{/if}}>
-	<label for="participacao_com_convite">Participação com convite</label>
-	{{/if}}
-	{{/unless}}
-	<br>
-	<br>
-	<button class="centralizado" type="submit">salvar</button>
-</form>
-<br>
-{{#unless nova_comunidade}}
-<form id="form-fundo" class="bloco" action="/{{varanda.bicho_id}}/fundo" method="put" enctype="multipart/form-data" hx-push-url="true">
-	<h2>Imagem de fundo</h2>
-	<div id="visualiza-fundo" hx-get="/blocos/fundo?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="innerHtml"></div>
-	<br>
-	<label for="descricao_fundo">Descrição da imagem:</label>
-	<textarea class="campo" id="descricao-fundo" name="descricao_fundo" placeholder="Ilustração de uma praia ensolarada com guarda-sóis coloridos.">{{bloco.bicho.descricao_fundo}}</textarea>
-	<br><br>
-	<label for="fundo" hidden>Escolher arquivo para imagem de fundo</label>
-	<input id="input-fundo" name="fundo" type="file" />
-	<br><br>
-	<button class="centralizado" type="submit">Salvar</button>
-</form>
-<br>
-<form id="form-avatar" class="bloco" action="/{{varanda.bicho_id}}/avatar" method="put" enctype="multipart/form-data" hx-push-url="true">
-	<h2>Imagem de perfil</h2>
-	<div class="avatar-quadrado" id="visualiza-avatar" hx-get="/blocos/avatar?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="innerHtml"></div>
-	<br><br>
-	<label for="descricao_avatar">Descrição da imagem:</label>
-	<textarea class="campo" id="descricao-avatar" name="descricao_avatar" placeholder="Foto de um gato cinza de olhos amarelos com uma expressão de espanto.">{{bloco.bicho.descricao_avatar}}</textarea>
-	<br><br>
-	<label for="avatar" hidden>Escolher arquivo para imagem de perfil</label>
-	<input id="input-avatar" name="avatar" type="file" />
-	<br><br>
-	<button class="centralizado" type="submit">Salvar</button>
-</form>
-<br>
-{{/unless}}
 
-<br>
-<button class="centralizado" hx-get="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" hx-target="body" hx-push-url="true">Voltar</button>
-<br><br>
+	<br>
+    <div hx-get="/blocos/botao-voltar" hx-trigger="load" style="display:flex;justify-content:end;padding: 0 1rem;"></div>
+	<br><br>
+</div>
 
 <style>
+	.pagina {
+		text-align: left;
+	}
+	.pagina header {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.8rem 1rem;
+        align-items: center;
+    }
 	h1 {
 		text-align: center;
+		align-self: stretch;
 	}
 	form {
 		display: flex;

@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/htmx.org@1.9.9" integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/reset.css">
+
+    <link id="link-tema-0" rel="stylesheet" href="/tema-0.css">
+    <link id="link-tema-1" rel="stylesheet" href="/tema-1.css" disabled>
     <link rel="stylesheet" href="/estilo-0-padrao.css">
     <title>{{varanda.bicho_id}}</title>
 </head>
@@ -42,12 +45,39 @@
 
 {{#if usuarie.logade}}
     <script>
-        window.addEventListener('pageshow', limpaBarra());
-        function limpaBarra () {
+        window.addEventListener('pageshow', descarregos());
+        function descarregos () {
             document.querySelector('#varanda-botao-contexto').classList.remove('pressionado');
             document.querySelector('#varanda-menu-contexto').classList.remove('aberto');
             document.querySelector('#varanda-botao-geral').classList.remove('pressionado');
             document.querySelector('#varanda-menu-geral').classList.remove('aberto');
+        
+            carregaTema();
+        }
+
+        async function carregaTema() {
+            try {
+                let requestObject = {
+                    method: 'GET',
+                    withCredentials: true,
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' }
+                }
+                let res = await fetch(`/preferencias`, requestObject);
+                const preferencias = await res.json();
+
+                let linkTemaPref = document.getElementById(`link-tema-${preferencias.tema}`);
+                linkTemaPref.disabled = false;
+
+                const temas = ['link-tema-0', 'link-tema-1'];
+                for (let tema of temas) {
+                    if (tema !== `link-tema-${preferencias.tema}`) {
+                        document.getElementById(tema).disabled = true;
+                    }    
+                }
+            } catch {
+                console.log('Erro no carregamento do tema.');
+            }
         }
     </script>
 {{/if}}
