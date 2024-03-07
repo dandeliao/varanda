@@ -1,8 +1,9 @@
 <div class="pagina">
-    <header>
+    <header class="bloco">
         <h1>Futricando @{{varanda.bicho_id}}</h1>
         <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
     </header>
+    <br>
     <div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}{{#if bloco.futricar}}&futricar=true{{/if}}" hx-trigger="load"></div>
     <br>
     <div class="bloco">
@@ -50,6 +51,7 @@
 
     h1{
         text-align: center;
+        align-self: stretch;
     }
 
     .pagina header {

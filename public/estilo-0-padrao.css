@@ -11,6 +11,7 @@ main {
     color: var(--cor-fonte-view);
     background-color: var(--cor-fundo-2);
     min-height: 100vh;
+    word-wrap: break-word;
 }
 
 a {
