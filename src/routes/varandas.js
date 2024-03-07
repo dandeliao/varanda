@@ -15,7 +15,8 @@ const { getFutricarVaranda,
         getEditarPagina,
 											putPreferencias, 
         getAvatar,                          putAvatar,
-        getFundo,                           putFundo,                   } = require('../controllers/controllerReservadas');
+        getFundo,                           putFundo,
+							postClonar,				                  	} = require('../controllers/controllerReservadas');
 
 
 // configura multer para upload das imagens de avatar e fundo
@@ -60,6 +61,7 @@ router.put   ('/:bicho_id',             putVaranda);
 router.delete('/:bicho_id',             deleteVaranda);
 
 router.post  ('/:bicho_id/participar',  postParticipar);
+router.post  ('/:bicho_id/clonar',		postClonar);
 router.delete('/:bicho_id/relacao',		deleteRelacao);
 
 router.get   ('/:bicho_id/:pagina_id',          getPagina);

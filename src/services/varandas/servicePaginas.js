@@ -23,8 +23,9 @@ exports.verPaginas = async function (varanda_id, pagina_id = null, publica = nul
 
 exports.criarPagina = async function (varanda_id, dados) {
 
+	const pagina_id = dados.pagina_vid ? vidParaId(dados.pagina_vid) : encodeURIComponent(dados.titulo);
 	const pagina = {
-		pagina_vid:	`${varanda_id}/${encodeURIComponent(dados.titulo)}`,
+		pagina_vid:	`${varanda_id}/${pagina_id}`,
 		titulo: 	dados.titulo,
 		publica: 	dados.publica ? dados.publica : true,
 		html:		await sanitizarHtml(dados.html, dados.comunitaria)
