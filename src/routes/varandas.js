@@ -17,6 +17,10 @@ const { getFutricarVaranda,
         getAvatar,                          putAvatar,
         getFundo,                           putFundo,
 							postClonar,				                  	} = require('../controllers/controllerReservadas');
+const { getArtefato,		postArtefato,	putArtefato, deleteArtefato, 
+		getEditarArtefato,
+		getRemoverArtefato,
+		getCompartilharArtefato,										} = require('../controllers/controllerArtefatos');
 
 
 // configura multer para upload das imagens de avatar e fundo
@@ -41,35 +45,42 @@ const update = multer({
 	}
 });
 
-router.get   ('/',                      		getVaranda);
-router.get   ('/preferencias',					getPreferencias); // esta rota retorna JSON
-router.get   ('/criar-comunidade',      		getCriarComunidade);
-router.get   ('/:bicho_id',             		getVaranda);
-router.get   ('/:bicho_id/futricar',    		getFutricarVaranda);
-router.get   ('/:bicho_id/editar-bicho',		getEditarBicho);
-router.get	 ('/:bicho_id/editar-preferencias',	getEditarPreferencias);
-router.get   ('/:bicho_id/avatar',      		getAvatar);
-router.get   ('/:bicho_id/fundo',       		getFundo);
+router.get   ('/',                      		getVaranda				);
+router.get   ('/preferencias',					getPreferencias			); // esta rota retorna JSON
+router.get   ('/criar-comunidade',      		getCriarComunidade		);
+router.get   ('/:bicho_id',             		getVaranda				);
+router.get   ('/:bicho_id/futricar',    		getFutricarVaranda		);
+router.get   ('/:bicho_id/editar-bicho',		getEditarBicho			);
+router.get	 ('/:bicho_id/editar-preferencias',	getEditarPreferencias	);
+router.get   ('/:bicho_id/avatar',      		getAvatar				);
+router.get   ('/:bicho_id/fundo',       		getFundo				);
 
-router.post  ('/',                      postVaranda);
+router.post  ('/',                      		postVaranda		);
 router.put   ('/:bicho_id/avatar',
-              update.single('avatar'),  putAvatar);
+              update.single('avatar'),  		putAvatar		);
 router.put   ('/:bicho_id/fundo',
-              update.single('fundo'),   putFundo);
-router.put	 ('/:bicho_id/preferencias',putPreferencias);
-router.put   ('/:bicho_id',             putVaranda);
-router.delete('/:bicho_id',             deleteVaranda);
+              update.single('fundo'),   		putFundo		);
+router.put	 ('/:bicho_id/preferencias',		putPreferencias	);
+router.put   ('/:bicho_id',             		putVaranda		);
+router.delete('/:bicho_id',             		deleteVaranda	);
 
-router.post  ('/:bicho_id/participar',  postParticipar);
-router.post  ('/:bicho_id/clonar',		postClonar);
-router.delete('/:bicho_id/relacao',		deleteRelacao);
+router.post  ('/:bicho_id/participar',  		postParticipar	);
+router.post  ('/:bicho_id/clonar',				postClonar		);
+router.delete('/:bicho_id/relacao',				deleteRelacao	);
 
-router.get   ('/:bicho_id/:pagina_id',          getPagina);
-router.get   ('/:bicho_id/:pagina_id/editar',   getEditarPagina);
+router.get   ('/:bicho_id/:pagina_id',          getPagina		);
+router.get   ('/:bicho_id/:pagina_id/editar',   getEditarPagina );
 
-router.post  ('/:bicho_id',                     postPagina);
-router.put   ('/:bicho_id/:pagina_id',          putPagina);
-router.delete('/:bicho_id/:pagina_id',          deletePagina);
+router.post  ('/:bicho_id',                     postPagina		);
+router.put   ('/:bicho_id/:pagina_id',          putPagina		);
+router.delete('/:bicho_id/:pagina_id',          deletePagina	);
 
+router.get	 ('/:bicho_id/:pagina_id/:artefato_id', 			getArtefato		  		);
+router.get	 ('/:bicho_id/:pagina_id/:artefato_id/editar',  	getEditarArtefato 		);
+router.get	 ('/:bicho_id/:pagina_id/:artefato_id/remover',		getRemoverArtefato		);
+router.get	 ('/:bicho_id/:pagina_id/:artefato_id/compartilhar',getCompartilharArtefato	);
+router.post	 ('/:bicho_id/:pagina_id/:artefato_id', 			postArtefato	  		);
+router.put	 ('/:bicho_id/:pagina_id/:artefato_id', 			putArtefato		  		);
+router.delete('/:bicho_id/:pagina_id/:artefato_id', 			deleteArtefato	  		);
 
 module.exports = router;

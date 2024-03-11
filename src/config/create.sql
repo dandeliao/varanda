@@ -107,50 +107,35 @@ CREATE TABLE edicoes(
 /* Valor (artefatos) */
 
 CREATE TABLE artefatos(
-    artefato_id             SERIAL PRIMARY KEY NOT NULL,
+    artefato_pid            TEXT PRIMARY KEY NOT NULL,
     varanda_contexto_id     INTEGER REFERENCES varandas(varanda_id) ON DELETE CASCADE,
+    pagina_contexto_id      TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
     bicho_criador_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
-    em_resposta_a_id        INTEGER REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    em_resposta_a_id        INTEGER REFERENCES artefatos(artefato_id) ON DELETE SET NULL,
+    nome_arquivo            VARCHAR(255),
+    extensao                VARCHAR(16),
+    titulo                  VARCHAR(500),
+    texto                   TEXT,
     sensivel                BOOLEAN DEFAULT false,
-    aviso_de_conteudo       VARCHAR(150),
     respondivel             BOOLEAN DEFAULT true,
-    publico                 BOOLEAN DEFAULT false,
-    indexavel               BOOLEAN DEFAULT false,
-    arquivo                 BOOLEAN DEFAULT false,
+    publico                 BOOLEAN DEFAULT true,
+    indexavel               BOOLEAN DEFAULT true,
     denuncia                BOOLEAN DEFAULT false,
     criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE arquivos(
-    artefato_id             INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
-    nome_arquivo            VARCHAR(255) NOT NULL,
-    extensao                VARCHAR(16),
-    descricao               VARCHAR(500)
-);
-
-CREATE TABLE textos(
-    artefato_id             INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
-    titulo                  VARCHAR(150),
-    texto                   TEXT
-);
-
-CREATE TABLE denuncias(
-    denuncia_id             INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
-    denunciado_id           INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE
-    
-);
-
 CREATE TABLE edicoes_artefatos(
-    respondivel             BOOLEAN,
+    edicao_artefato_id      SETIAL PRIMARY KEY NOT NULL,
+    artefato_pid            TEXT REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    pagina_contexto_id      TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
+    bicho_editor_id         VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
+    titulo                  VARCHAR(500),
+    texto                   TEXT,
     sensivel                BOOLEAN,
-    aviso_de_conteudo       VARCHAR(150),
     respondivel             BOOLEAN,
     publico                 BOOLEAN,
     indexavel               BOOLEAN,
-    nome_arquivo            VARCHAR(255),
-    descricao               VARCHAR(500),
-    titulo                  VARCHAR(150),
-    texto                   TEXT
+    denuncia                BOOLEAN,
     criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -158,7 +143,8 @@ CREATE TABLE tags(
     tag_id  TEXT PRIMARY KEY NOT NULL
 )
 
-CREATE TABLE tags_artefatos(
+CREATE TABLE tags_em_uso(
     tag_id          TEXT REFERENCES tags(tag_id) ON DELETE CASCADE,
-    artefato_id     SERIAL REFERENCES artefatos(artefato_id) ON DELETE CASCADE
+    artefato_pid    TEXT REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    bicho_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL
 )

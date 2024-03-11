@@ -11,7 +11,6 @@ const customError 		    = require('http-errors');
 const rotasVarandas 		= require('./routes/varandas.js');
 const rotasAutenticacao 	= require('./routes/autenticacao.js');
 const rotasBlocos			= require('./routes/blocos.js');
-const rotasArtefatos 		= require('./routes/artefatos.js');
 const path					= require('path');
 const { errorHandler } = require('./middlewares/errorHandler.js');
 require('./config/passport.js');
@@ -51,7 +50,6 @@ app.use(global.flashMessages);
 app.use('/autenticacao',	rotasAutenticacao	);
 app.use('/blocos', 			rotasBlocos			);
 app.use('/',		 		rotasVarandas		);
-app.use('/artefatos', 		rotasArtefatos		);
 
 // tratamento de erros
 app.use(errorHandler);
