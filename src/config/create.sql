@@ -108,8 +108,8 @@ CREATE TABLE edicoes(
 
 CREATE TABLE artefatos(
     artefato_pid            TEXT PRIMARY KEY NOT NULL,
-    varanda_contexto_id     INTEGER REFERENCES varandas(varanda_id) ON DELETE CASCADE,
-    pagina_contexto_id      TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
+    varanda_id              INTEGER REFERENCES varandas(varanda_id) ON DELETE CASCADE,
+    pagina_vid              TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
     bicho_criador_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     em_resposta_a_id        INTEGER REFERENCES artefatos(artefato_id) ON DELETE SET NULL,
     nome_arquivo            VARCHAR(255),
@@ -118,7 +118,7 @@ CREATE TABLE artefatos(
     texto                   TEXT,
     sensivel                BOOLEAN DEFAULT false,
     respondivel             BOOLEAN DEFAULT true,
-    publico                 BOOLEAN DEFAULT true,
+    publico                 BOOLEAN DEFAULT false,
     indexavel               BOOLEAN DEFAULT true,
     denuncia                BOOLEAN DEFAULT false,
     criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -127,7 +127,7 @@ CREATE TABLE artefatos(
 CREATE TABLE edicoes_artefatos(
     edicao_artefato_id      SETIAL PRIMARY KEY NOT NULL,
     artefato_pid            TEXT REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
-    pagina_contexto_id      TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
+    pagina_vid              TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
     bicho_editor_id         VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     titulo                  VARCHAR(500),
     texto                   TEXT,
