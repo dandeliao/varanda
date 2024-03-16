@@ -1,0 +1,30 @@
+<div class="pagina">
+    {{#with bloco.artefato}}
+	<header class="bloco">
+		{{#unless novo_artefato}}
+        <h1>Editando o artefato <a href="/{{artefato_pid}}">@{{artefato_pid}}</a></h1>
+		{{/unless}}
+		{{#if novo_artefato}}
+		<h1>Novo artefato em <a href="/{{varanda_contexto_id}}/{{pagina_contexto_id}}">@{{varanda_contexto_id}}/{{pagina_contexto_id}}</a></h1>
+		{{/if}}
+        <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
+    </header>
+	<br>
+	<form class="bloco" action="/{{#if novo_artefato}}{{pagina_vid}}{{/if}}{{#unless novo_artefato}}{{artefato_pid}}{{/unless}}" method="{{metodo}}">
+		<label for="titulo">Título:</label>
+		<input type="text" value="{{titulo}}" name="titulo" required>
+		<br><br>
+		<label for="texto">Texto:</label>
+		<textarea name="texto">{{texto}}</textarea>
+        <fieldset>
+            <input type="checkbox" name="sensivel">
+            <label for="sensivel">sensível</label>
+            <input type="checkbox" name="respondivel" checked>
+            <label for="respondivel">comentável</label>
+            <input type="checkbox" name="indexavel" checked>
+            <label for="indexavel">citável</label>
+        </fieldset>
+        <button type="submit">Postar</button>
+	</form>
+    {{/with}}
+</div>

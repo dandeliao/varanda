@@ -11,10 +11,13 @@
         <ul class="lista-paginas">
             {{#each bloco.paginas}}
                 <div class="item-paginas">
-                <li>
-                    <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
-                </li>
-                <button hx-delete="/{{this.pagina_vid}}" hx-target="body">Remover</button>
+                    <li>
+                        <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
+                    </li>
+                    <div>
+                        <button hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
+                        <button hx-delete="/{{this.pagina_vid}}" hx-target="body">Remover</button>
+                    </div>
                 </div>
                 <br>
             {{/each}}

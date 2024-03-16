@@ -1,0 +1,94 @@
+<div class="bloco" style="text-align: left">
+    <header>
+        <div class="titulo">
+            <h1>{{bloco.artefato.titulo}}</h1>
+            <button id="botao-opcoes-{{bloco.artefato.id}}" onclick="opcoesArtefato('{{bloco.artefato.id}}')">Opções</button>
+            <div class="botao-menu" id="menuzinho-{{bloco.artefato.id}}">
+                <a href="/{{bloco.artefato.artefato_pid}}/editar">Editar</a>
+                <a href="#remover-{{bloco.artefato.id}}">Remover</a>
+                <a href="#compartilhar-{{bloco.artefato.id}}">Compartilhar</a>
+            </div>
+        </div>
+        <div class="autoria">
+            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bloco.artefato.bicho_criador_id}}" hx-trigger="load"></div>
+            <a href="/varandas/{{bloco.artefato.bicho_criador_id}}">@{{bloco.artefato.bicho_criador_id}}</a>
+            {{#if bloco.artefato.citacao}}
+            <span> em </span>
+            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bloco.artefato.varanda_contexto_id}}" hx-trigger="load"></div>
+            <a href="/varandas/{{bloco.artefato.varanda_contexto_id}}">@{{bloco.artefato.varanda_contexto_id}}</a>
+            {{/if}}
+        </div>
+    </header>
+    <br>
+    {{#if bloco.artefato.html}}
+    <hr>
+    <br>
+    {{bloco.artefato.html}}
+    <br>
+    <hr>
+    {{/if}}
+    <p>{{bloco.artefato.criacao}}</p>
+    <br>
+    <p><strong>Categorias:</strong></p>{{#each bloco.artefato.tags}}<span><a href="/{{bloco.artefato.varanda_contexto_id}}/tags?tag={{this}}">#{{this}}</a>, </span>{{/each}}
+    <br>
+    <div hx-get="/blocos/comentarios?artefato={{bloco.artefato.id}}&botao=true" hx-trigger="load" hx-push-url="false" style="text-align: center;"></div>
+</div>
+
+<style>
+    h1{
+        align-self: stretch;
+    }
+
+    .bloco header .titulo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .bloco header .autoria {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+    .bloco header button {
+        display: inline-block;
+        border-style: none;
+        padding: 0;
+        background-color: var(--cor-fundo);
+        width: 34px;
+        height: 34px;
+    }
+    .bloco header button.pressionado {
+        border-style: inset;
+    }
+
+    .bloco header .botao-menu {
+        display: none;
+    }
+
+    .bloco header div.menuzinho-aberto {
+        display: block;
+        z-index: 400;
+        position: absolute;
+        right: 21px;
+        top: 42px;
+        text-align: center;
+        background-color: var(--cor-principal);
+        color: var(--cor-fonte-barra);
+        padding: 0.8rem;
+        border-radius: 5px;
+    }
+    .menuzinho-aberto > a {
+        display: block;
+        margin: 0.8rem 0;
+        font-size: 1rem;
+    }
+</style>
+
+<script>
+    function opcoesArtefato(id) {
+        console.log('pressionou botão opcoesArtefato');
+        console.log('artefato_id:', id);
+        document.querySelector(`#botao-opcoes-${id}`).classList.toggle('pressionado');
+        document.querySelector(`#menuzinho-${id}`).classList.toggle('menuzinho-aberto');
+    }
+</script>
