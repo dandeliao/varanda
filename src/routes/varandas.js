@@ -47,6 +47,7 @@ const update = multer({
 router.get   ('/',                      		getVaranda				);
 router.get   ('/preferencias',					getPreferencias			); // esta rota retorna JSON
 router.get   ('/criar-comunidade',      		getCriarComunidade		);
+router.get	 ('/erro',							getErro 				);
 router.get   ('/:bicho_id',             		getVaranda				);
 router.get   ('/:bicho_id/futricar',    		getFutricarVaranda		);
 router.get   ('/:bicho_id/editar-bicho',		getEditarBicho			);

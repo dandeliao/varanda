@@ -159,6 +159,19 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 
 });
 
+exports.getErro = asyncHandler(async (req, res, next) => {
+	const varanda_id = req.params.bicho_id;
+	const pagina_id = 'erro';
+    let view = 'blocos/erro';
+	const usuarie_id = await quemEstaAgindo(req);
+
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	obj_render = await objetoRenderizavelBloco(obj_render, 'erro');
+	obj_render.bloco.codigo = req.query.codigo ? req.query.codigo : 500;
+	obj_render.bloco.mensagem = req.query.mensagem ? req.query.mensagem : 'Erro no servidor. Por favor, tente novamente.'
+	res.render(view, obj_render);
+});
+
 /* ---
 	PUT
 */
