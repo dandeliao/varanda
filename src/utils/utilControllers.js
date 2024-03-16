@@ -1,9 +1,10 @@
-const serviceRelacoes   = require('../services/bichos/serviceRelacoes');
-const serviceBichos     = require('../services/bichos/serviceBichos');
-const serviceComunidades = require('../services/bichos/serviceComunidades');
-const serviceBlocos     = require('../services/varandas/serviceBlocos');
-const servicePaginas    = require('../services/varandas/servicePaginas');
-const servicePreferencias = require('../services/bichos/servicePreferencias');
+const serviceRelacoes       = require('../services/bichos/serviceRelacoes');
+const serviceBichos         = require('../services/bichos/serviceBichos');
+const serviceComunidades    = require('../services/bichos/serviceComunidades');
+const servicePreferencias   = require('../services/bichos/servicePreferencias');
+const serviceBlocos         = require('../services/varandas/serviceBlocos');
+const servicePaginas        = require('../services/varandas/servicePaginas');
+const serviceArtefatos      = require('../services/artefatos/serviceArtefatos');
 
 exports.params = (req) => {
     const varanda_id = req.params.bicho_id ? req.params.bicho_id : process.env.INSTANCIA_ID;
@@ -88,6 +89,13 @@ exports.objetoRenderizavelBloco = async (obj_render, bloco_id) => {
                     }
                 }
                 break;
+            case 'artefato':
+                if (obj_render.artefato.artefato_pid) {
+                    let artefato = await serviceArtefatos.verArtefato(obj_render.artefato.artefato_pid);
+                    if (artefato !== undefined) {
+                        dados.artefato = artefato;
+                    }
+                }
             default:
                 if (obj_render.query[variavel]) {
                     dados[variavel] = obj_render.query[variavel];
@@ -112,5 +120,5 @@ exports.quemEstaAgindo = async (req) => {
 };
 
 exports.palavrasReservadas = () => {
-    return ['editar', 'clonar', 'futricar', 'avatar', 'fundo', 'preferencias', 'editar-preferencias', 'criar-comunidade', 'nova_pagina', 'nova_comunidade'];
+    return ['editar', 'clonar', 'futricar', 'relacao', 'avatar', 'fundo', 'preferencias', 'editar-preferencias', 'criar-comunidade', 'nova_pagina', 'nova_comunidade'];
 };

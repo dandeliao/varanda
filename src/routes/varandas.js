@@ -9,6 +9,7 @@ const { getPagina,          postPagina,     putPagina,  deletePagina    } = requ
 const {                     postParticipar, 			deleteRelacao   } = require('../controllers/controllerRelacoes');
 const { getFutricarVaranda,
         getCriarComunidade,
+		getErro,
 		getPreferencias,
 		getEditarPreferencias,
         getEditarBicho,
@@ -18,9 +19,7 @@ const { getFutricarVaranda,
         getFundo,                           putFundo,
 							postClonar,				                  	} = require('../controllers/controllerReservadas');
 const { getArtefato,		postArtefato,	putArtefato, deleteArtefato, 
-		getEditarArtefato,
-		getRemoverArtefato,
-		getCompartilharArtefato,										} = require('../controllers/controllerArtefatos');
+		getEditarArtefato,												} = require('../controllers/controllerArtefatos');
 
 
 // configura multer para upload das imagens de avatar e fundo
@@ -77,9 +76,7 @@ router.delete('/:bicho_id/:pagina_id',          deletePagina	);
 
 router.get	 ('/:bicho_id/:pagina_id/:artefato_id', 			getArtefato		  		);
 router.get	 ('/:bicho_id/:pagina_id/:artefato_id/editar',  	getEditarArtefato 		);
-router.get	 ('/:bicho_id/:pagina_id/:artefato_id/remover',		getRemoverArtefato		);
-router.get	 ('/:bicho_id/:pagina_id/:artefato_id/compartilhar',getCompartilharArtefato	);
-router.post	 ('/:bicho_id/:pagina_id/:artefato_id', 			postArtefato	  		);
+router.post	 ('/:bicho_id/:pagina_id/',				 			postArtefato	  		);
 router.put	 ('/:bicho_id/:pagina_id/:artefato_id', 			putArtefato		  		);
 router.delete('/:bicho_id/:pagina_id/:artefato_id', 			deleteArtefato	  		);
 

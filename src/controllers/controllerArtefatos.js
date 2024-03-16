@@ -1,5 +1,6 @@
-const asyncHandler 									= require('express-async-handler');
-// services
+const asyncHandler = require('express-async-handler');
+const serviceRelacoes = require('../services/bichos/serviceRelacoes');
+const serviceArtefatos = require('../services/artefatos/serviceArtefatos');
 // validacoes
 const { params, objetoRenderizavel, objetoRenderizavelBloco, quemEstaAgindo, palavrasReservadas } = require('../utils/utilControllers');
 const { messages } = require('joi-translation-pt-br');
@@ -9,36 +10,48 @@ require('dotenv').config();
 // /<[^>]*>|\[[^][]*]\([^()]*\)|(https?:\/\/[^\s"'<>]*)|#(\w+(?:\S)*)|@(\w+(?:^(?!\/).*$)*)(?:\/(\w+(?:\S)*))*/g
 
 exports.getArtefato = asyncHandler(async (req, res, next) => {
-    /* 
-    const { varanda_id, pagina_id } = params(req);
+    
+    const { varanda_id, pagina_id, artefato_id } = params(req);
     let usuarie_id = await quemEstaAgindo(req);
+	let view = `blocos/artefato`;
 
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
-	let view;
-	switch (pagina_id) {
-		case 'clonar':
-		case 'futricar':
-			view = `blocos/${pagina_id}`;
-			obj_render = await objetoRenderizavelBloco(obj_render, pagina_id);
-			break;
-		default:
-			view = `varandas/${varanda_id}/${pagina_id}`;
-			break;
-	}
-	res.render(view, obj_render); */
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id, false);
+	obj_render.artefato = {artefato_pid: `${varanda_id}/${pagina_id}/${artefato_id}`};
+	obj_render = await objetoRenderizavelBloco(obj_render, bloco_id);
 
+	res.render(view, obj_render);
 });
 
 exports.getEditarArtefato = asyncHandler(async (req, res, next) => {
+	
+	const { varanda_id, pagina_id, artefato_id } = params(req);
+	const usuarie_id = await quemEstaAgindo(req);
+    let view = 'blocos/editar-artefato';
 
-});
+	const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
+	if (usuarie_id !== varanda_id) {
+		if (!permissoes || !permissoes.participar) {
+			req.flash('erro', `Você não participa de @${varanda_id}`);
+			return res.redirect(`/${varanda_id}/${pagina_id}`);
+		}
+	}
+	if (artefato_id !== 'novo_artefato') {
+		const artefato = await serviceArtefatos.verArtefato(`${varanda_id}/${pagina_id}/${artefato_id}`);
+		if (!artefato || artefato.bicho_criador_id !== usuarie_id) {
+			req.flash('erro', `Você não pode editar este artefato.`);
+			return res.redirect(`/${varanda_id}/${pagina_id}`);
+		}
+	}
 
-exports.getRemoverArtefato = asyncHandler(async (req, res, next) => {
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	if (artefato_id !== 'novo_artefato'){
+		obj_render.metodo = 'put';	
+	} else {
+		obj_render.novo_artefato = true;
+		obj_render.metodo = 'post';
+	}
 
-});
-
-exports.getCompartilharArtefato = asyncHandler(async (req, res, next) => {
-
+	res.render(view, obj_render);
 });
 
 exports.postArtefato = asyncHandler(async (req, res, next) => {
