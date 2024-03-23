@@ -1,41 +1,55 @@
 <div class="bloco" style="text-align: left">
+    {{#with bloco.artefato}}
     <header>
         <div class="titulo">
-            <h1>{{bloco.artefato.titulo}}</h1>
-            <button id="botao-opcoes-{{bloco.artefato.id}}" onclick="opcoesArtefato('{{bloco.artefato.id}}')">Opções</button>
-            <div class="botao-menu" id="menuzinho-{{bloco.artefato.id}}">
-                <a href="/{{bloco.artefato.artefato_pid}}/editar">Editar</a>
-                <a href="#remover-{{bloco.artefato.id}}">Remover</a>
-                <a href="#compartilhar-{{bloco.artefato.id}}">Compartilhar</a>
-            </div>
+            <h2>{{titulo}}</h2>
+            <button id="botao-opcoes-{{artefato_pid}}" onclick="opcoesArtefato('{{artefato_pid}}')" aria-describedby="descricao-botao-opcoes-{{artefato_pid}}">
+                <span class="oculto-aos-olhos">Menu de opções do artefato</span>
+                <span id="descricao-botao-opcoes-{{artefato_pid}}" hidden>Abre e fecha um menu com opções específicas deste artefato.</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"
+                    aria-hidden="true" focusable="false">
+                    <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8" d="m11.00003 10.3299-5.0002-8.6607m5.0002 8.6607H.99903m.00097 0 5.0003-8.6607"/>
+                    <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" d="M.99975 6h10"/>
+                </svg>
+            </button>
+
+            <nav class="botao-menu" id="menuzinho-{{artefato_pid}}">
+                <a href="/{{artefato_pid}}/editar">Editar</a>
+                <a href="#remover-{{artefato_pid}}">Remover</a>
+                <a href="#compartilhar-{{artefato_pid}}">Compartilhar</a>
+            </nav>
         </div>
         <div class="autoria">
-            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bloco.artefato.bicho_criador_id}}" hx-trigger="load"></div>
-            <a href="/varandas/{{bloco.artefato.bicho_criador_id}}">@{{bloco.artefato.bicho_criador_id}}</a>
-            {{#if bloco.artefato.citacao}}
+            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div>
+            <a href="/{{bicho_criador_id}}">@{{bicho_criador_id}}</a>
+            {{#if citacao}}
             <span> em </span>
-            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bloco.artefato.varanda_contexto_id}}" hx-trigger="load"></div>
-            <a href="/varandas/{{bloco.artefato.varanda_contexto_id}}">@{{bloco.artefato.varanda_contexto_id}}</a>
+            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{varanda_id}}" hx-trigger="load"></div>
+            <a href="/varandas/{{varanda_id}}">@{{varanda_id}}</a>
             {{/if}}
         </div>
     </header>
-    <br>
-    {{#if bloco.artefato.html}}
-    <hr>
-    <br>
-    {{bloco.artefato.html}}
-    <br>
-    <hr>
-    {{/if}}
-    <p>{{bloco.artefato.criacao}}</p>
-    <br>
-    <p><strong>Categorias:</strong></p>{{#each bloco.artefato.tags}}<span><a href="/{{bloco.artefato.varanda_contexto_id}}/tags?tag={{this}}">#{{this}}</a>, </span>{{/each}}
-    <br>
-    <div hx-get="/blocos/comentarios?artefato={{bloco.artefato.id}}&botao=true" hx-trigger="load" hx-push-url="false" style="text-align: center;"></div>
+    <div class="texto">
+        <br>
+        {{#if texto}}
+        <hr>
+        {{texto}}
+        <br>
+        <hr>
+        {{/if}}
+    </div>
+    <footer>
+        <p>{{criacao}}</p>
+        <br>
+        <p><strong>Categorias:</strong></p>{{#each tags}}<span><a href="/{{varanda_id}}/tags?tag={{this}}">#{{this}}</a>, </span>{{/each}}
+        <br>
+    </footer>
+    {{!-- <div hx-get="/blocos/comentarios?artefato={{bloco.artefato_id}}&botao=true" hx-trigger="load" hx-push-url="false" style="text-align: center;"></div> --}}
 </div>
-
+<div id="modal-{{artefato_pid}}" onclick="fechatudo('{{artefato_pid}}')"></div>
+{{/with}}
 <style>
-    h1{
+    h2{
         align-self: stretch;
     }
 
@@ -43,6 +57,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        word-break: break-all;
     }
     .bloco header .autoria {
         display: flex;
@@ -65,7 +80,7 @@
         display: none;
     }
 
-    .bloco header div.menuzinho-aberto {
+    .bloco header nav.menuzinho-aberto {
         display: block;
         z-index: 400;
         position: absolute;
@@ -82,13 +97,35 @@
         margin: 0.8rem 0;
         font-size: 1rem;
     }
+
+    .modal-aberto {
+        display: block;
+        position: fixed;
+        z-index: 300;
+        left: 0;
+        top: 0;
+        width: 100vw; /* Full width */
+        height: 100vh; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    }
 </style>
 
 <script>
     function opcoesArtefato(id) {
         console.log('pressionou botão opcoesArtefato');
         console.log('artefato_id:', id);
-        document.querySelector(`#botao-opcoes-${id}`).classList.toggle('pressionado');
-        document.querySelector(`#menuzinho-${id}`).classList.toggle('menuzinho-aberto');
+        document.getElementById(`botao-opcoes-${id}`).classList.toggle('pressionado');
+        document.getElementById(`modal-${id}`).classList.toggle('modal-aberto');
+        //modal.addEventListener('click', fechatudo(id));
+        document.getElementById(`menuzinho-${id}`).classList.toggle('menuzinho-aberto');
+
+    }
+
+    function fechatudo(id) {
+        document.getElementById(`modal-${id}`).classList.remove('modal-aberto');
+        document.getElementById(`botao-opcoes-${id}`).classList.remove('pressionado');
+        document.getElementById(`menuzinho-${id}`).classList.remove('menuzinho-aberto');
     }
 </script>

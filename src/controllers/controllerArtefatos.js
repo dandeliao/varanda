@@ -1,9 +1,17 @@
-const asyncHandler = require('express-async-handler');
-const serviceRelacoes = require('../services/bichos/serviceRelacoes');
-const serviceArtefatos = require('../services/artefatos/serviceArtefatos');
-// validacoes
-const { params, objetoRenderizavel, objetoRenderizavelBloco, quemEstaAgindo, palavrasReservadas } = require('../utils/utilControllers');
-const { messages } = require('joi-translation-pt-br');
+const asyncHandler 				= require('express-async-handler');
+const serviceRelacoes 			= require('../services/bichos/serviceRelacoes');
+const serviceArtefatos 			= require('../services/artefatos/serviceArtefatos');
+const serviceEdicoesArtefatos 	= require('../services/artefatos/serviceEdicoesArtefatos');
+const { schemaPostArtefato,
+	    schemaPutArtefato } 	= require('../validations/validateArtefatos');
+const { sanitizarArtefato } 	= require('../utils/utilParsers');
+const { params,
+		objetoRenderizavel, 
+		objetoRenderizavelBloco, 
+		quemEstaAgindo, 
+		palavrasReservadas } 	= require('../utils/utilControllers');
+const { messages } 				= require('joi-translation-pt-br');
+const { randomUUID } 			= require('crypto');
 require('dotenv').config();
 
 // captura links http(s)://endereco.com, categorias #artes, arrobas @varanda, páginas @varanda/blog-novo e artefatos @varanda/blog-novo/2024-03-10_16-20-59_676543-03
@@ -16,8 +24,11 @@ exports.getArtefato = asyncHandler(async (req, res, next) => {
 	let view = `blocos/artefato`;
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id, false);
-	obj_render.artefato = {artefato_pid: `${varanda_id}/${pagina_id}/${artefato_id}`};
+	obj_render.artefato_pid = `${varanda_id}/${pagina_id}/${artefato_id}`;
 	obj_render = await objetoRenderizavelBloco(obj_render, bloco_id);
+	if (obj_render.artefato === null) {
+		view = 'blocos/tapume';
+	}
 
 	res.render(view, obj_render);
 });
@@ -28,79 +39,84 @@ exports.getEditarArtefato = asyncHandler(async (req, res, next) => {
 	const usuarie_id = await quemEstaAgindo(req);
     let view = 'blocos/editar-artefato';
 
-	const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
 	if (usuarie_id !== varanda_id) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
 		if (!permissoes || !permissoes.participar) {
 			req.flash('erro', `Você não participa de @${varanda_id}`);
 			return res.redirect(`/${varanda_id}/${pagina_id}`);
 		}
 	}
+	
 	if (artefato_id !== 'novo_artefato') {
 		const artefato = await serviceArtefatos.verArtefato(`${varanda_id}/${pagina_id}/${artefato_id}`);
 		if (!artefato || artefato.bicho_criador_id !== usuarie_id) {
 			req.flash('erro', `Você não pode editar este artefato.`);
 			return res.redirect(`/${varanda_id}/${pagina_id}`);
 		}
+	} else {
+		if (palavrasReservadas().includes(pagina_id)) {
+			req.flash('erro', `Você não pode criar um artefato na página ${pagina_id}.`);
+			return res.redirect(`/${varanda_id}/${pagina_id}`);
+		}
 	}
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
-	if (artefato_id !== 'novo_artefato'){
-		obj_render.metodo = 'put';	
-	} else {
+	if (artefato_id === 'novo_artefato'){
 		obj_render.novo_artefato = true;
 		obj_render.metodo = 'post';
+	} else {
+		obj_render.artefato_pid = `${varanda_id}/${pagina_id}/${artefato_id}`;
+		obj_render.metodo = 'put';
 	}
+	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-artefato');
 
 	res.render(view, obj_render);
 });
 
 exports.postArtefato = asyncHandler(async (req, res, next) => {
-	
-	/* const { titulo, html, publica } = req.body;
-	const varanda_id = req.params.bicho_id;
+	console.log(req.body);
+	const { titulo, texto, sensivel, respondivel, indexavel, em_resposta_a, denuncia } = req.body;
+	const { varanda_id, pagina_id } = params(req);
+	const usuarie_id = await quemEstaAgindo(req);
 
-	if (palavrasReservadas().includes(encodeURIComponent(titulo))) {
-		req.flash('erro', `Você não pode criar uma página com o título ${titulo}.`);
-		return res.redirect(303, `/${varanda_id}/nova_pagina/editar`);
-	}
-
-	let pagina = {
+	const agora = new Date();
+	let artefato = {
+		artefato_pid: `${varanda_id}/${pagina_id}/${agora.getFullYear()}-${agora.getMonth() + 1}-${agora.getDate()}-${randomUUID()}`,
 		varanda_id: varanda_id,
-		titulo: titulo,
-		publica: publica,
-		html: html
+		pagina_vid: `${varanda_id}/${pagina_id}`,
+		bicho_criador_id: usuarie_id,
+		em_resposta_a_id: em_resposta_a ? em_resposta_a : null,
+		nome_arquivo: null, // mudar
+		extensao: null, // mudar
+		descricao: null, // mudar
+		titulo: titulo ? await sanitizarArtefato(titulo) : '',
+		texto: texto ? await sanitizarArtefato(texto) : '',
+		sensivel: sensivel ? true : false,
+		respondivel: respondivel ? true : false,
+		indexavel: indexavel ? true : false,
+		denuncia: denuncia ? true : false
 	}
-
-	const { error } = schemaPostPagina.validate(pagina, { messages });
+	console.log(artefato);
+	const { error } = schemaPostArtefato.validate(artefato, { messages });
 	if (error) {
+		console.log('erro de validação:', error.details[0]);
 	    req.flash('erro', error.details[0].message);
-        return res.redirect(303, `/${varanda_id}/nova_pagina/editar`);
+        return res.redirect(303, `/${varanda_id}/${pagina_id}/novo_artefato/editar`);
 	}
-
-	const comunidade = await serviceComunidades.verComunidade(varanda_id);
-	pagina.comunitaria = comunidade ? true : false;
-	
-	let usuarie_id = await quemEstaAgindo(req);
 
 	if (usuarie_id !== varanda_id) {
 		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
-		if (!permissoes || !permissoes.editar) {
-			req.flash('erro', `Você não pode criar páginas em ${varanda_id}.`);
-			return res.redirect(303, `/${varanda_id}`);
+		if (!permissoes || !permissoes.participar) {
+			req.flash('erro', `Você não participa de @${varanda_id}`);
+			return res.redirect(`/${varanda_id}/${pagina_id}`);
 		}
 	}
 
-	const jaExiste = await servicePaginas.verPaginas(varanda_id, encodeURIComponent(titulo));
-	if (jaExiste) {
-		req.flash('erro', `Já existe uma página com o título ${titulo}. Por favor, escolha outro título.`);
-		return res.redirect(303, `/${varanda_id}/nova_pagina/editar`);
-	}
+	const artefatoCriado = await serviceArtefatos.criarArtefato(artefato);
+	await serviceEdicoesArtefatos.criarEdicaoArtefato(artefatoCriado);
 
-	const paginaCriada = await servicePaginas.criarPagina(varanda_id, pagina);
-	await serviceEdicoes.criarEdicao(usuarie_id, paginaCriada, paginaCriada.html);
-
-	req.flash('aviso', 'A página foi criada com sucesso!');
-	return res.redirect(303, `/${paginaCriada.pagina_vid}`); */
+	req.flash('aviso', 'O artefato foi criado com sucesso!');
+	return res.redirect(303, `/${artefatoCriado.pagina_vid}`);
 
 });
 

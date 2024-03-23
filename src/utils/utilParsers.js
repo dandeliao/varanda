@@ -105,6 +105,14 @@ exports.sanitizarHtml = async (html, comunitaria) => {
     });
 };
 
+exports.sanitizarArtefato = async(texto) => {
+    return sanitize(texto, {
+        allowedTags: [],
+        allowedAttributes: {},
+        disallowedTagsMode: 'escape'
+    });
+};
+
 exports.htmlParaHtmx = async (html, varanda_id) => {
     
     const blocoRegex = /<v-((?:\w+-*)+)(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?\s*\/>/g;

@@ -108,32 +108,32 @@ CREATE TABLE edicoes(
 
 CREATE TABLE artefatos(
     artefato_pid            TEXT PRIMARY KEY NOT NULL,
-    varanda_id              INTEGER REFERENCES varandas(varanda_id) ON DELETE CASCADE,
+    varanda_id              VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     pagina_vid              TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
     bicho_criador_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
-    em_resposta_a_id        INTEGER REFERENCES artefatos(artefato_id) ON DELETE SET NULL,
+    em_resposta_a_id        TEXT REFERENCES artefatos(artefato_pid) ON DELETE SET NULL,
     nome_arquivo            VARCHAR(255),
     extensao                VARCHAR(16),
+    descricao               TEXT,
     titulo                  VARCHAR(500),
     texto                   TEXT,
     sensivel                BOOLEAN DEFAULT false,
     respondivel             BOOLEAN DEFAULT true,
-    publico                 BOOLEAN DEFAULT false,
     indexavel               BOOLEAN DEFAULT true,
     denuncia                BOOLEAN DEFAULT false,
     criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE edicoes_artefatos(
-    edicao_artefato_id      SETIAL PRIMARY KEY NOT NULL,
-    artefato_pid            TEXT REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    edicao_artefato_id      SERIAL PRIMARY KEY NOT NULL,
+    artefato_pid            TEXT REFERENCES artefatos(artefato_pid) ON DELETE CASCADE,
     pagina_vid              TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
     bicho_editor_id         VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
+    descricao               TEXT,
     titulo                  VARCHAR(500),
     texto                   TEXT,
     sensivel                BOOLEAN,
     respondivel             BOOLEAN,
-    publico                 BOOLEAN,
     indexavel               BOOLEAN,
     denuncia                BOOLEAN,
     criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP

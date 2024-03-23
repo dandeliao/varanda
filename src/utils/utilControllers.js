@@ -5,13 +5,16 @@ const servicePreferencias   = require('../services/bichos/servicePreferencias');
 const serviceBlocos         = require('../services/varandas/serviceBlocos');
 const servicePaginas        = require('../services/varandas/servicePaginas');
 const serviceArtefatos      = require('../services/artefatos/serviceArtefatos');
+const { vidParaId } = require('./utilParsers');
 
 exports.params = (req) => {
-    const varanda_id = req.params.bicho_id ? req.params.bicho_id : process.env.INSTANCIA_ID;
-	const pagina_id = req.params.pagina_id ? encodeURIComponent(req.params.pagina_id) : 'inicio';
+    const varanda_id    = req.params.bicho_id ? req.params.bicho_id : process.env.INSTANCIA_ID;
+	const pagina_id     = req.params.pagina_id ? encodeURIComponent(req.params.pagina_id) : 'inicio';
+    const artefato_id   = req.params.artefato_id ? req.params.artefato_id : undefined; 
     return {
         varanda_id: varanda_id,
-        pagina_id: pagina_id
+        pagina_id: pagina_id,
+        artefato_id: artefato_id
     };
 };
 
@@ -90,12 +93,25 @@ exports.objetoRenderizavelBloco = async (obj_render, bloco_id) => {
                 }
                 break;
             case 'artefato':
-                if (obj_render.artefato.artefato_pid) {
-                    let artefato = await serviceArtefatos.verArtefato(obj_render.artefato.artefato_pid);
+                let artefato;
+                if (obj_render.artefato_pid) {
+                    artefato = await serviceArtefatos.verArtefato(obj_render.artefato_pid);
                     if (artefato !== undefined) {
-                        dados.artefato = artefato;
+                        let pagina = await servicePaginas.verPaginas(artefato.varanda_id, vidParaId(artefato.pagina_vid));
+                        if (!pagina.publica) {
+                            if (obj_render.usuarie.bicho_id !== obj_render.varanda.bicho_id) {
+                                let relacao = await serviceRelacoes.verRelacao(obj.render.usuarie.bicho_id, obj.render.varanda.bicho_id);
+                                if (!relacao.participar && !relacao.moderar) {
+                                    if (artefato.bicho_criador_id !== obj_render.usuarie.bicho_id) {
+                                        artefato = null;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+                dados.artefato = artefato;
+                break;
             default:
                 if (obj_render.query[variavel]) {
                     dados[variavel] = obj_render.query[variavel];

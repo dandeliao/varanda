@@ -16,7 +16,7 @@ exports.getEdicaoArtefato = function(edicaoArtefatoId) {
 
 exports.postEdicaoArtefato = function(artefato) {
 	return pool.query(
-		'INSERT INTO edicoes_artefatos (artefato_pid, pagina_contexto_id, bicho_editor_id, titulo, texto, sensivel, respondivel, publico, indexavel, denuncia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
-		[artefato.artefato_pid, artefato.pagina_contexto_id, artefato.bicho_editor_id, artefato.titulo, artefato.texto, artefato.sensivel, artefato.respondivel, artefato.publico, artefato.indexavel, artefato.denuncia]
+		'INSERT INTO edicoes_artefatos (artefato_pid, pagina_vid, bicho_editor_id, descricao, titulo, texto, sensivel, respondivel, indexavel, denuncia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
+		[artefato.artefato_pid, artefato.pagina_vid, artefato.bicho_editor_id, artefato.descricao, artefato.titulo, artefato.texto, artefato.sensivel, artefato.respondivel, artefato.indexavel, artefato.denuncia]
 	);
 };

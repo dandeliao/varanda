@@ -1,30 +1,35 @@
 <div class="pagina">
-    {{#with bloco.artefato}}
+    
 	<header class="bloco">
 		{{#unless novo_artefato}}
-        <h1>Editando o artefato <a href="/{{artefato_pid}}">@{{artefato_pid}}</a></h1>
+        <h1>Editando o artefato <a href="/{{bloco.artefato.artefato_pid}}">@{{bloco.artefato.artefato_pid}}</a></h1>
 		{{/unless}}
 		{{#if novo_artefato}}
-		<h1>Novo artefato em <a href="/{{varanda_contexto_id}}/{{pagina_contexto_id}}">@{{varanda_contexto_id}}/{{pagina_contexto_id}}</a></h1>
+		<h1>Novo artefato em <a href="/{{varanda.bicho_id}}/{{pagina.pagina_id}}">@{{varanda.bicho_id}}/{{pagina.pagina_id}}</a></h1>
 		{{/if}}
         <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
     </header>
 	<br>
-	<form class="bloco" action="/{{#if novo_artefato}}{{pagina_vid}}{{/if}}{{#unless novo_artefato}}{{artefato_pid}}{{/unless}}" method="{{metodo}}">
+	<form class="bloco" action="/{{#if novo_artefato}}{{varanda.bicho_id}}/{{pagina.pagina_id}}{{/if}}{{#unless novo_artefato}}{{bloco.artefato.artefato_pid}}{{/unless}}" method="{{metodo}}">
+    {{#with bloco.artefato}}
 		<label for="titulo">Título:</label>
 		<input type="text" value="{{titulo}}" name="titulo" required>
 		<br><br>
 		<label for="texto">Texto:</label>
 		<textarea name="texto">{{texto}}</textarea>
-        <fieldset>
+        <br><br>
+        <fieldset style="border-style: double;">
             <input type="checkbox" name="sensivel">
-            <label for="sensivel">sensível</label>
+            <label for="sensivel">conteúdo sensível</label>
+            <br>
             <input type="checkbox" name="respondivel" checked>
-            <label for="respondivel">comentável</label>
+            <label for="respondivel">aceita respostas</label>
+            <br>
             <input type="checkbox" name="indexavel" checked>
-            <label for="indexavel">citável</label>
+            <label for="indexavel">pode ser citado</label>
         </fieldset>
+        <br>
         <button type="submit">Postar</button>
-	</form>
     {{/with}}
+	</form>
 </div>
