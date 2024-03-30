@@ -7,8 +7,8 @@ const serviceBichosPadrao								= require('../services/bichos/serviceBichosPadr
 const servicePaginas									= require('../services/varandas/servicePaginas');
 const serviceEdicoes									= require('../services/varandas/serviceEdicoes');
 const servicePaginasPadrao								= require('../services/varandas/servicePaginasPadrao');
-const { params, objetoRenderizavel, quemEstaAgindo,
-		palavrasReservadas, objetoRenderizavelBloco } 	= require('../utils/utilControllers');
+const { params, quemEstaAgindo, palavrasReservadas } 	= require('../utils/utilControllers');
+const { objetoRenderizavel, objetoRenderizavelBloco}	= require('../utils/utilRenderizacao');
 const { vidParaId }										= require('../utils/utilParsers');
 const { schemaPutAvatar, schemaPutFundo,
 		schemaPutPreferencias, schemaPostComunidade }	= require('../validations/validateBichos');
@@ -55,7 +55,7 @@ exports.getPreferencias = asyncHandler(async (req, res, next) => {
 });
 
 exports.getEditarPreferencias = asyncHandler(async (req, res, next) => {
-	const view = 'blocos/editar-preferencias';
+	const view = 'paginas/editar-preferencias';
 	const usuarie_id = await quemEstaAgindo(req);
 	const { varanda_id, pagina_id } = params(req);
 
@@ -67,20 +67,20 @@ exports.getEditarPreferencias = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
 	obj_render.query.bicho = varanda_id;
-	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-preferencias');
+	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho', 'preferencias']);
 	res.render(view, obj_render);
 });
 
 exports.getFutricarVaranda = asyncHandler(async (req, res, next) => {
 	const varanda_id = req.params.bicho_id;
 	const pagina_id = 'futricar';
-    let view = 'blocos/futricar';
+    let view = 'paginas/futricar';
 	const usuarie_id = await quemEstaAgindo(req);
 
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
-	obj_render = await objetoRenderizavelBloco(obj_render, 'futricar');
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
+	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho', 'paginas']);
 	const comunidades = await serviceRelacoes.verComunidadesDoBicho(varanda_id);
 	const participantes = await serviceRelacoes.verBichosNaComunidade(varanda_id);
 	obj_render.bloco.futricar = true;
@@ -90,10 +90,10 @@ exports.getFutricarVaranda = asyncHandler(async (req, res, next) => {
 });
 
 exports.getCriarComunidade = asyncHandler(async (req, res, next) => {
-    let view = 'blocos/editar-bicho';
+    let view = 'paginas/editar-bicho';
 	const usuarie_id = await quemEstaAgindo(req);
 
-	let obj_render = await objetoRenderizavel(req, res, 'nova_comunidade', 'criar-comunidade', usuarie_id);
+	let obj_render = await objetoRenderizavel(req, res, 'nova_comunidade', 'criar-comunidade', null, usuarie_id);
 	obj_render.metodo = 'post';	
 	obj_render.nova_comunidade = true;
 
@@ -101,7 +101,7 @@ exports.getCriarComunidade = asyncHandler(async (req, res, next) => {
 });
 
 exports.getEditarBicho = asyncHandler(async (req, res, next) => {
-	let view = `blocos/editar-bicho`;
+	let view = `paginas/editar-bicho`;
 	const { varanda_id, pagina_id } = params(req);
 	const usuarie_id = await quemEstaAgindo(req);
 
@@ -113,9 +113,9 @@ exports.getEditarBicho = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
 	obj_render.query.bicho = varanda_id;
-	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-bicho');
+	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho']);
 	const bicho = await serviceBichos.verBicho(varanda_id);
 	obj_render.varanda.bicho = bicho;
 	obj_render.metodo = 'put';	
@@ -132,7 +132,7 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 		return res.redirect(`/${varanda_id}`);
 	}
 
-    let view = 'blocos/editar';
+    let view = 'paginas/editar-pagina';
 	let usuarie_id = await quemEstaAgindo(req);
 
 	if (usuarie_id !== varanda_id) {
@@ -145,7 +145,7 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
 	if (pagina_id !== 'nova_pagina'){
 		const pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
 		obj_render.pagina.html = pagina.html;
@@ -162,11 +162,11 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 exports.getErro = asyncHandler(async (req, res, next) => {
 	const varanda_id = req.params.bicho_id;
 	const pagina_id = 'erro';
-    let view = 'blocos/erro';
+    let view = 'paginas/erro';
 	const usuarie_id = await quemEstaAgindo(req);
 
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
-	obj_render = await objetoRenderizavelBloco(obj_render, 'erro');
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
+	obj_render = await objetoRenderizavelBloco(obj_render, []);
 	obj_render.bloco.codigo = req.query.codigo ? req.query.codigo : 500;
 	obj_render.bloco.mensagem = req.query.mensagem ? req.query.mensagem : 'Erro no servidor. Por favor, tente novamente.'
 	res.render(view, obj_render);
@@ -214,9 +214,9 @@ exports.putAvatar = asyncHandler(async (req, res, next) => {
 	
 	const bichoEditado = await serviceBichos.editarBicho(arroba, dadosNovos);
 
-	let view = `blocos/editar-bicho`;
-	let obj_render = await objetoRenderizavel(req, res, arroba, 'editar-bicho', usuarie_id, false);
-	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-bicho');
+	let view = `paginas/editar-bicho`;
+	let obj_render = await objetoRenderizavel(req, res, arroba, 'editar-bicho', null, usuarie_id, false);
+	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho']);
 	obj_render.bloco.bicho = bichoEditado;
 	res.render(view, obj_render);
 
@@ -256,14 +256,14 @@ exports.putFundo = asyncHandler(async (req, res, next) => {
 			req.flash('erro', 'Houve um erro ao carregar o arquivo. Por favor, tente novamente.');
 			return res.redirect(303, `/${arroba}`);
 		}
-		dadosNovos = {avatar: dadosArquivo.nome, descricao_fundo: fundo.descricao_fundo};
+		dadosNovos = {fundo: dadosArquivo.nome, descricao_fundo: fundo.descricao_fundo};
 	}
 	
 	const bichoEditado = await serviceBichos.editarBicho(arroba, dadosNovos);
 	
-	let view = `blocos/editar-bicho`;
-	let obj_render = await objetoRenderizavel(req, res, arroba, 'editar-bicho', usuarie_id, false);
-	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-bicho');
+	let view = `paginas/editar-bicho`;
+	let obj_render = await objetoRenderizavel(req, res, arroba, 'editar-bicho', null, usuarie_id, false);
+	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho']);
 	obj_render.bloco.bicho = bichoEditado;
 	res.render(view, obj_render);
 });

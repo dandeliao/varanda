@@ -11,7 +11,7 @@
         <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
     </header>
 	<br>
-	<form class="bloco" action="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" method="{{metodo}}" {{#unless nova_comunidade}}hx-swap="none"{{/unless}}>
+	<form class="bloco" action="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" method="{{metodo}}" {{#unless nova_comunidade}}hx-swap="none" hx-push-url="false"{{/unless}}>
 		{{#unless nova_comunidade}}
 		<h2>Apresentação</h2>
 		{{/unless}}
@@ -44,7 +44,7 @@
 	</form>
 	<br>
 	{{#unless nova_comunidade}}
-	<form id="form-fundo" class="bloco" action="/{{varanda.bicho_id}}/fundo" method="put" enctype="multipart/form-data" hx-push-url="true">
+	<form id="form-fundo" class="bloco" action="/{{varanda.bicho_id}}/fundo" method="put" enctype="multipart/form-data" hx-swap="none" hx-push-url="false">
 		<h2>Imagem de fundo</h2>
 		<div id="visualiza-fundo" hx-get="/blocos/fundo?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="innerHtml" hx-push-url="false"></div>
 		<br>
@@ -57,7 +57,7 @@
 		<button class="centralizado" type="submit">Salvar</button>
 	</form>
 	<br>
-	<form id="form-avatar" class="bloco" action="/{{varanda.bicho_id}}/avatar" method="put" enctype="multipart/form-data" hx-push-url="true">
+	<form id="form-avatar" class="bloco" action="/{{varanda.bicho_id}}/avatar" method="put" enctype="multipart/form-data" hx-swap="none" hx-push-url="false">
 		<h2>Imagem de perfil</h2>
 		<div class="avatar-quadrado" id="visualiza-avatar" hx-get="/blocos/avatar?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="innerHtml" hx-push-url="false"></div>
 		<br><br>

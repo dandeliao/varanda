@@ -5,11 +5,11 @@ const serviceEdicoesArtefatos 	= require('../services/artefatos/serviceEdicoesAr
 const { schemaPostArtefato,
 	    schemaPutArtefato } 	= require('../validations/validateArtefatos');
 const { sanitizarArtefato } 	= require('../utils/utilParsers');
-const { params,
-		objetoRenderizavel, 
-		objetoRenderizavelBloco, 
+const { params, 
 		quemEstaAgindo, 
 		palavrasReservadas } 	= require('../utils/utilControllers');
+const { objetoRenderizavel, 
+		objetoRenderizavelBloco}= require('../utils/utilRenderizacao');
 const { messages } 				= require('joi-translation-pt-br');
 const { randomUUID } 			= require('crypto');
 require('dotenv').config();
@@ -21,13 +21,12 @@ exports.getArtefato = asyncHandler(async (req, res, next) => {
     
     const { varanda_id, pagina_id, artefato_id } = params(req);
     let usuarie_id = await quemEstaAgindo(req);
-	let view = `blocos/artefato`;
+	let view = `paginas/artefato`;
 
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id, false);
-	obj_render.artefato_pid = `${varanda_id}/${pagina_id}/${artefato_id}`;
-	obj_render = await objetoRenderizavelBloco(obj_render, bloco_id);
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, artefato_id, usuarie_id);
 	if (obj_render.artefato === null) {
-		view = 'blocos/tapume';
+		console.log('obj_render.artefato é null');
+		//view = 'blocos/tapume';
 	}
 
 	res.render(view, obj_render);
@@ -37,7 +36,7 @@ exports.getEditarArtefato = asyncHandler(async (req, res, next) => {
 	
 	const { varanda_id, pagina_id, artefato_id } = params(req);
 	const usuarie_id = await quemEstaAgindo(req);
-    let view = 'blocos/editar-artefato';
+    let view = 'paginas/editar-artefato';
 
 	if (usuarie_id !== varanda_id) {
 		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
@@ -48,7 +47,7 @@ exports.getEditarArtefato = asyncHandler(async (req, res, next) => {
 	}
 	
 	if (artefato_id !== 'novo_artefato') {
-		const artefato = await serviceArtefatos.verArtefato(`${varanda_id}/${pagina_id}/${artefato_id}`);
+		const artefato = await serviceArtefatos.verArtefato(artefato_id);
 		if (!artefato || artefato.bicho_criador_id !== usuarie_id) {
 			req.flash('erro', `Você não pode editar este artefato.`);
 			return res.redirect(`/${varanda_id}/${pagina_id}`);
@@ -60,28 +59,24 @@ exports.getEditarArtefato = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, artefato_id, usuarie_id);
 	if (artefato_id === 'novo_artefato'){
 		obj_render.novo_artefato = true;
 		obj_render.metodo = 'post';
 	} else {
-		obj_render.artefato_pid = `${varanda_id}/${pagina_id}/${artefato_id}`;
 		obj_render.metodo = 'put';
 	}
-	obj_render = await objetoRenderizavelBloco(obj_render, 'editar-artefato');
 
 	res.render(view, obj_render);
 });
 
 exports.postArtefato = asyncHandler(async (req, res, next) => {
-	console.log(req.body);
-	const { titulo, texto, sensivel, respondivel, indexavel, em_resposta_a, denuncia } = req.body;
+
+	const { titulo, texto, sensivel, respondivel, indexavel, mutirao, em_resposta_a, denuncia } = req.body;
 	const { varanda_id, pagina_id } = params(req);
 	const usuarie_id = await quemEstaAgindo(req);
 
-	const agora = new Date();
 	let artefato = {
-		artefato_pid: `${varanda_id}/${pagina_id}/${agora.getFullYear()}-${agora.getMonth() + 1}-${agora.getDate()}-${randomUUID()}`,
 		varanda_id: varanda_id,
 		pagina_vid: `${varanda_id}/${pagina_id}`,
 		bicho_criador_id: usuarie_id,
@@ -94,9 +89,10 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 		sensivel: sensivel ? true : false,
 		respondivel: respondivel ? true : false,
 		indexavel: indexavel ? true : false,
+		mutirao: mutirao ? true : false,
 		denuncia: denuncia ? true : false
 	}
-	console.log(artefato);
+
 	const { error } = schemaPostArtefato.validate(artefato, { messages });
 	if (error) {
 		console.log('erro de validação:', error.details[0]);
@@ -114,6 +110,7 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 
 	const artefatoCriado = await serviceArtefatos.criarArtefato(artefato);
 	await serviceEdicoesArtefatos.criarEdicaoArtefato(artefatoCriado);
+	console.log(artefatoCriado);
 
 	req.flash('aviso', 'O artefato foi criado com sucesso!');
 	return res.redirect(303, `/${artefatoCriado.pagina_vid}`);

@@ -2,7 +2,7 @@
     
 	<header class="bloco">
 		{{#unless novo_artefato}}
-        <h1>Editando o artefato <a href="/{{bloco.artefato.artefato_pid}}">@{{bloco.artefato.artefato_pid}}</a></h1>
+        <h1>Editando o artefato <a href="/{{artefato.pagina_vid}}/{{artefato.artefato_id}}">{{artefato.artefato_id}}</a></h1>
 		{{/unless}}
 		{{#if novo_artefato}}
 		<h1>Novo artefato em <a href="/{{varanda.bicho_id}}/{{pagina.pagina_id}}">@{{varanda.bicho_id}}/{{pagina.pagina_id}}</a></h1>
@@ -10,13 +10,12 @@
         <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
     </header>
 	<br>
-	<form class="bloco" action="/{{#if novo_artefato}}{{varanda.bicho_id}}/{{pagina.pagina_id}}{{/if}}{{#unless novo_artefato}}{{bloco.artefato.artefato_pid}}{{/unless}}" method="{{metodo}}">
-    {{#with bloco.artefato}}
+	<form class="bloco" action="/{{#if novo_artefato}}{{varanda.bicho_id}}/{{pagina.pagina_id}}{{/if}}{{#unless novo_artefato}}{{artefato.artefato_id}}{{/unless}}" method="{{metodo}}">
 		<label for="titulo">Título:</label>
-		<input type="text" value="{{titulo}}" name="titulo" required>
+		<input type="text" value="{{artefato.titulo}}" name="titulo" required>
 		<br><br>
 		<label for="texto">Texto:</label>
-		<textarea name="texto">{{texto}}</textarea>
+		<textarea name="texto">{{artefato.texto}}</textarea>
         <br><br>
         <fieldset style="border-style: double;">
             <input type="checkbox" name="sensivel">
@@ -30,6 +29,5 @@
         </fieldset>
         <br>
         <button type="submit">Postar</button>
-    {{/with}}
 	</form>
 </div>

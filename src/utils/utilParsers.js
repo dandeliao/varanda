@@ -154,6 +154,14 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
                     }
                     divHtmx = divHtmx + `bicho=${varanda_id}`;
                 }
+               /*  if (bloco.variaveis.includes('pagina')) {
+                    if (p2 || p4 || p6 || p8 ) {
+                        divHtmx = divHtmx + '&';
+                    } else {
+                        divHtmx = divHtmx + '?';
+                    }
+                    divHtmx = divHtmx + `pagina=${pagina_id}`;
+                } */
             }
         }
         // fecha div htmx
