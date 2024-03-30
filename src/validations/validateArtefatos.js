@@ -1,7 +1,6 @@
 const Joi = require('joi');
 
 exports.schemaPostArtefato = Joi.object().keys({
-    artefato_pid: 		Joi.string().required(),
 	varanda_id: 		Joi.string().max(32).required(),
 	pagina_vid: 		Joi.string().required(),
 	bicho_criador_id: 	Joi.string().max(32).required(),
@@ -14,6 +13,7 @@ exports.schemaPostArtefato = Joi.object().keys({
 	sensivel: 			Joi.boolean(),
 	respondivel: 		Joi.boolean(),
 	indexavel: 			Joi.boolean(),
+	mutirao:			Joi.boolean(),
 	denuncia: 			Joi.boolean()
 });
 
@@ -25,5 +25,6 @@ exports.schemaPutArtefato = Joi.object().keys({
 	sensivel: 		Joi.boolean(),
 	respondivel: 	Joi.boolean(),
 	indexavel: 		Joi.boolean(),
+	mutirao:		Joi.boolean(),
 	denuncia: 		Joi.boolean()
 });
