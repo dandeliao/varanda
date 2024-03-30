@@ -107,11 +107,11 @@ CREATE TABLE edicoes(
 /* Valor (artefatos) */
 
 CREATE TABLE artefatos(
-    artefato_pid            TEXT PRIMARY KEY NOT NULL,
+    artefato_id             SERIAL PRIMARY KEY NOT NULL,
     varanda_id              VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     pagina_vid              TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
     bicho_criador_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
-    em_resposta_a_id        TEXT REFERENCES artefatos(artefato_pid) ON DELETE SET NULL,
+    em_resposta_a_id        INTEGER REFERENCES artefatos(artefato_id) ON DELETE SET NULL,
     nome_arquivo            VARCHAR(255),
     extensao                VARCHAR(16),
     descricao               TEXT,
@@ -120,13 +120,14 @@ CREATE TABLE artefatos(
     sensivel                BOOLEAN DEFAULT false,
     respondivel             BOOLEAN DEFAULT true,
     indexavel               BOOLEAN DEFAULT true,
+    mutirao                 BOOLEAN DEFAULT false,
     denuncia                BOOLEAN DEFAULT false,
     criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE edicoes_artefatos(
     edicao_artefato_id      SERIAL PRIMARY KEY NOT NULL,
-    artefato_pid            TEXT REFERENCES artefatos(artefato_pid) ON DELETE CASCADE,
+    artefato_id             INTEGER REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
     pagina_vid              TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
     bicho_editor_id         VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     descricao               TEXT,
@@ -135,6 +136,7 @@ CREATE TABLE edicoes_artefatos(
     sensivel                BOOLEAN,
     respondivel             BOOLEAN,
     indexavel               BOOLEAN,
+    mutirao                 BOOLEAN,
     denuncia                BOOLEAN,
     criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -145,6 +147,6 @@ CREATE TABLE tags(
 
 CREATE TABLE tags_em_uso(
     tag_id          TEXT REFERENCES tags(tag_id) ON DELETE CASCADE,
-    artefato_pid    TEXT REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    artefato_id     INTEGER REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
     bicho_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL
 )
