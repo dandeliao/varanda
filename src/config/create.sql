@@ -30,7 +30,7 @@ CREATE TABLE comunidades(
     bicho_id                    VARCHAR(32) PRIMARY KEY REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     bicho_criador_id            VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     participacao_livre          BOOLEAN DEFAULT true,
-    participacao_com_convite    BOOLEAN DEFAULT true,
+    participacao_com_convite    BOOLEAN DEFAULT true
 );
 
 CREATE TABLE convites(
@@ -58,7 +58,7 @@ CREATE TABLE relacoes(
 
 CREATE TABLE bichos_padrao(
     bicho_padrao_id     SERIAL PRIMARY KEY NOT NULL,
-    descricao           VARCHAR(500) DEFAULT 'Olá! Bem-vinde à minha varanda.',
+    descricao           VARCHAR(500) DEFAULT 'Olá, seja bem-vinde!',
     avatar              VARCHAR(255),
     descricao_avatar    VARCHAR(500),
     fundo               VARCHAR(255),
@@ -95,7 +95,7 @@ CREATE TABLE blocos(
 
 CREATE TABLE edicoes(
     edicao_id       SERIAL PRIMARY KEY NOT NULL,
-    pagina_id       INTEGER REFERENCES paginas(pagina_id) ON DELETE CASCADE,
+    pagina_vid      TEXT REFERENCES paginas(pagina_vid) ON DELETE CASCADE,
     bicho_editor_id VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     titulo          VARCHAR(32),
     publica         BOOLEAN NOT NULL,
@@ -143,10 +143,10 @@ CREATE TABLE edicoes_artefatos(
 
 CREATE TABLE tags(
     tag_id  TEXT PRIMARY KEY NOT NULL
-)
+);
 
 CREATE TABLE tags_em_uso(
     tag_id          TEXT REFERENCES tags(tag_id) ON DELETE CASCADE,
     artefato_id     INTEGER REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
     bicho_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL
-)
+);
