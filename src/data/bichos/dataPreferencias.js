@@ -7,10 +7,10 @@ exports.getPreferencias = function (bichoId) {
 	);
 };
 
-exports.postPreferencias = function (bichoId, preferencias) {
+exports.postPreferencias = function (bichoId) {
 	return pool.query(
-		'INSERT INTO preferencias (bicho_id, tema) VALUES ($1, $2) RETURNING *',
-		[bichoId, preferencias.tema]
+		'INSERT INTO preferencias (bicho_id) VALUES ($1) RETURNING *',
+		[bichoId]
 	);
 };
 

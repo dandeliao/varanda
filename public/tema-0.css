@@ -2,15 +2,17 @@
 
 :root {
     --altura-barra:         2.2rem;
-    --altura-barra-mobile:  3rem;
+    --altura-barra-mobile:  4.5rem;
     --cor-principal:        #e0b6bc;
+    --cor-transparente:     #e0b6bc9f;
     --cor-destaque:         #968e95;
-    --cor-destaque-2:       #582029; /* 0f3c70 */
+    --cor-destaque-2:       #590820; /* 0f3c70 */
     --cor-gris:             #fff3f3;
     --cor-gris-2:           #6e6e6e;
-    --cor-fundo:            #efefef;
-    --cor-fundo-2:          #e0e0e0;
-    --cor-fonte-view:       #202020;
+    --cor-fundo:            #f9f9f9;
+    --cor-fundo-2:          #ebebeb;
+    --cor-fonte-view:       #232323;
+    --cor-fonte-2:          #505050;
     --cor-fonte-barra:      #202020;
 
     --familia-fonte:        'Convergence', sans-serif;

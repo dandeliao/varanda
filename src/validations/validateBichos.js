@@ -3,10 +3,10 @@ const Joi = require('joi');
 exports.schemaPostPessoa = Joi.object().keys({
 	// bicho_id, nome, email, senha, convite_id
 	bicho_id: Joi.string().min(3).max(32).required(),
-	email: Joi.string().email(),
+	email: Joi.string().email().allow(null, ''),
 	senha: Joi.string().min(8).required(),
 	confirma_senha: Joi.string().valid(Joi.ref('senha')).required(),
-	convite_id: Joi.string().guid().required()
+	convite_id: Joi.string().guid().allow(null, '')
 });
 
 exports.schemaPutPessoa = Joi.object().keys({

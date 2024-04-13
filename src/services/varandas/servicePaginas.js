@@ -1,6 +1,4 @@
 const dataPaginas 					= require('../../data/varandas/dataPaginas');
-const fs 							= require('fs');
-const path 							= require('path');
 const { editarArquivoHandlebars,
 		deletarArquivoHandlebars }	= require('../../utils/utilArquivos');
 const { vidParaId, sanitizarHtml,

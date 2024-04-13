@@ -1,14 +1,5 @@
 const htmlInput = require('joi-html-input');
 const Joi = require('joi').extend(htmlInput);
-const palavrasReservadas = ['inicio', 'editar', 'clonar', 'futricar'];
-
-// a fazer: usar palavrasReservadas para validacoes
-
-exports.schemaPutVaranda = Joi.object().keys({
-	// aberta, bicho_id
-	aberta: Joi.boolean().required(),
-	bicho_id: Joi.string().min(1).max(32),
-});
 
 exports.schemaPostPagina = Joi.object().keys({
 	// titulo, publica, html, bicho_id

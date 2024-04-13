@@ -5,7 +5,8 @@ const servicePaginas								= require('../services/varandas/servicePaginas');
 const serviceEdicoes								= require('../services/varandas/serviceEdicoes');
 const serviceComunidades							= require('../services/bichos/serviceComunidades');
 const { schemaPutPagina, schemaPostPagina }			= require('../validations/validateVarandas');
-const { params, objetoRenderizavel, objetoRenderizavelBloco, quemEstaAgindo, palavrasReservadas } = require('../utils/utilControllers');
+const { params, quemEstaAgindo, palavrasReservadas} = require('../utils/utilControllers');
+const { objetoRenderizavel, objetoRenderizavelBloco, objetoRenderizavelContexto}= require('../utils/utilRenderizacao');
 const { messages } = require('joi-translation-pt-br');
 require('dotenv').config();
 
@@ -14,18 +15,19 @@ exports.getPagina = asyncHandler(async (req, res, next) => {
     const { varanda_id, pagina_id } = params(req);
     let usuarie_id = await quemEstaAgindo(req);
 
-	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, usuarie_id);
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
 	let view;
 	switch (pagina_id) {
 		case 'clonar':
 		case 'futricar':
-			view = `blocos/${pagina_id}`;
-			obj_render = await objetoRenderizavelBloco(obj_render, pagina_id);
+			view = `paginas/${pagina_id}`;
+			obj_render = await objetoRenderizavelBloco(obj_render, ['bicho', 'paginas']);
 			break;
 		default:
 			view = `varandas/${varanda_id}/${pagina_id}`;
 			break;
 	}
+	obj_render = await objetoRenderizavelContexto(obj_render, 'pagina');
 	res.render(view, obj_render);
 
 });

@@ -1,0 +1,13 @@
+<form action="/{{varanda.bicho_id}}/{{pagina.pagina_id}}" method="post">
+    <label for="texto" hidden>Escreva um comentário</label>
+    <textarea name="texto" placeholder="Escreva um comentário..."></textarea>
+    <input type="hidden" name="em_resposta_a_id" value="{{bloco.artefato.artefato_id}}"/>
+    <input type="hidden" name="titulo" value="Re: {{bloco.artefato.titulo}}"/>
+    <button type="submit">Postar</button>
+</form>
+{{#each bloco.comentarios}}
+<br>
+<section class="comentario">
+    <div hx-get="/blocos/artefato?artefato={{this.artefato_id}}" hx-trigger="load" hx-push-url="false"></div>
+</section>
+{{/each}}

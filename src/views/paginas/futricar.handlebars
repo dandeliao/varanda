@@ -1,0 +1,111 @@
+<div class="pagina">
+    <header class="bloco">
+        <h1>Futricando @{{varanda.bicho_id}}</h1>
+        <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
+    </header>
+    <br>
+    <div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}{{#if bloco.futricar}}&futricar=true{{/if}}" hx-trigger="load"></div>
+    <br>
+    <div class="bloco">
+        <h2>Páginas</h2>
+        <ul class="lista-paginas">
+            {{#each bloco.paginas}}
+                <div class="item-paginas">
+                    <li>
+                        <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
+                    </li>
+                    <div>
+                        <button hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
+                        <button hx-delete="/{{this.pagina_vid}}" hx-target="body">Remover</button>
+                    </div>
+                </div>
+                <br>
+            {{/each}}
+        </ul>
+        <button class="centralizado" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
+        <br>
+    </div>
+    <br>
+    {{#if bloco.participantes}}
+    <div class="bloco">
+        <h2>Participantes</h2>
+        <ul class="lista-bichos">
+            {{#each bloco.participantes}}
+            <li class="item-bicho"><a href="/{{this.bicho_id}}"><span class="avatar-quadrado" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span></a><p class="largura-fixa"><a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a></p></li>
+            {{/each}}
+        </ul>
+    </div>
+    <br>
+    {{/if}}
+    {{#if bloco.comunidades}}
+    <div class="bloco">
+        <h2>Comunidades</h2>
+        <ul class="lista-bichos">
+            {{#each bloco.comunidades}}
+            <li class="item-bicho"><a href="/{{this.comunidade_id}}"><span class="avatar-quadrado" hx-get="/blocos/avatar?bicho={{this.comunidade_id}}" hx-trigger="load"></span></a><p class="largura-fixa"><a class="mini-arroba" href="/{{this.comunidade_id}}">@{{this.comunidade_id}}</a></p></li>
+            {{/each}}
+        </ul>
+    </div>
+    <br>
+    {{/if}}
+</div>
+
+<style>
+
+    h1{
+        text-align: center;
+        align-self: stretch;
+    }
+
+    .pagina header {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 1rem;
+        align-items: center;
+    }
+
+    .lista-bichos {
+        display: flex;
+        gap: 0.2rem;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0 auto;
+    }
+
+    .lista-paginas {
+        width: 100%;
+    }
+
+    .item-bicho {
+        list-style: none;
+    }
+
+    .item-paginas {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 1rem;
+    }
+
+    .largura-fixa {
+        display: block;
+        text-align: center;
+        width: 80px;
+        height: auto;
+        margin: 0 auto;
+        word-wrap: break-word;
+    }
+
+    .mini-arroba {
+        font-size: 0.8rem;
+    }
+
+    @media screen and (max-width: 859px) {
+        .item-paginas {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }   
+    }
+
+</style>

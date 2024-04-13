@@ -41,17 +41,16 @@
         {{{body}}}
     </main>
 
+    <footer id="pe-da-pagina"></footer>
+
 </body>
 
 {{#if usuarie.logade}}
     <script>
         window.addEventListener('pageshow', descarregos());
         function descarregos () {
-            document.querySelector('#varanda-botao-contexto').classList.remove('pressionado');
-            document.querySelector('#varanda-menu-contexto').classList.remove('aberto');
-            document.querySelector('#varanda-botao-geral').classList.remove('pressionado');
-            document.querySelector('#varanda-menu-geral').classList.remove('aberto');
-        
+            document.getElementById('pe-da-pagina').style.display = null;
+            document.getElementById('varanda-janela').style.minHeight = null;
             carregaTema();
         }
 
@@ -81,5 +80,16 @@
         }
     </script>
 {{/if}}
+
+{{#unless usuarie.logade}}
+    <script>
+        window.addEventListener('pageshow', sembarra());
+        function sembarra () {
+            document.getElementById('varanda-janela').style.minHeight = '100vh';
+            document.getElementById('pe-da-pagina').style.display = 'none';
+        }
+    </script>
+{{/unless}}
+
 
 </html>

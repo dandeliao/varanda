@@ -1,0 +1,10 @@
+# Reiniciar banco de dados
+
+DROP TABLE sessoes, relacoes, convites, comunidades, pessoas, bichos_padrao, bichos, etc;
+
+- apagar pastas em static/bichos/em_uso
+- apagar pastas em src/views/varandas
+- rodar comandos do create.sql, menos o primeiro (create database varanda) pois o banco de dados não foi deletado
+- nodemon src/app.js
+- abrir http://localhost:4000
+- será redirecionado para criar perfil

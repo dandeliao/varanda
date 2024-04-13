@@ -30,7 +30,7 @@ CREATE TABLE comunidades(
     bicho_id                    VARCHAR(32) PRIMARY KEY REFERENCES bichos(bicho_id) ON DELETE CASCADE,
     bicho_criador_id            VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     participacao_livre          BOOLEAN DEFAULT true,
-    participacao_com_convite    BOOLEAN DEFAULT true,
+    participacao_com_convite    BOOLEAN DEFAULT true
 );
 
 CREATE TABLE convites(
@@ -58,7 +58,7 @@ CREATE TABLE relacoes(
 
 CREATE TABLE bichos_padrao(
     bicho_padrao_id     SERIAL PRIMARY KEY NOT NULL,
-    descricao           VARCHAR(500) DEFAULT 'Olá! Bem-vinde à minha varanda.',
+    descricao           VARCHAR(500) DEFAULT 'Olá, seja bem-vinde!',
     avatar              VARCHAR(255),
     descricao_avatar    VARCHAR(500),
     fundo               VARCHAR(255),
@@ -95,7 +95,7 @@ CREATE TABLE blocos(
 
 CREATE TABLE edicoes(
     edicao_id       SERIAL PRIMARY KEY NOT NULL,
-    pagina_id       INTEGER REFERENCES paginas(pagina_id) ON DELETE CASCADE,
+    pagina_vid      TEXT REFERENCES paginas(pagina_vid) ON DELETE CASCADE,
     bicho_editor_id VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     titulo          VARCHAR(32),
     publica         BOOLEAN NOT NULL,
@@ -108,57 +108,45 @@ CREATE TABLE edicoes(
 
 CREATE TABLE artefatos(
     artefato_id             SERIAL PRIMARY KEY NOT NULL,
-    varanda_contexto_id     INTEGER REFERENCES varandas(varanda_id) ON DELETE CASCADE,
+    varanda_id              VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
+    pagina_vid              TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
     bicho_criador_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
-    em_resposta_a_id        INTEGER REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    em_resposta_a_id        INTEGER REFERENCES artefatos(artefato_id) ON DELETE SET NULL,
+    nome_arquivo            VARCHAR(255),
+    extensao                VARCHAR(16),
+    descricao               TEXT,
+    titulo                  VARCHAR(500),
+    texto                   TEXT,
     sensivel                BOOLEAN DEFAULT false,
-    aviso_de_conteudo       VARCHAR(150),
     respondivel             BOOLEAN DEFAULT true,
-    publico                 BOOLEAN DEFAULT false,
-    indexavel               BOOLEAN DEFAULT false,
-    arquivo                 BOOLEAN DEFAULT false,
+    indexavel               BOOLEAN DEFAULT true,
+    mutirao                 BOOLEAN DEFAULT false,
     denuncia                BOOLEAN DEFAULT false,
     criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE arquivos(
-    artefato_id             INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
-    nome_arquivo            VARCHAR(255) NOT NULL,
-    extensao                VARCHAR(16),
-    descricao               VARCHAR(500)
-);
-
-CREATE TABLE textos(
-    artefato_id             INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
-    titulo                  VARCHAR(150),
-    texto                   TEXT
-);
-
-CREATE TABLE denuncias(
-    denuncia_id             INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
-    denunciado_id           INTEGER PRIMARY KEY REFERENCES artefatos(artefato_id) ON DELETE CASCADE
-    
-);
-
 CREATE TABLE edicoes_artefatos(
-    respondivel             BOOLEAN,
+    edicao_artefato_id      SERIAL PRIMARY KEY NOT NULL,
+    artefato_id             INTEGER REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    pagina_vid              TEXT REFERENCES paginas(pagina_vid) ON DELETE SET NULL,
+    bicho_editor_id         VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
+    descricao               TEXT,
+    titulo                  VARCHAR(500),
+    texto                   TEXT,
     sensivel                BOOLEAN,
-    aviso_de_conteudo       VARCHAR(150),
     respondivel             BOOLEAN,
-    publico                 BOOLEAN,
     indexavel               BOOLEAN,
-    nome_arquivo            VARCHAR(255),
-    descricao               VARCHAR(500),
-    titulo                  VARCHAR(150),
-    texto                   TEXT
+    mutirao                 BOOLEAN,
+    denuncia                BOOLEAN,
     criacao                 TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE tags(
     tag_id  TEXT PRIMARY KEY NOT NULL
-)
+);
 
-CREATE TABLE tags_artefatos(
+CREATE TABLE tags_em_uso(
     tag_id          TEXT REFERENCES tags(tag_id) ON DELETE CASCADE,
-    artefato_id     SERIAL REFERENCES artefatos(artefato_id) ON DELETE CASCADE
-)
+    artefato_id     INTEGER REFERENCES artefatos(artefato_id) ON DELETE CASCADE,
+    bicho_id        VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL
+);

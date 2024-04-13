@@ -1,0 +1,140 @@
+{{#with artefato}}
+<div class="bloco" style="text-align: left">
+    <header>
+        <div class="titulo">
+            <h2>{{titulo}}</h2>
+            <button id="botao-opcoes-{{artefato_id}}" onclick="opcoesArtefato('{{artefato_id}}')" aria-describedby="descricao-botao-opcoes-{{artefato_id}}">
+                <span class="oculto-aos-olhos">Menu de opções do artefato</span>
+                <span id="descricao-botao-opcoes-{{artefato_id}}" hidden>Abre e fecha um menu com opções específicas deste artefato.</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"
+                    aria-hidden="true" focusable="false">
+                    <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8" d="m11.00003 10.3299-5.0002-8.6607m5.0002 8.6607H.99903m.00097 0 5.0003-8.6607"/>
+                    <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" d="M.99975 6h10"/>
+                </svg>
+            </button>
+
+            <nav class="botao-menu" id="menuzinho-{{artefato_id}}">
+                <a href="/{{pagina_vid}}/{{artefato_id}}/editar">Editar</a>
+                <a href="#remover-{{artefato_id}}">Remover</a>
+                <a href="#compartilhar-{{artefato_id}}">Compartilhar</a>
+            </nav>
+        </div>
+    </header>
+    <div class="texto">
+        {{#if texto}}
+        {{texto}}
+        {{/if}}
+    </div>
+    <br>
+    <footer>
+        <div class="autoria">
+            <a href="/{{bicho_criador_id}}"><div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div></a>
+            <a href="/{{bicho_criador_id}}" style="margin-left: 0.4rem;">@{{bicho_criador_id}}</a>
+            {{#if citacao}}
+            <span> em </span>
+            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{varanda_id}}" hx-trigger="load"></div>
+            <a href="/varandas/{{varanda_id}}">@{{varanda_id}}</a>
+            {{/if}}
+        </div>
+        <p>{{criacao}}</p>
+        <p style="margin-top: 0.2rem;"><strong>Categorias:</strong>{{#each tags}}<span><a href="/{{varanda_id}}/tags?tag={{this}}">#{{this}}</a>, </span>{{/each}}</p>
+    </footer>
+    <br>
+    <hr>
+    {{#if respondivel}}
+    <div hx-get="/blocos/comentarios?artefato={{artefato_id}}" hx-trigger="load" hx-push-url="false" style="text-align: center;"></div>
+    {{/if}}
+</div>
+
+<div id="modal-{{artefato_id}}" onclick="fechatudo('{{artefato_id}}')"></div>
+
+{{/with}}
+
+<style>
+    h2{
+        align-self: stretch;
+    }
+
+    .bloco header .titulo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        word-break: break-all;
+    }
+    .bloco header button {
+        display: inline-block;
+        border-style: none;
+        padding: 0;
+        background-color: var(--cor-fundo);
+        width: 34px;
+        height: 34px;
+    }
+    .bloco header button.pressionado {
+        border-style: inset;
+    }
+
+    .bloco header .botao-menu {
+        display: none;
+    }
+
+    .bloco header nav.menuzinho-aberto {
+        display: block;
+        z-index: 400;
+        position: absolute;
+        right: 21px;
+        top: 42px;
+        text-align: center;
+        background-color: var(--cor-principal);
+        color: var(--cor-fonte-barra);
+        padding: 0.8rem;
+        border-radius: 5px;
+    }
+
+    .bloco footer {
+        color: var(--cor-fonte-2);
+    }
+    .bloco footer .autoria {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+
+    .menuzinho-aberto > a {
+        display: block;
+        margin: 0.8rem 0;
+        font-size: 1rem;
+    }
+
+    .modal-aberto {
+        display: block;
+        position: fixed;
+        z-index: 300;
+        left: 0;
+        top: 0;
+        width: 100vw; /* Full width */
+        height: 100vh; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    }
+
+    .texto {
+        white-space: pre-line;    
+    }
+</style>
+
+<script>
+    function opcoesArtefato(id) {
+        document.getElementById(`botao-opcoes-${id}`).classList.toggle('pressionado');
+        document.getElementById(`modal-${id}`).classList.toggle('modal-aberto');
+        //modal.addEventListener('click', fechatudo(id));
+        document.getElementById(`menuzinho-${id}`).classList.toggle('menuzinho-aberto');
+
+    }
+
+    function fechatudo(id) {
+        document.getElementById(`modal-${id}`).classList.remove('modal-aberto');
+        document.getElementById(`botao-opcoes-${id}`).classList.remove('pressionado');
+        document.getElementById(`menuzinho-${id}`).classList.remove('menuzinho-aberto');
+    }
+</script>

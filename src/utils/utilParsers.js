@@ -105,6 +105,14 @@ exports.sanitizarHtml = async (html, comunitaria) => {
     });
 };
 
+exports.sanitizarArtefato = async(texto) => {
+    return sanitize(texto, {
+        allowedTags: [],
+        allowedAttributes: {},
+        disallowedTagsMode: 'escape'
+    });
+};
+
 exports.htmlParaHtmx = async (html, varanda_id) => {
     
     const blocoRegex = /<v-((?:\w+-*)+)(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?\s*\/>/g;
@@ -146,6 +154,14 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
                     }
                     divHtmx = divHtmx + `bicho=${varanda_id}`;
                 }
+               /*  if (bloco.variaveis.includes('pagina')) {
+                    if (p2 || p4 || p6 || p8 ) {
+                        divHtmx = divHtmx + '&';
+                    } else {
+                        divHtmx = divHtmx + '?';
+                    }
+                    divHtmx = divHtmx + `pagina=${pagina_id}`;
+                } */
             }
         }
         // fecha div htmx

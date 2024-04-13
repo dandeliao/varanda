@@ -9,5 +9,12 @@ exports.sortearBichoPadrao = async function () {
 	return bichosPadrao[sorteio];
 };
 
+exports.criarBichosPadrao = async function () {
+	for (let i = 0; i < process.env.NUMERO_DE_BICHOS_PADRAO; i++) {
+		await dataBichosPadrao.postBichoPadrao(`${i}.jpg`, 'ilustração de um bicho', `${i}.jpg`, 'ilustração de padrão repetido');
+	}
+	return;
+}
+
 exports.caminhoAvatarPadrao = path.join(path.resolve(__dirname, staticPath), 'bichos', 'padrao', 'avatar');
 exports.caminhoFundoPadrao = path.join(path.resolve(__dirname, staticPath), 'bichos', 'padrao', 'fundo');

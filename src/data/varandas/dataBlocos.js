@@ -19,3 +19,10 @@ exports.getBloco = function (blocoId) {
 		[blocoId]
 	);
 };
+
+exports.postBloco = function (blocoId, descricao, comunitario, variaveis) {
+	return pool.query(
+		'INSERT INTO blocos (bloco_id, descricao, comunitario, variaveis) VALUES ($1, $2, $3, $4) RETURNING *',
+		[blocoId, descricao, comunitario, variaveis]
+	);
+};

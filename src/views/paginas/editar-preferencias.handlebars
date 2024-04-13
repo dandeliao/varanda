@@ -1,0 +1,39 @@
+<div class="pagina">
+    <h1>Preferências de @{{query.bicho}}</h1>
+    <br>
+	<form class="bloco" action="/{{query.bicho}}/preferencias" method="PUT" hx-target="body">
+		<h3>Tema:</h3>
+		<br>
+		<input id="0" type="radio" name="tema" value="0" {{#if bloco.preferencias.tema.zero}}checked{{/if}}>
+		<label for="0">0 - Flamingo diurno</label>
+		<br><br>
+		<input id="1" type="radio" name="tema" value="1" {{#if bloco.preferencias.tema.um}}checked{{/if}}>
+		<label for="1">1 - Flamingo noturno</label>
+		<br>
+		<br><br>
+		<button class="centralizado" type="submit">Salvar</button>
+	</form>
+	<br><br>
+	<a href="/autenticacao/logout">Sair (logout)</a>
+</div>
+<br>
+<button class="centralizado" hx-get="/{{query.bicho}}" hx-target="body" hx-push-url="true">Voltar</button>
+<br><br>
+</div>
+
+<style>
+	.pagina {
+		text-align: left;
+	}
+	h1 {
+		text-align: center;
+		align-self: stretch;
+	}
+	form {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+	}
+</style>

@@ -34,7 +34,7 @@ exports.editarBicho = async function (bichoId, dados) {
 exports.subirAvatar = async function (bichoId, arquivo) {
 	const caminhoTemporario = arquivo.path;
 	const diretorioDestino = path.join(path.resolve(__dirname, caminhoBichos), bichoId);
-	const nomeArquivo = `avatar.${path.extname(arquivo.originalname).toLowerCase()}`;
+	const nomeArquivo = `avatar${path.extname(arquivo.originalname).toLowerCase()}`;
 	const caminhoDestino = path.join(path.resolve(diretorioDestino, nomeArquivo));
 
 	fs.rename(caminhoTemporario, caminhoDestino, err => {
@@ -47,7 +47,7 @@ exports.subirAvatar = async function (bichoId, arquivo) {
 exports.subirFundo = async function (bichoId, arquivo) {
 	const caminhoTemporario = arquivo.path;
 	const diretorioDestino = path.join(path.resolve(__dirname, staticPath), 'bichos', 'em_uso', bichoId);
-	const nomeArquivo = `fundo.${path.extname(arquivo.originalname).toLowerCase()}`;
+	const nomeArquivo = `fundo${path.extname(arquivo.originalname).toLowerCase()}`;
 	const caminhoDestino = path.join(path.resolve(diretorioDestino, nomeArquivo));
 
 	fs.rename(caminhoTemporario, caminhoDestino, err => {
