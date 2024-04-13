@@ -8,7 +8,7 @@ const servicePaginas									= require('../services/varandas/servicePaginas');
 const serviceEdicoes									= require('../services/varandas/serviceEdicoes');
 const servicePaginasPadrao								= require('../services/varandas/servicePaginasPadrao');
 const { params, quemEstaAgindo, palavrasReservadas } 	= require('../utils/utilControllers');
-const { objetoRenderizavel, objetoRenderizavelBloco}	= require('../utils/utilRenderizacao');
+const { objetoRenderizavel, objetoRenderizavelBloco, objetoRenderizavelContexto}	= require('../utils/utilRenderizacao');
 const { vidParaId }										= require('../utils/utilParsers');
 const { schemaPutAvatar, schemaPutFundo,
 		schemaPutPreferencias, schemaPostComunidade }	= require('../validations/validateBichos');
@@ -69,6 +69,7 @@ exports.getEditarPreferencias = asyncHandler(async (req, res, next) => {
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
 	obj_render.query.bicho = varanda_id;
+	obj_render = await objetoRenderizavelContexto(obj_render, 'editar-preferencias');
 	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho', 'preferencias']);
 	res.render(view, obj_render);
 });
@@ -80,6 +81,7 @@ exports.getFutricarVaranda = asyncHandler(async (req, res, next) => {
 	const usuarie_id = await quemEstaAgindo(req);
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
+	obj_render = await objetoRenderizavelContexto(obj_render, 'bicho');
 	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho', 'paginas']);
 	const comunidades = await serviceRelacoes.verComunidadesDoBicho(varanda_id);
 	const participantes = await serviceRelacoes.verBichosNaComunidade(varanda_id);
@@ -144,11 +146,10 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 			return res.redirect(`/${varanda_id}/${pagina_redirect}`);
 		}
 	}
+	console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
 	if (pagina_id !== 'nova_pagina'){
-		const pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
-		obj_render.pagina.html = pagina.html;
 		obj_render.metodo = 'put';	
 	} else {
 		obj_render.nova_pagina = true;

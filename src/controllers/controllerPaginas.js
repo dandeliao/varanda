@@ -6,7 +6,7 @@ const serviceEdicoes								= require('../services/varandas/serviceEdicoes');
 const serviceComunidades							= require('../services/bichos/serviceComunidades');
 const { schemaPutPagina, schemaPostPagina }			= require('../validations/validateVarandas');
 const { params, quemEstaAgindo, palavrasReservadas} = require('../utils/utilControllers');
-const { objetoRenderizavel, objetoRenderizavelBloco}= require('../utils/utilRenderizacao');
+const { objetoRenderizavel, objetoRenderizavelBloco, objetoRenderizavelContexto}= require('../utils/utilRenderizacao');
 const { messages } = require('joi-translation-pt-br');
 require('dotenv').config();
 
@@ -27,6 +27,7 @@ exports.getPagina = asyncHandler(async (req, res, next) => {
 			view = `varandas/${varanda_id}/${pagina_id}`;
 			break;
 	}
+	obj_render = await objetoRenderizavelContexto(obj_render, 'pagina');
 	res.render(view, obj_render);
 
 });

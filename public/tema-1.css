@@ -2,8 +2,9 @@
 
 :root {
     --altura-barra:         2.2rem;
-    --altura-barra-mobile:  3rem;
+    --altura-barra-mobile:  4.5rem;
     --cor-principal:        #3a2d33;
+    --cor-transparente:     #3a2d33c5;
     --cor-destaque:         #464650;
     --cor-destaque-2:       #e0b6bc; /* daa297 */
     --cor-gris:             #363636;
@@ -11,6 +12,7 @@
     --cor-fundo:            #353535;
     --cor-fundo-2:          #292729;
     --cor-fonte-view:       #e0e0e0;
+    --cor-fonte-2:          #c0c0c0;
     --cor-fonte-barra:      #d0cecd;
     
     --familia-fonte:        'Convergence', sans-serif;

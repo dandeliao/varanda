@@ -1,3 +1,5 @@
+const serviceComunidades = require('../services/bichos/serviceComunidades');
+
 exports.replaceAsync = async (string, regexp, replacerFunction) => {
     const replacements = await Promise.all(
         Array.from(string.matchAll(regexp),
@@ -48,4 +50,13 @@ exports.dataHumana = (timestamp) => {
     humana = diaDaSemana + ',' + humana.split(',')[1];
 
     return humana;
+};
+
+exports.bichoSurpresa = async () => {
+    const varandas = await serviceComunidades.verComunidades();
+    let surpresa = varandas[Math.floor(Math.random()*varandas.length)];
+    while (surpresa.bicho_id === process.env.INSTANCIA_ID) {
+        surpresa = varandas[Math.floor(Math.random()*varandas.length)];
+    }
+    return surpresa;
 };

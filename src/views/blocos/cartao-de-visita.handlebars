@@ -10,44 +10,34 @@
         <p>{{descricao}}</p>
     </div>
 	{{/with}}
-	
-	<br><br>
-
-	{{#if bloco.futricar}}
-	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar perfil</button>
-	{{#if bloco.bicho.comunitario}}
-	{{#if bloco.relacao.participar}}
-	{{#unless bloco.bicho.instancia}}
-	<button hx-delete="/{{bloco.bicho.bicho_id}}/relacao" hx-target="body" hx-push-url="true">Sair da comunidade</button>
-	{{/unless}}
-	{{/if}}
-	{{/if}}
-	{{/if}}
-
-	{{#unless bloco.relacao.participar}}
-	{{#if bloco.bicho.participacao_livre}}
-	<button hx-post="/{{bloco.bicho.bicho_id}}/participar" hx-target="body" hx-push-url="true">Participar</button>
-	{{/if}}
-	{{/unless}}
 
     <style>
     .cartao {
 		text-align: center;
+		padding: 0;
     }
 
 	.informacao{
 		margin-top: 42px;
+		padding: 0 0.8rem 0.8rem 0.8rem;
 	}
 
 	.avatar-no-cartao {
 		display: block;
 		position: absolute;
-		top: 90px;
+		top: 78px;
 		margin-left: auto;
 		margin-right: auto;
 		left: 0;
 		right: 0;
 		text-align: center;
+	}
+
+	@media screen and (max-width: 859px) {
+		.informacao {
+		padding: 0 0.5rem 0.5rem 0.5rem;
+    }
+
 	}
 
     </style>
