@@ -6,7 +6,9 @@ const serviceComunidades 	= require('../services/bichos/serviceComunidades');
 const serviceRelacoes 		= require('../services/bichos/serviceRelacoes');
 const servicePaginasPadrao 	= require('../services/varandas/servicePaginasPadrao');
 const servicePaginas		= require('../services/varandas/servicePaginas');
+const servicePreferencias  	= require('../services/bichos/servicePreferencias');
 const serviceEdicoes		= require('../services/varandas/serviceEdicoes');
+const serviceBlocos			= require('../services/varandas/serviceBlocos');
 const { schemaPostPessoa }	= require('../validations/validateBichos');
 const asyncHandler 			= require('express-async-handler');
 const express 				= require('express');
@@ -87,6 +89,10 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 			req.flash('erro', 'O cadastro falhou. Você precisa de um convite para se cadastrar.');
 			return res.redirect(303, '/');
 		}
+	} else {
+		// se é a primeira pessoa, carrega blocos e bichos padrão no banco de dados
+		await serviceBlocos.criarBlocos();
+		await serviceBichosPadrao.criarBichosPadrao();
 	}
 	
 	const bichoExiste = await serviceBichos.verBicho(pessoa.bicho_id);
@@ -96,6 +102,7 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 	}
 	
 	await servicePessoas.registrarPessoa(pessoa);
+	await servicePreferencias.criarPreferencias(pessoa.bicho_id);
 	
 	// adiciona avatar e fundo padrão
 	const bichoPadrao = await serviceBichosPadrao.sortearBichoPadrao();
@@ -109,7 +116,7 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 	await serviceBichos.copiarAvatar(novaPessoa.bicho_id, `${serviceBichosPadrao.caminhoAvatarPadrao}/${bichoPadrao.avatar}`, novaPessoa.avatar);
 	await serviceBichos.copiarFundo(novaPessoa.bicho_id, `${serviceBichosPadrao.caminhoFundoPadrao}/${bichoPadrao.fundo}`, novaPessoa.fundo);
 
-	// se for o primeiro bicho da instância, cria também a comunidade principal da instância
+	// se for o primeiro bicho da instância, cria a comunidade principal da instância
 	if (bichos_anteriores.length === 0) {
 		const instancia = {
 			bicho_id: process.env.INSTANCIA_ID,
@@ -130,14 +137,21 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 		await serviceBichos.copiarFundo(instanciaEditada.bicho_id, `${serviceBichosPadrao.caminhoFundoPadrao}/${instanciaPadrao.fundo}`, instanciaEditada.fundo);
 		// cria relação entre a primeira pessoa e a comunidade da instância, com todas as habilidades (participar, editar, moderar e representar)
 		await serviceRelacoes.criarRelacao(pessoa.bicho_id, instancia.bicho_id, {participar: true, editar: true, moderar: true, representar: true});
+		// cria página inicial da instância
+		const comunitaria = true;
+		let paginaPadrao = {};
+		paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
+		paginaPadrao.pagina_vid = `${instanciaEditada.bicho_id}/inicio`;
+		const novaPagina = await servicePaginas.criarPagina(instanciaEditada.bicho_id, paginaPadrao);
+		await serviceEdicoes.criarEdicao(instanciaEditada.bicho_id, novaPagina, paginaPadrao.html);
+
 	// nos outros casos, cria relação apenas de participação
 	} else {
 		await serviceRelacoes.criarRelacao(pessoa.bicho_id, process.env.INSTANCIA_ID, {participar: true, editar: false, moderar: false, representar: false});
 	}
 
-	// cria varanda da pessoa, com página padrão
+	// cria página inicial da pessoa
 	const comunitaria = false;
-	//const varanda = await serviceVarandas.criarVaranda(pessoa.bicho_id, comunitaria);
 	let paginaPadrao = {};
 	paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
 	paginaPadrao.pagina_vid = `${pessoa.bicho_id}/inicio`;

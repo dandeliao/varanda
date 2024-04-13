@@ -1,12 +1,12 @@
 const dataEdicoes = require('../../data/varandas/dataEdicoes');
 
-exports.verEdicoes = async function (pagina_id, edicao_id) {
+exports.verEdicoes = async function (pagina_vid, edicao_id) {
 	let resposta;
 	if (edicao_id !== null) {
 		const edicao = await dataEdicoes.getEdicao(edicao_id);
 		resposta = edicao.rows[0];
 	} else {
-		const edicoes = await dataEdicoes.getEdicoesDaPagina(pagina_id);
+		const edicoes = await dataEdicoes.getEdicoesDaPagina(pagina_vid);
 		resposta = edicoes.rows;
 	}
 	return resposta;

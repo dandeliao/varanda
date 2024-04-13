@@ -26,7 +26,8 @@ exports.getBloco = asyncHandler(async (req, res, next) => {
 	}
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, artefato_id, usuarie_id, false);
-	const variaveis = (await serviceBlocos.verBloco(bloco_id)).variaveis;
+	const bloco = (await serviceBlocos.verBloco(bloco_id));
+	const variaveis = bloco ? bloco.variaveis : null;
 	obj_render = await objetoRenderizavelBloco(obj_render, variaveis);
 
 	res.render(view, obj_render);

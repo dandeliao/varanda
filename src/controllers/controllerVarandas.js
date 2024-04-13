@@ -11,10 +11,18 @@ const { params, quemEstaAgindo, palavrasReservadas } = require('../utils/utilCon
 const { messages } = require('joi-translation-pt-br');
 require('dotenv').config();
 
-exports.getVaranda = asyncHandler(async (req, res, next) => { // params.bicho_id == varanda_id; query.bicho_id == usuarie_id
+exports.getVaranda = asyncHandler(async (req, res, next) => {
 
 	const { varanda_id } = params(req);
-	return res.redirect(`/${varanda_id}/inicio`);
+	let redirectPage = `/${varanda_id}/inicio`;
+	if (varanda_id === process.env.INSTANCIA_ID) {
+		varandaExiste = await serviceBichos.verBicho(varanda_id);
+		console.log(varandaExiste);
+		if (!varandaExiste) {
+			redirectPage = '/autenticacao/cadastro';
+		}
+	}
+	return res.redirect(redirectPage);
 	/* const view = `varandas/${varanda_id}/inicio`
 	const usuarie_id = await quemEstaAgindo(req);
 	const obj_render = await objetoRenderizavel(req, res, varanda_id, 'inicio', usuarie_id);
