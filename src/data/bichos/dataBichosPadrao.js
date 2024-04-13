@@ -12,3 +12,10 @@ exports.getBichoPadrao = function (bichoPadraoId) {
 		[bichoPadraoId]
 	);
 };
+
+exports.postBichoPadrao = function (avatar, descricao_avatar, fundo, descricao_fundo) {
+	return pool.query(
+		'INSERT INTO bichos_padrao (avatar, descricao_avatar, fundo, descricao_fundo) VALUES ($1, $2, $3, $4) RETURNING *',
+		[avatar, descricao_avatar, fundo, descricao_fundo]
+	)
+};
