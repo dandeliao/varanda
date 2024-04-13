@@ -3,3 +3,4 @@ node_modules/
 package-lock.json
 .env
 user_content/*
+src/views/varandas/*
