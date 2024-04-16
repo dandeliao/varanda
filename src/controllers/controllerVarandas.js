@@ -17,17 +17,11 @@ exports.getVaranda = asyncHandler(async (req, res, next) => {
 	let redirectPage = `/${varanda_id}/inicio`;
 	if (varanda_id === process.env.INSTANCIA_ID) {
 		varandaExiste = await serviceBichos.verBicho(varanda_id);
-		console.log(varandaExiste);
 		if (!varandaExiste) {
 			redirectPage = '/autenticacao/cadastro';
 		}
 	}
 	return res.redirect(redirectPage);
-	/* const view = `varandas/${varanda_id}/inicio`
-	const usuarie_id = await quemEstaAgindo(req);
-	const obj_render = await objetoRenderizavel(req, res, varanda_id, 'inicio', usuarie_id);
-	res.render(view, obj_render); */
-	
 });
 
 exports.postVaranda = asyncHandler(async (req, res, next) => {

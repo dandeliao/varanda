@@ -1,12 +1,11 @@
-const asyncHandler 									= require('express-async-handler');
-const customError	 								= require('http-errors');
-const serviceRelacoes								= require('../services/bichos/serviceRelacoes');
-const servicePaginas								= require('../services/varandas/servicePaginas');
-const serviceEdicoes								= require('../services/varandas/serviceEdicoes');
-const serviceComunidades							= require('../services/bichos/serviceComunidades');
-const { schemaPutPagina, schemaPostPagina }			= require('../validations/validateVarandas');
-const { params, quemEstaAgindo, palavrasReservadas} = require('../utils/utilControllers');
-const { objetoRenderizavel, objetoRenderizavelBloco, objetoRenderizavelContexto}= require('../utils/utilRenderizacao');
+const asyncHandler 										= require('express-async-handler');
+const serviceRelacoes									= require('../services/bichos/serviceRelacoes');
+const servicePaginas									= require('../services/varandas/servicePaginas');
+const serviceEdicoes									= require('../services/varandas/serviceEdicoes');
+const serviceComunidades								= require('../services/bichos/serviceComunidades');
+const { schemaPutPagina, schemaPostPagina }				= require('../validations/validateVarandas');
+const { params, quemEstaAgindo, palavrasReservadas} 	= require('../utils/utilControllers');
+const { objetoRenderizavel, objetoRenderizavelContexto} = require('../utils/utilRenderizacao');
 const { messages } = require('joi-translation-pt-br');
 require('dotenv').config();
 
@@ -14,19 +13,8 @@ exports.getPagina = asyncHandler(async (req, res, next) => {
     
     const { varanda_id, pagina_id } = params(req);
     let usuarie_id = await quemEstaAgindo(req);
-
+	let view = `varandas/${varanda_id}/${pagina_id}`;
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
-	let view;
-	switch (pagina_id) {
-		case 'clonar':
-		case 'futricar':
-			view = `paginas/${pagina_id}`;
-			obj_render = await objetoRenderizavelBloco(obj_render, ['bicho', 'paginas']);
-			break;
-		default:
-			view = `varandas/${varanda_id}/${pagina_id}`;
-			break;
-	}
 	obj_render = await objetoRenderizavelContexto(obj_render, 'pagina');
 	res.render(view, obj_render);
 
@@ -127,9 +115,14 @@ exports.deletePagina = asyncHandler(async (req, res, next) => {
 	if (usuarie_id !== varanda_id) {
 		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
 		if (!permissoes || !permissoes.editar || !permissoes.moderar) {
-			req.flash('erro', `Você não pode apagar páginas de ${varanda_id}.`);
-			return res.redirect(303, `/${varanda_id}/${pagina_id}`);
+			req.flash('erro', `Você não pode remover páginas de ${varanda_id}.`);
+			return res.redirect(303, `/${varanda_id}/futricar`);
 		}
+	}
+
+	if (pagina_id === 'inicio') {
+		req.flash('erro', 'Você não pode remover a página "início".');
+		return res.redirect(303, `/${varanda_id}/futricar`);
 	}
 
 	await servicePaginas.deletarPagina(varanda_id, pagina_id);

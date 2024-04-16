@@ -165,7 +165,7 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
             }
         }
         // fecha div htmx
-        divHtmx = divHtmx + `" hx-trigger="load"></div>`;
+        divHtmx = divHtmx + `" hx-trigger="load" hx-swap="outerHTML"></div>`;
         return divHtmx;
     });
 };
