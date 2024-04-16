@@ -9,19 +9,6 @@ h6              { font-size: calc(0.75rem + 0.35vw); margin: calc(.70rem + 0.6vw
 h1, h2, h3, h4,
 h5, h6          { font-weight: bolder }
 
-#varanda-janela {
-    color: var(--cor-fonte-view);
-    background-color: var(--cor-fundo-2);
-    min-height: calc(100vh - var(--altura-barra));
-    word-wrap: break-word;
-}
-
-@media screen and (max-width: 859px) {
-    #varanda-janela {
-        min-height: calc(100vh - var(--altura-barra-mobile));
-    }
-}
-
 a {
     color: var(--cor-destaque-2);
 }
@@ -132,7 +119,7 @@ dialog {
     #varanda-barra {
         top: calc(100vh - var(--altura-barra-mobile));
         height: var(--altura-barra-mobile);
-        padding: 0;
+        padding: 0 0.1rem;
         gap: 0;
     }
 
@@ -167,21 +154,33 @@ dialog {
 /* decoração da área principal */
 
 #varanda-janela {
-    position: relative;
+    position: absolute;
     z-index: 0;
     top: var(--altura-barra);
     left: 0;
-    width: auto;
+    min-height: calc(100vh - var(--altura-barra));
+    width: 100%;
+
+    color: var(--cor-fonte-view);
+    background-color: var(--cor-fundo-2);
+    word-wrap: break-word;
 }
 
 #varanda-janela.sem-login {
     position: static;
 }
 
+#pe-da-pagina {
+    display: none;
+    height: 0;
+}
+
 /* responsividade da janela principal */
 
 @media screen and (max-width: 859px) {
     #varanda-janela {
+        position: relative;
+        min-height: calc(100vh - var(--altura-barra-mobile));
         top: 0;
     }
     #pe-da-pagina {
@@ -211,9 +210,7 @@ dialog {
     box-sizing: border-box;
     display:    block;
     position:   relative;
-    margin:     0 auto;
-    width:      100%;
-    max-width: 	1200px;
+    flex:       40%;
     padding:    0.8rem;
     background-color:   var(--cor-fundo);
     color:              var(--cor-fonte);
@@ -226,11 +223,16 @@ dialog {
 }
 
 .pagina {
-    display: block;
+    
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
-    padding: 0 0;
+    padding: 1rem 0;
+
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .avatar-redondo{
@@ -265,6 +267,12 @@ dialog {
 @media screen and (max-width: 859px) {
     .bloco {
         max-width: 	100vw;
-        padding:    0.5rem;
+        padding:    0.7rem;
+        flex:       100%;
+    }
+    .pagina {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0;
     }
 }
