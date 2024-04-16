@@ -1,3 +1,4 @@
+<div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
 <div class="pagina">
 	<header class="bloco">
 		{{#unless nova_pagina}}
@@ -9,17 +10,12 @@
         <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
     </header>
 	<br>
-	<form class="bloco" action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
-		
+	<form id="formulario" class="bloco" action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
 		<label for="titulo">Título da página:</label>
 		<input type="text" id="titulo-pagina" value="{{pagina.titulo}}" name="titulo" required>
 		<br><br>
 		<label for="html">Html da página:</label>
 		<textarea id="html-pagina" name="html" required>{{pagina.html}}</textarea>
-
-		<button type="submit">Salvar</button>
-		<button hx-get="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" hx-target="body" hx-push-url="true">Voltar</button>
-
 	</form>
 </div>
 
