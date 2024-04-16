@@ -1,0 +1,30 @@
+<header class="varanda-cabecalho">
+    <a href="/{{bloco.bicho.bicho_id}}">@{{bloco.bicho.bicho_id}}</a>
+    <a href="javascript:history.back()">↩ voltar</a>
+</header>
+
+<style>
+    .varanda-cabecalho {
+        display: none;
+    }
+    @media screen and (max-width: 859px) {
+        .varanda-cabecalho {
+            width: 100%;
+            height: 1.4rem;
+            position: relative;
+            top: 0;
+            left: 0;
+            padding: 0 0.2rem;
+            z-index: 420;
+
+            color: var(--cor-destaque-2);
+            background-color: var(--cor-principal);
+
+            display: flex;
+            justify-content: space-between;
+        }
+        .varanda-cabecalho a {
+            display: block;
+        }
+    }
+</style>
