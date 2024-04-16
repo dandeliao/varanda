@@ -1,18 +1,13 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
 <div class="pagina">
-    <header class="bloco">
-        <h1>Futricando @{{varanda.bicho_id}}</h1>
-        <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
-    </header>
-    <br>
-    <div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}{{#if bloco.futricar}}&futricar=true{{/if}}" hx-trigger="load"></div>
-    <br>
-    <div class="bloco">
+    <div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}&futricar=true{{#if instancia}}&instancia=true{{/if}}" hx-trigger="load" hx-swap="outerHTML"></div>
+    <div class="bloco paginas">
         <h2>Páginas</h2>
         <ul class="lista-paginas">
+            {{#if bloco.relacao.editar}}
             {{#each bloco.paginas}}
                 <div class="item-paginas">
-                    <li>
+                    <li class="link-paginas">
                         <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
                     </li>
                     <div>
@@ -22,11 +17,43 @@
                 </div>
                 <br>
             {{/each}}
+            {{/if}}
+            {{#if bloco.bicho.meuPerfil}}
+            {{#each bloco.paginas}}
+                <div class="item-paginas">
+                    <li class="link-paginas">
+                        <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
+                    </li>
+                    <div>
+                        <button hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
+                        <button hx-delete="/{{this.pagina_vid}}" hx-target="body">Remover</button>
+                    </div>
+                </div>
+                <br>
+            {{/each}}
+            {{/if}}
+            {{#unless bloco.relacao.editar}}
+            {{#unless bloco.bicho.meuPerfil}}
+            {{#each bloco.paginas}}
+                <div class="link-paginas">
+                    <li>
+                        <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
+                    </li>
+                </div>
+                <br>
+            {{/each}}
+            {{/unless}}
+            {{/unless}}
         </ul>
+        {{#if bloco.bicho.comunitario}}
+        {{#if bloco.relacao.editar}}
         <button class="centralizado" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
-        <br>
+        {{/if}}
+        {{/if}}
+        {{#if bloco.bicho.meuPerfil}}
+        <button class="centralizado" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
+        {{/if}}
     </div>
-    <br>
     {{#if bloco.participantes}}
     <div class="bloco">
         <h2>Participantes</h2>
@@ -36,7 +63,6 @@
             {{/each}}
         </ul>
     </div>
-    <br>
     {{/if}}
     {{#if bloco.comunidades}}
     <div class="bloco">
@@ -47,23 +73,10 @@
             {{/each}}
         </ul>
     </div>
-    <br>
     {{/if}}
 </div>
 
 <style>
-
-    h1{
-        text-align: center;
-        align-self: stretch;
-    }
-
-    .pagina header {
-        display: flex;
-        justify-content: space-between;
-        padding: 0 1rem;
-        align-items: center;
-    }
 
     .lista-bichos {
         display: flex;
@@ -71,21 +84,41 @@
         flex-wrap: wrap;
         padding: 0;
         margin: 0 auto;
+        list-style: none;
+    }
+
+    .paginas {
+        flex: 25%;
+        align-self: stretch;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .lista-paginas {
         width: 100%;
+        margin: 0;
+        padding: 0.5rem;
+        list-style: none;
     }
 
     .item-bicho {
-        list-style: none;
     }
 
     .item-paginas {
         display: flex;
-            justify-content: start;
+        justify-content: space-between;
         align-items: center;
         gap: 1rem;
+    }
+
+    .link-paginas {
+        display: block;
+        text-align: left;
+        width: 40%;
+        height: auto;
+        word-wrap: break-word;
     }
 
     .largura-fixa {

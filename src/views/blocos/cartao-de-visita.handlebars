@@ -1,5 +1,8 @@
-<div class="bloco cartao">
-	
+{{#if query.futricar}}
+<div class="bloco container">
+	<h2>Cartão de visita:</h2>
+{{/if}}
+<div class="bloco cartao{{#unless query.futricar}} container{{/unless}}" {{#if query.futricar}}style="border: solid 2px;"{{/if}}>
 	{{#with bloco.bicho}}
     <div hx-get="/blocos/fundo?bicho={{bicho_id}}" hx-trigger="load"></div>
 	<div class="avatar-redondo avatar-no-cartao" hx-get="/blocos/avatar?bicho={{bicho_id}}" hx-trigger="load"></div>
@@ -11,35 +14,85 @@
     </div>
 	{{/with}}
 
-    <style>
-    .cartao {
-		text-align: center;
-		padding: 0;
-    }
+	{{#if query.futricar}}
+	<br>
+	{{#if bloco.relacao.participar}}
+	{{#unless query.instancia}}
+	<button onclick="abrirConfirmacao('{{bloco.bicho.bicho_id}}')">Deixar de participar</button>
+	{{/unless}}
+	{{/if}}
 
-	.informacao{
-		margin-top: 42px;
-		padding: 0 0.8rem 0.8rem 0.8rem;
-	}
+	{{#if bloco.relacao.representar}}
+	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar perfil</button>
+	<br><br>
+	{{/if}}
 
-	.avatar-no-cartao {
-		display: block;
-		position: absolute;
-		top: 78px;
-		margin-left: auto;
-		margin-right: auto;
-		left: 0;
-		right: 0;
-		text-align: center;
-	}
+	{{#if bloco.bicho.meuPerfil}}
+	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar perfil</button>
+	<br><br>
+	{{/if}}
+	
+{{/if}}
 
-	@media screen and (max-width: 859px) {
-		.informacao {
-		padding: 0 0.5rem 0.5rem 0.5rem;
-    }
-
-	}
-
-    </style>
-
+{{#if query.futricar}}
 </div>
+{{/if}}
+
+<dialog class="confirmacao-sair-comunidade">
+<p>Você quer mesmo sair da comunidade @{{bloco.bicho.bicho_id}}?</p>
+<br>
+<button hx-delete="/{{bloco.bicho.bicho_id}}/relacao" hx-target="body" hx-push-url="false">Sim</button>
+<button onClick="fecharConfirmacao()">Não</button>
+</dialog>
+</div>
+
+<style>
+.container {
+	flex: 55%;
+}
+
+.cartao {
+text-align: center;
+padding: 0;
+width: 100%;
+}
+
+.informacao{
+margin-top: 42px;
+padding: 0 0.8rem 0.8rem 0.8rem;
+}
+
+.avatar-no-cartao {
+display: block;
+position: absolute;
+top: 78px;
+margin-left: auto;
+margin-right: auto;
+left: 0;
+right: 0;
+text-align: center;
+}
+
+@media screen and (max-width: 859px) {
+.informacao {
+	padding: 0 0.5rem 0.5rem 0.5rem;
+}
+
+}
+
+</style>
+
+<script>
+		function abrirConfirmacao(comunidade) {
+			let janelinhas = document.querySelectorAll('.confirmacao-sair-comunidade');
+			for(janelinha of janelinhas) {
+				janelinha.setAttribute('open', '');
+			}
+		}
+		function fecharConfirmacao(){
+			let janelinhas = document.querySelectorAll('.confirmacao-sair-comunidade');
+			for(janelinha of janelinhas) {
+				janelinha.removeAttribute('open');
+			}
+		}
+</script>
