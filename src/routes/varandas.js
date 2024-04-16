@@ -17,7 +17,7 @@ const { getFutricarVaranda,
 											putPreferencias, 
         getAvatar,                          putAvatar,
         getFundo,                           putFundo,
-							postClonar,				                  	} = require('../controllers/controllerReservadas');
+		getClonar,			postClonar,				                  	} = require('../controllers/controllerReservadas');
 const { getArtefato,		postArtefato,	putArtefato, deleteArtefato, 
 		getEditarArtefato,												} = require('../controllers/controllerArtefatos');
 
@@ -49,9 +49,10 @@ router.get   ('/preferencias',					getPreferencias			); // esta rota retorna JSO
 router.get   ('/criar-comunidade',      		getCriarComunidade		);
 router.get	 ('/erro',							getErro 				);
 router.get   ('/:bicho_id',             		getVaranda				);
-router.get   ('/:bicho_id/futricar',    		getFutricarVaranda		);
+router.get	 ('/:bicho_id/clonar',				getClonar				);
 router.get   ('/:bicho_id/editar-bicho',		getEditarBicho			);
 router.get	 ('/:bicho_id/editar-preferencias',	getEditarPreferencias	);
+router.get   ('/:bicho_id/futricar',    		getFutricarVaranda		);
 router.get   ('/:bicho_id/avatar',      		getAvatar				);
 router.get   ('/:bicho_id/fundo',       		getFundo				);
 

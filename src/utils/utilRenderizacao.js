@@ -46,7 +46,7 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
         },
         flash: {
             aviso: res.locals.flash_aviso,
-            erro: res.locals.flash_erro
+            erro:  res.locals.flash_erro
         },
         bloco: {},
 		query: req.query ? req.query : null,
@@ -57,7 +57,7 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
     const preferencias = {
         url:        `/${usuarie_id}/editar-preferencias`,
         metodo:     'get',
-        nome:       'ajustes',
+        nome:       'preferências',
         descricao:  'Editar suas preferências'
     };
     const surpresa = {
@@ -109,7 +109,7 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
         descricao:  `Editar @${obj_render.varanda.bicho_id}`
     };
     const clonar        = {
-        url:        `${obj_render.varanda.bicho_id}/clonar`,
+        url:        `/${obj_render.varanda.bicho_id}/clonar`,
         metodo:     'get',
         nome:       'clonar',
         descricao:  `Clonar comunidade @${obj_render.varanda.bicho_id}`
@@ -144,16 +144,47 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
             }
             break;
         case 'clonar':
+            contexto.um = {
+                submit:     true,
+                nome:       'confirmar',
+                descricao:  'Confirma clonagem do bicho'
+            };
+            contexto.dois = {
+                url:        `/${obj_render.varanda.bicho_id}/futricar`,
+                metodo:     'get',
+                nome:       'cancelar',
+                descricao:  'Cancela clonagem'
+            }
             break;
         case 'editar-artefato':
             break;
         case 'editar-bicho':
             break;
         case 'editar-pagina':
+            contexto.um = {
+                submit:     true,
+                nome:       'confirmar',
+                descricao:  'Confirma e finaliza a edição da página'
+            };
+            contexto.dois = {
+                url:        `/${obj_render.varanda.bicho_id}/futricar`,
+                metodo:     'get',
+                nome:       'cancelar',
+                descricao:  'Cancela edição da página'
+            }
             break;
         case 'editar-preferencias':
-            contexto.um     = surpresa;
-            contexto.dois   = sobre;
+            contexto.um = {
+                submit:     true,
+                nome:       'confirmar',
+                descricao:  'Confirma e finaliza a edição da página'
+            };
+            contexto.dois = {
+                url:        `/${obj_render.varanda.bicho_id}/futricar`,
+                metodo:     'get',
+                nome:       'cancelar',
+                descricao:  'Cancela edição de preferências'
+            }
             break;
         case 'pagina':
             let relacao = await serviceRelacoes.verRelacao(obj_render.usuarie.bicho_id, obj_render.varanda.bicho_id);
@@ -171,7 +202,7 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
                     }
                 } else {
                     contexto.um = {
-                        url:        `/${obj_render.pagina.pagina_vid}/novo_artefato`,
+                        url:        `/${obj_render.pagina.pagina_vid}/novo_artefato/editar`,
                         metodo:     'get',
                         nome:       'postar',
                         descricao:  'Abre página de postagem'
@@ -204,6 +235,9 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                         }
                     } else {
                         bicho = await serviceBichos.verBicho(bicho_id);
+                        if (bicho.bicho_id === obj_render.usuarie.bicho_id) {
+                            bicho.meuPerfil = true;
+                        }
                     }
                     dados.bicho = bicho;
                     break;
@@ -232,11 +266,10 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     dados.artefato = artefato;
                     break;
                 case 'relacao':
-                    if (obj_render.query.bicho) {
-                        let relacao = await serviceRelacoes.verRelacao(obj_render.usuarie.bicho_id, obj_render.query.bicho);
-                        if (relacao !== undefined) {
-                            dados.relacao = relacao;
-                        }
+                    let animal = obj_render.query.bicho ? obj_render.query.bicho : obj_render.varanda.bicho_id;
+                    let relacao = await serviceRelacoes.verRelacao(obj_render.usuarie.bicho_id, animal);
+                    if (relacao !== undefined) {
+                        dados.relacao = relacao;
                     }
                     break;
                 case 'preferencias':

@@ -1,10 +1,11 @@
+<div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
 <div class="pagina">
     <header class="bloco">
         <h1>Clonar @{{varanda.bicho_id}}</h1>
         <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
     </header>
     <br>
-    <form class="bloco" action="/{{varanda.bicho_id}}/clonar" method="post">
+    <form id="formulario" class="bloco" action="/{{varanda.bicho_id}}/clonar" method="post">
         <fieldset name="paginas">
             <legend>Páginas a clonar:</legend>
             {{#each bloco.paginas}}
