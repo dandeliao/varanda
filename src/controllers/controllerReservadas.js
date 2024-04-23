@@ -10,8 +10,7 @@ const servicePaginasPadrao								= require('../services/varandas/servicePaginas
 const { params, quemEstaAgindo, palavrasReservadas } 	= require('../utils/utilControllers');
 const { objetoRenderizavel, objetoRenderizavelBloco, objetoRenderizavelContexto}	= require('../utils/utilRenderizacao');
 const { vidParaId }										= require('../utils/utilParsers');
-const { schemaPutAvatar, schemaPutFundo,
-		schemaPutPreferencias, schemaPostComunidade }	= require('../validations/validateBichos');
+const { schemaPutPreferencias, schemaPostComunidade }	= require('../validations/validateBichos');
 const { messages } = require('joi-translation-pt-br');
 const fs = require('fs');
 const path = require('path');
@@ -117,8 +116,9 @@ exports.getCriarComunidade = asyncHandler(async (req, res, next) => {
 	const usuarie_id = await quemEstaAgindo(req);
 
 	let obj_render = await objetoRenderizavel(req, res, 'nova_comunidade', 'criar-comunidade', null, usuarie_id);
-	obj_render.metodo = 'post';	
+	obj_render.metodo = 'post';
 	obj_render.nova_comunidade = true;
+	obj_render = await objetoRenderizavelContexto(obj_render, 'editar-bicho');
 
 	res.render(view, obj_render);
 });
@@ -137,6 +137,7 @@ exports.getEditarBicho = asyncHandler(async (req, res, next) => {
 	}
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
+	obj_render = await objetoRenderizavelContexto(obj_render, 'editar-bicho');
 	obj_render.query.bicho = varanda_id;
 	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho']);
 	const bicho = await serviceBichos.verBicho(varanda_id);
@@ -195,98 +196,6 @@ exports.getErro = asyncHandler(async (req, res, next) => {
 /* ---
 	PUT
 */
-
-exports.putAvatar = asyncHandler(async (req, res, next) => {
-	const arroba = req.params.bicho_id;
-	let avatar = {
-		descricao_avatar: req.body.descricao_avatar ? req.body.descricao_avatar : ''
-	}
-	const {error} = schemaPutAvatar.validate(avatar, { messages });
-	if (error) {
-		req.flash('erro', `Erro ao validar as informações. Detalhes:${error.details[0].message}`);
-		return res.redirect(303, `/${arroba}`);
-	}
-
-	const usuarie_id = await quemEstaAgindo(req);
-
-	if (usuarie_id !== arroba) {
-		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, arroba);
-		if (!permissoes.representar) {
-			req.flash('erro', `Você não pode editar os dados de @${arroba}`);
-			return res.redirect(303, `/${arroba}`);
-		}
-	}
-	const bicho = await serviceBichos.verBicho(arroba);
-	if (!bicho) {
-		req.flash('erro', `Bicho @${req.params.arroba} não encontrado.`);
-		return res.redirect(303, '/');
-	}
-
-	let dadosNovos = {descricao_avatar: avatar.descricao_avatar}
-	if (req.file) {
-		const dadosArquivo = await serviceBichos.subirAvatar(arroba, req.file);
-		if (!dadosArquivo) {
-			req.flash('erro', 'Houve um erro ao carregar o arquivo. Por favor, tente novamente.');
-			return res.redirect(303, `/${arroba}`);
-		}
-		dadosNovos = {avatar: dadosArquivo.nome, descricao_avatar: avatar.descricao_avatar};
-	}
-	
-	const bichoEditado = await serviceBichos.editarBicho(arroba, dadosNovos);
-
-	let view = `paginas/editar-bicho`;
-	let obj_render = await objetoRenderizavel(req, res, arroba, 'editar-bicho', null, usuarie_id, false);
-	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho']);
-	obj_render.bloco.bicho = bichoEditado;
-	res.render(view, obj_render);
-
-});
-
-exports.putFundo = asyncHandler(async (req, res, next) => {
-	const arroba = req.params.bicho_id;
-	let fundo = {
-		descricao_fundo: req.body.descricao_fundo ? req.body.descricao_fundo : ''
-	}
-	const {error} = schemaPutFundo.validate(fundo, { messages });
-	if (error) {
-		req.flash('erro', `Erro ao validar as informações. Detalhes:${error.details[0].message}`);
-		return res.redirect(303, `/${arroba}`);
-	}
-
-	const usuarie_id = await quemEstaAgindo(req);
-
-	if (usuarie_id !== arroba) {
-		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, arroba);
-		if (!permissoes.representar) {
-			req.flash('erro', `Você não pode editar os dados de @${arroba}.`);
-			return res.redirect(303, `/${arroba}`);
-		}
-	}
-	const bicho = await serviceBichos.verBicho(arroba);
-	if (!bicho) {
-		req.flash('erro', `Bicho @${req.params.arroba} não encontrado.`);
-		return res.redirect(303, '/');
-	}
-
-
-	let dadosNovos = {descricao_fundo: fundo.descricao_fundo}
-	if (req.file) {
-		const dadosArquivo = await serviceBichos.subirFundo(arroba, req.file);
-		if (!dadosArquivo) {
-			req.flash('erro', 'Houve um erro ao carregar o arquivo. Por favor, tente novamente.');
-			return res.redirect(303, `/${arroba}`);
-		}
-		dadosNovos = {fundo: dadosArquivo.nome, descricao_fundo: fundo.descricao_fundo};
-	}
-	
-	const bichoEditado = await serviceBichos.editarBicho(arroba, dadosNovos);
-	
-	let view = `paginas/editar-bicho`;
-	let obj_render = await objetoRenderizavel(req, res, arroba, 'editar-bicho', null, usuarie_id, false);
-	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho']);
-	obj_render.bloco.bicho = bichoEditado;
-	res.render(view, obj_render);
-});
 
 exports.putPreferencias = asyncHandler(async (req, res, next) => {
 	

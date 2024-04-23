@@ -102,12 +102,6 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
         nome:       'participar',
         descricao:  `Participar da comunidade @${obj_render.varanda.nome}`
     };
-    const editarBicho   = {
-        url:        `/${obj_render.varanda.bicho_id}/editar-bicho`,
-        metodo:     'get',
-        nome:       'editar',
-        descricao:  `Editar @${obj_render.varanda.bicho_id}`
-    };
     const clonar        = {
         url:        `/${obj_render.varanda.bicho_id}/clonar`,
         metodo:     'get',
@@ -157,8 +151,36 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
             }
             break;
         case 'editar-artefato':
+            let url_cancelar = '';
+            if (obj_render.novo_artefato) {
+                url_cancelar = `/${obj_render.pagina.pagina_vid}`;
+            } else {
+                url_cancelar = `/${obj_render.pagina.pagina_vid}/${obj_render.artefato.artefato_id}`;
+            }
+            contexto.um = {
+                submit:     true,
+                nome:       'confirmar',
+                descricao:  'Confirma edição do artefato'
+            };
+            contexto.dois = {
+                url:        url_cancelar,
+                metodo:     'get',
+                nome:       'cancelar',
+                descricao:  'Cancela edição'
+            }
             break;
         case 'editar-bicho':
+            contexto.um = {
+                submit:     true,
+                nome:       'confirmar',
+                descricao:  'Confirma edição do bicho'
+            };
+            contexto.dois = {
+                url:        `/${obj_render.varanda.bicho_id}/futricar`,
+                metodo:     'get',
+                nome:       'cancelar',
+                descricao:  'Cancela edição'
+            }
             break;
         case 'editar-pagina':
             contexto.um = {

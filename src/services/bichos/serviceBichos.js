@@ -38,7 +38,10 @@ exports.subirAvatar = async function (bichoId, arquivo) {
 	const caminhoDestino = path.join(path.resolve(diretorioDestino, nomeArquivo));
 
 	fs.rename(caminhoTemporario, caminhoDestino, err => {
-		if (err) return null;
+		if (err) {
+			console.log('erro ao mover arquivo temporário')
+			return null;
+		}
 	});
 
 	return {nome: nomeArquivo};

@@ -27,9 +27,9 @@ exports.getVaranda = asyncHandler(async (req, res, next) => {
 exports.postVaranda = asyncHandler(async (req, res, next) => {
 
 	const usuarie_id = await quemEstaAgindo(req);
-
+	console.log(req.body);
 	const bicho = {
-		bicho_id:			req.body.bicho_id,
+		bicho_id:			req.body.arroba,
 		nome: 				req.body.nome ? req.body.nome : req.body.bicho_id,
 		descricao:			req.body.descricao,
 		bicho_criador_id:	usuarie_id
@@ -87,6 +87,9 @@ exports.postVaranda = asyncHandler(async (req, res, next) => {
 
 exports.putVaranda = asyncHandler(async (req, res, next) => {
     
+	const arquivo_avatar = req.files.avatar ? req.files.avatar[0] : null;
+	const arquivo_fundo  = req.files.fundo  ? req.files.fundo[0]  : null;
+
 	const { varanda_id, pagina_id } = params(req);
 	let bichoOriginal = await serviceBichos.verBicho(varanda_id);
 	const comunidade = await serviceComunidades.verComunidade(varanda_id);
@@ -95,11 +98,13 @@ exports.putVaranda = asyncHandler(async (req, res, next) => {
 		bichoOriginal.participacao_com_convite = comunidade.participacao_com_convite
 	}
 
-	const bicho = {
-		nome: 						req.body.nome ? req.body.nome : bichoOriginal.nome,
-		descricao:					req.body.descricao ? req.body.descricao : bichoOriginal.descricao,
-		participacao_livre: 		req.body.participacao_livre !== undefined ? true : false,
-		participacao_com_convite:	req.body.participacao_com_convite ? true : false
+	let bicho = {
+		nome: 						req.body.nome 								? req.body.nome 			: bichoOriginal.nome,
+		descricao:					req.body.descricao 							? req.body.descricao 		: bichoOriginal.descricao,
+		descricao_avatar:			req.body.descricao_avatar 					? req.body.descricao_avatar : '',
+		descricao_fundo:			req.body.descricao_fundo 					? req.body.descricao_fundo 	: '',
+		participacao_livre: 		req.body.participacao_livre !== undefined 	? true 						: false,
+		participacao_com_convite:	req.body.participacao_com_convite 			? true 						: false
 	}
 
 	const { error, value } = schemaPutBicho.validate(bicho, { messages });
@@ -118,10 +123,26 @@ exports.putVaranda = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	await serviceBichos.editarBicho(varanda_id, bicho);
-	if (comunidade) {
-		await serviceComunidades.editarComunidade(varanda_id, bicho);
+	if (arquivo_avatar) {
+		let dadosArquivo = await serviceBichos.subirAvatar(varanda_id, arquivo_avatar);
+		if (!dadosArquivo) {
+			req.flash('erro', 'Houve um erro ao carregar o arquivo. Por favor, tente novamente.');
+			return res.redirect(303, `/${varanda_id}/editar-bicho`);
+		}
+		bicho.avatar = dadosArquivo.nome;
 	}
+	
+	if (arquivo_fundo) {
+		let dadosArquivo = await serviceBichos.subirFundo(varanda_id, arquivo_fundo);
+		if (!dadosArquivo) {
+			req.flash('erro', 'Houve um erro ao carregar o arquivo. Por favor, tente novamente.');
+			return res.redirect(303, `/${varanda_id}/editar-bicho`);
+		}
+		bicho.fundo = dadosArquivo.nome;
+	}
+
+	await serviceBichos.editarBicho(varanda_id, bicho);
+	if (comunidade) await serviceComunidades.editarComunidade(varanda_id, bicho);
 
 	req.flash('aviso', 'O perfil foi editado com sucesso!');
 	return res.redirect(303, `/${varanda_id}`);
