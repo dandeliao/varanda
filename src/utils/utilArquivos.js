@@ -4,6 +4,13 @@ const { vidParaId } = require('./utilParsers');
 require('dotenv').config();
 const pastaViews 	= `../views`;
 
+exports.separaExtensao = (nomeOriginal) => {
+	const posicaoUltimoPonto = nomeOriginal.lastIndexOf('.');
+	const arquivo = nomeOriginal.slice(0, posicaoUltimoPonto);
+	const extensao = nomeOriginal.slice(posicaoUltimoPonto + 1);
+	return [arquivo, extensao];
+};
+
 exports.editarArquivoHandlebars = (varanda_id, pagina) => {
     
     // edita ou cria o arquivo handlebars

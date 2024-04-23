@@ -24,7 +24,7 @@ const { getArtefato,		postArtefato,	putArtefato, deleteArtefato,
 
 // configura multer para upload das imagens de avatar e fundo
 const update = multer({
-	dest: path.join(path.resolve(__dirname, '../../user_content/bichos/em_uso' )),
+	dest: path.join(path.resolve(__dirname, '../../user_content/bichos/temp' )),
 	limits: {
 		//fields: 1,
 		//fieldNameSize: 50,
@@ -45,7 +45,7 @@ const update = multer({
 });
 // configura multer para upload de arquivos para artefatos
 const sobeArtefato = multer({
-	dest: path.join(path.resolve(__dirname, '../../user_content/artefatos/em_uso')),
+	dest: path.join(path.resolve(__dirname, '../../user_content/artefatos/temp')),
 	limits: {
 		//fields: 1,
 		fileSize: 15000000, // 15MB

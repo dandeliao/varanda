@@ -1,17 +1,19 @@
-const asyncHandler 				= require('express-async-handler');
-const serviceRelacoes 			= require('../services/bichos/serviceRelacoes');
-const serviceArtefatos 			= require('../services/artefatos/serviceArtefatos');
-const serviceEdicoesArtefatos 	= require('../services/artefatos/serviceEdicoesArtefatos');
+const asyncHandler 					= require('express-async-handler');
+const serviceRelacoes 				= require('../services/bichos/serviceRelacoes');
+const serviceArtefatos 				= require('../services/artefatos/serviceArtefatos');
+const serviceEdicoesArtefatos 		= require('../services/artefatos/serviceEdicoesArtefatos');
 const { schemaPostArtefato,
-	    schemaPutArtefato } 	= require('../validations/validateArtefatos');
-const { sanitizarArtefato } 	= require('../utils/utilParsers');
+	    schemaPutArtefato } 		= require('../validations/validateArtefatos');
+const { sanitizarArtefato } 		= require('../utils/utilParsers');
 const { params, 
 		quemEstaAgindo, 
-		palavrasReservadas } 	= require('../utils/utilControllers');
+		palavrasReservadas } 		= require('../utils/utilControllers');
 const { objetoRenderizavel, 
-		objetoRenderizavelBloco}= require('../utils/utilRenderizacao');
-const { messages } 				= require('joi-translation-pt-br');
-const { randomUUID } 			= require('crypto');
+		objetoRenderizavelBloco,
+		objetoRenderizavelContexto}	= require('../utils/utilRenderizacao');
+const { messages } 					= require('joi-translation-pt-br');
+const { randomUUID } 				= require('crypto');
+const { separaExtensao } 			= require('../utils/utilArquivos');
 require('dotenv').config();
 
 // captura links http(s)://endereco.com, categorias #artes, arrobas @varanda, páginas @varanda/blog-novo e artefatos @varanda/blog-novo/2024-03-10_16-20-59_676543-03
@@ -66,31 +68,34 @@ exports.getEditarArtefato = asyncHandler(async (req, res, next) => {
 	} else {
 		obj_render.metodo = 'put';
 	}
+	obj_render = await objetoRenderizavelContexto(obj_render, 'editar-artefato');
 
 	res.render(view, obj_render);
 });
 
 exports.postArtefato = asyncHandler(async (req, res, next) => {
 
-	const { titulo, texto, sensivel, respondivel, indexavel, mutirao, em_resposta_a, denuncia } = req.body;
+	const { titulo, texto, sensivel, respondivel, indexavel, mutirao, em_resposta_a, denuncia, descricao } = req.body;
 	const { varanda_id, pagina_id } = params(req);
 	const usuarie_id = await quemEstaAgindo(req);
 
-	let artefato = {
-		varanda_id: varanda_id,
-		pagina_vid: `${varanda_id}/${pagina_id}`,
-		bicho_criador_id: usuarie_id,
-		em_resposta_a_id: em_resposta_a ? em_resposta_a : null,
-		nome_arquivo: null, // mudar
-		extensao: null, // mudar
-		descricao: null, // mudar
-		titulo: titulo ? await sanitizarArtefato(titulo) : '',
-		texto: texto ? await sanitizarArtefato(texto) : '',
-		sensivel: sensivel ? true : false,
-		respondivel: respondivel ? true : false,
-		indexavel: indexavel ? true : false,
-		mutirao: mutirao ? true : false,
-		denuncia: denuncia ? true : false
+	console.log(req.file);
+
+	const artefato = {
+		varanda_id: 		varanda_id,
+		pagina_vid: 		`${varanda_id}/${pagina_id}`,
+		bicho_criador_id: 	usuarie_id,
+		em_resposta_a_id: 	em_resposta_a 	? em_resposta_a 							: null,
+		nome_arquivo: 		req.file 		? separaExtensao(req.file.originalname)[0] 	: null,
+		extensao: 			req.file 		? separaExtensao(req.file.originalname)[1] 	: null,
+		descricao: 			descricao 		? descricao 								: '',
+		titulo: 			titulo 			? await sanitizarArtefato(titulo) 			: '',
+		texto: 				texto			? await sanitizarArtefato(texto) 			: '',
+		sensivel: 			sensivel 		? true 										: false,
+		respondivel: 		respondivel 	? true 										: false,
+		indexavel: 			indexavel 		? true 										: false,
+		mutirao: 			mutirao 		? true 										: false,
+		denuncia: 			denuncia 		? true 										: false
 	}
 
 	const { error } = schemaPostArtefato.validate(artefato, { messages });
@@ -106,6 +111,13 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 			req.flash('erro', `Você não participa de @${varanda_id}`);
 			return res.redirect(`/${varanda_id}/${pagina_id}`);
 		}
+	}
+
+	console.log(artefato);
+
+	if (req.file) {
+		console.log('tem arquivo');
+		await serviceArtefatos.subirArquivo(varanda_id, pagina_id, req.file);
 	}
 
 	const artefatoCriado = await serviceArtefatos.criarArtefato(artefato);
