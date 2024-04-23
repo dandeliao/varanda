@@ -22,11 +22,17 @@
             {{#each bloco.paginas}}
                 <div class="item-paginas">
                     <li class="link-paginas">
-                        <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
+                        <a href="/{{this.pagina_vid}}">/{{this.titulo}}</a>
                     </li>
                     <div>
                         <button hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
                         <button hx-delete="/{{this.pagina_vid}}" hx-target="body">Remover</button>
+                        <dialog class="confirmacao-remover-pagina">
+                            <p>Você quer mesmo remover a página {{this.titulo}}?</p>
+                            <br>
+                            <button hx-delete="/{{bloco.bicho.bicho_id}}/relacao" hx-target="body" hx-push-url="false">Sim</button>
+                            <button onClick="fecharConfirmacao()">Não</button>
+                        </dialog>
                     </div>
                 </div>
                 <br>
@@ -45,6 +51,7 @@
             {{/unless}}
             {{/unless}}
         </ul>
+        <div>
         {{#if bloco.bicho.comunitario}}
         {{#if bloco.relacao.editar}}
         <button class="centralizado" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
@@ -53,6 +60,7 @@
         {{#if bloco.bicho.meuPerfil}}
         <button class="centralizado" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
         {{/if}}
+        </div>
     </div>
     {{#if bloco.participantes}}
     <div class="bloco">
