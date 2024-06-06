@@ -4,7 +4,8 @@ const serviceArtefatos 				= require('../services/artefatos/serviceArtefatos');
 const serviceEdicoesArtefatos 		= require('../services/artefatos/serviceEdicoesArtefatos');
 const { schemaPostArtefato,
 	    schemaPutArtefato } 		= require('../validations/validateArtefatos');
-const { sanitizarArtefato } 		= require('../utils/utilParsers');
+const { escaparHTML,
+		textoParaHtml }				= require('../utils/utilParsers');
 const { params, 
 		quemEstaAgindo, 
 		palavrasReservadas } 		= require('../utils/utilControllers');
@@ -15,9 +16,6 @@ const { messages } 					= require('joi-translation-pt-br');
 const { randomUUID } 				= require('crypto');
 const { separaExtensao } 			= require('../utils/utilArquivos');
 require('dotenv').config();
-
-// captura links http(s)://endereco.com, categorias #artes, arrobas @varanda, páginas @varanda/blog-novo e artefatos @varanda/blog-novo/2024-03-10_16-20-59_676543-03
-// /<[^>]*>|\[[^][]*]\([^()]*\)|(https?:\/\/[^\s"'<>]*)|#(\w+(?:\S)*)|@(\w+(?:^(?!\/).*$)*)(?:\/(\w+(?:\S)*))*/g
 
 exports.getArtefato = asyncHandler(async (req, res, next) => {
     
@@ -31,6 +29,8 @@ exports.getArtefato = asyncHandler(async (req, res, next) => {
 		//view = 'blocos/tapume';
 	}
 
+	console.log('obj_render:', obj_render);
+	obj_render.artefato.texto = await textoParaHtml(obj_render.artefato.texto);
 	res.render(view, obj_render);
 });
 
@@ -85,17 +85,17 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 		varanda_id: 		varanda_id,
 		pagina_vid: 		`${varanda_id}/${pagina_id}`,
 		bicho_criador_id: 	usuarie_id,
-		em_resposta_a_id: 	em_resposta_a 	? em_resposta_a 							: null,
-		nome_arquivo: 		req.file 		? separaExtensao(req.file.originalname)[0] 	: null,
-		extensao: 			req.file 		? separaExtensao(req.file.originalname)[1] 	: null,
-		descricao: 			descricao 		? descricao 								: '',
-		titulo: 			titulo 			? await sanitizarArtefato(titulo) 			: '',
-		texto: 				texto			? await sanitizarArtefato(texto) 			: '',
-		sensivel: 			sensivel 		? true 										: false,
-		respondivel: 		respondivel 	? true 										: false,
-		indexavel: 			indexavel 		? true 										: false,
-		mutirao: 			mutirao 		? true 										: false,
-		denuncia: 			denuncia 		? true 										: false
+		em_resposta_a_id: 	em_resposta_a 	? em_resposta_a 								: null,
+		nome_arquivo: 		req.file 		? separaExtensao(req.file.originalname)[0] 		: null,
+		extensao: 			req.file 		? separaExtensao(req.file.originalname)[1] 		: null,
+		descricao: 			descricao 		? await escaparHTML(descricao)					: '',
+		titulo: 			titulo 			? await escaparHTML(titulo) 					: '',
+		texto: 				texto			? await escaparHTML(texto)						: '',
+		sensivel: 			sensivel 		? true 											: false,
+		respondivel: 		respondivel 	? true 											: false,
+		indexavel: 			indexavel 		? true 											: false,
+		mutirao: 			mutirao 		? true 											: false,
+		denuncia: 			denuncia 		? true 											: false
 	}
 
 	const { error } = schemaPostArtefato.validate(artefato, { messages });

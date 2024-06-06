@@ -8,7 +8,8 @@ const servicePaginas							= require('../services/varandas/servicePaginas');
 const serviceEdicoes							= require('../services/varandas/serviceEdicoes');
 const { schemaPostComunidade, schemaPutBicho }	= require('../validations/validateBichos');
 const { params, quemEstaAgindo, palavrasReservadas } = require('../utils/utilControllers');
-const { messages } = require('joi-translation-pt-br');
+const { escaparHTML }							= require('../utils/utilParsers');
+const { messages } 								= require('joi-translation-pt-br');
 require('dotenv').config();
 
 exports.getVaranda = asyncHandler(async (req, res, next) => {
@@ -27,16 +28,17 @@ exports.getVaranda = asyncHandler(async (req, res, next) => {
 exports.postVaranda = asyncHandler(async (req, res, next) => {
 
 	const usuarie_id = await quemEstaAgindo(req);
-	console.log(req.body);
+	const arroba = req.body.arroba ? await escaparHTML(req.body.arroba) : null;
 	const bicho = {
-		bicho_id:			req.body.arroba,
-		nome: 				req.body.nome ? req.body.nome : req.body.bicho_id,
-		descricao:			req.body.descricao,
+		bicho_id:			arroba,
+		nome: 				req.body.nome 		? await escaparHTML(req.body.nome) 		: arroba,
+		descricao:			req.body.descricao	? await escaparHTML(req.body.descricao)	: '',
 		bicho_criador_id:	usuarie_id
-	}
+	};
 
 	const { error, value } = schemaPostComunidade.validate(bicho, { messages });
 	if (error) {
+		console.log(error.details);
 		req.flash('erro', `Erro ao validar as informações da nova comunidade. Detalhes: ${error.details[0].message}`);
 		return res.redirect(303, '/criar-comunidade');
 	}

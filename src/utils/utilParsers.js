@@ -1,6 +1,7 @@
 const serviceBlocos = require('../services/varandas/serviceBlocos');
 const { replaceAsync } = require('./utilMiscellaneous');
 const sanitize = require('sanitize-html');
+require('dotenv').config();
 
 exports.sanitizarHtml = async (html, comunitaria) => {
 
@@ -105,7 +106,7 @@ exports.sanitizarHtml = async (html, comunitaria) => {
     });
 };
 
-exports.sanitizarArtefato = async(texto) => {
+exports.escaparHTML = async(texto) => {
     return sanitize(texto, {
         allowedTags: [],
         allowedAttributes: {},
@@ -125,7 +126,6 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
         let divHtmx = `<div hx-get="/blocos/${p1}`;
         // se existem atributos, os inclui na div htmx
         const captured = [p1, [p2, p3], [p4, p5], [p6, p7], [p8, p9]];
-
         let temBicho = false;
         if (p2 || p4 || p6 || p8 ) {
             divHtmx = divHtmx + '?';
@@ -168,6 +168,25 @@ exports.htmlParaHtmx = async (html, varanda_id) => {
         divHtmx = divHtmx + `" hx-trigger="load" hx-swap="outerHTML"></div>`;
         return divHtmx;
     });
+};
+
+exports.textoParaHtml = async (texto) => {
+    // captura links http(s)://endereco.com, categorias #artes, arrobas @varanda, páginas @varanda/blog-novo e artefatos @varanda/blog-novo/42
+    // /<[^>]*>|\[[^][]*]\([^()]*\)|(https?:\/\/[^\s"'<>]*)|#(\w+(?:\S)*)|@(\w+(?:^(?!\/).*$)*)(?:\/(\w+(?:\S)*))*/g
+    const linkifyRegex = /<[^>]*>|\[[^][]*]\([^()]*\)|((?:https?:\/\/)?(?:www\.)?[-a-zA-Z0-9@%_\+~#=]{2,256}\.[a-z]{2,6}\b(?:\.[-a-zA-Z0-9@:%_\+~#?&\/\/=]*)*)|#(\w+(?:\S)*)|@(([A-Za-z0-9_-]+)(?:\/([A-Za-z0-9_-]+))?(?:\/([A-Za-z0-9_-]+))?)/g;
+    const html = await replaceAsync(texto, linkifyRegex, (match, p1, p2, p3, p4, p5, p6, offset, string) => {
+        // p1 = url, p2 = hashtag, p3 = arroba/pagina/artefato, p4 = arroba, p5 = página, p6 = artefato
+        if (p1) { // url
+            return `<a href="${p1}">${p1}</a>`;
+        }
+        if (p2) { // categoria (hashtag)
+            return `#${p2}`; // falta fazer rota para exibir categorias, algo como varanda.org/categorias/:categoria
+        }
+        if (p3) { // arroba/pagina/artefato
+            return `<a href="${process.env.SERVER_URL}/${p3}">@${p3}</a>`;
+        }
+    });
+    return html;
 };
 
 exports.vidParaId = (vid) => {

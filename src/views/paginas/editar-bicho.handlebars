@@ -7,16 +7,16 @@
 			{{/unless}}
 			{{#if nova_comunidade}}
 			<legend>Nova Comunidade</legend>
-			<label for="arroba">Nome de perfil:</label>
-			<input class="campo" type="text" id="arroba-bicho" value="{{bloco.bicho.bicho_id}}" name="arroba" placeholder="nome-de-perfil" required>
+			<label for="arroba">Nome de perfil (@):</label>
+			<input class="campo" type="text" id="arroba-bicho" value="{{bloco.bicho.bicho_id}}" name="arroba" placeholder="clube-do-livro" required>
 			<br><br>
 			{{/if}}
 			<label for="nome">Nome:</label>
-			<input class="campo" type="text" id="nome-bicho" value="{{bloco.bicho.nome}}" name="nome" {{#if nova_comunidade}}placeholder="Meu nome"{{/if}} required>
+			<input class="campo" type="text" id="nome-bicho" value="{{bloco.bicho.nome}}" name="nome" {{#if nova_comunidade}}placeholder="Clube do Livro"{{/if}} required>
 			<br>
 			<br>
 			<label for="descricao">Descrição:</label>
-			<textarea class="campo" id="descricao-bicho" name="descricao" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px";overflow="hidden"' {{#if nova_comunidade}}placeholder="Oi! Bem-vinde à minha varanda!"{{/if}}>{{bloco.bicho.descricao}}</textarea>
+			<textarea class="campo" id="descricao-bicho" name="descricao" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px";overflow="hidden"' {{#if nova_comunidade}}placeholder="Oi! Bem-vinde ao clube do livro! Venha ler com a gente!"{{/if}}>{{bloco.bicho.descricao}}</textarea>
 		</fieldset>
 		{{#unless nova_comunidade}}
 		<br>
@@ -69,6 +69,9 @@
 	}
 	form #titulo-pagina{
 		width: 100%;
+	}
+	form fieldset {
+		padding: 1rem;
 	}
 	form textarea {
 		width: 100%;

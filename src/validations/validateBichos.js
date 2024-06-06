@@ -1,8 +1,9 @@
 const Joi = require('joi');
+const rgx_arroba 	= /^[A-Za-z0-9_-]+$/;
 
 exports.schemaPostPessoa = Joi.object().keys({
 	// bicho_id, nome, email, senha, convite_id
-	bicho_id: Joi.string().min(3).max(32).required(),
+	bicho_id: Joi.string().min(3).max(32).pattern(rgx_arroba).required(),
 	email: Joi.string().email().allow(null, ''),
 	senha: Joi.string().min(8).required(),
 	confirma_senha: Joi.string().valid(Joi.ref('senha')).required(),
@@ -21,7 +22,7 @@ exports.schemaPutPessoa = Joi.object().keys({
 
 exports.schemaPostComunidade = Joi.object().keys({
 	// bicho_id, nome, descricao, bicho_criador_id
-	bicho_id: Joi.string().min(1).max(32).required(),
+	bicho_id: Joi.string().min(1).max(32).pattern(rgx_arroba).required(),
 	nome: Joi.string().max(64),
 	descricao: Joi.string().max(500),
 	bicho_criador_id: Joi.string().min(1).max(32).required()
@@ -46,12 +47,12 @@ exports.schemaPutBicho = Joi.object().keys({
 
 exports.schemaPutAvatar = Joi.object().keys({
 	// descricao_avatar
-	descricao_avatar: Joi.string().min(0).max(500)
+	descricao_avatar: Joi.string().min(0).max(1000)
 });
 
 exports.schemaPutFundo = Joi.object().keys({
 	// descricao_fundo
-	descricao_fundo: Joi.string().min(0).max(500)
+	descricao_fundo: Joi.string().min(0).max(1000)
 });
 
 exports.schemaPutPreferencias = Joi.object().keys({
@@ -72,13 +73,13 @@ exports.schemaDeleteConvite = Joi.object().keys({
 
 exports.schemaPostRelacao = Joi.object().keys({
 	// comunidade_id, convite_id
-	comunidade_id: Joi.string().min(1).max(32).required(),
+	comunidade_id: Joi.string().min(1).max(32).pattern(rgx_arroba).required(),
 	convite_id: Joi.string().guid()
 });
 
 exports.schemaPutRelacao = Joi.object().keys({
 	// comunidade_id, participar, editar, moderar, representar
-	comunidade_id: Joi.string().min(1).max(32).required(),
+	comunidade_id: Joi.string().min(1).max(32).pattern(rgx_arroba).required(),
 	participar: Joi.boolean(),
 	editar: Joi.boolean(),
 	moderar: Joi.boolean(),
@@ -87,7 +88,7 @@ exports.schemaPutRelacao = Joi.object().keys({
 
 exports.schemaDeleteRelacao = Joi.object().keys({
 	// comunidade_id
-	comunidade_id: Joi.string().min(1).max(32).required()
+	comunidade_id: Joi.string().min(1).max(32).pattern(rgx_arroba).required()
 });
 
 exports.schemaPostRecuperar = Joi.object().keys({
