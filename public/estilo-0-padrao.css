@@ -112,6 +112,10 @@ dialog {
     color: var(--cor-fonte-barra);
 }
 
+#varanda-cabecalho-desktop {
+    display: block;
+}
+
 /* responsividade e funcionalidade da barra e de seus elementos */
 
 @media screen and (max-width: 859px) {
@@ -144,6 +148,10 @@ dialog {
 
     #varanda-barra button svg {
         min-width: var(--altura-barra-mobile);
+    }
+
+    #varanda-cabecalho-desktop {
+        display: none;
     }
 
 }
@@ -267,7 +275,7 @@ dialog {
 @media screen and (max-width: 859px) {
     .bloco {
         max-width: 	100vw;
-        padding:    0.7rem;
+        padding:    0.5rem;
         flex:       100%;
     }
     .pagina {
