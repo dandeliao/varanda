@@ -183,7 +183,7 @@ exports.textoParaHtml = async (texto) => {
             return `#${p2}`; // falta fazer rota para exibir categorias, algo como varanda.org/categorias/:categoria
         }
         if (p3) { // arroba/pagina/artefato
-            return `<a href="${process.env.SERVER_URL}/${p3}">@${p3}</a>`;
+            return `<a href="/${p3}">@${p3}</a>`;
         }
     });
     return html;
