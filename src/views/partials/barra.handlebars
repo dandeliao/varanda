@@ -20,7 +20,9 @@
             <span id="descricao-botao-perfil" hidden>Abre sua página de perfil.</span>
         </button>
     </nav>
-
+    <div id="varanda-cabecalho-desktop">
+        <a href="/{{varanda.bicho_id}}">@{{varanda.bicho_id}}</a>
+    </div>
     <nav>
         <button id="varanda-botao-contexto-1" aria-describedby="descricao-botao-contexto-1" {{#unless contexto.um.submit}}hx-{{contexto.um.metodo}}="{{contexto.um.url}}" hx-target="body" hx-push-url="true"{{/unless}}>
             <svg id="varanda-svg-contexto-1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"
