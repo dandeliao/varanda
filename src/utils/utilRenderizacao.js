@@ -7,6 +7,7 @@ const serviceArtefatos      = require('../services/artefatos/serviceArtefatos');
 const { dataHumana,
         bichoSurpresa }     = require('./utilMiscellaneous');
 const { vidParaId }         = require('./utilParsers');
+const { tipoDeArquivo }     = require('./utilArquivos');
 require('dotenv').config();
 
 exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, usuarie_id, layout) => {
@@ -33,6 +34,15 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
     }
     if (artefato_id) {
         artefato = await serviceArtefatos.verArtefato(artefato_id);
+        if (artefato) {
+            if (artefato.pagina_vid === `${bicho_id}/${pagina_id}`) {
+                artefato.tipo = {};
+                artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
+                artefato.criacao = dataHumana(artefato.criacao);
+            } else {
+                artefato = null;
+            }
+        }
     }
     
     /* preenche objeto renderizável */
@@ -283,8 +293,11 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                                 }
                             }
                         }
+                        artefato.tipo = {};
+                        artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
                         artefato.criacao = dataHumana(artefato.criacao);
                     }
+                    console.log('artefato:', artefato);
                     dados.artefato = artefato;
                     break;
                 case 'relacao':

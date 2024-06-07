@@ -15,6 +15,8 @@ const { objetoRenderizavel,
 const { messages } 					= require('joi-translation-pt-br');
 const { randomUUID } 				= require('crypto');
 const { separaExtensao } 			= require('../utils/utilArquivos');
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
 
 exports.getArtefato = asyncHandler(async (req, res, next) => {
@@ -27,12 +29,24 @@ exports.getArtefato = asyncHandler(async (req, res, next) => {
 	if (obj_render.artefato === null) {
 		console.log('obj_render.artefato é null');
 		//view = 'blocos/tapume';
+	} else {
+		obj_render.artefato.texto = await textoParaHtml(obj_render.artefato.texto);
 	}
 
-	console.log('obj_render:', obj_render);
-	obj_render.artefato.texto = await textoParaHtml(obj_render.artefato.texto);
 	res.render(view, obj_render);
 });
+
+exports.getArquivo = asyncHandler(async (req, res, next) => {
+    const { varanda_id, pagina_id, artefato_id } = params(req);
+	const artefato = await serviceArtefatos.verArtefato(artefato_id);
+	if (!artefato) {
+		req.flash('erro', `Artefato @${varanda_id}/${pagina_id}/${artefato_id} não encontrado.`);
+		return res.redirect(`/${varanda_id}/${pagina_id}`);
+	}
+	const arquivo = path.join(path.resolve(__dirname, '../../'), 'user_content', 'artefatos', 'em_uso', varanda_id, pagina_id, `${artefato.nome_arquivo}.${artefato.extensao}`);
+	res.sendFile(arquivo);
+});
+
 
 exports.getEditarArtefato = asyncHandler(async (req, res, next) => {
 	

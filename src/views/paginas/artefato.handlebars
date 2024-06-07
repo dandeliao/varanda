@@ -1,5 +1,7 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
+{{#if artefato}}
 {{#with artefato}}
+<div class="pagina">
 <div class="bloco" style="text-align: left">
     <header>
         <div class="titulo">
@@ -21,12 +23,39 @@
             </nav>
         </div>
     </header>
-    <div class="texto">
-        {{#if texto}}
-        {{{texto}}}
+    {{#if nome_arquivo}}
+    <div class="arquivo">
+        {{#if tipo.imagem}}
+        <img
+            src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+            alt="{{descricao}}"
+            title="{{descricao}}"
+        />
+        {{/if}}
+        {{#if tipo.audio}}
+        <audio
+            controls
+            src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+        > Clique para baixar o áudio: <a href="/{{pagina_vid}}/{{artefato_id}}/arquivo">{{nome_arquivo}}.{{extensao}}</a>
+        </audio>
+        <p>Descrição: {{descricao}}</p>
+        {{/if}}
+        {{#if tipo.video}}
+        <video
+            controls
+            src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+        > Clique para baixar o vídeo: <a href="/{{pagina_vid}}/{{artefato_id}}/arquivo">{{nome_arquivo}}.{{extensao}}</a>
+        </video>
+        <p>Descrição: {{descricao}}</p>
         {{/if}}
     </div>
+    {{/if}}
+    {{#if texto}}
+    <div class="texto">
+        {{{texto}}}
+    </div>
     <br>
+    {{/if}}
     <footer>
         <div class="autoria">
             <a href="/{{bicho_criador_id}}"><div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div></a>
@@ -40,21 +69,20 @@
         <p>{{criacao}}</p>
         <p style="margin-top: 0.2rem;"><strong>Categorias:</strong>{{#each tags}}<span><a href="/{{varanda_id}}/tags?tag={{this}}">#{{this}}</a>, </span>{{/each}}</p>
     </footer>
-    <br>
-    <hr>
-    {{#if respondivel}}
-    <div hx-get="/blocos/comentarios?artefato={{artefato_id}}" hx-trigger="load" hx-push-url="false" style="text-align: center;"></div>
-    {{/if}}
+</div>
 </div>
 
 <div id="modal-{{artefato_id}}" onclick="fechatudo('{{artefato_id}}')"></div>
 
 {{/with}}
+{{/if}}
 
 <style>
     h2{
         align-self: stretch;
     }
+
+    
 
     .bloco header .titulo {
         display: flex;
@@ -120,8 +148,19 @@
     }
 
     .texto {
-        white-space: pre-line;    
+        white-space: pre-line;
+        font-size: 18px;    
     }
+
+    .arquivo {
+        width: 100%;
+    }
+
+    video {
+        display: block;
+        max-width: 100%;
+    }
+
 </style>
 
 <script>

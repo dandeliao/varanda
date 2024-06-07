@@ -19,7 +19,8 @@ const { getFutricarVaranda,
         getFundo,                           putFundo,
 		getClonar,			postClonar,				                  	} = require('../controllers/controllerReservadas');
 const { getArtefato,		postArtefato,	putArtefato, deleteArtefato, 
-		getEditarArtefato,												} = require('../controllers/controllerArtefatos');
+		getEditarArtefato,
+		getArquivo,														} = require('../controllers/controllerArtefatos');
 
 
 // configura multer para upload das imagens de avatar e fundo
@@ -108,6 +109,7 @@ router.delete('/:bicho_id/:pagina_id',          deletePagina	);
 /* Artefatos */
 
 router.get	 ('/:bicho_id/:pagina_id/:artefato_id', 			 getArtefato	  		);
+router.get	 ('/:bicho_id/:pagina_id/:artefato_id/arquivo',		 getArquivo				);
 router.get	 ('/:bicho_id/:pagina_id/:artefato_id/editar',  	 getEditarArtefato 		);
 router.post	 ('/:bicho_id/:pagina_id/',
 				sobeArtefato.single('arquivo'),					postArtefato	  		);

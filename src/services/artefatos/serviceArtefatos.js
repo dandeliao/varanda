@@ -22,7 +22,7 @@ exports.criarArtefato = async function(artefato) {
 exports.subirArquivo = async function(varanda_id, pagina_id, arquivo) {
 	const caminhoTemporario = arquivo.path;
 	const diretorioDestino = path.join(path.resolve(__dirname, caminhoArtefatos), varanda_id, pagina_id);
-	const nomeArquivo = arquivo.originalname.toLowerCase();
+	const nomeArquivo = arquivo.originalname;
 	const caminhoDestino = path.join(path.resolve(diretorioDestino, nomeArquivo));
 
 	// cria diretório de destino, se ainda não existe
