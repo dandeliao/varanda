@@ -50,7 +50,7 @@ exports.putArtefato = function(artefato) {
 
 exports.deleteArtefato = function(artefatoId) {
 	return pool.query(
-		'DELETE FROM artefatos WHERE artefato_id = $1',
+		'DELETE FROM artefatos WHERE artefato_id = $1 RETURNING *',
 		[artefatoId]
 	);
 };

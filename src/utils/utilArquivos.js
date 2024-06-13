@@ -3,6 +3,8 @@ const path = require('path');
 const { vidParaId } = require('./utilParsers');
 require('dotenv').config();
 const pastaViews 	= `../views`;
+const pastaUsuaries = `../../${process.env.CONTENT_FOLDER}`
+
 
 exports.separaExtensao = (nomeOriginal) => {
 	const posicaoUltimoPonto = nomeOriginal.lastIndexOf('.');
@@ -36,6 +38,18 @@ exports.editarArquivoHandlebars = (varanda_id, pagina) => {
 
 exports.deletarArquivoHandlebars = (varanda_id, nome_arquivo) => {
     const caminho = path.join(path.resolve(__dirname, pastaViews), 'varandas', `${varanda_id}`, `${nome_arquivo}.handlebars`);
+	fs.unlink(caminho, (erro) => {
+		if (erro) {
+			if (erro.code !== 'ENOENT') { // se o arquivo não foi encontrado, ignora
+				throw erro;
+			}
+		}
+	});
+}
+
+exports.deletarArquivoArtefato = (artefato) => {
+	const caminho = path.join(path.resolve(__dirname, pastaUsuaries), 'artefatos', 'em_uso', artefato.pagina_vid, `${artefato.nome_arquivo}.${artefato.extensao}`);
+	console.log('caminho:', caminho);
 	fs.unlink(caminho, (erro) => {
 		if (erro) {
 			if (erro.code !== 'ENOENT') { // se o arquivo não foi encontrado, ignora

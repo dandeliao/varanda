@@ -2,6 +2,7 @@ const dataArtefatos = require('../../data/artefatos/dataArtefatos');
 const caminhoArtefatos = '../../../user_content/artefatos/em_uso';
 const fs = require('fs');
 const path = require('path');
+const { deletarArquivoArtefato } = require('../../utils/utilArquivos');
 
 exports.verArtefato = async function(artefato_id) {
     let resposta = null;
@@ -41,3 +42,10 @@ exports.subirArquivo = async function(varanda_id, pagina_id, arquivo) {
 		}
 	});
 };
+
+exports.deletarArtefato = async function(artefato_id) {
+	const artefatoDeletado = (await dataArtefatos.deleteArtefato(artefato_id)).rows[0];
+	deletarArquivoArtefato(artefatoDeletado);
+
+	return artefatoDeletado;
+}

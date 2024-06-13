@@ -39,10 +39,17 @@ exports.getArtefato = asyncHandler(async (req, res, next) => {
 exports.getArquivo = asyncHandler(async (req, res, next) => {
     const { varanda_id, pagina_id, artefato_id } = params(req);
 	const artefato = await serviceArtefatos.verArtefato(artefato_id);
+	if (artefato) {
+		if (artefato.pagina_vid !== `${varanda_id}/${pagina_id}`) {
+			artefato = null;
+		}
+	}
+	
 	if (!artefato) {
 		req.flash('erro', `Artefato @${varanda_id}/${pagina_id}/${artefato_id} não encontrado.`);
 		return res.redirect(`/${varanda_id}/${pagina_id}`);
 	}
+
 	const arquivo = path.join(path.resolve(__dirname, '../../'), 'user_content', 'artefatos', 'em_uso', varanda_id, pagina_id, `${artefato.nome_arquivo}.${artefato.extensao}`);
 	res.sendFile(arquivo);
 });
@@ -181,20 +188,31 @@ exports.putArtefato = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteArtefato = asyncHandler(async (req, res, next) => {
-	/* const { varanda_id, pagina_id } = params(req);
+	const { varanda_id, pagina_id, artefato_id } = params(req);
 	
 	let usuarie_id = await quemEstaAgindo(req);
+	let artefato = await serviceArtefatos.verArtefato(artefato_id);
+	if (artefato) {
+		if (artefato.pagina_vid !== `${varanda_id}/${pagina_id}`) {
+			artefato = null;
+		}
+	}
 
-	if (usuarie_id !== varanda_id) {
-		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
-		if (!permissoes || !permissoes.editar || !permissoes.moderar) {
-			req.flash('erro', `Você não pode apagar páginas de ${varanda_id}.`);
+	if (!artefato) {
+		req.flash('erro', `Artefato @${varanda_id}/${pagina_id}/${artefato_id} não encontrado.`);
+		return res.redirect(`/${varanda_id}/${pagina_id}`);
+	}
+
+	if (usuarie_id !== artefato.bicho_criador_id) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, artefato.varanda_id);
+		if (!permissoes || !permissoes.moderar) {
+			req.flash('erro', `Você não pode apagar artefatos de ${varanda_id}.`);
 			return res.redirect(303, `/${varanda_id}/${pagina_id}`);
 		}
 	}
 
-	await servicePaginas.deletarPagina(varanda_id, pagina_id);
+	await serviceArtefatos.deletarArtefato(artefato_id);
 
-	req.flash('aviso', 'A página foi removida com sucesso!');
-	return res.redirect(303, `/${varanda_id}/futricar`); */
+	req.flash('aviso', 'O artefato foi removido com sucesso!');
+	return res.redirect(303, `/${varanda_id}/${pagina_id}`);
 });
