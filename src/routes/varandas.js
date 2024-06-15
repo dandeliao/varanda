@@ -34,7 +34,7 @@ const update = multer({
 	},
 	fileFilter: function(_req, file, cb){
 		const filetypes = /jpeg|jpg|png|gif|svg/;
-		const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+		const extname = filetypes.test(path.extname(file.originalname));
 		const mimetype = filetypes.test(file.mimetype);
 
 		if(mimetype && extname){
@@ -53,7 +53,7 @@ const sobeArtefato = multer({
 	},
 	fileFilter:  function(_req, file, cb){
 		const filetypes = /jpeg|jpg|png|gif|svg|bmp|mp3|opus|wav|aac|flac|3gp|aiff|m4a|ogg|oga|mog|wma|webm|mkv|ogv|avi|mov|wmv|rmvb|mp4|m4v|mpg|mpeg|mpv|txt|md|mkd|/;
-		const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+		const extname = filetypes.test(path.extname(file.originalname));
 		const mimetype = filetypes.test(file.mimetype);
 
 		if(mimetype && extname){

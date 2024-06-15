@@ -10,6 +10,7 @@
             src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
             alt="{{descricao}}"
             title="{{descricao}}"
+            style="display:block;margin:0 auto;"
         />
         {{/if}}
         {{#if tipo.audio}}
@@ -87,6 +88,7 @@
     .bloco h2{
         align-self: stretch;
         margin-bottom: 1rem;
+        text-align: center;
     }
 
     .bloco .titulo {
@@ -117,7 +119,7 @@
         z-index: 400;
         position: absolute;
         left: 50%;
-        top: 50%;
+        top: 50vh;
         transform: translate(-50%, -50%);
         text-align: center;
         background-color: var(--cor-principal);

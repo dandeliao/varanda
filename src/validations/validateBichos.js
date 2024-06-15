@@ -13,9 +13,9 @@ exports.schemaPostPessoa = Joi.object().keys({
 exports.schemaPutPessoa = Joi.object().keys({
 	// nome, descricao, descricao_avatar, descricao_fundo, email, senha
 	nome: Joi.string().max(64),
-	descricao: Joi.string().max(500),
-	descricao_avatar: Joi.string().max(500),
-	descricao_fundo: Joi.string().max(500),
+	descricao: Joi.string().max(500).allow(null, ''),
+	descricao_avatar: Joi.string().max(500).allow(null, ''),
+	descricao_fundo: Joi.string().max(500).allow(null, ''),
 	email: Joi.string().email(),
 	senha: Joi.string().min(8)
 });
@@ -24,7 +24,7 @@ exports.schemaPostComunidade = Joi.object().keys({
 	// bicho_id, nome, descricao, bicho_criador_id
 	bicho_id: Joi.string().min(1).max(32).pattern(rgx_arroba).required(),
 	nome: Joi.string().max(64),
-	descricao: Joi.string().max(500),
+	descricao: Joi.string().max(500).allow(null, ''),
 	bicho_criador_id: Joi.string().min(1).max(32).required()
 });
 
@@ -38,9 +38,9 @@ exports.schemaPutComunidade = Joi.object().keys({
 exports.schemaPutBicho = Joi.object().keys({
 	// nome, descricao, descricao_avatar, descricao_fundo
 	nome: Joi.string().max(64),
-	descricao: Joi.string().max(500),
-	descricao_avatar: Joi.string().max(500),
-	descricao_fundo: Joi.string().max(500),
+	descricao: Joi.string().max(500).allow(null, ''),
+	descricao_avatar: Joi.string().max(500).allow(null, ''),
+	descricao_fundo: Joi.string().max(500).allow(null, ''),
 	participacao_livre: Joi.boolean(),
 	participacao_com_convite: Joi.boolean()
 });
