@@ -35,6 +35,9 @@
             <input type="checkbox" name="indexavel" checked>
             <label for="indexavel">pode ser citado</label>
         </fieldset>
+		{{#if query.em_resposta_a}}
+		<input type="hidden" id="em_resposta_a" name="em_resposta_a" value="{{query.em_resposta_a}}"> 
+		{{/if}}
 	</form>
 </div>
 

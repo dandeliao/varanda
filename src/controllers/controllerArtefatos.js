@@ -31,6 +31,7 @@ exports.getArtefato = asyncHandler(async (req, res, next) => {
 		//view = 'blocos/tapume';
 	} else {
 		obj_render.artefato.texto = await textoParaHtml(obj_render.artefato.texto);
+		obj_render = await objetoRenderizavelContexto(obj_render, 'artefato');
 	}
 
 	res.render(view, obj_render);
@@ -145,8 +146,12 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 	await serviceEdicoesArtefatos.criarEdicaoArtefato(artefatoCriado);
 	console.log(artefatoCriado);
 
+	let pagina_retorno = `/${artefatoCriado.pagina_vid}`;
+	if (artefato.em_resposta_a_id) {
+		pagina_retorno = `/${artefato.pagina_vid}/${artefato.em_resposta_a_id}`;
+	}
 	req.flash('aviso', 'O artefato foi criado com sucesso!');
-	return res.redirect(303, `/${artefatoCriado.pagina_vid}`);
+	return res.redirect(303, pagina_retorno);
 
 });
 

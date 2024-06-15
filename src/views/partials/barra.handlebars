@@ -24,14 +24,14 @@
         <a href="/{{varanda.bicho_id}}">@{{varanda.bicho_id}}</a>
     </div>
     <nav>
-        <button id="varanda-botao-contexto-1" aria-describedby="descricao-botao-contexto-1" {{#unless contexto.um.submit}}hx-{{contexto.um.metodo}}="{{contexto.um.url}}" hx-target="body" hx-push-url="true"{{/unless}}>
+        <button id="varanda-botao-contexto-1" aria-describedby="descricao-botao-contexto-1" {{#unless contexto.um.funcao}}{{#unless contexto.um.submit}}hx-{{contexto.um.metodo}}="{{contexto.um.url}}" hx-target="body" hx-push-url="true"{{/unless}}{{/unless}}>
             <svg id="varanda-svg-contexto-1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"
                 aria-hidden="true" focusable="false">
             </svg>
             <span id="varanda-span-contexto-1">{{contexto.um.nome}}</span>
             <span id="descricao-botao-contexto-1" hidden>{{contexto.um.descricao}}</span>
         </button>
-        <button id="varanda-botao-contexto-2" aria-describedby="descricao-botao-contexto-2" hx-{{contexto.dois.metodo}}="{{contexto.dois.url}}" hx-target="body" hx-push-url="true">
+        <button id="varanda-botao-contexto-2" aria-describedby="descricao-botao-contexto-2" {{#unless contexto.dois.funcao}}{{#unless contexto.dois.submit}}hx-{{contexto.dois.metodo}}="{{contexto.dois.url}}" hx-target="body" hx-push-url="true"{{/unless}}{{/unless}}>
             <svg id="varanda-svg-contexto-2" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"
                 aria-hidden="true" focusable="false">
             </svg>
@@ -47,12 +47,12 @@
     function iconificar() {
         let botoes = [document.getElementById('varanda-botao-contexto-1'), document.getElementById('varanda-botao-contexto-2')];
         let icones = [document.getElementById('varanda-svg-contexto-1'), document.getElementById('varanda-svg-contexto-2')];
-        let descricoes = [document.getElementById('varanda-span-contexto-1'), document.getElementById('varanda-span-contexto-2')];
-        for (let i = 0; i < descricoes.length; i++) {
+        let nomes = [document.getElementById('varanda-span-contexto-1'), document.getElementById('varanda-span-contexto-2')];
+        for (let i = 0; i < nomes.length; i++) {
             botoes[i].removeAttribute('form');
             icones[i].setAttribute('width', '2rem');
             icones[i].setAttribute('height', '2rem');
-            switch (descricoes[i].textContent) {
+            switch (nomes[i].textContent) {
                 case 'cancelar':
                     icones[i].innerHTML = `<path fill="currentColor" d="M 16,20 26,30 30,26 20,16 30,6 26,2 16,12 6,2 2,6 12,16 2,26 6,30 z"/>`;
                     icones[i].setAttribute('viewBox', '0 0 32 32');
@@ -82,6 +82,10 @@
                     icones[i].setAttribute('viewBox', '0 0 100 100');
                     botoes[i].setAttribute('form', 'formulario');
                     break;
+                case 'comentar':
+                    icones[i].innerHTML = `<path fill="currentColor" d="M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm16 352c0 8.8-7.2 16-16 16H288l-12.8 9.6L208 428v-60H64c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16h384c8.8 0 16 7.2 16 16v288z"/>`;
+                    icones[i].setAttribute('viewBox', '0 0 512 512');
+                    break;
                 case 'criar comunidade':
                     icones[i].innerHTML = `<path fill="currentColor" d="M335.5 4l288 160c15.4 8.6 21 28.1 12.4 43.5s-28.1 21-43.5 12.4L320 68.6 47.5 220c-15.4 8.6-34.9 3-43.5-12.4s-3-34.9 12.4-43.5L304.5 4c9.7-5.4 21.4-5.4 31.1 0zM320 240c-22.1 0-40-17.9-40-40s17.9-40 40-40s40 17.9 40 40s-17.9 40-40 40zM144 336c-22.1 0-40-17.9-40-40s17.9-40 40-40s40 17.9 40 40s-17.9 40-40 40zm392-40c0 22.1-17.9 40-40 40s-40-17.9-40-40s17.9-40 40-40s40 17.9 40 40zM226.9 491.4L200 441.5V480c0 17.7-14.3 32-32 32H120c-17.7 0-32-14.3-32-32V441.5L61.1 491.4c-6.3 11.7-20.8 16-32.5 9.8s-16-20.8-9.8-32.5l37.9-70.3c15.3-28.5 45.1-46.3 77.5-46.3h19.5c16.3 0 31.9 4.5 45.4 12.6l33.6-62.3c15.3-28.5 45.1-46.3 77.5-46.3h19.5c32.4 0 62.1 17.8 77.5 46.3l33.6 62.3c13.5-8.1 29.1-12.6 45.4-12.6h19.5c32.4 0 62.1 17.8 77.5 46.3l37.9 70.3c6.3 11.7 1.9 26.2-9.8 32.5s-26.2 1.9-32.5-9.8L552 441.5V480c0 17.7-14.3 32-32 32H472c-17.7 0-32-14.3-32-32V441.5l-26.9 49.9c-6.3 11.7-20.8 16-32.5 9.8s-16-20.8-9.8-32.5l36.3-67.5c-1.7-1.7-3.2-3.6-4.3-5.8L376 345.5V400c0 17.7-14.3 32-32 32H296c-17.7 0-32-14.3-32-32V345.5l-26.9 49.9c-1.2 2.2-2.6 4.1-4.3 5.8l36.3 67.5c6.3 11.7 1.9 26.2-9.8 32.5s-26.2 1.9-32.5-9.8z"/>`;
                     icones[i].setAttribute('viewBox', '0 0 640 512');
@@ -89,6 +93,18 @@
                 case 'editar':
                     icones[i].innerHTML = `<path fill="currentColor" d="M52.5,20l6-6c2-2,2-5,0-7l-5.4-5.4c-2-2-5-2-7,0l-6,6L52.5,20z M35,12.5L5.6,42c6.6-1,2,5.5,4.4,8c2,2,9-2,8,4.4L47.5,25L35,12.5z M3,59.9L3,60c-1.6,0.5-4-0.7-3-3l0,0L2.5,50l7.5,7.5L3,60z"/>`;
                     icones[i].setAttribute('viewBox', '-7 0 72 72');
+                    break;
+                case 'enviar':
+                    icones[i].innerHTML = `<path fill="currentColor" d="M561.938 158.06L417.94 14.092C387.926-15.922 336 5.097 336 48.032v57.198c-42.45 1.88-84.03 6.55-120.76 17.99-35.17 10.95-63.07 27.58-82.91 49.42C108.22 199.2 96 232.6 96 271.94c0 61.697 33.178 112.455 84.87 144.76 37.546 23.508 85.248-12.651 71.02-55.74-15.515-47.119-17.156-70.923 84.11-78.76V336c0 42.993 51.968 63.913 81.94 33.94l143.998-144c18.75-18.74 18.75-49.14 0-67.88zM384 336V232.16C255.309 234.082 166.492 255.35 206.31 376 176.79 357.55 144 324.08 144 271.94c0-109.334 129.14-118.947 240-119.85V48l144 144-144 144zm24.74 84.493a82.658 82.658 0 0 0 20.974-9.303c7.976-4.952 18.286.826 18.286 10.214V464c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h132c6.627 0 12 5.373 12 12v4.486c0 4.917-2.987 9.369-7.569 11.152-13.702 5.331-26.396 11.537-38.05 18.585a12.138 12.138 0 0 1-6.28 1.777H54a6 6 0 0 0-6 6v340a6 6 0 0 0 6 6h340a6 6 0 0 0 6-6v-25.966c0-5.37 3.579-10.059 8.74-11.541z"/>`;
+                    icones[i].setAttribute('viewBox', '0 0 576 512');
+                    botoes[i].addEventListener('click', async function() {
+                        try {
+                            await navigator.clipboard.writeText(window.location.href);
+                            alert('O endereço da postagem foi copiado para a área de transferência.')
+                        } catch (err) {
+                            alert('Erro ao copiar o link. Recarregue a página e tente novamente.');
+                        }
+                    });
                     break;
                 case 'participar':
                     icones[i].innerHTML = `

@@ -39,6 +39,7 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
                 artefato.tipo = {};
                 artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
                 artefato.criacao = dataHumana(artefato.criacao);
+                artefato.comentarios = await serviceArtefatos.verComentarios(artefato_id);
             } else {
                 artefato = null;
             }
@@ -134,6 +135,17 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
     /* contextos específicos */
     switch(tipo) {
         case 'artefato':
+            contexto.um = {
+                url:        `/${obj_render.artefato.pagina_vid}/novo_artefato/editar?em_resposta_a=${obj_render.artefato.artefato_id}`,
+                metodo:     'get',
+                nome:       'comentar',
+                descricao:  'Postar um comentário.'
+            }
+            contexto.dois = {
+                funcao:     true,
+                nome:       'enviar',
+                descricao:  'Compartilha a postagem.'
+            }
             break;
         case 'bicho':
             let comunidade = await serviceComunidades.verComunidade(obj_render.varanda.bicho_id);
@@ -162,7 +174,9 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
             break;
         case 'editar-artefato':
             let url_cancelar = '';
-            if (obj_render.novo_artefato) {
+            if (obj_render.query.em_resposta_a) {
+                url_cancelar = `/${obj_render.pagina.pagina_vid}/${obj_render.query.em_resposta_a}`;
+            } else if (obj_render.novo_artefato) {
                 url_cancelar = `/${obj_render.pagina.pagina_vid}`;
             } else {
                 url_cancelar = `/${obj_render.pagina.pagina_vid}/${obj_render.artefato.artefato_id}`;
@@ -296,6 +310,9 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                         artefato.tipo = {};
                         artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
                         artefato.criacao = dataHumana(artefato.criacao);
+                        if (obj_render.query.estilo === 'comentario') {
+                            artefato.comentario = true;
+                        }
                     }
                     console.log('artefato:', artefato);
                     dados.artefato = artefato;

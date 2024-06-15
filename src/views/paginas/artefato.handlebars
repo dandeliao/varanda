@@ -3,26 +3,6 @@
 {{#with artefato}}
 <div class="pagina">
 <div class="bloco" style="text-align: left">
-    <header>
-        <div class="titulo">
-            <h2>{{titulo}}</h2>
-            <button id="botao-opcoes-{{artefato_id}}" onclick="opcoesArtefato('{{artefato_id}}')" aria-describedby="descricao-botao-opcoes-{{artefato_id}}">
-                <span class="oculto-aos-olhos">Menu de opções do artefato</span>
-                <span id="descricao-botao-opcoes-{{artefato_id}}" hidden>Abre e fecha um menu com opções específicas deste artefato.</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"
-                    aria-hidden="true" focusable="false">
-                    <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width=".8" d="m11.00003 10.3299-5.0002-8.6607m5.0002 8.6607H.99903m.00097 0 5.0003-8.6607"/>
-                    <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8" d="M.99975 6h10"/>
-                </svg>
-            </button>
-
-            <nav class="botao-menu" id="menuzinho-{{artefato_id}}">
-                <a href="/{{pagina_vid}}/{{artefato_id}}/editar">Editar</a>
-                <a href="#remover-{{artefato_id}}">Remover</a>
-                <a href="#compartilhar-{{artefato_id}}">Compartilhar</a>
-            </nav>
-        </div>
-    </header>
     {{#if nome_arquivo}}
     <div class="arquivo">
         {{#if tipo.imagem}}
@@ -50,25 +30,51 @@
         {{/if}}
     </div>
     {{/if}}
-    {{#if texto}}
-    <div class="texto">
-        {{{texto}}}
+    <div class="titulo">
+        <h2>{{titulo}}</h2>
     </div>
-    <br>
+    {{#if texto}}
+    <div class="texto">{{{texto}}}</div>
     {{/if}}
     <footer>
         <div class="autoria">
-            <a href="/{{bicho_criador_id}}"><div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div></a>
-            <a href="/{{bicho_criador_id}}" style="margin-left: 0.4rem;">@{{bicho_criador_id}}</a>
-            {{#if citacao}}
-            <span> em </span>
-            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{varanda_id}}" hx-trigger="load"></div>
-            <a href="/varandas/{{varanda_id}}">@{{varanda_id}}</a>
-            {{/if}}
+            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div>
+            <div>
+                <a class="texto-autoria" hx-get="/{{bicho_criador_id}}" hx-push-url="true" hx-target="body">@{{bicho_criador_id}}</a>
+                <p class="texto-autoria">{{criacao}}</p>
+            </div>
         </div>
-        <p>{{criacao}}</p>
-        <p style="margin-top: 0.2rem;"><strong>Categorias:</strong>{{#each tags}}<span><a href="/{{varanda_id}}/tags?tag={{this}}">#{{this}}</a>, </span>{{/each}}</p>
+        <button id="botao-opcoes-{{artefato_id}}" onclick="opcoesArtefato('{{artefato_id}}')" aria-describedby="descricao-botao-opcoes-{{artefato_id}}">
+            <span class="oculto-aos-olhos">Menu de opções do artefato</span>
+            <span id="descricao-botao-opcoes-{{artefato_id}}" hidden>Abre e fecha um menu com opções específicas deste artefato.</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 -2 16 16"
+            aria-hidden="true" focusable="false">
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+            </svg>
+        </button>
+        <nav class="menu" id="menuzinho-{{artefato_id}}">
+            <a onclick="fechatudo({{artefato_id}})">Editar (em construção)</a>
+            <a onclick="fechatudo({{artefato_id}})">Denunciar (em construção)</a>
+            <a onclick="confirmar({{artefato_id}})">Apagar</a>
+
+            <div class="menu" id="confirmar-{{artefato_id}}">
+                <p>Tem certeza de que deseja apagar a postagem?</p>
+                <br>
+                <button hx-delete="/{{pagina_vid}}/{{artefato_id}}" hx-target="body" hx-push-url="true">Sim</button>
+                <button onclick="fechatudo({{artefato_id}})">Não</button>
+            </div>
+        </nav>
+        <!-- <p style="margin-top: 0.2rem;"><strong>Categorias:</strong>{{#each tags}}<span><a href="/{{varanda_id}}/tags?tag={{this}}">#{{this}}</a>, </span>{{/each}}</p> -->
     </footer>
+    <br>
+    <div class="comentarios">
+        <h3 style="text-align:center; padding: 1rem 0;">Comentários:</h3>
+        {{#each comentarios}}
+        <section class="comentario">
+            <div hx-get="/blocos/artefato?artefato={{this.artefato_id}}&estilo=comentario" hx-trigger="load" hx-push-url="false"></div>
+        </section>
+        {{/each}}
+    </div>
 </div>
 </div>
 
@@ -78,54 +84,91 @@
 {{/if}}
 
 <style>
-    h2{
+    .bloco h2{
         align-self: stretch;
+        margin-bottom: 1rem;
     }
 
-    
-
-    .bloco header .titulo {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .bloco .titulo {
+        width: 100%;
         word-break: break-all;
     }
-    .bloco header button {
+    .bloco footer > button {
         display: inline-block;
-        border-style: none;
         padding: 0;
+        border-style: none;
         background-color: var(--cor-fundo);
-        width: 34px;
-        height: 34px;
+        width: 3rem;
+        height: 100%;
     }
-    .bloco header button.pressionado {
+    .bloco footer > button:hover {
+        cursor: pointer;
+    }
+    .bloco footer > button.pressionado {
         border-style: inset;
     }
 
-    .bloco header .botao-menu {
+    .bloco footer .menu {
         display: none;
     }
 
-    .bloco header nav.menuzinho-aberto {
+    .bloco footer nav.menuzinho-aberto {
         display: block;
         z-index: 400;
         position: absolute;
-        right: 21px;
-        top: 42px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
         text-align: center;
         background-color: var(--cor-principal);
         color: var(--cor-fonte-barra);
-        padding: 0.8rem;
+        padding: 2rem;
         border-radius: 5px;
+    }
+
+    .bloco footer nav a {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .autoria a {
+        text-decoration: underline;
+        cursor: pointer;
     }
 
     .bloco footer {
         color: var(--cor-fonte-2);
+        font-size: 0.8rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
     }
-    .bloco footer .autoria {
+    .bloco .autoria {
+        color: var(--cor-fonte-2);
+        font-size: 0.9rem;
         display: flex;
         justify-content: start;
         align-items: center;
+    }
+
+    .bloco .autoria .texto-autoria {
+        margin-left: 0.4rem;
+    }
+
+    .bloco .titulo-comentario {
+        display: inline;
+    }
+
+    .bloco .comentario-em-si {
+        margin-bottom: 0.2rem;
+    }
+
+    .bloco .comentarios h3 {
+        background-color: var(--cor-fundo-2);
+    }
+
+    .bloco .comentario {
+        margin-bottom: 1.5rem;
     }
 
     .menuzinho-aberto > a {
@@ -149,7 +192,8 @@
 
     .texto {
         white-space: pre-line;
-        font-size: 18px;    
+        font-size: 1.1rem;
+        margin: 0 0.3rem 1.1rem;  
     }
 
     .arquivo {
@@ -176,5 +220,10 @@
         document.getElementById(`modal-${id}`).classList.remove('modal-aberto');
         document.getElementById(`botao-opcoes-${id}`).classList.remove('pressionado');
         document.getElementById(`menuzinho-${id}`).classList.remove('menuzinho-aberto');
+        document.getElementById(`confirmar-${id}`).style.display = 'none';
+    }
+
+    function confirmar(id) {
+        document.getElementById(`confirmar-${id}`).style.display = 'block';
     }
 </script>

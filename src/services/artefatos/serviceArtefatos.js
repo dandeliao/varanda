@@ -15,6 +15,11 @@ exports.verArtefato = async function(artefato_id) {
     return resposta;
 };
 
+exports.verComentarios = async function(artefato_id) {
+	const comentarios = await dataArtefatos.getComentarios(artefato_id);
+	return comentarios.rows;
+}
+
 exports.criarArtefato = async function(artefato) {
 	const artefatoCriado = await dataArtefatos.postArtefato(artefato);
 	return artefatoCriado.rows[0];

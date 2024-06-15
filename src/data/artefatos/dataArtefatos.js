@@ -34,6 +34,13 @@ exports.getArtefatosDoBicho = function(bichoCriadorId) {
 	);
 };
 
+exports.getComentarios = function(artefato_id) {
+	return pool.query(
+		'SELECT artefato_id FROM artefatos WHERE em_resposta_a_id = $1',
+		[artefato_id]
+	);
+};
+
 exports.postArtefato = function(artefato) {
 	return pool.query(
 		'INSERT INTO artefatos (varanda_id, pagina_vid, bicho_criador_id, em_resposta_a_id, nome_arquivo, extensao, descricao, titulo, texto, sensivel, respondivel, indexavel, mutirao, denuncia) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *',
