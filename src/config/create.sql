@@ -82,6 +82,7 @@ CREATE TABLE paginas(
     titulo          VARCHAR(32),
     html            TEXT,
     publica         BOOLEAN DEFAULT true,
+    postavel        BOOLEAN DEFAULT true,
     criacao         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
