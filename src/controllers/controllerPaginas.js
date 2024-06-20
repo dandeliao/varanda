@@ -6,16 +6,18 @@ const serviceComunidades								= require('../services/bichos/serviceComunidades
 const { schemaPutPagina, schemaPostPagina }				= require('../validations/validateVarandas');
 const { params, quemEstaAgindo, palavrasReservadas} 	= require('../utils/utilControllers');
 const { objetoRenderizavel, objetoRenderizavelContexto} = require('../utils/utilRenderizacao');
+const { sanitizarNomeDeArquivo }						= require('../utils/utilParsers');
 const { messages } = require('joi-translation-pt-br');
 require('dotenv').config();
 
 exports.getPagina = asyncHandler(async (req, res, next) => {
-    
     const { varanda_id, pagina_id } = params(req);
     let usuarie_id = await quemEstaAgindo(req);
 	let view = `varandas/${varanda_id}/${pagina_id}`;
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
-	obj_render = await objetoRenderizavelContexto(obj_render, 'pagina');
+	if (obj_render.usuarie.logade) {
+		obj_render = await objetoRenderizavelContexto(obj_render, 'pagina');
+	}
 	res.render(view, obj_render);
 
 });
@@ -23,9 +25,9 @@ exports.getPagina = asyncHandler(async (req, res, next) => {
 exports.postPagina = asyncHandler(async (req, res, next) => {
 	
 	const { titulo, html, publica } = req.body;
-	const varanda_id = req.params.bicho_id;
+	const { varanda_id } = params(req);
 
-	if (palavrasReservadas().includes(encodeURIComponent(titulo))) {
+	if (palavrasReservadas().includes(sanitizarNomeDeArquivo(titulo))) {
 		req.flash('erro', `Você não pode criar uma página com o título ${titulo}.`);
 		return res.redirect(303, `/${varanda_id}/nova_pagina/editar`);
 	}
@@ -56,7 +58,7 @@ exports.postPagina = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	const jaExiste = await servicePaginas.verPaginas(varanda_id, encodeURIComponent(titulo));
+	const jaExiste = await servicePaginas.verPaginas(varanda_id, sanitizarNomeDeArquivo(titulo));
 	if (jaExiste) {
 		req.flash('erro', `Já existe uma página com o título ${titulo}. Por favor, escolha outro título.`);
 		return res.redirect(303, `/${varanda_id}/nova_pagina/editar`);
@@ -127,6 +129,6 @@ exports.deletePagina = asyncHandler(async (req, res, next) => {
 
 	await servicePaginas.deletarPagina(varanda_id, pagina_id);
 
-	req.flash('aviso', 'A página foi removida com sucesso!');
+	/* req.flash('aviso', 'A página foi removida com sucesso!'); */
 	return res.redirect(303, `/${varanda_id}/futricar`);
 });

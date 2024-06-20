@@ -60,8 +60,10 @@ exports.dataHumana = (timestamp) => {
 exports.bichoSurpresa = async () => {
     const varandas = await serviceComunidades.verComunidades();
     let surpresa = varandas[Math.floor(Math.random()*varandas.length)];
-    while (surpresa.bicho_id === process.env.INSTANCIA_ID) {
-        surpresa = varandas[Math.floor(Math.random()*varandas.length)];
+    if (varandas.length > 1) {
+        while (surpresa.bicho_id === process.env.INSTANCIA_ID) {
+            surpresa = varandas[Math.floor(Math.random()*varandas.length)];
+        }
     }
     return surpresa;
 };

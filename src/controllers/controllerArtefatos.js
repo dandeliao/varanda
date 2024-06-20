@@ -4,8 +4,7 @@ const serviceArtefatos 				= require('../services/artefatos/serviceArtefatos');
 const serviceEdicoesArtefatos 		= require('../services/artefatos/serviceEdicoesArtefatos');
 const { schemaPostArtefato,
 	    schemaPutArtefato } 		= require('../validations/validateArtefatos');
-const { escaparHTML,
-		textoParaHtml }				= require('../utils/utilParsers');
+const { textoParaHtml }				= require('../utils/utilParsers');
 const { params, 
 		quemEstaAgindo, 
 		palavrasReservadas } 		= require('../utils/utilControllers');
@@ -101,8 +100,6 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 	const { varanda_id, pagina_id } = params(req);
 	const usuarie_id = await quemEstaAgindo(req);
 
-	console.log(req.file);
-
 	const artefato = {
 		varanda_id: 		varanda_id,
 		pagina_vid: 		`${varanda_id}/${pagina_id}`,
@@ -110,9 +107,9 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 		em_resposta_a_id: 	em_resposta_a 	? em_resposta_a 								: null,
 		nome_arquivo: 		req.file 		? separaExtensao(req.file.originalname)[0] 		: null,
 		extensao: 			req.file 		? separaExtensao(req.file.originalname)[1] 		: null,
-		descricao: 			descricao 		? await escaparHTML(descricao)					: '',
-		titulo: 			titulo 			? await escaparHTML(titulo) 					: '',
-		texto: 				texto			? await escaparHTML(texto)						: '',
+		descricao: 			descricao 		? descricao										: '',
+		titulo: 			titulo 			? titulo 										: '',
+		texto: 				texto			? texto											: '',
 		sensivel: 			sensivel 		? true 											: false,
 		respondivel: 		respondivel 	? true 											: false,
 		indexavel: 			indexavel 		? true 											: false,
@@ -135,16 +132,13 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	console.log(artefato);
-
 	if (req.file) {
-		console.log('tem arquivo');
 		await serviceArtefatos.subirArquivo(varanda_id, pagina_id, req.file);
 	}
 
 	const artefatoCriado = await serviceArtefatos.criarArtefato(artefato);
 	await serviceEdicoesArtefatos.criarEdicaoArtefato(artefatoCriado);
-	console.log(artefatoCriado);
+	console.log('artefatoCriado:', artefatoCriado);
 
 	let pagina_retorno = `/${artefatoCriado.pagina_vid}`;
 	if (artefato.em_resposta_a_id) {
@@ -218,6 +212,10 @@ exports.deleteArtefato = asyncHandler(async (req, res, next) => {
 
 	await serviceArtefatos.deletarArtefato(artefato_id);
 
+	let pagina_retorno = `/${artefato.pagina_vid}`;
+	if (artefato.em_resposta_a_id) {
+		pagina_retorno = `/${artefato.pagina_vid}/${artefato.em_resposta_a_id}`;
+	}
 	req.flash('aviso', 'O artefato foi removido com sucesso!');
-	return res.redirect(303, `/${varanda_id}/${pagina_id}`);
+	return res.redirect(303, pagina_retorno);
 });

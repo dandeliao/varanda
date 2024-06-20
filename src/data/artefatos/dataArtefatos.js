@@ -20,10 +20,12 @@ exports.getArtefatosNaVaranda = function(varandaId) {
 	);
 };
 
-exports.getArtefatosNaPagina = function(paginaVid) {
+exports.getArtefatosNaPagina = function(paginaVid, lote) {
+	const itensPorLote = 8;
+	const offset = (lote - 1) * itensPorLote;
 	return pool.query(
-		'SELECT * FROM artefatos WHERE pagina_vid = $1',
-		[paginaVid]
+		'SELECT * FROM artefatos WHERE pagina_vid = $1 AND em_resposta_a_id IS NULL ORDER BY criacao DESC LIMIT $2 OFFSET $3',
+		[paginaVid, itensPorLote, offset]
 	);
 };
 

@@ -8,12 +8,11 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 		let emoji = randomGenerators.geraEmoji();
 		dadosPaginaPadrao = {
 			titulo: 'inicio',
+			comunitaria: true,
 			html: `<div class="pagina">
-  <v-cartao-de-visita />
-  <br>
-  <div class="bloco">
-    <p>esta comunidade foi benzida com ${emoji} e está pronta para receber pessoas</p>
-  </div>
+  <v-cartao-de-visita/>
+  <v-paginas/>
+  <v-artefatos/>
 </div>`
 		};
 	} else {
@@ -22,8 +21,8 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 		dadosPaginaPadrao = {
 			titulo: 'inicio',
 			html: `<div class="pagina">
-  <v-cartao-de-visita />
-  <br>
+  <v-cartao-de-visita/>
+  <v-paginas/>
   <div class="bloco">
     <p>meu emoji da sorte é ${emoji}</p>
   </div>
@@ -34,3 +33,15 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 	return dadosPaginaPadrao;
 
 };
+
+exports.gerarPaginaTematica = async function (tema, comunitaria) {
+	return {
+		titulo: tema,
+		comunitaria: comunitaria,
+		html: `<v-cabecalho/>
+<div class="pagina">
+  <v-titulo/>
+  <v-artefatos/>
+</div>`
+	};
+}

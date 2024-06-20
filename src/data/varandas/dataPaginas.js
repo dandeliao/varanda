@@ -4,12 +4,12 @@ exports.getPaginas = function (varandaId, publica) {
 	let resultado;
 	if (publica !== null) {
 		resultado = pool.query(
-			'SELECT * FROM paginas WHERE varanda_id = $1 AND publica = $2',
+			'SELECT * FROM paginas WHERE varanda_id = $1 AND publica = $2 ORDER BY criacao ASC',
 			[varandaId, publica]
 		);
 	} else {
 		resultado = pool.query(
-			'SELECT * FROM paginas WHERE varanda_id = $1',
+			'SELECT * FROM paginas WHERE varanda_id = $1 ORDER BY criacao ASC',
 			[varandaId]
 		);
 	}

@@ -8,7 +8,6 @@ const servicePaginas							= require('../services/varandas/servicePaginas');
 const serviceEdicoes							= require('../services/varandas/serviceEdicoes');
 const { schemaPostComunidade, schemaPutBicho }	= require('../validations/validateBichos');
 const { params, quemEstaAgindo, palavrasReservadas } = require('../utils/utilControllers');
-const { escaparHTML }							= require('../utils/utilParsers');
 const { messages } 								= require('joi-translation-pt-br');
 require('dotenv').config();
 
@@ -28,11 +27,11 @@ exports.getVaranda = asyncHandler(async (req, res, next) => {
 exports.postVaranda = asyncHandler(async (req, res, next) => {
 
 	const usuarie_id = await quemEstaAgindo(req);
-	const arroba = req.body.arroba ? await escaparHTML(req.body.arroba) : null;
+	const arroba = req.body.arroba ? req.body.arroba : null;
 	const bicho = {
 		bicho_id:			arroba,
-		nome: 				req.body.nome 		? await escaparHTML(req.body.nome) 		: arroba,
-		descricao:			req.body.descricao	? await escaparHTML(req.body.descricao)	: '',
+		nome: 				req.body.nome 		? req.body.nome 		: arroba,
+		descricao:			req.body.descricao	? req.body.descricao	: '',
 		bicho_criador_id:	usuarie_id
 	};
 
@@ -79,8 +78,19 @@ exports.postVaranda = asyncHandler(async (req, res, next) => {
 	let paginaPadrao = {};
 	paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
 	paginaPadrao.pagina_vid = `${comunidade.bicho_id}/inicio`;
+	console.log('pagina padrão:', paginaPadrao);
 	const novaPagina = await servicePaginas.criarPagina(comunidade.bicho_id, paginaPadrao);
 	await serviceEdicoes.criarEdicao(comunidade.bicho_id, novaPagina, paginaPadrao.html);
+
+	// cria páginas temáticas
+	const temas = ['Geral','Off-topic'];
+	for (let tema of temas) {
+		let paginaTema = {}
+		paginaTema = await servicePaginasPadrao.gerarPaginaTematica(tema, comunitaria);
+		paginaTema.pagina_vid = `${comunidade.bicho_id}/${tema.toLowerCase()}`;
+		const novaPaginaTema = await servicePaginas.criarPagina(comunidade.bicho_id, paginaTema);
+		await serviceEdicoes.criarEdicao(comunidade.bicho_id, novaPaginaTema, paginaTema.html);
+	}
 
 	req.flash('aviso', 'Comunidade criada com sucesso!');
 	return res.redirect(303, `/${comunidade.bicho_id}`);
@@ -166,6 +176,6 @@ exports.deleteVaranda = asyncHandler(async (req, res, next) => {
 		}
 	}
 	await serviceBichos.deletarBicho(varanda_id);
-	res.flash('aviso', `@${varanda_id} deletada com sucesso.`);
+	req.flash('aviso', `@${varanda_id} deletada com sucesso.`);
 	res.redirect(303, `/`);
 });
