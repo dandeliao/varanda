@@ -22,7 +22,6 @@ exports.verPaginas = async function (varanda_id, pagina_id = null, publica = nul
 };
 
 exports.criarPagina = async function (varanda_id, dados) {
-	console.log('dados.html:', dados.html);
 	const pagina_id = dados.pagina_vid ? vidParaId(dados.pagina_vid) : encodeURIComponent(sanitizarNomeDeArquivo(dados.titulo));
 	const pagina = {
 		pagina_vid:	`${varanda_id}/${pagina_id}`,
@@ -30,7 +29,6 @@ exports.criarPagina = async function (varanda_id, dados) {
 		publica: 	dados.publica ? dados.publica : true,
 		html:		await sanitizarHtml(dados.html, dados.comunitaria)
 	}
-	console.log('HTML:', pagina.html);
 	let novaPagina = (await dataPaginas.createPagina(varanda_id, pagina)).rows[0];
 	novaPagina.handlebars = await htmlParaHtmx(novaPagina.html, varanda_id, pagina_id);
 	editarArquivoHandlebars(varanda_id, novaPagina);

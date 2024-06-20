@@ -350,9 +350,7 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     }
                     break;
                 case 'pagina':
-                    console.log(obj_render.pagina)
                     let pagina = await servicePaginas.verPaginas(obj_render.varanda.bicho_id, obj_render.pagina.pagina_id);
-                    console.log('pagina:', pagina);
                     dados.pagina = pagina;
                     break;
                 case 'preferencias':

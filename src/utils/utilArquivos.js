@@ -48,7 +48,6 @@ exports.deletarArquivoHandlebars = (varanda_id, nome_arquivo) => {
 
 exports.deletarArquivoArtefato = (artefato) => {
 	const caminho = path.join(path.resolve(__dirname, pastaUsuaries), 'artefatos', 'em_uso', artefato.pagina_vid, `${artefato.nome_arquivo}.${artefato.extensao}`);
-	console.log('caminho:', caminho);
 	fs.unlink(caminho, (erro) => {
 		if (erro) {
 			if (erro.code !== 'ENOENT') { // se o arquivo não foi encontrado, ignora

@@ -29,7 +29,6 @@ exports.deleteRelacao = asyncHandler(async (req, res, next) => {
 	const { varanda_id } = params(req);
 	const usuarie_id = await quemEstaAgindo(req);
 
-	console.log('entrou no controller delete relacao');
 	if (varanda_id === process.env.INSTANCIA_ID) {
 		req.flash('erro', `Você não pode deixar a varanda (*risada maligna*). Desculpe, não implementei ainda. Na verdade, não era pra ter essa opção na interface. Como você chegou aqui?`);
 		return res.redirect(303, `/${varanda_id}`);

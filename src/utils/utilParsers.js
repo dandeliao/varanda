@@ -167,7 +167,6 @@ exports.htmlParaHtmx = async (html, varanda_id, pagina_id) => {
         }
         // Se não foi encontrado atributo 'pagina', verifica se o bloco precisa do atributo. Se sim, insere o id da página atual
         if (!temPagina) {
-            console.log('não tem página (parser)');
             if (bloco) {
                 if (bloco.variaveis.includes('pagina')) {
                     if (p2 || p4 || p6 || p8 || bicho_inserido) {
@@ -178,7 +177,6 @@ exports.htmlParaHtmx = async (html, varanda_id, pagina_id) => {
                     divHtmx = divHtmx + `pagina=${encodeURIComponent(pagina_id)}`
                 }
             }
-            console.log(divHtmx);
         }
         // fecha div htmx
         divHtmx = divHtmx + `" hx-trigger="load" hx-swap="outerHTML"></div>`;

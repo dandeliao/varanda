@@ -78,7 +78,6 @@ exports.postVaranda = asyncHandler(async (req, res, next) => {
 	let paginaPadrao = {};
 	paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
 	paginaPadrao.pagina_vid = `${comunidade.bicho_id}/inicio`;
-	console.log('pagina padrão:', paginaPadrao);
 	const novaPagina = await servicePaginas.criarPagina(comunidade.bicho_id, paginaPadrao);
 	await serviceEdicoes.criarEdicao(comunidade.bicho_id, novaPagina, paginaPadrao.html);
 

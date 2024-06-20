@@ -138,7 +138,6 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 
 	const artefatoCriado = await serviceArtefatos.criarArtefato(artefato);
 	await serviceEdicoesArtefatos.criarEdicaoArtefato(artefatoCriado);
-	console.log('artefatoCriado:', artefatoCriado);
 
 	let pagina_retorno = `/${artefatoCriado.pagina_vid}`;
 	if (artefato.em_resposta_a_id) {
