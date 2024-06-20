@@ -1,5 +1,4 @@
 const dataBlocos = require('../../data/varandas/dataBlocos');
-const dataBlocosPagina = require('../../data/varandas/dataBlocosPagina');
 const path = require('path');
 const fs = require('fs');
 
@@ -18,12 +17,10 @@ exports.criarBlocos = async function () {
 	fs.readFile(caminho, 'utf8', async (err, data) => {
 		if (err) throw err;
 		let grupos = data.toString().split('\n\n');
-		console.log(grupos);
 		let bloco = {};
 		let linhas = [];
 		for (let i = 0; i < grupos.length; i++) {
 			linhas = grupos[i].toString().split('\n');
-			console.log(linhas);
 			let variaveis = '{}';
 			if (linhas[3]) { // variáveis do bloco
 				variaveis = `{${linhas[3].toString()}}`;
@@ -34,7 +31,6 @@ exports.criarBlocos = async function () {
 				comunitario: linhas[2] === 'true' ? true : false,
 				variaveis:	 variaveis 
 			};
-			console.log(bloco);
 			await dataBlocos.postBloco(bloco.bloco_id, bloco.descricao, bloco.comunitario, bloco.variaveis);
 		}
 		return;

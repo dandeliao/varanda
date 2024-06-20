@@ -1,31 +1,75 @@
+<div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
 <div class="pagina">
-    <header class="bloco">
-        <h1>Futricando @{{varanda.bicho_id}}</h1>
-        <div hx-get="/blocos/botao-voltar" hx-trigger="load"></div>
-    </header>
-    <br>
-    <div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}{{#if bloco.futricar}}&futricar=true{{/if}}" hx-trigger="load"></div>
-    <br>
-    <div class="bloco">
+    <div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}&futricar=true{{#if instancia}}&instancia=true{{/if}}" hx-trigger="load" hx-swap="outerHTML"></div>
+    <div class="bloco paginas">
         <h2>Páginas</h2>
         <ul class="lista-paginas">
+            {{#if bloco.relacao.editar}}
             {{#each bloco.paginas}}
                 <div class="item-paginas">
-                    <li>
+                    <li class="link-paginas">
                         <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
                     </li>
                     <div>
                         <button hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
-                        <button hx-delete="/{{this.pagina_vid}}" hx-target="body">Remover</button>
+                        <button onclick="confirmarRemoverPagina('{{this.titulo}}')">Remover</button>
+                        <dialog class="confirmacao" id="dialogo-remover-{{this.titulo}}">
+                            <p>Você quer mesmo remover a página {{this.titulo}}?</p>
+                            <br>
+                            <button hx-delete="/{{this.pagina_vid}}" hx-target="body" hx-push-url="true">Sim</button>
+                            <button onClick="fechatudo()">Não</button>
+                        </dialog>
                     </div>
                 </div>
                 <br>
             {{/each}}
+            <div id="modal" onclick="fechatudo()"></div>
+            {{/if}}
+            {{#if bloco.bicho.meuPerfil}}
+            {{#each bloco.paginas}}
+                <div class="item-paginas">
+                    <li class="link-paginas">
+                        <a href="/{{this.pagina_vid}}">/{{this.titulo}}</a>
+                    </li>
+                    <div>
+                        <button hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
+                        <button onclick="confirmarRemoverPagina('{{this.titulo}}')">Remover</button>
+                        <dialog class="confirmacao" id="dialogo-remover-{{this.titulo}}">
+                            <p>Você quer mesmo remover a página {{this.titulo}}?</p>
+                            <br>
+                            <button hx-delete="/{{this.pagina_vid}}" hx-target="body" hx-push-url="true">Sim</button>
+                            <button onClick="fechatudo()">Não</button>
+                        </dialog>
+                    </div>
+                </div>
+                <br>
+            {{/each}}
+            <div id="modal" onclick="fechatudo()"></div>
+            {{/if}}
+            {{#unless bloco.relacao.editar}}
+            {{#unless bloco.bicho.meuPerfil}}
+            {{#each bloco.paginas}}
+                <div class="link-paginas">
+                    <li>
+                        <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
+                    </li>
+                </div>
+                <br>
+            {{/each}}
+            {{/unless}}
+            {{/unless}}
         </ul>
+        <div>
+        {{#if bloco.bicho.comunitario}}
+        {{#if bloco.relacao.editar}}
         <button class="centralizado" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
-        <br>
+        {{/if}}
+        {{/if}}
+        {{#if bloco.bicho.meuPerfil}}
+        <button class="centralizado" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
+        {{/if}}
+        </div>
     </div>
-    <br>
     {{#if bloco.participantes}}
     <div class="bloco">
         <h2>Participantes</h2>
@@ -35,7 +79,6 @@
             {{/each}}
         </ul>
     </div>
-    <br>
     {{/if}}
     {{#if bloco.comunidades}}
     <div class="bloco">
@@ -46,23 +89,10 @@
             {{/each}}
         </ul>
     </div>
-    <br>
     {{/if}}
 </div>
 
 <style>
-
-    h1{
-        text-align: center;
-        align-self: stretch;
-    }
-
-    .pagina header {
-        display: flex;
-        justify-content: space-between;
-        padding: 0 1rem;
-        align-items: center;
-    }
 
     .lista-bichos {
         display: flex;
@@ -70,21 +100,41 @@
         flex-wrap: wrap;
         padding: 0;
         margin: 0 auto;
+        list-style: none;
+    }
+
+    .paginas {
+        flex: 25%;
+        align-self: stretch;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .lista-paginas {
         width: 100%;
-    }
-
-    .item-bicho {
+        margin: 0;
+        padding: 0.5rem;
         list-style: none;
     }
 
+    .item-bicho {
+    }
+
     .item-paginas {
-            display: flex;
-            justify-content: start;
-            align-items: center;
-            gap: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .link-paginas {
+        display: block;
+        text-align: left;
+        width: 40%;
+        height: auto;
+        word-wrap: break-word;
     }
 
     .largura-fixa {
@@ -100,6 +150,35 @@
         font-size: 0.8rem;
     }
 
+    .confirmacao, .modal {
+        display: none;
+    }
+    .confirmacao-aberta {
+        display: block;
+        z-index: 400;
+        position: absolute;
+        left: 50%;
+        top: 50vh;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        background-color: var(--cor-principal);
+        color: var(--cor-fonte-barra);
+        padding: 2rem;
+        border-radius: 5px;
+    }
+     .modal-aberto {
+        display: block;
+        position: fixed;
+        z-index: 300;
+        left: 0;
+        top: 0;
+        width: 100vw; /* Full width */
+        height: 100vh; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    }
+
     @media screen and (max-width: 859px) {
         .item-paginas {
             display: flex;
@@ -109,3 +188,17 @@
     }
 
 </style>
+
+<script>
+    function confirmarRemoverPagina(titulo) {
+        document.getElementById('modal').classList.add('modal-aberto');
+        document.getElementById(`dialogo-remover-${titulo}`).classList.add('confirmacao-aberta');
+    }
+    function fechatudo() {
+        let confirmacoes = document.getElementsByClassName('confirmacao');
+        for (let i = 0; i < confirmacoes.length; i++) {
+            confirmacoes[i].classList.remove('confirmacao-aberta');
+        }
+        document.getElementById('modal').classList.remove('modal-aberto');
+    }
+</script>

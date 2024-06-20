@@ -20,10 +20,12 @@ exports.getArtefatosNaVaranda = function(varandaId) {
 	);
 };
 
-exports.getArtefatosNaPagina = function(paginaVid) {
+exports.getArtefatosNaPagina = function(paginaVid, lote) {
+	const itensPorLote = 8;
+	const offset = (lote - 1) * itensPorLote;
 	return pool.query(
-		'SELECT * FROM artefatos WHERE pagina_vid = $1',
-		[paginaVid]
+		'SELECT * FROM artefatos WHERE pagina_vid = $1 AND em_resposta_a_id IS NULL ORDER BY criacao DESC LIMIT $2 OFFSET $3',
+		[paginaVid, itensPorLote, offset]
 	);
 };
 
@@ -31,6 +33,13 @@ exports.getArtefatosDoBicho = function(bichoCriadorId) {
 	return pool.query(
 		'SELECT * FROM artefatos WHERE bicho_criador_id = $1',
 		[bichoCriadorId]
+	);
+};
+
+exports.getComentarios = function(artefato_id) {
+	return pool.query(
+		'SELECT artefato_id FROM artefatos WHERE em_resposta_a_id = $1',
+		[artefato_id]
 	);
 };
 
@@ -50,7 +59,7 @@ exports.putArtefato = function(artefato) {
 
 exports.deleteArtefato = function(artefatoId) {
 	return pool.query(
-		'DELETE FROM artefatos WHERE artefato_id = $1',
+		'DELETE FROM artefatos WHERE artefato_id = $1 RETURNING *',
 		[artefatoId]
 	);
 };

@@ -12,8 +12,7 @@ exports.getBloco = asyncHandler(async (req, res, next) => {
     const bloco_id = req.params.bloco_id;
     const view = `blocos/${bloco_id}`;
 	const usuarie_id = await quemEstaAgindo(req);
-
-    let varanda_id 		= req.query.varanda ? req.query.varanda : null;
+    let varanda_id 		= req.query.varanda ? req.query.varanda : (req.query.bicho ? req.query.bicho : null);
 	let pagina_id		= req.query.pagina ? req.query.pagina : null;
 	const artefato_id 	= req.query.artefato ? req.query.artefato : null;
 	

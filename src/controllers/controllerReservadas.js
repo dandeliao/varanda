@@ -10,8 +10,7 @@ const servicePaginasPadrao								= require('../services/varandas/servicePaginas
 const { params, quemEstaAgindo, palavrasReservadas } 	= require('../utils/utilControllers');
 const { objetoRenderizavel, objetoRenderizavelBloco, objetoRenderizavelContexto}	= require('../utils/utilRenderizacao');
 const { vidParaId }										= require('../utils/utilParsers');
-const { schemaPutAvatar, schemaPutFundo,
-		schemaPutPreferencias, schemaPostComunidade }	= require('../validations/validateBichos');
+const { schemaPutPreferencias, schemaPostComunidade }	= require('../validations/validateBichos');
 const { messages } = require('joi-translation-pt-br');
 const fs = require('fs');
 const path = require('path');
@@ -74,20 +73,41 @@ exports.getEditarPreferencias = asyncHandler(async (req, res, next) => {
 	res.render(view, obj_render);
 });
 
+exports.getClonar = asyncHandler(async (req, res, next) => {
+	const { varanda_id } = params(req);
+	const pagina_id = 'clonar';
+	let view = 'paginas/clonar';
+	const usuarie_id = await quemEstaAgindo(req);
+
+	const comunidade = await serviceComunidades.verComunidade(varanda_id);
+	if (!comunidade) {
+		req.flash('erro', 'Não é possível clonar páginas pessoais');
+		res.redirect(`/${varanda_id}/futricar`);
+	}
+
+	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
+	obj_render = await objetoRenderizavelContexto(obj_render, 'clonar');
+	obj_render = await objetoRenderizavelBloco(obj_render, ['paginas']);
+	res.render(view, obj_render);
+});
+
 exports.getFutricarVaranda = asyncHandler(async (req, res, next) => {
-	const varanda_id = req.params.bicho_id;
+	const { varanda_id } = params(req);
 	const pagina_id = 'futricar';
     let view = 'paginas/futricar';
 	const usuarie_id = await quemEstaAgindo(req);
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
 	obj_render = await objetoRenderizavelContexto(obj_render, 'bicho');
-	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho', 'paginas']);
+	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho', 'paginas', 'relacao']);
 	const comunidades = await serviceRelacoes.verComunidadesDoBicho(varanda_id);
 	const participantes = await serviceRelacoes.verBichosNaComunidade(varanda_id);
 	obj_render.bloco.futricar = true;
 	obj_render.bloco.comunidades = comunidades;
 	obj_render.bloco.participantes = participantes;
+	if (varanda_id === process.env.INSTANCIA_ID) {
+		obj_render.instancia = true;
+	}
 	res.render(view, obj_render);
 });
 
@@ -96,8 +116,9 @@ exports.getCriarComunidade = asyncHandler(async (req, res, next) => {
 	const usuarie_id = await quemEstaAgindo(req);
 
 	let obj_render = await objetoRenderizavel(req, res, 'nova_comunidade', 'criar-comunidade', null, usuarie_id);
-	obj_render.metodo = 'post';	
+	obj_render.metodo = 'post';
 	obj_render.nova_comunidade = true;
+	obj_render = await objetoRenderizavelContexto(obj_render, 'editar-bicho');
 
 	res.render(view, obj_render);
 });
@@ -116,6 +137,7 @@ exports.getEditarBicho = asyncHandler(async (req, res, next) => {
 	}
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
+	obj_render = await objetoRenderizavelContexto(obj_render, 'editar-bicho');
 	obj_render.query.bicho = varanda_id;
 	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho']);
 	const bicho = await serviceBichos.verBicho(varanda_id);
@@ -141,12 +163,9 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
 		if (!permissoes || !permissoes.editar) {
 			req.flash('erro', `Você não pode editar ${varanda_id}.`);
-			let pagina_redirect = pagina_id;
-			if (pagina_id === 'nova_pagina') pagina_redirect = 'inicio';
-			return res.redirect(`/${varanda_id}/${pagina_redirect}`);
+			return res.redirect(`/${varanda_id}/futricar`);
 		}
 	}
-	console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
 	if (pagina_id !== 'nova_pagina'){
@@ -155,6 +174,7 @@ exports.getEditarPagina = asyncHandler(async (req, res, next) => {
 		obj_render.nova_pagina = true;
 		obj_render.metodo = 'post';
 	}
+	obj_render = await objetoRenderizavelContexto(obj_render, 'editar-pagina');
 
 	res.render(view, obj_render);
 
@@ -176,98 +196,6 @@ exports.getErro = asyncHandler(async (req, res, next) => {
 /* ---
 	PUT
 */
-
-exports.putAvatar = asyncHandler(async (req, res, next) => {
-	const arroba = req.params.bicho_id;
-	let avatar = {
-		descricao_avatar: req.body.descricao_avatar ? req.body.descricao_avatar : ''
-	}
-	const {error} = schemaPutAvatar.validate(avatar, { messages });
-	if (error) {
-		req.flash('erro', `Erro ao validar as informações. Detalhes:${error.details[0].message}`);
-		return res.redirect(303, `/${arroba}`);
-	}
-
-	const usuarie_id = await quemEstaAgindo(req);
-
-	if (usuarie_id !== arroba) {
-		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, arroba);
-		if (!permissoes.representar) {
-			req.flash('erro', `Você não pode editar os dados de @${arroba}`);
-			return res.redirect(303, `/${arroba}`);
-		}
-	}
-	const bicho = await serviceBichos.verBicho(arroba);
-	if (!bicho) {
-		req.flash('erro', `Bicho @${req.params.arroba} não encontrado.`);
-		return res.redirect(303, '/');
-	}
-
-	let dadosNovos = {descricao_avatar: avatar.descricao_avatar}
-	if (req.file) {
-		const dadosArquivo = await serviceBichos.subirAvatar(arroba, req.file);
-		if (!dadosArquivo) {
-			req.flash('erro', 'Houve um erro ao carregar o arquivo. Por favor, tente novamente.');
-			return res.redirect(303, `/${arroba}`);
-		}
-		dadosNovos = {avatar: dadosArquivo.nome, descricao_avatar: avatar.descricao_avatar};
-	}
-	
-	const bichoEditado = await serviceBichos.editarBicho(arroba, dadosNovos);
-
-	let view = `paginas/editar-bicho`;
-	let obj_render = await objetoRenderizavel(req, res, arroba, 'editar-bicho', null, usuarie_id, false);
-	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho']);
-	obj_render.bloco.bicho = bichoEditado;
-	res.render(view, obj_render);
-
-});
-
-exports.putFundo = asyncHandler(async (req, res, next) => {
-	const arroba = req.params.bicho_id;
-	let fundo = {
-		descricao_fundo: req.body.descricao_fundo ? req.body.descricao_fundo : ''
-	}
-	const {error} = schemaPutFundo.validate(fundo, { messages });
-	if (error) {
-		req.flash('erro', `Erro ao validar as informações. Detalhes:${error.details[0].message}`);
-		return res.redirect(303, `/${arroba}`);
-	}
-
-	const usuarie_id = await quemEstaAgindo(req);
-
-	if (usuarie_id !== arroba) {
-		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, arroba);
-		if (!permissoes.representar) {
-			req.flash('erro', `Você não pode editar os dados de @${arroba}.`);
-			return res.redirect(303, `/${arroba}`);
-		}
-	}
-	const bicho = await serviceBichos.verBicho(arroba);
-	if (!bicho) {
-		req.flash('erro', `Bicho @${req.params.arroba} não encontrado.`);
-		return res.redirect(303, '/');
-	}
-
-
-	let dadosNovos = {descricao_fundo: fundo.descricao_fundo}
-	if (req.file) {
-		const dadosArquivo = await serviceBichos.subirFundo(arroba, req.file);
-		if (!dadosArquivo) {
-			req.flash('erro', 'Houve um erro ao carregar o arquivo. Por favor, tente novamente.');
-			return res.redirect(303, `/${arroba}`);
-		}
-		dadosNovos = {fundo: dadosArquivo.nome, descricao_fundo: fundo.descricao_fundo};
-	}
-	
-	const bichoEditado = await serviceBichos.editarBicho(arroba, dadosNovos);
-	
-	let view = `paginas/editar-bicho`;
-	let obj_render = await objetoRenderizavel(req, res, arroba, 'editar-bicho', null, usuarie_id, false);
-	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho']);
-	obj_render.bloco.bicho = bichoEditado;
-	res.render(view, obj_render);
-});
 
 exports.putPreferencias = asyncHandler(async (req, res, next) => {
 	
@@ -298,8 +226,7 @@ exports.putPreferencias = asyncHandler(async (req, res, next) => {
 
 	await servicePreferencias.editarPreferencias(arroba, preferencias);
 	
-	req.flash('aviso', 'As preferências foram atualizadas com sucesso!');
-	return res.redirect(303, `/${arroba}/editar-preferencias`);
+	return res.redirect(303, `/${arroba}/futricar`);
 });
 
 /* ---

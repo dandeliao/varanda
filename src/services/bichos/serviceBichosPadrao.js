@@ -11,7 +11,7 @@ exports.sortearBichoPadrao = async function () {
 
 exports.criarBichosPadrao = async function () {
 	for (let i = 0; i < process.env.NUMERO_DE_BICHOS_PADRAO; i++) {
-		await dataBichosPadrao.postBichoPadrao(`${i}.jpg`, 'ilustração de um bicho', `${i}.jpg`, 'ilustração de padrão repetido');
+		await dataBichosPadrao.postBichoPadrao(`${i + 1}.jpg`, 'ilustração de um gato', `${i + 1}.jpg`, 'ilustração de padrão repetido');
 	}
 	return;
 }

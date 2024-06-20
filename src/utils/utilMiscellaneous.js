@@ -37,17 +37,22 @@ exports.astroDaSemana = (dia) => {
 };
 
 exports.dataHumana = (timestamp) => {
+    let humana;
     const data = new Date(timestamp);
-    const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    };
-    let humana = data.toLocaleDateString('pt-BR', options);
-    let diaDaSemana = humana.split(',')[0];
-    diaDaSemana = this.astroDaSemana(diaDaSemana);
-    humana = diaDaSemana + ',' + humana.split(',')[1];
+    if (!isNaN(data)) {
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        };
+        humana = data.toLocaleDateString('pt-BR', options);
+        let diaDaSemana = humana.split(',')[0];
+        diaDaSemana = this.astroDaSemana(diaDaSemana);
+        humana = diaDaSemana + ',' + humana.split(',')[1];
+    } else {
+        humana = timestamp;
+    }
 
     return humana;
 };
@@ -55,8 +60,10 @@ exports.dataHumana = (timestamp) => {
 exports.bichoSurpresa = async () => {
     const varandas = await serviceComunidades.verComunidades();
     let surpresa = varandas[Math.floor(Math.random()*varandas.length)];
-    while (surpresa.bicho_id === process.env.INSTANCIA_ID) {
-        surpresa = varandas[Math.floor(Math.random()*varandas.length)];
+    if (varandas.length > 1) {
+        while (surpresa.bicho_id === process.env.INSTANCIA_ID) {
+            surpresa = varandas[Math.floor(Math.random()*varandas.length)];
+        }
     }
     return surpresa;
 };

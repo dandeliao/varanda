@@ -8,7 +8,7 @@ const servicePaginas							= require('../services/varandas/servicePaginas');
 const serviceEdicoes							= require('../services/varandas/serviceEdicoes');
 const { schemaPostComunidade, schemaPutBicho }	= require('../validations/validateBichos');
 const { params, quemEstaAgindo, palavrasReservadas } = require('../utils/utilControllers');
-const { messages } = require('joi-translation-pt-br');
+const { messages } 								= require('joi-translation-pt-br');
 require('dotenv').config();
 
 exports.getVaranda = asyncHandler(async (req, res, next) => {
@@ -17,32 +17,27 @@ exports.getVaranda = asyncHandler(async (req, res, next) => {
 	let redirectPage = `/${varanda_id}/inicio`;
 	if (varanda_id === process.env.INSTANCIA_ID) {
 		varandaExiste = await serviceBichos.verBicho(varanda_id);
-		console.log(varandaExiste);
 		if (!varandaExiste) {
 			redirectPage = '/autenticacao/cadastro';
 		}
 	}
 	return res.redirect(redirectPage);
-	/* const view = `varandas/${varanda_id}/inicio`
-	const usuarie_id = await quemEstaAgindo(req);
-	const obj_render = await objetoRenderizavel(req, res, varanda_id, 'inicio', usuarie_id);
-	res.render(view, obj_render); */
-	
 });
 
 exports.postVaranda = asyncHandler(async (req, res, next) => {
 
 	const usuarie_id = await quemEstaAgindo(req);
-
+	const arroba = req.body.arroba ? req.body.arroba : null;
 	const bicho = {
-		bicho_id:			req.body.bicho_id,
-		nome: 				req.body.nome ? req.body.nome : req.body.bicho_id,
-		descricao:			req.body.descricao,
+		bicho_id:			arroba,
+		nome: 				req.body.nome 		? req.body.nome 		: arroba,
+		descricao:			req.body.descricao	? req.body.descricao	: '',
 		bicho_criador_id:	usuarie_id
-	}
+	};
 
 	const { error, value } = schemaPostComunidade.validate(bicho, { messages });
 	if (error) {
+		console.log(error.details);
 		req.flash('erro', `Erro ao validar as informações da nova comunidade. Detalhes: ${error.details[0].message}`);
 		return res.redirect(303, '/criar-comunidade');
 	}
@@ -83,8 +78,19 @@ exports.postVaranda = asyncHandler(async (req, res, next) => {
 	let paginaPadrao = {};
 	paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
 	paginaPadrao.pagina_vid = `${comunidade.bicho_id}/inicio`;
+	console.log('pagina padrão:', paginaPadrao);
 	const novaPagina = await servicePaginas.criarPagina(comunidade.bicho_id, paginaPadrao);
 	await serviceEdicoes.criarEdicao(comunidade.bicho_id, novaPagina, paginaPadrao.html);
+
+	// cria páginas temáticas
+	const temas = ['Geral','Off-topic'];
+	for (let tema of temas) {
+		let paginaTema = {}
+		paginaTema = await servicePaginasPadrao.gerarPaginaTematica(tema, comunitaria);
+		paginaTema.pagina_vid = `${comunidade.bicho_id}/${tema.toLowerCase()}`;
+		const novaPaginaTema = await servicePaginas.criarPagina(comunidade.bicho_id, paginaTema);
+		await serviceEdicoes.criarEdicao(comunidade.bicho_id, novaPaginaTema, paginaTema.html);
+	}
 
 	req.flash('aviso', 'Comunidade criada com sucesso!');
 	return res.redirect(303, `/${comunidade.bicho_id}`);
@@ -93,6 +99,9 @@ exports.postVaranda = asyncHandler(async (req, res, next) => {
 
 exports.putVaranda = asyncHandler(async (req, res, next) => {
     
+	const arquivo_avatar = req.files.avatar ? req.files.avatar[0] : null;
+	const arquivo_fundo  = req.files.fundo  ? req.files.fundo[0]  : null;
+
 	const { varanda_id, pagina_id } = params(req);
 	let bichoOriginal = await serviceBichos.verBicho(varanda_id);
 	const comunidade = await serviceComunidades.verComunidade(varanda_id);
@@ -101,11 +110,13 @@ exports.putVaranda = asyncHandler(async (req, res, next) => {
 		bichoOriginal.participacao_com_convite = comunidade.participacao_com_convite
 	}
 
-	const bicho = {
-		nome: 						req.body.nome ? req.body.nome : bichoOriginal.nome,
-		descricao:					req.body.descricao ? req.body.descricao : bichoOriginal.descricao,
-		participacao_livre: 		req.body.participacao_livre !== undefined ? true : false,
-		participacao_com_convite:	req.body.participacao_com_convite ? true : false
+	let bicho = {
+		nome: 						req.body.nome 								? req.body.nome 			: bichoOriginal.nome,
+		descricao:					req.body.descricao 							? req.body.descricao 		: bichoOriginal.descricao,
+		descricao_avatar:			req.body.descricao_avatar 					? req.body.descricao_avatar : '',
+		descricao_fundo:			req.body.descricao_fundo 					? req.body.descricao_fundo 	: '',
+		participacao_livre: 		req.body.participacao_livre !== undefined 	? true 						: false,
+		participacao_com_convite:	req.body.participacao_com_convite 			? true 						: false
 	}
 
 	const { error, value } = schemaPutBicho.validate(bicho, { messages });
@@ -124,10 +135,26 @@ exports.putVaranda = asyncHandler(async (req, res, next) => {
 		}
 	}
 
-	await serviceBichos.editarBicho(varanda_id, bicho);
-	if (comunidade) {
-		await serviceComunidades.editarComunidade(varanda_id, bicho);
+	if (arquivo_avatar) {
+		let dadosArquivo = await serviceBichos.subirAvatar(varanda_id, arquivo_avatar);
+		if (!dadosArquivo) {
+			req.flash('erro', 'Houve um erro ao carregar o arquivo. Por favor, tente novamente.');
+			return res.redirect(303, `/${varanda_id}/editar-bicho`);
+		}
+		bicho.avatar = dadosArquivo.nome;
 	}
+	
+	if (arquivo_fundo) {
+		let dadosArquivo = await serviceBichos.subirFundo(varanda_id, arquivo_fundo);
+		if (!dadosArquivo) {
+			req.flash('erro', 'Houve um erro ao carregar o arquivo. Por favor, tente novamente.');
+			return res.redirect(303, `/${varanda_id}/editar-bicho`);
+		}
+		bicho.fundo = dadosArquivo.nome;
+	}
+
+	await serviceBichos.editarBicho(varanda_id, bicho);
+	if (comunidade) await serviceComunidades.editarComunidade(varanda_id, bicho);
 
 	req.flash('aviso', 'O perfil foi editado com sucesso!');
 	return res.redirect(303, `/${varanda_id}`);
@@ -149,6 +176,6 @@ exports.deleteVaranda = asyncHandler(async (req, res, next) => {
 		}
 	}
 	await serviceBichos.deletarBicho(varanda_id);
-	res.flash('aviso', `@${varanda_id} deletada com sucesso.`);
+	req.flash('aviso', `@${varanda_id} deletada com sucesso.`);
 	res.redirect(303, `/`);
 });

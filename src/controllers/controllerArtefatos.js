@@ -1,21 +1,22 @@
-const asyncHandler 				= require('express-async-handler');
-const serviceRelacoes 			= require('../services/bichos/serviceRelacoes');
-const serviceArtefatos 			= require('../services/artefatos/serviceArtefatos');
-const serviceEdicoesArtefatos 	= require('../services/artefatos/serviceEdicoesArtefatos');
+const asyncHandler 					= require('express-async-handler');
+const serviceRelacoes 				= require('../services/bichos/serviceRelacoes');
+const serviceArtefatos 				= require('../services/artefatos/serviceArtefatos');
+const serviceEdicoesArtefatos 		= require('../services/artefatos/serviceEdicoesArtefatos');
 const { schemaPostArtefato,
-	    schemaPutArtefato } 	= require('../validations/validateArtefatos');
-const { sanitizarArtefato } 	= require('../utils/utilParsers');
+	    schemaPutArtefato } 		= require('../validations/validateArtefatos');
+const { textoParaHtml }				= require('../utils/utilParsers');
 const { params, 
 		quemEstaAgindo, 
-		palavrasReservadas } 	= require('../utils/utilControllers');
+		palavrasReservadas } 		= require('../utils/utilControllers');
 const { objetoRenderizavel, 
-		objetoRenderizavelBloco}= require('../utils/utilRenderizacao');
-const { messages } 				= require('joi-translation-pt-br');
-const { randomUUID } 			= require('crypto');
+		objetoRenderizavelBloco,
+		objetoRenderizavelContexto}	= require('../utils/utilRenderizacao');
+const { messages } 					= require('joi-translation-pt-br');
+const { randomUUID } 				= require('crypto');
+const { separaExtensao } 			= require('../utils/utilArquivos');
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
-
-// captura links http(s)://endereco.com, categorias #artes, arrobas @varanda, páginas @varanda/blog-novo e artefatos @varanda/blog-novo/2024-03-10_16-20-59_676543-03
-// /<[^>]*>|\[[^][]*]\([^()]*\)|(https?:\/\/[^\s"'<>]*)|#(\w+(?:\S)*)|@(\w+(?:^(?!\/).*$)*)(?:\/(\w+(?:\S)*))*/g
 
 exports.getArtefato = asyncHandler(async (req, res, next) => {
     
@@ -27,10 +28,32 @@ exports.getArtefato = asyncHandler(async (req, res, next) => {
 	if (obj_render.artefato === null) {
 		console.log('obj_render.artefato é null');
 		//view = 'blocos/tapume';
+	} else {
+		obj_render.artefato.texto = await textoParaHtml(obj_render.artefato.texto);
+		obj_render = await objetoRenderizavelContexto(obj_render, 'artefato');
 	}
 
 	res.render(view, obj_render);
 });
+
+exports.getArquivo = asyncHandler(async (req, res, next) => {
+    const { varanda_id, pagina_id, artefato_id } = params(req);
+	const artefato = await serviceArtefatos.verArtefato(artefato_id);
+	if (artefato) {
+		if (artefato.pagina_vid !== `${varanda_id}/${pagina_id}`) {
+			artefato = null;
+		}
+	}
+	
+	if (!artefato) {
+		req.flash('erro', `Artefato @${varanda_id}/${pagina_id}/${artefato_id} não encontrado.`);
+		return res.redirect(`/${varanda_id}/${pagina_id}`);
+	}
+
+	const arquivo = path.join(path.resolve(__dirname, '../../'), 'user_content', 'artefatos', 'em_uso', varanda_id, pagina_id, `${artefato.nome_arquivo}.${artefato.extensao}`);
+	res.sendFile(arquivo);
+});
+
 
 exports.getEditarArtefato = asyncHandler(async (req, res, next) => {
 	
@@ -66,31 +89,32 @@ exports.getEditarArtefato = asyncHandler(async (req, res, next) => {
 	} else {
 		obj_render.metodo = 'put';
 	}
+	obj_render = await objetoRenderizavelContexto(obj_render, 'editar-artefato');
 
 	res.render(view, obj_render);
 });
 
 exports.postArtefato = asyncHandler(async (req, res, next) => {
 
-	const { titulo, texto, sensivel, respondivel, indexavel, mutirao, em_resposta_a, denuncia } = req.body;
+	const { titulo, texto, sensivel, respondivel, indexavel, mutirao, em_resposta_a, denuncia, descricao } = req.body;
 	const { varanda_id, pagina_id } = params(req);
 	const usuarie_id = await quemEstaAgindo(req);
 
-	let artefato = {
-		varanda_id: varanda_id,
-		pagina_vid: `${varanda_id}/${pagina_id}`,
-		bicho_criador_id: usuarie_id,
-		em_resposta_a_id: em_resposta_a ? em_resposta_a : null,
-		nome_arquivo: null, // mudar
-		extensao: null, // mudar
-		descricao: null, // mudar
-		titulo: titulo ? await sanitizarArtefato(titulo) : '',
-		texto: texto ? await sanitizarArtefato(texto) : '',
-		sensivel: sensivel ? true : false,
-		respondivel: respondivel ? true : false,
-		indexavel: indexavel ? true : false,
-		mutirao: mutirao ? true : false,
-		denuncia: denuncia ? true : false
+	const artefato = {
+		varanda_id: 		varanda_id,
+		pagina_vid: 		`${varanda_id}/${pagina_id}`,
+		bicho_criador_id: 	usuarie_id,
+		em_resposta_a_id: 	em_resposta_a 	? em_resposta_a 								: null,
+		nome_arquivo: 		req.file 		? separaExtensao(req.file.originalname)[0] 		: null,
+		extensao: 			req.file 		? separaExtensao(req.file.originalname)[1] 		: null,
+		descricao: 			descricao 		? descricao										: '',
+		titulo: 			titulo 			? titulo 										: '',
+		texto: 				texto			? texto											: '',
+		sensivel: 			sensivel 		? true 											: false,
+		respondivel: 		respondivel 	? true 											: false,
+		indexavel: 			indexavel 		? true 											: false,
+		mutirao: 			mutirao 		? true 											: false,
+		denuncia: 			denuncia 		? true 											: false
 	}
 
 	const { error } = schemaPostArtefato.validate(artefato, { messages });
@@ -108,12 +132,20 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 		}
 	}
 
+	if (req.file) {
+		await serviceArtefatos.subirArquivo(varanda_id, pagina_id, req.file);
+	}
+
 	const artefatoCriado = await serviceArtefatos.criarArtefato(artefato);
 	await serviceEdicoesArtefatos.criarEdicaoArtefato(artefatoCriado);
-	console.log(artefatoCriado);
+	console.log('artefatoCriado:', artefatoCriado);
 
+	let pagina_retorno = `/${artefatoCriado.pagina_vid}`;
+	if (artefato.em_resposta_a_id) {
+		pagina_retorno = `/${artefato.pagina_vid}/${artefato.em_resposta_a_id}`;
+	}
 	req.flash('aviso', 'O artefato foi criado com sucesso!');
-	return res.redirect(303, `/${artefatoCriado.pagina_vid}`);
+	return res.redirect(303, pagina_retorno);
 
 });
 
@@ -155,20 +187,35 @@ exports.putArtefato = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteArtefato = asyncHandler(async (req, res, next) => {
-	/* const { varanda_id, pagina_id } = params(req);
+	const { varanda_id, pagina_id, artefato_id } = params(req);
 	
 	let usuarie_id = await quemEstaAgindo(req);
+	let artefato = await serviceArtefatos.verArtefato(artefato_id);
+	if (artefato) {
+		if (artefato.pagina_vid !== `${varanda_id}/${pagina_id}`) {
+			artefato = null;
+		}
+	}
 
-	if (usuarie_id !== varanda_id) {
-		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
-		if (!permissoes || !permissoes.editar || !permissoes.moderar) {
-			req.flash('erro', `Você não pode apagar páginas de ${varanda_id}.`);
+	if (!artefato) {
+		req.flash('erro', `Artefato @${varanda_id}/${pagina_id}/${artefato_id} não encontrado.`);
+		return res.redirect(`/${varanda_id}/${pagina_id}`);
+	}
+
+	if (usuarie_id !== artefato.bicho_criador_id) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, artefato.varanda_id);
+		if (!permissoes || !permissoes.moderar) {
+			req.flash('erro', `Você não pode apagar artefatos de ${varanda_id}.`);
 			return res.redirect(303, `/${varanda_id}/${pagina_id}`);
 		}
 	}
 
-	await servicePaginas.deletarPagina(varanda_id, pagina_id);
+	await serviceArtefatos.deletarArtefato(artefato_id);
 
-	req.flash('aviso', 'A página foi removida com sucesso!');
-	return res.redirect(303, `/${varanda_id}/futricar`); */
+	let pagina_retorno = `/${artefato.pagina_vid}`;
+	if (artefato.em_resposta_a_id) {
+		pagina_retorno = `/${artefato.pagina_vid}/${artefato.em_resposta_a_id}`;
+	}
+	req.flash('aviso', 'O artefato foi removido com sucesso!');
+	return res.redirect(303, pagina_retorno);
 });

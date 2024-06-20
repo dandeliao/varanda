@@ -75,19 +75,31 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 		senha: req.body.senha
 	};
 
-	// se não é a primeira pessoa a se cadastrar, verifica o convite
+	// verifica se é a primeira pessoa a se cadastrar
 	const bichos_anteriores = await serviceBichos.verBichos();
 	if (bichos_anteriores.length > 0) {
-		if (req.body.convite_id) {
-			const convite = await serviceConvites.verConvite(req.body.convite_id);
-			if (!convite || convite.comunidade_id !== process.env.INSTANCIA_ID) {
-				req.flash ('erro', `O cadastro falhou. O seu convite para ${process.env.INSTANCIA_ID} não é válido ou já foi usado.`);
+		// se não é a primeira pessoa, verifica se o cadastro está aberto e se precisa de convite.
+			// participacao_livre 								<-- pode entrar sem convite
+			// !participacao_livre && participacao_com_convite 	<-- pode entrar com convite válido
+			// !participacao_livre && !participacao_com_convite <-- não pode entrar
+		const instancia = await serviceComunidades.verComunidade(process.env.INSTANCIA_ID);
+		if (!instancia.participacao_livre) {
+			if (instancia.participacao_com_convite) {
+				if (req.body.convite_id) {
+					const convite = await serviceConvites.verConvite(req.body.convite_id);
+					if (!convite || convite.comunidade_id !== process.env.INSTANCIA_ID) {
+						req.flash ('erro', `O cadastro falhou. O seu convite para ${process.env.INSTANCIA_ID} não é válido ou já foi usado.`);
+						return res.redirect(303, '/');
+					}
+					await serviceConvites.deletarConvite(req.body.convite_id);
+				} else {
+					req.flash('erro', 'O cadastro falhou. Você precisa de um convite para se cadastrar.');
+					return res.redirect(303, '/');
+				}
+			} else {
+				req.flash('erro', 'A instância está fechada para cadastros neste momento.');
 				return res.redirect(303, '/');
 			}
-			await serviceConvites.deletarConvite(req.body.convite_id);
-		} else {
-			req.flash('erro', 'O cadastro falhou. Você precisa de um convite para se cadastrar.');
-			return res.redirect(303, '/');
 		}
 	} else {
 		// se é a primeira pessoa, carrega blocos e bichos padrão no banco de dados

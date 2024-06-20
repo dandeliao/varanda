@@ -6,7 +6,8 @@ const servicePaginas        = require('../services/varandas/servicePaginas');
 const serviceArtefatos      = require('../services/artefatos/serviceArtefatos');
 const { dataHumana,
         bichoSurpresa }     = require('./utilMiscellaneous');
-const { vidParaId }         = require('./utilParsers');
+const { vidParaId, escaparHTML }         = require('./utilParsers');
+const { tipoDeArquivo }     = require('./utilArquivos');
 require('dotenv').config();
 
 exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, usuarie_id, layout) => {
@@ -33,6 +34,17 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
     }
     if (artefato_id) {
         artefato = await serviceArtefatos.verArtefato(artefato_id);
+        if (artefato) {
+            if (artefato.pagina_vid === `${bicho_id}/${pagina_id}`) {
+                artefato.tipo = {};
+                artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
+                artefato.texto = await escaparHTML(artefato.texto);
+                artefato.criacao = dataHumana(artefato.criacao);
+                artefato.comentarios = await serviceArtefatos.verComentarios(artefato_id);
+            } else {
+                artefato = null;
+            }
+        }
     }
     
     /* preenche objeto renderizável */
@@ -46,18 +58,19 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
         },
         flash: {
             aviso: res.locals.flash_aviso,
-            erro: res.locals.flash_erro
+            erro:  res.locals.flash_erro
         },
         bloco: {},
 		query: req.query ? req.query : null,
     }
     if (layout !== undefined) obj_render.layout = layout;
 
+    if (usuarie_id) {
     /* botões de contexto padrão */
     const preferencias = {
         url:        `/${usuarie_id}/editar-preferencias`,
         metodo:     'get',
-        nome:       'ajustes',
+        nome:       'preferências',
         descricao:  'Editar suas preferências'
     };
     const surpresa = {
@@ -71,7 +84,7 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
         um:   surpresa,
         dois: preferencias
     }
-
+    }
     return obj_render;
 };
 
@@ -102,14 +115,8 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
         nome:       'participar',
         descricao:  `Participar da comunidade @${obj_render.varanda.nome}`
     };
-    const editarBicho   = {
-        url:        `/${obj_render.varanda.bicho_id}/editar-bicho`,
-        metodo:     'get',
-        nome:       'editar',
-        descricao:  `Editar @${obj_render.varanda.bicho_id}`
-    };
     const clonar        = {
-        url:        `${obj_render.varanda.bicho_id}/clonar`,
+        url:        `/${obj_render.varanda.bicho_id}/clonar`,
         metodo:     'get',
         nome:       'clonar',
         descricao:  `Clonar comunidade @${obj_render.varanda.bicho_id}`
@@ -130,6 +137,17 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
     /* contextos específicos */
     switch(tipo) {
         case 'artefato':
+            contexto.um = {
+                url:        `/${obj_render.artefato.pagina_vid}/novo_artefato/editar?em_resposta_a=${obj_render.artefato.artefato_id}`,
+                metodo:     'get',
+                nome:       'comentar',
+                descricao:  'Postar um comentário.'
+            }
+            contexto.dois = {
+                funcao:     true,
+                nome:       'enviar',
+                descricao:  'Compartilha a postagem.'
+            }
             break;
         case 'bicho':
             let comunidade = await serviceComunidades.verComunidade(obj_render.varanda.bicho_id);
@@ -144,16 +162,77 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
             }
             break;
         case 'clonar':
+            contexto.um = {
+                submit:     true,
+                nome:       'confirmar',
+                descricao:  'Confirma clonagem do bicho'
+            };
+            contexto.dois = {
+                url:        `/${obj_render.varanda.bicho_id}/futricar`,
+                metodo:     'get',
+                nome:       'cancelar',
+                descricao:  'Cancela clonagem'
+            }
             break;
         case 'editar-artefato':
+            let url_cancelar = '';
+            if (obj_render.query.em_resposta_a) {
+                url_cancelar = `/${obj_render.pagina.pagina_vid}/${obj_render.query.em_resposta_a}`;
+            } else if (obj_render.novo_artefato) {
+                url_cancelar = `/${obj_render.pagina.pagina_vid}`;
+            } else {
+                url_cancelar = `/${obj_render.pagina.pagina_vid}/${obj_render.artefato.artefato_id}`;
+            }
+            contexto.um = {
+                submit:     true,
+                nome:       'confirmar',
+                descricao:  'Confirma edição do artefato'
+            };
+            contexto.dois = {
+                url:        url_cancelar,
+                metodo:     'get',
+                nome:       'cancelar',
+                descricao:  'Cancela edição'
+            }
             break;
         case 'editar-bicho':
+            contexto.um = {
+                submit:     true,
+                nome:       'confirmar',
+                descricao:  'Confirma edição do bicho'
+            };
+            contexto.dois = {
+                url:        `/${obj_render.varanda.bicho_id}/futricar`,
+                metodo:     'get',
+                nome:       'cancelar',
+                descricao:  'Cancela edição'
+            }
             break;
         case 'editar-pagina':
+            contexto.um = {
+                submit:     true,
+                nome:       'confirmar',
+                descricao:  'Confirma e finaliza a edição da página'
+            };
+            contexto.dois = {
+                url:        `/${obj_render.varanda.bicho_id}/futricar`,
+                metodo:     'get',
+                nome:       'cancelar',
+                descricao:  'Cancela edição da página'
+            }
             break;
         case 'editar-preferencias':
-            contexto.um     = surpresa;
-            contexto.dois   = sobre;
+            contexto.um = {
+                submit:     true,
+                nome:       'confirmar',
+                descricao:  'Confirma e finaliza a edição da página'
+            };
+            contexto.dois = {
+                url:        `/${obj_render.varanda.bicho_id}/futricar`,
+                metodo:     'get',
+                nome:       'cancelar',
+                descricao:  'Cancela edição de preferências'
+            }
             break;
         case 'pagina':
             let relacao = await serviceRelacoes.verRelacao(obj_render.usuarie.bicho_id, obj_render.varanda.bicho_id);
@@ -171,7 +250,7 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
                     }
                 } else {
                     contexto.um = {
-                        url:        `/${obj_render.pagina.pagina_vid}/novo_artefato`,
+                        url:        `/${obj_render.pagina.pagina_vid}/novo_artefato/editar`,
                         metodo:     'get',
                         nome:       'postar',
                         descricao:  'Abre página de postagem'
@@ -192,20 +271,24 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
         for(let variavel of variaveis) {
             switch(variavel){
                 case 'bicho':
-                    let bicho_id = obj_render.query.bicho ? obj_render.query.bicho : obj_render.varanda.bicho_id;
-                    
-                    let bicho = {};
-                    const comunidade = await serviceComunidades.verComunidade(bicho_id);
-                    if (comunidade) {
-                        bicho = comunidade;
-                        bicho.comunitario = true;
-                        if (comunidade.bicho_id === process.env.INSTANCIA_ID) {
-                            bicho.instancia = true;
+                    let bicho_id = obj_render.query.bicho ? obj_render.query.bicho : (obj_render.varanda ? obj_render.varanda.bicho_id : null);
+                    if (bicho_id !== null) {
+                        let bicho = {};
+                        const comunidade = await serviceComunidades.verComunidade(bicho_id);
+                        if (comunidade) {
+                            bicho = comunidade;
+                            bicho.comunitario = true;
+                            if (comunidade.bicho_id === process.env.INSTANCIA_ID) {
+                                bicho.instancia = true;
+                            }
+                        } else {
+                            bicho = await serviceBichos.verBicho(bicho_id);
+                            if (bicho.bicho_id === obj_render.usuarie.bicho_id) {
+                                bicho.meuPerfil = true;
+                            }
                         }
-                    } else {
-                        bicho = await serviceBichos.verBicho(bicho_id);
+                        dados.bicho = bicho;
                     }
-                    dados.bicho = bicho;
                     break;
                 case 'paginas':
                     if (obj_render.varanda.bicho_id) {
@@ -227,17 +310,50 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                                 }
                             }
                         }
+                        artefato.tipo = {};
+                        artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
+                        artefato.texto = await escaparHTML(artefato.texto);
                         artefato.criacao = dataHumana(artefato.criacao);
+                        if (obj_render.query.estilo === 'comentario') {
+                            artefato.comentario = true;
+                        }
                     }
                     dados.artefato = artefato;
                     break;
-                case 'relacao':
-                    if (obj_render.query.bicho) {
-                        let relacao = await serviceRelacoes.verRelacao(obj_render.usuarie.bicho_id, obj_render.query.bicho);
-                        if (relacao !== undefined) {
-                            dados.relacao = relacao;
+                case 'lote':
+                    let lista = await serviceArtefatos.verArtefatosNaPagina(obj_render.query.bicho, obj_render.pagina.pagina_id, obj_render.query.lote);
+                    for (let i = 0; i < lista.length; i++) {
+                        if (i > 0) {
+                            if ((i % 2 == 0) && (lista[i-1].colorir)) {
+                                lista[i].colorir = true;
+                            } else if ((i % 2 != 0) && (!lista[i-1].colorir)) {
+                                lista[i].colorir = true;
+                            }   
                         }
                     }
+                    let quantidade = lista.length;
+                    let lote = parseInt(obj_render.query.lote ? obj_render.query.lote : 1);
+                    let proximo_lote = lote + 1;
+                    dados.artefatos = {
+                        lista: lista,
+                        quantidade: quantidade,
+                        proximo_lote: proximo_lote,
+                        comecou: lote === 1 ? true : false,
+                        acabou: quantidade === 0 ? true : false
+                    };
+                    break;
+                case 'relacao':
+                    let animal = obj_render.query.bicho ? obj_render.query.bicho : obj_render.varanda.bicho_id;
+                    let relacao = await serviceRelacoes.verRelacao(obj_render.usuarie.bicho_id, animal);
+                    if (relacao !== undefined) {
+                        dados.relacao = relacao;
+                    }
+                    break;
+                case 'pagina':
+                    console.log(obj_render.pagina)
+                    let pagina = await servicePaginas.verPaginas(obj_render.varanda.bicho_id, obj_render.pagina.pagina_id);
+                    console.log('pagina:', pagina);
+                    dados.pagina = pagina;
                     break;
                 case 'preferencias':
                     let preferencias = null;
