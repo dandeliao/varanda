@@ -1,0 +1,22 @@
+<nav class="lista-paginas">
+{{#each bloco.paginas}}
+    <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
+{{/each}}
+</nav>
+
+<style>
+    .lista-paginas {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+    }
+    .lista-paginas a {
+        flex: auto;
+        background-color: var(--cor-principal);
+        padding: 0.8rem 0.4rem;
+        display: block;
+    }
+</style>

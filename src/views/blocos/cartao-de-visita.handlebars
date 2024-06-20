@@ -18,7 +18,7 @@
 	<br>
 	{{#if bloco.relacao.participar}}
 	{{#unless query.instancia}}
-	<button onclick="abrirConfirmacao('{{bloco.bicho.bicho_id}}')">Deixar de participar</button>
+	<button onclick="abrirConfirmacao()">Deixar de participar</button>
 	<br><br>
 	{{/unless}}
 	{{/if}}
@@ -26,6 +26,13 @@
 	{{#if bloco.relacao.representar}}
 	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar perfil</button>
 	<br><br>
+	{{/if}}
+
+	{{#if bloco.relacao.representar}}
+	{{#unless query.instancia}}
+	<button onclick="abrirConfirmacaoApagar()">Apagar comunidade</button>
+	<br><br>
+	{{/unless}}
 	{{/if}}
 
 	{{#if bloco.bicho.meuPerfil}}
@@ -44,6 +51,13 @@
 <br>
 <button hx-delete="/{{bloco.bicho.bicho_id}}/relacao" hx-target="body" hx-push-url="false">Sim</button>
 <button onClick="fecharConfirmacao()">Não</button>
+</dialog>
+
+<dialog class="confirmacao-apagar-comunidade">
+<p>Tem certeza de que deseja apagar a comunidade @{{bloco.bicho.bicho_id}}? Todas as páginas e postagens serão removidas e a comunidade deixará de existir.</p>
+<br>
+<button hx-delete="/{{bloco.bicho.bicho_id}}" hx-target="body" hx-push-url="true">Sim</button>
+<button onClick="fecharConfirmacaoApagar()">Não</button>
 </dialog>
 </div>
 
@@ -84,7 +98,7 @@ text-align: center;
 </style>
 
 <script>
-		function abrirConfirmacao(comunidade) {
+		function abrirConfirmacao() {
 			let janelinhas = document.querySelectorAll('.confirmacao-sair-comunidade');
 			for(janelinha of janelinhas) {
 				janelinha.setAttribute('open', '');
@@ -92,6 +106,18 @@ text-align: center;
 		}
 		function fecharConfirmacao(){
 			let janelinhas = document.querySelectorAll('.confirmacao-sair-comunidade');
+			for(janelinha of janelinhas) {
+				janelinha.removeAttribute('open');
+			}
+		}
+		function abrirConfirmacaoApagar() {
+			let janelinhas = document.querySelectorAll('.confirmacao-apagar-comunidade');
+			for(janelinha of janelinhas) {
+				janelinha.setAttribute('open', '');
+			}
+		}
+		function fecharConfirmacaoApagar(){
+			let janelinhas = document.querySelectorAll('.confirmacao-apagar-comunidade');
 			for(janelinha of janelinhas) {
 				janelinha.removeAttribute('open');
 			}

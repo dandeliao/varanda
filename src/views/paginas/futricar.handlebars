@@ -12,11 +12,18 @@
                     </li>
                     <div>
                         <button hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
-                        <button hx-delete="/{{this.pagina_vid}}" hx-target="body">Remover</button>
+                        <button onclick="confirmarRemoverPagina('{{this.titulo}}')">Remover</button>
+                        <dialog class="confirmacao" id="dialogo-remover-{{this.titulo}}">
+                            <p>Você quer mesmo remover a página {{this.titulo}}?</p>
+                            <br>
+                            <button hx-delete="/{{this.pagina_vid}}" hx-target="body" hx-push-url="true">Sim</button>
+                            <button onClick="fechatudo()">Não</button>
+                        </dialog>
                     </div>
                 </div>
                 <br>
             {{/each}}
+            <div id="modal" onclick="fechatudo()"></div>
             {{/if}}
             {{#if bloco.bicho.meuPerfil}}
             {{#each bloco.paginas}}
@@ -26,17 +33,18 @@
                     </li>
                     <div>
                         <button hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
-                        <button hx-delete="/{{this.pagina_vid}}" hx-target="body">Remover</button>
-                        <dialog class="confirmacao-remover-pagina">
+                        <button onclick="confirmarRemoverPagina('{{this.titulo}}')">Remover</button>
+                        <dialog class="confirmacao" id="dialogo-remover-{{this.titulo}}">
                             <p>Você quer mesmo remover a página {{this.titulo}}?</p>
                             <br>
-                            <button hx-delete="/{{bloco.bicho.bicho_id}}/relacao" hx-target="body" hx-push-url="false">Sim</button>
-                            <button onClick="fecharConfirmacao()">Não</button>
+                            <button hx-delete="/{{this.pagina_vid}}" hx-target="body" hx-push-url="true">Sim</button>
+                            <button onClick="fechatudo()">Não</button>
                         </dialog>
                     </div>
                 </div>
                 <br>
             {{/each}}
+            <div id="modal" onclick="fechatudo()"></div>
             {{/if}}
             {{#unless bloco.relacao.editar}}
             {{#unless bloco.bicho.meuPerfil}}
@@ -142,6 +150,35 @@
         font-size: 0.8rem;
     }
 
+    .confirmacao, .modal {
+        display: none;
+    }
+    .confirmacao-aberta {
+        display: block;
+        z-index: 400;
+        position: absolute;
+        left: 50%;
+        top: 50vh;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        background-color: var(--cor-principal);
+        color: var(--cor-fonte-barra);
+        padding: 2rem;
+        border-radius: 5px;
+    }
+     .modal-aberto {
+        display: block;
+        position: fixed;
+        z-index: 300;
+        left: 0;
+        top: 0;
+        width: 100vw; /* Full width */
+        height: 100vh; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    }
+
     @media screen and (max-width: 859px) {
         .item-paginas {
             display: flex;
@@ -151,3 +188,17 @@
     }
 
 </style>
+
+<script>
+    function confirmarRemoverPagina(titulo) {
+        document.getElementById('modal').classList.add('modal-aberto');
+        document.getElementById(`dialogo-remover-${titulo}`).classList.add('confirmacao-aberta');
+    }
+    function fechatudo() {
+        let confirmacoes = document.getElementsByClassName('confirmacao');
+        for (let i = 0; i < confirmacoes.length; i++) {
+            confirmacoes[i].classList.remove('confirmacao-aberta');
+        }
+        document.getElementById('modal').classList.remove('modal-aberto');
+    }
+</script>

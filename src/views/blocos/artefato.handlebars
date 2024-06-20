@@ -2,9 +2,36 @@
 {{#unless comentario}}
 <div class="bloco" style="text-align: left">
     <h4><a href="/{{pagina_vid}}/{{artefato_id}}" hx-push-url="true">{{titulo}}</a></h4>
-    <div class="texto">
+    <div>
         {{#if texto}}
-        {{{texto}}}
+        <div class="texto">{{{texto}}}</div>
+        {{/if}}
+        {{#if nome_arquivo}}
+            <div class="arquivo">
+                {{#if tipo.imagem}}
+                <img
+                    src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+                    alt="{{descricao}}"
+                    title="{{descricao}}"
+                />
+                {{/if}}
+                {{#if tipo.audio}}
+                <audio
+                    controls
+                    src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+                > Clique para baixar o áudio: <a href="/{{pagina_vid}}/{{artefato_id}}/arquivo">{{nome_arquivo}}.{{extensao}}</a>
+                </audio>
+                <p>Descrição: {{descricao}}</p>
+                {{/if}}
+                {{#if tipo.video}}
+                <video
+                    controls
+                    src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+                > Clique para baixar o vídeo: <a href="/{{pagina_vid}}/{{artefato_id}}/arquivo">{{nome_arquivo}}.{{extensao}}</a>
+                </video>
+                <p>Descrição: {{descricao}}</p>
+                {{/if}}
+            </div>
         {{/if}}
     </div>
 </div>
@@ -19,7 +46,7 @@
         <div id="sensivel-{{artefato_id}}" class="comentario-em-si {{#if sensivel}}sensivel-oculto{{/if}}" style="cursor:pointer;" hx-get="/{{pagina_vid}}/{{artefato_id}}" hx-push-url="true" hx-target="body">
             <div style="margin-bottom:0.4rem;">
                 {{#if texto}}
-                {{{texto}}}
+                <div class="texto">{{{texto}}}</div>
                 {{/if}}
             </div>
             {{#if nome_arquivo}}
@@ -63,6 +90,10 @@
 <style>
     .sensivel-oculto {
         display: none;
+    }
+    .texto {
+        white-space: pre-wrap;
+        font-size: 1rem;
     }
 </style>
 

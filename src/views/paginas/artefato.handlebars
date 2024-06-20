@@ -74,6 +74,7 @@
         <section class="comentario">
             <div hx-get="/blocos/artefato?artefato={{this.artefato_id}}&estilo=comentario" hx-trigger="load" hx-push-url="false"></div>
         </section>
+        <hr>
         {{/each}}
     </div>
 </div>
@@ -87,7 +88,7 @@
 <style>
     .bloco h2{
         align-self: stretch;
-        margin-bottom: 1rem;
+        margin: 1rem 0;
         text-align: center;
     }
 
@@ -170,7 +171,7 @@
     }
 
     .bloco .comentario {
-        margin-bottom: 1.5rem;
+        margin: 0.6rem 0;
     }
 
     .menuzinho-aberto > a {
@@ -193,9 +194,9 @@
     }
 
     .texto {
-        white-space: pre-line;
+        white-space: pre-wrap;
         font-size: 1.1rem;
-        margin: 0 0.3rem 1.1rem;  
+        margin-bottom: 1rem;  
     }
 
     .arquivo {
