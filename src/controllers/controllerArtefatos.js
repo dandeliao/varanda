@@ -2,6 +2,7 @@ const asyncHandler 					= require('express-async-handler');
 const serviceRelacoes 				= require('../services/bichos/serviceRelacoes');
 const serviceArtefatos 				= require('../services/artefatos/serviceArtefatos');
 const serviceEdicoesArtefatos 		= require('../services/artefatos/serviceEdicoesArtefatos');
+const servicePaginas				= require('../services/varandas/servicePaginas');
 const { schemaPostArtefato,
 	    schemaPutArtefato } 		= require('../validations/validateArtefatos');
 const { textoParaHtml }				= require('../utils/utilParsers');
@@ -100,6 +101,12 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 	const { varanda_id, pagina_id } = params(req);
 	const usuarie_id = await quemEstaAgindo(req);
 
+	const pagina = await servicePaginas.verPaginas(varanda_id, pagina_id);
+	if (!pagina.postavel) {
+		req.flash('erro', `A página ${pagina_id} está fechada para postagens.`);
+		return res.redirect(303, `/${varanda_id}/${pagina_id}`);
+	}
+
 	const artefato = {
 		varanda_id: 		varanda_id,
 		pagina_vid: 		`${varanda_id}/${pagina_id}`,
@@ -128,7 +135,7 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
 		if (!permissoes || !permissoes.participar) {
 			req.flash('erro', `Você não participa de @${varanda_id}`);
-			return res.redirect(`/${varanda_id}/${pagina_id}`);
+			return res.redirect(303, `/${varanda_id}/${pagina_id}`);
 		}
 	}
 

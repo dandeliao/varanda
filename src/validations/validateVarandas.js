@@ -6,6 +6,7 @@ exports.schemaPostPagina = Joi.object().keys({
 	varanda_id: Joi.string().max(32),
 	titulo: Joi.string().min(1).max(32),
 	publica: Joi.boolean(),
+	postavel: Joi.boolean(),
 	html: Joi.htmlInput().allowedTags(),
 });
 
@@ -15,5 +16,6 @@ exports.schemaPutPagina = Joi.object().keys({
 	varanda_id: Joi.string().max(32),
 	titulo: Joi.string().max(32),
 	publica: Joi.boolean(),
+	postavel: Joi.boolean(),
 	html: Joi.htmlInput().allowedTags()
 });

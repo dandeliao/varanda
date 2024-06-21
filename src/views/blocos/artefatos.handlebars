@@ -1,4 +1,4 @@
-{{#if bloco.artefatos.comecou}}<div class="bloco artefatos">{{#unless bloco.artefatos.lista}}<p>Faça uma postagem para começar!</p>{{/unless}}{{/if}}
+{{#if bloco.artefatos.comecou}}<div class="bloco artefatos">{{#if pagina.postavel}}{{#unless bloco.artefatos.lista}}<p>Faça uma postagem para começar!</p>{{/unless}}{{/if}}{{/if}}
     <div class="lote">
     {{#each bloco.artefatos.lista}}
         <div class="item-artefatos {{#if this.colorir}}colorir{{/if}}">

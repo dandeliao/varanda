@@ -4,6 +4,7 @@ const { editarArquivoHandlebars,
 const { vidParaId, sanitizarHtml,
 		htmlParaHtmx }				= require('../../utils/utilParsers');
 const { sanitizarNomeDeArquivo }	= require('../../utils/utilParsers');
+const serviceComunidades 			= require('../bichos/serviceComunidades');
 
 require('dotenv').config();
 
@@ -27,8 +28,15 @@ exports.criarPagina = async function (varanda_id, dados) {
 		pagina_vid:	`${varanda_id}/${pagina_id}`,
 		titulo: 	dados.titulo,
 		publica: 	dados.publica ? dados.publica : true,
+		postavel:	dados.postavel ? dados.postavel : true,
 		html:		await sanitizarHtml(dados.html, dados.comunitaria)
 	}
+	
+	// páginas pessoais não permitem postagens
+	const comunidade = await serviceComunidades.verComunidade(varanda_id);
+	pagina.comunitaria = comunidade ? true : false;
+	if (!pagina.comunitaria) pagina.postavel = false;
+
 	let novaPagina = (await dataPaginas.createPagina(varanda_id, pagina)).rows[0];
 	novaPagina.handlebars = await htmlParaHtmx(novaPagina.html, varanda_id, pagina_id);
 	editarArquivoHandlebars(varanda_id, novaPagina);
@@ -40,8 +48,13 @@ exports.editarPagina = async function (varanda_id, pagina_id, dados) {
 	
 	const pagina_vid = `${varanda_id}/${pagina_id}`;
 
+	// páginas pessoais não permitem postagens
+	const comunidade = await serviceComunidades.verComunidade(varanda_id);
+	dados.comunitaria = comunidade ? true : false;
+	if (!dados.comunitaria) dados.postavel = false;
+
 	dados.html = await sanitizarHtml(dados.html, dados.comunitaria);
-	let paginaEditada = (await dataPaginas.editPagina(pagina_vid, {titulo: dados.titulo, publica: dados.publica, html: dados.html})).rows[0];
+	let paginaEditada = (await dataPaginas.editPagina(pagina_vid, {titulo: dados.titulo, publica: dados.publica, postavel: dados.postavel, html: dados.html})).rows[0];
 	paginaEditada.handlebars = await htmlParaHtmx(paginaEditada.html, varanda_id, pagina_id);
 	editarArquivoHandlebars(varanda_id, paginaEditada);
 

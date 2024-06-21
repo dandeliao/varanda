@@ -25,15 +25,15 @@ exports.getPagina = function (paginaVid) {
 
 exports.createPagina = function (varanda_id, pagina) {
 	return pool.query(
-		'INSERT INTO paginas (pagina_vid, varanda_id, titulo, publica, html) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-		[pagina.pagina_vid, varanda_id, pagina.titulo, pagina.publica, pagina.html]
+		'INSERT INTO paginas (pagina_vid, varanda_id, titulo, publica, postavel, html) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+		[pagina.pagina_vid, varanda_id, pagina.titulo, pagina.publica, pagina.postavel, pagina.html]
 	);
 };
 
 exports.editPagina = function (pagina_vid, pagina){
 	return pool.query(
-		'UPDATE paginas SET titulo = $1, publica = $2, html = $3 WHERE pagina_vid = $4 RETURNING *',
-		[pagina.titulo, pagina.publica, pagina.html, pagina_vid]	
+		'UPDATE paginas SET titulo = $1, publica = $2, postavel = $3, html = $4 WHERE pagina_vid = $5 RETURNING *',
+		[pagina.titulo, pagina.publica, pagina.postavel, pagina.html, pagina_vid]	
 	);
 };
 

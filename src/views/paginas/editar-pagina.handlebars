@@ -8,10 +8,22 @@
 			{{#unless nova_pagina}}
 			<legend>Editar Página</legend>
 			{{/unless}}
-			<label for="titulo">Título da página:</label>
+			<label for="titulo">Título:</label>
 			<input type="text" id="titulo-pagina" value="{{pagina.titulo}}" name="titulo" required>
-			<br><br>
-			<label for="html">Html da página:</label>
+		</fieldset>
+		<fieldset>
+			<legend>Opções:</legend>
+			{{#if varanda.comunitaria}}
+			<input type="checkbox" name="postavel" {{#if pagina.postavel}}checked{{/if}}{{#if nova_pagina}}checked{{/if}}>
+			<label for="postavel">Permitir novas postagens</label>
+			<br>
+			{{/if}}
+			<input type="checkbox" name="publica" {{#if pagina.publica}}checked{{/if}}{{#if nova_pagina}}checked{{/if}}>
+			<label for="publica">Pública (pode ser vista sem fazer login na varanda)</label>
+		</fieldset>
+		<fieldset>
+			<legend>HTML</legend>
+			<label for="html">Código:</label>
 			<textarea id="html-pagina" name="html" required>{{pagina.html}}</textarea>
 		</fieldset>
 	</form>
