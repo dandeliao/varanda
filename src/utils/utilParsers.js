@@ -132,8 +132,9 @@ exports.htmlParaHtmx = async (html, varanda_id, pagina_id) => {
         const captured = [p1, [p2, p3], [p4, p5], [p6, p7], [p8, p9]];
         let temBicho = false;
         let temPagina = false;
+        
+        divHtmx = divHtmx + `?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}`;
         if (p2 || p4 || p6 || p8 ) {
-            divHtmx = divHtmx + '?';
             for (let i = 1; i < captured.length; i++) {
                 if (captured[i][0]) {
                     if (captured[i][0] === 'bicho') temBicho = true;
@@ -155,11 +156,7 @@ exports.htmlParaHtmx = async (html, varanda_id, pagina_id) => {
         if (!temBicho) {
             if (bloco) {
                 if (bloco.variaveis.includes('bicho')) {
-                    if (p2 || p4 || p6 || p8 ) {
-                        divHtmx = divHtmx + '&';
-                    } else {
-                        divHtmx = divHtmx + '?';
-                    }
+                    divHtmx = divHtmx + '&';
                     divHtmx = divHtmx + `bicho=${varanda_id}`;
                     bicho_inserido = true;
                 }
@@ -169,11 +166,7 @@ exports.htmlParaHtmx = async (html, varanda_id, pagina_id) => {
         if (!temPagina) {
             if (bloco) {
                 if (bloco.variaveis.includes('pagina')) {
-                    if (p2 || p4 || p6 || p8 || bicho_inserido) {
-                        divHtmx = divHtmx + '&';
-                    } else {
-                        divHtmx = divHtmx + '?';
-                    }
+                    divHtmx = divHtmx + '&';
                     divHtmx = divHtmx + `pagina=${encodeURIComponent(pagina_id)}`
                 }
             }

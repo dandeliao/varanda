@@ -16,10 +16,10 @@
     {{#if usuarie.logade}}
         {{> barra}}
     {{/if}}
- 
+    
     {{#if flash.aviso}}
         <dialog open>
-            <p>{{flash.aviso}}</p>
+            <p>{{flash.aviso_decod}}</p>
             <br>
             <form method="dialog" hx-boost="false">
                 <button>entendi!</button>
@@ -29,7 +29,7 @@
 
     {{#if flash.erro}}
         <dialog open>
-            <p>{{flash.erro}}</p>
+            <p>{{flash.erro_decod}}</p>
             <br>
             <form method="dialog" hx-boost="false">
                 <button>entendi!</button>
