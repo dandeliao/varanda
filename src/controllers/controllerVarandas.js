@@ -114,7 +114,7 @@ exports.putVaranda = asyncHandler(async (req, res, next) => {
 		descricao:					req.body.descricao 							? req.body.descricao 		: bichoOriginal.descricao,
 		descricao_avatar:			req.body.descricao_avatar 					? req.body.descricao_avatar : '',
 		descricao_fundo:			req.body.descricao_fundo 					? req.body.descricao_fundo 	: '',
-		participacao_livre: 		req.body.participacao_livre !== undefined 	? true 						: false,
+		participacao_livre: 		req.body.participacao_livre				 	? true 						: false,
 		participacao_com_convite:	req.body.participacao_com_convite 			? true 						: false
 	}
 
