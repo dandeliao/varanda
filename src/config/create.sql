@@ -1,8 +1,5 @@
 CREATE DATABASE varanda
 
-/* ---------------- */
-/* Agência (bichos) */
-
 CREATE TABLE bichos(
     bicho_id            VARCHAR(32) PRIMARY KEY NOT NULL,
     nome                VARCHAR(64) NOT NULL,
@@ -73,9 +70,6 @@ CREATE TABLE sessoes (
 );
 CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON sessoes ("expire");
 
-/* ---------------------------- */
-/* Contexto (páginas) */
-
 CREATE TABLE paginas(
     pagina_vid      TEXT PRIMARY KEY NOT NULL,
     varanda_id      VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE CASCADE,
@@ -100,12 +94,10 @@ CREATE TABLE edicoes(
     bicho_editor_id VARCHAR(32) REFERENCES bichos(bicho_id) ON DELETE SET NULL,
     titulo          VARCHAR(32),
     publica         BOOLEAN NOT NULL,
+    postavel        BOOLEAN NOT NULL,
     html            TEXT,
     criacao         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
-/* ----------------- */
-/* Valor (artefatos) */
 
 CREATE TABLE artefatos(
     artefato_id             SERIAL PRIMARY KEY NOT NULL,
