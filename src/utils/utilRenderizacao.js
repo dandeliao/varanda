@@ -89,7 +89,6 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
         dois: preferencias
     }
     }
-    console.log(obj_render.flash);
     return obj_render;
 };
 
