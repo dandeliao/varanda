@@ -1,11 +1,5 @@
 const pool = require('../../config/database');
 
-/* exports.getRelacoes = function () {
-	return pool.query(
-		'SELECT * FROM relacoes'
-	);
-}; */
-
 exports.getRelacao = function (bichoId, comunidadeId) {
 	return pool.query(
 		'SELECT * FROM relacoes WHERE bicho_id = $1 AND comunidade_id = $2',
@@ -24,6 +18,27 @@ exports.getComunidadesDoBicho = function (bichoId) {
 	return pool.query(
 		'SELECT * FROM relacoes WHERE bicho_id = $1',
 		[bichoId]
+	);
+};
+
+exports.getRepresentantes = function (comunidadeId) {
+	return pool.query(
+		'SELECT * FROM relacoes WHERE comunidade_id = $1 AND representar = true',
+		[comunidadeId]
+	);
+};
+
+exports.getModeradorus = function (comunidadeId) {
+	return pool.query(
+		'SELECT * FROM relacoes WHERE comunidade_id = $1 AND moderar = true',
+		[comunidadeId]
+	);
+};
+
+exports.getEditorus = function (comunidadeId) {
+	return pool.query(
+		'SELECT * FROM relacoes WHERE comunidade_id = $1 AND editar = true',
+	[comunidadeId]
 	);
 };
 

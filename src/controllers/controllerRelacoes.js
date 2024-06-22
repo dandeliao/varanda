@@ -31,7 +31,17 @@ exports.deleteRelacao = asyncHandler(async (req, res, next) => {
 
 	if (varanda_id === process.env.INSTANCIA_ID) {
 		req.flash('erro', `Você não pode deixar a varanda (*risada maligna*). Desculpe, não implementei ainda. Na verdade, não era pra ter essa opção na interface. Como você chegou aqui?`);
-		return res.redirect(303, `/${varanda_id}`);
+		return res.redirect(303, `/${varanda_id}/futricar`);
+	}
+
+	const relacao = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
+	console.log('relacao:', relacao);
+	if (relacao.representar) {
+		const equipe = await serviceRelacoes.verEquipe(varanda_id);
+		if (equipe.representantes.length < 2) {
+			req.flash('erro', `Você não pode sair da comunidade @${varanda_id}, pois ela ficaria sem representantes.`);
+			return res.redirect(303, `/${varanda_id}/futricar`)
+		}
 	}
 
 	await serviceRelacoes.deletarRelacao(usuarie_id, varanda_id);

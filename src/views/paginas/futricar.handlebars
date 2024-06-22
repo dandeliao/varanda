@@ -70,15 +70,18 @@
         {{/if}}
         </div>
     </div>
-    {{#if bloco.participantes}}
-    <div class="bloco">
-        <h2>Participantes</h2>
-        <ul class="lista-bichos">
-            {{#each bloco.participantes}}
-            <li class="item-bicho"><a href="/{{this.bicho_id}}"><span class="avatar-quadrado" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span></a><p class="largura-fixa"><a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a></p></li>
-            {{/each}}
-        </ul>
-    </div>
+    {{#if bloco.bicho.comunitario}}
+        <div hx-get="/blocos/equipe?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
+        {{#if bloco.participantes}}
+        <div class="bloco">
+            <h2>Participantes</h2>
+            <ul class="lista-bichos">
+                {{#each bloco.participantes}}
+                <li class="item-bicho"><a href="/{{this.bicho_id}}"><span class="avatar-quadrado" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span></a><p class="largura-fixa"><a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a></p></li>
+                {{/each}}
+            </ul>
+        </div>
+        {{/if}}
     {{/if}}
     {{#if bloco.comunidades}}
     <div class="bloco">

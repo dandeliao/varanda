@@ -296,6 +296,11 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                         dados.bicho = bicho;
                     }
                     break;
+                case 'equipe':
+                    let comunidade_id = obj_render.query.bicho ? obj_render.query.bicho : (obj_render.varanda ? obj_render.varanda.bicho_id : null);
+                    let equipe = await serviceRelacoes.verEquipe(comunidade_id);
+                    dados.equipe = equipe;
+                    break;
                 case 'paginas':
                     if (obj_render.varanda.bicho_id) {
                         const paginas = await servicePaginas.verPaginas(obj_render.varanda.bicho_id);

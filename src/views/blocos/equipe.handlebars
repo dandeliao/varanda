@@ -1,0 +1,77 @@
+<div class="bloco">
+    <h2>Equipe</h2>
+    <br>
+    <div class="equipe">
+        <div class="grupo-equipe">
+            <p><strong>Representantes:</strong></p>
+            <ul>
+                {{#each bloco.equipe.representantes}}
+                <li class="item-equipe">
+                    <a href="/{{this.bicho_id}}">
+                        <span class="avatar-quadrado pequeno" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span>
+                    </a>
+                    <a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="grupo-equipe">
+            <p><strong>Edição:</strong></p>
+            <ul>
+                {{#each bloco.equipe.edicao}}
+                <li class="item-equipe">
+                    <a href="/{{this.bicho_id}}">
+                        <span class="avatar-quadrado pequeno" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span>
+                    </a>
+                    <a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="grupo-equipe">
+            <p><strong>Moderação:</strong></p>
+            <ul>
+                {{#each bloco.equipe.moderacao}}
+                <li class="item-equipe">
+                    <a href="/{{this.bicho_id}}">
+                        <span class="avatar-quadrado pequeno" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span>
+                    </a>
+                    <a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    {{#if bloco.relacao.representar}}
+    <button style="margin: 0.4rem 0;" onclick="alert('Em construção')">Editar Equipe</button>
+    {{/if}}
+</div>
+
+<style>
+    .equipe {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    .grupo-equipe {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .grupo-equipe > ul {
+        display: flex;
+        flex-direction: row;
+        gap: 0.4rem;
+        list-style-type: none;
+        padding: 0;
+        font-size: small;
+    }
+    .item-equipe {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;        
+    }
+</style>
