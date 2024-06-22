@@ -133,8 +133,7 @@ exports.deletePagina = asyncHandler(async (req, res, next) => {
 
 	if (pagina_id === 'inicio') {
 		req.flash('erro', 'Você não pode remover a página "início".');
-		/* return res.redirect(303, `/${varanda_id}/futricar`); */
-		return res.redirect(303, `/${varanda_id}`); // teste
+		return res.redirect(303, `/${varanda_id}/futricar`);
 	}
 
 	await servicePaginas.deletarPagina(varanda_id, pagina_id);
