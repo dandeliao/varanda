@@ -35,7 +35,6 @@ exports.deleteRelacao = asyncHandler(async (req, res, next) => {
 	}
 
 	const relacao = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
-	console.log('relacao:', relacao);
 	if (relacao.representar) {
 		const equipe = await serviceRelacoes.verEquipe(varanda_id);
 		if (equipe.representantes.length < 2) {

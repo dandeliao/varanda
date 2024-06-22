@@ -111,7 +111,6 @@ exports.putPagina = asyncHandler(async (req, res, next) => {
 	pagina.comunitaria = comunidade ? true : false;
 
 	const paginaEditada = await servicePaginas.editarPagina(varanda_id, pagina_id, pagina);
-	console.log('pagina editada', paginaEditada);
 	await serviceEdicoes.criarEdicao(usuarie_id, paginaEditada, paginaEditada.html);
 
 	//req.flash('aviso', 'A página foi editada com sucesso!');

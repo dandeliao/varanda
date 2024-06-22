@@ -24,7 +24,6 @@ exports.verEquipe = async function (comunidadeId) {
 		moderacao: moderacao,
 		edicao: edicao
 	};
-	console.log('equipe:', equipe);
 	return equipe;
 };
 
