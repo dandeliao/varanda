@@ -1,0 +1,11 @@
+<br>
+<span id="spanConvite">{{convite}}</span>
+<br><br>
+<button onclick="copiar()">Copiar</button>
+<script>
+    function copiar () {
+        let convite = document.getElementById('spanConvite').innerText;
+        navigator.clipboard.writeText(convite);
+        alert('Copiado para área de transferência.');
+    }
+</script>

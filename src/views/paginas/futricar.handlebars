@@ -80,6 +80,15 @@
                 <li class="item-bicho"><a href="/{{this.bicho_id}}"><span class="avatar-quadrado" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span></a><p class="largura-fixa"><a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a></p></li>
                 {{/each}}
             </ul>
+            {{#if instancia}}
+            {{#if bloco.relacao.representar}}
+            <br>
+            <div>
+                <button hx-post="/{{varanda.bicho_id}}/convites" hx-target="#convite" hx-push-url="false">Gerar Convite</button>
+                <div id="convite"></div>
+            </div>
+            {{/if}}
+            {{/if}}
         </div>
         {{/if}}
     {{/if}}

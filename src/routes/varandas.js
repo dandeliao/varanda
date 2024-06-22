@@ -14,10 +14,11 @@ const { getFutricarVaranda,
 		getEditarPreferencias,
         getEditarBicho,
         getEditarPagina,
+		getAvatar,
+        getFundo,
 											putPreferencias, 
-        getAvatar,                          putAvatar,
-        getFundo,                           putFundo,
-		getClonar,			postClonar,				                  	} = require('../controllers/controllerReservadas');
+		getClonar,			postClonar,
+							postConvite,			                  	} = require('../controllers/controllerReservadas');
 const { getArtefato,		postArtefato,	putArtefato, deleteArtefato, 
 		getEditarArtefato,
 		getArquivo,														} = require('../controllers/controllerArtefatos');
@@ -93,6 +94,7 @@ router.delete('/:bicho_id',             		deleteVaranda	);
 
 router.post  ('/:bicho_id/participar',  		postParticipar	);
 router.post  ('/:bicho_id/clonar',				postClonar		);
+router.post	 ('/:bicho_id/convites',			postConvite		);
 router.delete('/:bicho_id/relacao',				deleteRelacao	);
 
 /* --- */

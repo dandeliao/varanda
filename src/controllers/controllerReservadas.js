@@ -4,6 +4,7 @@ const serviceRelacoes 									= require('../services/bichos/serviceRelacoes');
 const servicePreferencias								= require('../services/bichos/servicePreferencias');
 const serviceComunidades								= require('../services/bichos/serviceComunidades');
 const serviceBichosPadrao								= require('../services/bichos/serviceBichosPadrao');
+const serviceConvites									= require('../services/bichos/serviceConvites');
 const servicePaginas									= require('../services/varandas/servicePaginas');
 const serviceEdicoes									= require('../services/varandas/serviceEdicoes');
 const servicePaginasPadrao								= require('../services/varandas/servicePaginasPadrao');
@@ -305,4 +306,26 @@ exports.postClonar = asyncHandler(async (req, res, next) => {;
 
 	req.flash('aviso', 'Comunidade clonada com sucesso!');
 	return res.redirect(303, `/${novaComunidade.bicho_id}`);
+});
+
+exports.postConvite = asyncHandler(async (req, res, next) => {
+	const { varanda_id } = params(req);
+	const usuarie_id = await quemEstaAgindo(req);
+
+	const comunidade = await serviceComunidades.verComunidade(varanda_id);
+	if (!comunidade) {
+		req.flash('erro', `@${varanda_id} não é uma comunidade.`);
+	}
+
+	if (usuarie_id !== varanda_id) {
+		const permissoes = await serviceRelacoes.verRelacao(usuarie_id, varanda_id);
+		if (!permissoes.representar) {
+			req.flash('erro', `Você não pode criar convites para @${varanda_id}. Converse com representantes da comunidade.`);
+			return res.redirect(303, `/${varanda_id}/futricar`);
+		}
+	}
+
+	const convite = await serviceConvites.criarConvite(varanda_id, usuarie_id);
+	console.log('convite:', convite);
+	res.render('partials/convite', {convite: convite.convite_id, layout: false});
 });
