@@ -19,7 +19,7 @@
     
     {{#if flash.aviso}}
         <dialog open>
-            <p>{{flash.aviso_decod}}</p>
+            <p>{{#if flash.aviso_decod}}{{flash.aviso_decod}}{{/if}}{{#unless flash.aviso_decod}}{{flash.aviso}}{{/unless}}</p>
             <br>
             <form method="dialog" hx-boost="false">
                 <button>entendi!</button>
@@ -29,7 +29,7 @@
 
     {{#if flash.erro}}
         <dialog open>
-            <p>{{flash.erro_decod}}</p>
+            <p>{{#if flash.erro_decod}}{{flash.erro_decod}}{{/if}}{{#unless flash.erro_decod}}{{flash.erro}}{{/unless}}</p>
             <br>
             <form method="dialog" hx-boost="false">
                 <button>entendi!</button>

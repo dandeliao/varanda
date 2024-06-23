@@ -22,7 +22,9 @@ router.get('/login', (req, res) => {
 	res.render('autenticacao/login', {
 		flash: {
             aviso: res.locals.flash_aviso,
-            erro: res.locals.flash_erro
+            erro: res.locals.flash_erro,
+			aviso_decod: decodeURIComponent(res.locals.flash_aviso),
+			erro_decod: decodeURIComponent(res.locals.flash_erro)
         },
 		query: req.query ? req.query : null
 	});
@@ -52,7 +54,9 @@ router.get('/cadastro', (req, res) => {
 	res.render('autenticacao/cadastro', {
 		flash: {
             aviso: res.locals.flash_aviso,
-            erro: res.locals.flash_erro
+            erro: res.locals.flash_erro,
+			aviso_decod: decodeURIComponent(res.locals.flash_aviso),
+			erro_decod: decodeURIComponent(res.locals.flash_erro)
         },
 		query: req.query ? req.query : null
 	});
