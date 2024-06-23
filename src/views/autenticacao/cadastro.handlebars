@@ -4,15 +4,16 @@
 
 <form id="form-cadastro" action="/autenticacao/cadastro" method="post">
     <h3>Crie um perfil</h3>
-    <label for="bicho_id" hidden>Apelido (@)</label>
+    <label for="bicho_id">Apelido (@)</label>
     <p style="font-size:small;">Sem espaços ou acentos. Apenas letras, números, traços e sublinhados (underline).</p>
     <input type="text" id="nome-cadastro" placeholder="apelido_na_varanda" name="bicho_id" required>
-    <label for="email" hidden>E-mail</label>
-    <input type="text" id="email-cadastro" placeholder="e-mail" name="email">
-    <label for="senha" hidden>Senha</label>
+    <label for="email">E-mail:</label>
+    <p style="font-size:small;">Opcional. Usado apenas para recuperação de senha.</p>
+    <input type="text" id="email-cadastro" placeholder="nome@email.com" name="email">
+    <label for="senha">Senha:</label>
     <input type="password" id="senha-cadastro" placeholder="senha" name="senha" required>
-    <label for="confirma_senha" hidden>Confirme sua senha</label>
-    <input type="password" id="senha2-cadastro" placeholder="confirme sua senha" name="confirma_senha" required>
+    <label for="confirma_senha">Confirme sua senha:</label>
+    <input type="password" id="senha2-cadastro" placeholder="senha" name="confirma_senha" required>
     {{#if query.convite}}
     <input type="text" id="convite-cadastro" name="convite_id" value="{{query.convite}}" readonly hidden>
     {{/if}}
