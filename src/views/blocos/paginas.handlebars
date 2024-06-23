@@ -1,3 +1,4 @@
+{{#unless bloco.paginas.unica}}
 <nav class="lista-paginas">
 {{#each bloco.paginas}}
     <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
@@ -20,3 +21,4 @@
         display: block;
     }
 </style>
+{{/unless}}

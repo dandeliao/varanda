@@ -303,7 +303,10 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     break;
                 case 'paginas':
                     if (obj_render.varanda.bicho_id) {
-                        const paginas = await servicePaginas.verPaginas(obj_render.varanda.bicho_id);
+                        let paginas = await servicePaginas.verPaginas(obj_render.varanda.bicho_id);
+                        if (paginas.length < 2) {
+                            paginas.unica = true;
+                        }
                         dados.paginas = paginas;
                     }
                     break;
