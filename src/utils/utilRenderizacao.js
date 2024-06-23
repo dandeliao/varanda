@@ -333,7 +333,6 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     break;
                 case 'comunidades':
                     let comunidades;
-                    console.log('!!!!! bicho:', obj_render.query.bicho);
                     if (obj_render.query.bicho == process.env.INSTANCIA_ID) {
                         comunidades = await serviceComunidades.verComunidades();
                     } else {
