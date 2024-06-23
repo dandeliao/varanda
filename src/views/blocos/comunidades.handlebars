@@ -1,0 +1,28 @@
+{{#if bloco.comunidades}}
+<div class="bloco">
+    <h2>Comunidades</h2>
+    <ul class="lista-bichos">
+        {{#each bloco.comunidades}}
+        <li class="item-bicho">
+            <a href="/{{#if this.comunidade_id}}{{this.comunidade_id}}{{/if}}{{#unless this.comunidade_id}}{{this.bicho_id}}{{/unless}}">
+                <span class="avatar-quadrado" hx-get="/blocos/avatar?bicho={{#if this.comunidade_id}}{{this.comunidade_id}}{{/if}}{{#unless this.comunidade_id}}{{this.bicho_id}}{{/unless}}" hx-trigger="load"></span>
+            </a>
+            <p class="largura-fixa">
+                <a class="mini-arroba" href="/{{this.comunidade_id}}">@{{#if this.comunidade_id}}{{this.comunidade_id}}{{/if}}{{#unless this.comunidade_id}}{{this.bicho_id}}{{/unless}}</a>
+            </p>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+{{/if}}
+
+<style>
+    .lista-bichos {
+        display: flex;
+        gap: 0.2rem;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0 auto;
+        list-style: none;
+    }
+</style>

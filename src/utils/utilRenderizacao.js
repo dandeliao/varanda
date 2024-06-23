@@ -331,6 +331,16 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     }
                     dados.artefato = artefato;
                     break;
+                case 'comunidades':
+                    let comunidades;
+                        if (obj_render.query.bicho === process.env.INSTANCIA_ID) {
+                            comunidades = await serviceComunidades.verComunidades();
+                        } else {
+                            comunidades = await serviceRelacoes.verComunidadesDoBicho(obj_render.query.bicho);
+                            console.log('comunidades:', comunidades);
+                        }
+                    dados.comunidades = comunidades;
+                    break;
                 case 'lote':
                     let lista = await serviceArtefatos.verArtefatosNaPagina(obj_render.query.bicho, obj_render.pagina.pagina_id, obj_render.query.lote);
                     for (let i = 0; i < lista.length; i++) {
