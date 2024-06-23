@@ -66,6 +66,7 @@ dialog {
     overflow: hidden;
     position: fixed;
     top: 0;
+    bottom: auto;
     left: 0;
     margin: 0;
     padding: 0 0.5rem;
@@ -125,7 +126,8 @@ dialog {
 @media screen and (max-width: 859px) {
     
     #varanda-barra {
-        top: calc(100vh - var(--altura-barra-mobile));
+        bottom: 0;
+        top: auto;
         height: var(--altura-barra-mobile);
         padding: 0 0.1rem;
         gap: 0;
