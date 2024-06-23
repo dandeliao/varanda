@@ -326,6 +326,5 @@ exports.postConvite = asyncHandler(async (req, res, next) => {
 	}
 
 	const convite = await serviceConvites.criarConvite(varanda_id, usuarie_id);
-	console.log('convite:', convite);
 	res.render('partials/convite', {convite: convite.convite_id, layout: false});
 });

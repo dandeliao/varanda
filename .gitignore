@@ -2,5 +2,8 @@ legacy/
 node_modules/
 package-lock.json
 .env
-user_content/*
+user_content/artefatos/em_uso/*
+user_content/artefatos/temp/*
+user_content/bichos/em_uso/*
+user_content/bichos/temp/*
 src/views/varandas/*
