@@ -333,12 +333,12 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     break;
                 case 'comunidades':
                     let comunidades;
-                        if (obj_render.query.bicho === process.env.INSTANCIA_ID) {
-                            comunidades = await serviceComunidades.verComunidades();
-                        } else {
-                            comunidades = await serviceRelacoes.verComunidadesDoBicho(obj_render.query.bicho);
-                            console.log('comunidades:', comunidades);
-                        }
+                    console.log('!!!!! bicho:', obj_render.query.bicho);
+                    if (obj_render.query.bicho == process.env.INSTANCIA_ID) {
+                        comunidades = await serviceComunidades.verComunidades();
+                    } else {
+                        comunidades = await serviceRelacoes.verComunidadesDoBicho(obj_render.query.bicho);
+                    }
                     dados.comunidades = comunidades;
                     break;
                 case 'lote':
