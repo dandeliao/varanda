@@ -40,7 +40,7 @@ exports.postPagina = asyncHandler(async (req, res, next) => {
 	let pagina = {
 		varanda_id: varanda_id,
 		titulo: titulo,
-		publica: publica,
+		publica: publica ? true : false,
 		postavel: postavel ? true : false,
 		html: html
 	}
