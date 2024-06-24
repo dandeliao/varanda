@@ -34,7 +34,7 @@
 		<br>
 		<fieldset>
 			<legend>Imagem de perfil</legend>
-			<div class="avatar-quadrado" id="visualiza-avatar" hx-get="/blocos/avatar?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="innerHtml" hx-push-url="false"></div>
+			<div class="avatar-quadrado" id="visualiza-avatar" hx-get="/blocos/avatar?bicho={{varanda.bicho_id}}&momento={{momento}}" hx-trigger="load" hx-swap="innerHtml" hx-push-url="false"></div>
 			<br><br>
 			<label for="descricao_avatar">Descrição da imagem:</label>
 			<textarea class="campo" id="descricao-avatar" name="descricao_avatar" placeholder="Foto de um gato cinza de olhos amarelos com uma expressão de espanto.">{{bloco.bicho.descricao_avatar}}</textarea>
@@ -45,7 +45,7 @@
 		<br>
 		<fieldset>
 			<legend>Imagem de fundo</legend>
-			<div id="visualiza-fundo" hx-get="/blocos/fundo?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="innerHtml" hx-push-url="false"></div>
+			<div id="visualiza-fundo" hx-get="/blocos/fundo?bicho={{varanda.bicho_id}}&momento={{momento}}" hx-trigger="load" hx-swap="innerHtml" hx-push-url="false"></div>
 			<br>
 			<label for="descricao_fundo">Descrição da imagem:</label>
 			<textarea class="campo" id="descricao-fundo" name="descricao_fundo" placeholder="Ilustração de uma praia ensolarada com guarda-sóis coloridos.">{{bloco.bicho.descricao_fundo}}</textarea>

@@ -1,6 +1,4 @@
-{{#with bloco.bicho}}
-<div class="fundo" style="background-image: url(/{{bicho_id}}/fundo);" alt="{{descricao_fundo}}" title="{{descricao_fundo}}"></div>
-{{/with}}
+<div class="fundo" style="background-image: url(/{{bloco.bicho.bicho_id}}/fundo?{{momento}});" alt="{{bloco.bicho.descricao_fundo}}" title="{{bloco.bicho.descricao_fundo}}"></div>
 
 <style>
 .fundo {

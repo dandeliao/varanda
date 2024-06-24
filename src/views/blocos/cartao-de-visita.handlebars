@@ -4,8 +4,8 @@
 {{/if}}
 <div class="bloco cartao{{#unless query.futricar}} container{{/unless}}" {{#if query.futricar}}style="border: solid 2px;"{{/if}}>
 	{{#with bloco.bicho}}
-    <div hx-get="/blocos/fundo?bicho={{bicho_id}}" hx-trigger="load"></div>
-	<div class="avatar-redondo avatar-no-cartao" hx-get="/blocos/avatar?bicho={{bicho_id}}" hx-trigger="load"></div>
+    <div hx-get="/blocos/fundo?bicho={{bicho_id}}{{/with}}&momento={{momento}}{{#with bloco.bicho}}" hx-trigger="load"></div>
+	<div class="avatar-redondo avatar-no-cartao" hx-get="/blocos/avatar?bicho={{bicho_id}}{{/with}}&momento={{momento}}"{{#with bloco.bicho}} hx-trigger="load"></div>
     <div class="informacao">
         <h2>{{nome}}</h2>
         <a href="/{{bicho_id}}">@{{bicho_id}}</a>

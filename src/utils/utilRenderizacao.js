@@ -66,6 +66,7 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
         },
         bloco: {},
 		query: req.query ? req.query : null,
+        momento: Date.now().toString()
     }
     if (layout !== undefined) obj_render.layout = layout;
 

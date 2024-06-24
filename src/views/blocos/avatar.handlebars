@@ -1,6 +1,4 @@
-{{#with bloco.bicho}}
-<img class="avatar" src="/{{bicho_id}}/avatar" alt="{{descricao_avatar}}" title="{{descricao_avatar}}"/>
-{{/with}}
+<img class="avatar" src="/{{bloco.bicho.bicho_id}}/avatar?{{query.momento}}" alt="{{bloco.bicho.descricao_avatar}}" title="{{bloco.bicho.descricao_avatar}}"/>
 
 <style>
 .avatar{
