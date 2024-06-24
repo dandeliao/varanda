@@ -102,11 +102,11 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
         nome:       'preferências',
         descricao:  'Editar suas preferências'
     };
-    const sobre         = {
+    const futricar      = {
         url:        `/${obj_render.varanda.bicho_id}/futricar`,
         metodo:     'get',
-        nome:       'sobre',
-        descricao:  'Ver informações deste bicho'
+        nome:       'futricar',
+        descricao:  'Ver informações e opções deste bicho'
     };
     const surpresa      = {
         url:        `/${(await bichoSurpresa()).bicho_id}`,
@@ -264,7 +264,7 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
                     };
                 }   
             }
-            contexto.dois = sobre;
+            contexto.dois = futricar;
             break;
     }
 
