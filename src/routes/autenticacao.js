@@ -72,10 +72,12 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
         return res.redirect(303, '/autenticacao/cadastro');
 	}
 
+	let { bicho_id, nome, email, senha } = req.body;
+
 	const pessoa = {
-		bicho_id: req.body.bicho_id,
+		bicho_id: bicho_id.toLowerCase(),
 		nome: req.body.nome,
-		email: req.body.email,
+		email: req.body.email.toLowerCase(),
 		senha: req.body.senha
 	};
 

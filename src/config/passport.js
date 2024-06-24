@@ -18,7 +18,7 @@ passport.use(new LocalStrategy(customFields,
 				// 		além disso, deve ser feita pela camada 'data'(?).
 				//		reavaliar estrutura de diretórios do projeto.
 				'SELECT * FROM pessoas WHERE bicho_id=$1',
-				[username]
+				[username.toLowerCase()]
 			);
 			if(segredos.rows.length > 0) {
 				const segr = segredos.rows[0];
