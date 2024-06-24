@@ -25,6 +25,16 @@ exports.verArtefatosNaPagina = async function(varanda_id, pagina_id, lote) {
 	return resposta;
 };
 
+exports.verArtefatosNaVaranda = async function(varanda_id, lote) {
+	let lotereal = lote ? lote : 1;
+	const artefatos = (await dataArtefatos.getArtefatosNaVaranda(varanda_id, lotereal)).rows;
+	let resposta = [];
+	for (let i = 0; i < artefatos.length; i++) {
+		resposta[i] = {artefato_id: artefatos[i].artefato_id} // coloca apenas o id do artefato na resposta
+	}
+	return resposta;
+}
+
 exports.verComentarios = async function(artefato_id) {
 	const comentarios = await dataArtefatos.getComentarios(artefato_id);
 	return comentarios.rows;

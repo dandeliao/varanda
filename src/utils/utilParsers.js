@@ -139,12 +139,9 @@ exports.htmlParaHtmx = async (html, varanda_id, pagina_id) => {
                 if (captured[i][0]) {
                     if (captured[i][0] === 'bicho') temBicho = true;
                     if (captured[i][0] === 'pagina') temPagina = true;
-                    divHtmx = divHtmx + `${captured[i][0]}`;
+                    divHtmx = divHtmx + `&${captured[i][0]}`;
                     if (captured[i][1]) {
                         divHtmx = divHtmx + `=${captured[i][1]}`;
-                    }
-                    if (captured[i+1][0]) {
-                        divHtmx = divHtmx + '&';
                     }
                 }
             };

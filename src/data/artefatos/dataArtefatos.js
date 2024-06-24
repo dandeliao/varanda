@@ -13,10 +13,12 @@ exports.getArtefato = function(artefatoId) {
 	);
 };
 
-exports.getArtefatosNaVaranda = function(varandaId) {
+exports.getArtefatosNaVaranda = function(varandaId, lote) {
+	const itensPorLote = 8;
+	const offset = (lote - 1) * itensPorLote;
 	return pool.query(
-		'SELECT * FROM artefatos WHERE varanda_id = $1',
-		[varandaId]
+		'SELECT * FROM artefatos WHERE varanda_id = $1 AND em_resposta_a_id IS NULL ORDER BY criacao DESC LIMIT $2 OFFSET $3',
+		[varandaId, itensPorLote, offset]
 	);
 };
 

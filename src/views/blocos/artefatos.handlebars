@@ -1,14 +1,14 @@
-{{#if bloco.artefatos.comecou}}<div class="bloco artefatos">{{#if pagina.postavel}}{{#unless bloco.artefatos.lista}}<p>Faça uma postagem para começar!</p>{{/unless}}{{/if}}{{/if}}
+{{#if bloco.artefatos.comecou}}<div class="bloco artefatos">{{#if pagina.postavel}}{{#unless bloco.artefatos.lista}}<p>Nenhuma postagem ainda. Clique em "postar" na barra principal para fazer a primeira.</p>{{/unless}}{{/if}}{{/if}}
     <div class="lote">
     {{#each bloco.artefatos.lista}}
         <div class="item-artefatos {{#if this.colorir}}colorir{{/if}}">
-            <div hx-get="/blocos/artefato-mini?artefato={{this.artefato_id}}" hx-trigger="load"></div>
+            <div hx-get="/blocos/artefato-mini?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&artefato={{this.artefato_id}}" hx-trigger="load"></div>
         </div>
     {{/each}}
     </div>
     <footer>
     {{#unless bloco.artefatos.acabou}}
-        <button id="botao-{{bloco.artefatos.proximo_lote}}" style="margin:1rem 0 1rem;" hx-get="/blocos/artefatos?bicho={{varanda.bicho_id}}&pagina={{pagina.pagina_id}}&lote={{bloco.artefatos.proximo_lote}}" hx-push-url="false" hx-swap="outerHTML" >Ver mais</button>
+        <button id="botao-{{bloco.artefatos.proximo_lote}}" style="margin:1rem 0 1rem;" hx-get="/blocos/artefatos?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&bicho={{varanda.bicho_id}}{{#if bloco.artefatos.novidades}}&novidades{{/if}}&pagina={{pagina.pagina_id}}&lote={{bloco.artefatos.proximo_lote}}" hx-push-url="false" hx-swap="outerHTML" >Ver mais</button>
         <div id="lote-{{bloco.artefatos.proximo_lote}}"></div>
     {{/unless}}
     </footer>

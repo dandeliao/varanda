@@ -345,7 +345,13 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     dados.comunidades = comunidades;
                     break;
                 case 'lote':
-                    let lista = await serviceArtefatos.verArtefatosNaPagina(obj_render.query.bicho, obj_render.pagina.pagina_id, obj_render.query.lote);
+                    let lista = [];
+                    if (obj_render.query.novidades !== undefined) {
+                        lista = await serviceArtefatos.verArtefatosNaVaranda(obj_render.query.bicho, obj_render.query.lote);
+                    } else {
+                        lista = await serviceArtefatos.verArtefatosNaPagina(obj_render.query.bicho, obj_render.pagina.pagina_id, obj_render.query.lote);
+                    }
+                    
                     for (let i = 0; i < lista.length; i++) {
                         if (i > 0) {
                             if ((i % 2 == 0) && (lista[i-1].colorir)) {
@@ -360,6 +366,7 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     let proximo_lote = lote + 1;
                     dados.artefatos = {
                         lista: lista,
+                        novidades: obj_render.query.novidades !== undefined ? true : false, 
                         quantidade: quantidade,
                         proximo_lote: proximo_lote,
                         comecou: lote === 1 ? true : false,
