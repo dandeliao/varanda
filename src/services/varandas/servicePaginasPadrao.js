@@ -12,7 +12,7 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 			html: `<div class="pagina">
   <v-cartao-de-visita/>
   <v-paginas/>
-  <v-artefatos/>
+  <v-artefatos dado-novidades />
 </div>`
 		};
 	} else {
