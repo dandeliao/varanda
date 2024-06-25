@@ -15,7 +15,7 @@
     <div class="lote">
     {{#each bloco.artefatos.lista}}
         <div class="item-artefatos {{#if this.colorir}}colorir{{/if}}">
-            <div hx-get="/blocos/artefato-mini?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&artefato={{this.artefato_id}}" hx-trigger="load"></div>
+            <div hx-get="/blocos/artefato-mini?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&artefato={{this.artefato_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
         </div>
     {{/each}}
     </div>
@@ -41,6 +41,7 @@
         min-width: 20vw;
     }
     .item-artefatos {
+        aspect-ratio: 1 / 1;
         overflow: hidden;
     }
     @media screen and (min-width: 860px) {
