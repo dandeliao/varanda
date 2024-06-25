@@ -2,7 +2,7 @@
 {{#if artefato}}
 {{#with artefato}}
 <div class="pagina">
-<div class="bloco" style="text-align: left">
+<div class="bloco artefato">
     {{#if nome_arquivo}}
     <div class="arquivo">
         {{#if tipo.imagem}}
@@ -10,7 +10,6 @@
             src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
             alt="{{descricao}}"
             title="{{descricao}}"
-            style="display:block;margin:0 auto;"
         />
         {{/if}}
         {{#if tipo.audio}}
@@ -86,17 +85,20 @@
 {{/if}}
 
 <style>
-    .bloco h2{
+    .artefato {
+        text-align: left;
+    }
+    .artefato h2{
         align-self: stretch;
         margin: 1rem 0;
         text-align: center;
     }
 
-    .bloco .titulo {
+    .artefato .titulo {
         width: 100%;
         word-break: break-all;
     }
-    .bloco footer > button {
+    .artefato footer > button {
         display: inline-block;
         padding: 0;
         border-style: none;
@@ -104,18 +106,18 @@
         width: 3rem;
         height: 100%;
     }
-    .bloco footer > button:hover {
+    .artefato footer > button:hover {
         cursor: pointer;
     }
-    .bloco footer > button.pressionado {
+    .artefato footer > button.pressionado {
         border-style: inset;
     }
 
-    .bloco footer .menu {
+    .artefato footer .menu {
         display: none;
     }
 
-    .bloco footer nav.menuzinho-aberto {
+    .artefato footer nav.menuzinho-aberto {
         display: block;
         z-index: 400;
         position: absolute;
@@ -129,7 +131,7 @@
         border-radius: 5px;
     }
 
-    .bloco footer nav a {
+    .artefato footer nav a {
         text-decoration: underline;
         cursor: pointer;
     }
@@ -139,14 +141,14 @@
         cursor: pointer;
     }
 
-    .bloco footer {
+    .artefato footer {
         color: var(--cor-fonte-2);
         font-size: 0.8rem;
         display: flex;
         justify-content: space-between;
         align-items: baseline;
     }
-    .bloco .autoria {
+    .artefato .autoria {
         color: var(--cor-fonte-2);
         font-size: 0.9rem;
         display: flex;
@@ -154,23 +156,23 @@
         align-items: center;
     }
 
-    .bloco .autoria .texto-autoria {
+    .artefato .autoria .texto-autoria {
         margin-left: 0.4rem;
     }
 
-    .bloco .titulo-comentario {
+    .artefato .titulo-comentario {
         display: inline;
     }
 
-    .bloco .comentario-em-si {
+    .artefato .comentario-em-si {
         margin-bottom: 0.2rem;
     }
 
-    .bloco .comentarios h3 {
+    .artefato .comentarios h3 {
         background-color: var(--cor-fundo-2);
     }
 
-    .bloco .comentario {
+    .artefato .comentario {
         margin: 0.6rem 0;
     }
 
@@ -201,14 +203,12 @@
 
     .arquivo {
         width: 100%;
-        max-width: 600px;
-        max-height: 600px;
         margin: 0 auto;
     }
 
     .arquivo img {
-        max-width: 600px;
-        max-height: 600px;
+        width: 100%;
+        max-height: 70vh;
         object-fit: contain;
     }
 
