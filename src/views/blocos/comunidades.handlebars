@@ -8,7 +8,7 @@
                 <span class="avatar-quadrado" hx-get="/blocos/avatar?bicho={{#if this.comunidade_id}}{{this.comunidade_id}}{{/if}}{{#unless this.comunidade_id}}{{this.bicho_id}}{{/unless}}" hx-trigger="load"></span>
             </a>
             <p class="largura-fixa">
-                <a class="mini-arroba" href="/{{this.comunidade_id}}">@{{#if this.comunidade_id}}{{this.comunidade_id}}{{/if}}{{#unless this.comunidade_id}}{{this.bicho_id}}{{/unless}}</a>
+                <a class="mini-arroba" href="/{{#if this.comunidade_id}}{{this.comunidade_id}}{{/if}}{{#unless this.comunidade_id}}{{this.bicho_id}}{{/unless}}">@{{#if this.comunidade_id}}{{this.comunidade_id}}{{/if}}{{#unless this.comunidade_id}}{{this.bicho_id}}{{/unless}}</a>
             </p>
         </li>
         {{/each}}
