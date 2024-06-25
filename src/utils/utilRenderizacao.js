@@ -353,16 +353,6 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     } else {
                         lista = await serviceArtefatos.verArtefatosNaPagina(obj_render.query.bicho, obj_render.pagina.pagina_id, obj_render.query.lote);
                     }
-                    
-                    for (let i = 0; i < lista.length; i++) {
-                        if (i > 0) {
-                            if ((i % 2 == 0) && (lista[i-1].colorir)) {
-                                lista[i].colorir = true;
-                            } else if ((i % 2 != 0) && (!lista[i-1].colorir)) {
-                                lista[i].colorir = true;
-                            }   
-                        }
-                    }
                     let quantidade = lista.length;
                     let lote = parseInt(obj_render.query.lote ? obj_render.query.lote : 1);
                     let proximo_lote = lote + 1;
@@ -372,7 +362,8 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                         quantidade: quantidade,
                         proximo_lote: proximo_lote,
                         comecou: lote === 1 ? true : false,
-                        acabou: quantidade === 0 ? true : false
+                        acabou: quantidade === 0 ? true : false,
+                        nao_renderizar: (!obj_render.pagina.postavel && lista.length === 0) ? true : false
                     };
                     break;
                 case 'relacao':

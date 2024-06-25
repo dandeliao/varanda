@@ -1,11 +1,17 @@
+{{#unless bloco.artefatos.nao_renderizar}}
 {{#if bloco.artefatos.comecou}}
-<div class="bloco artefatos">{{#if pagina.postavel}}{{#unless bloco.artefatos.lista}}<p>Nenhuma postagem ainda. Clique em "postar" na barra principal para fazer a primeira.</p>{{/unless}}{{/if}}
-{{/if}}
+<div class="bloco artefatos">
+    {{#if pagina.postavel}}
+    {{#unless bloco.artefatos.lista}}
+        <p>Nenhuma postagem ainda. Clique em "postar" na barra principal para fazer a primeira.</p>
+    {{/unless}}
+    {{/if}}
     {{#if bloco.artefatos.lista}}
     {{#if bloco.artefatos.novidades}}
-    <h2>Mais recentes:</h2>
+        <h2>Mais recentes:</h2>
     {{/if}}
     {{/if}}
+{{/if}}
     <div class="lote">
     {{#each bloco.artefatos.lista}}
         <div class="item-artefatos {{#if this.colorir}}colorir{{/if}}">
@@ -25,16 +31,46 @@
     .artefatos {
         padding: 0;
     }
+    .artefatos h2 {
+        margin-bottom: 0.9rem;
+    }
     .lote {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         gap: 0;
-        min-width: 45vw;
+        min-width: 20vw;
     }
     .item-artefatos {
         overflow: hidden;
     }
-    .item-artefatos.colorir {
-        background-color: var(--cor-fundo-3);
+    @media screen and (min-width: 860px) {
+        .item-artefatos:nth-child(8n+1) {
+            background-color: var(--cor-fundo-3);
+        }
+        .item-artefatos:nth-child(8n+3) {
+            background-color: var(--cor-fundo-3);
+        }
+        .item-artefatos:nth-child(8n+6) {
+            background-color: var(--cor-fundo-3);
+        }
+        .item-artefatos:nth-child(8n) {
+            background-color: var(--cor-fundo-3);
+        }
+    }
+    
+    @media screen and (max-width: 859px) {
+        .lote {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            min-width: 45vw;
+        }
+        .item-artefatos:nth-child(4n+1) {
+            background-color: var(--cor-fundo-3);
+        }
+        .item-artefatos:nth-child(4n) {
+            background-color: var(--cor-fundo-3);
+        }
     }
 </style>
+{{/unless}}

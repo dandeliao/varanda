@@ -225,6 +225,7 @@ dialog {
     display:    block;
     position:   relative;
     flex:       40%;
+    align-self: stretch;
     padding:    0.8rem;
     background-color:   var(--cor-fundo);
     color:              var(--cor-fonte);
