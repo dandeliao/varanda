@@ -1,11 +1,11 @@
 {{#if bloco.artefatos.comecou}}
 <div class="bloco artefatos">{{#if pagina.postavel}}{{#unless bloco.artefatos.lista}}<p>Nenhuma postagem ainda. Clique em "postar" na barra principal para fazer a primeira.</p>{{/unless}}{{/if}}
 {{/if}}
-    {{#unless bloco.artefatos.comecou}}
+    {{#if bloco.artefatos.lista}}
     {{#if bloco.artefatos.novidades}}
     <h2>Mais recentes:</h2>
     {{/if}}
-    {{/unless}}
+    {{/if}}
     <div class="lote">
     {{#each bloco.artefatos.lista}}
         <div class="item-artefatos {{#if this.colorir}}colorir{{/if}}">
