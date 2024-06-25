@@ -12,7 +12,6 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 			html: `<div class="pagina">
   <v-cartao-de-visita/>
   <v-paginas/>
-  <h2>Mais recentes:</h2>
   <v-artefatos dado-novidades />
 </div>`
 		};

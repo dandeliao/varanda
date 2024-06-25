@@ -10,7 +10,7 @@
         <h2>{{nome}}</h2>
         <a href="/{{bicho_id}}">@{{bicho_id}}</a>
 		<br><br>
-        <p>{{descricao}}</p>
+        <p class="descricao">{{descricao}}</p>
     </div>
 	{{/with}}
 
@@ -75,6 +75,11 @@ width: 100%;
 .informacao{
 margin-top: 42px;
 padding: 0 0.8rem 0.8rem 0.8rem;
+}
+
+.descricao {
+	white-space: pre-wrap;
+	margin-bottom: 1rem;
 }
 
 .avatar-no-cartao {
