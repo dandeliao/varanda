@@ -3,6 +3,7 @@ const serviceBichos         = require('../services/bichos/serviceBichos');
 const serviceComunidades    = require('../services/bichos/serviceComunidades');
 const servicePreferencias   = require('../services/bichos/servicePreferencias');
 const servicePaginas        = require('../services/varandas/servicePaginas');
+const servicePaginasPadrao  = require('../services/varandas/servicePaginasPadrao');
 const serviceArtefatos      = require('../services/artefatos/serviceArtefatos');
 const { dataHumana,
         bichoSurpresa }     = require('./utilMiscellaneous');
@@ -28,7 +29,8 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
         pagina = await servicePaginas.verPaginas(bicho_id, pagina_id);
         if (!pagina) {
             pagina = {
-                pagina_id: pagina_id
+                pagina_id: pagina_id,
+                html: (await servicePaginasPadrao.gerarPaginaTematica('', false)).html
             };
         } else {
             pagina.pagina_id = pagina_id;
