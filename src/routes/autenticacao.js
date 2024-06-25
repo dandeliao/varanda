@@ -75,7 +75,7 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 	let { bicho_id, nome, email, senha } = req.body;
 
 	const pessoa = {
-		bicho_id: bicho_id.toLowerCase(),
+		bicho_id: bicho_id,
 		nome: req.body.nome,
 		email: req.body.email.toLowerCase(),
 		senha: req.body.senha
@@ -113,18 +113,18 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 		await serviceBichosPadrao.criarBichosPadrao();
 	}
 	
-	const bichoExiste = await serviceBichos.verBicho(pessoa.bicho_id);
+	const bichoExiste = await serviceBichos.verBicho(pessoa.bicho_id.toLowerCase());
 	if (bichoExiste) {
-		req.flash('erro', `O apelido @${pessoa.bicho_id} já existe. Por favor, escolha outro apelido.`)
+		req.flash('erro', `O apelido @${pessoa.bicho_id.toLowerCase()} já existe. Por favor, escolha outro apelido.`)
 		return res.redirect(303, `/autenticacao/cadastro?convite=${req.body.convite_id}`);
 	}
 	
-	await servicePessoas.registrarPessoa(pessoa);
-	await servicePreferencias.criarPreferencias(pessoa.bicho_id);
+	let pessoaCriada = await servicePessoas.registrarPessoa(pessoa);
+	await servicePreferencias.criarPreferencias(pessoaCriada.bicho_id);
 	
 	// adiciona avatar e fundo padrão
 	const bichoPadrao = await serviceBichosPadrao.sortearBichoPadrao();
-	const novaPessoa = await serviceBichos.editarBicho(pessoa.bicho_id, {
+	const novaPessoa = await serviceBichos.editarBicho(pessoaCriada.bicho_id, {
 		descricao: bichoPadrao.descricao,
 		avatar: 'avatar.jpg',
 		descricao_avatar: bichoPadrao.descricao_avatar,
@@ -154,7 +154,7 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 		await serviceBichos.copiarAvatar(instanciaEditada.bicho_id, `${serviceBichosPadrao.caminhoAvatarPadrao}/${instanciaPadrao.avatar}`, instanciaEditada.avatar);
 		await serviceBichos.copiarFundo(instanciaEditada.bicho_id, `${serviceBichosPadrao.caminhoFundoPadrao}/${instanciaPadrao.fundo}`, instanciaEditada.fundo);
 		// cria relação entre a primeira pessoa e a comunidade da instância, com todas as habilidades (participar, editar, moderar e representar)
-		await serviceRelacoes.criarRelacao(pessoa.bicho_id, instancia.bicho_id, {participar: true, editar: true, moderar: true, representar: true});
+		await serviceRelacoes.criarRelacao(pessoaCriada.bicho_id, instancia.bicho_id, {participar: true, editar: true, moderar: true, representar: true});
 		// cria página inicial da instância
 		const comunitaria = true;
 		let paginaPadrao = {};
@@ -165,16 +165,16 @@ router.post('/cadastro', asyncHandler( async (req, res) => {
 
 	// nos outros casos, cria relação apenas de participação
 	} else {
-		await serviceRelacoes.criarRelacao(pessoa.bicho_id, process.env.INSTANCIA_ID, {participar: true, editar: false, moderar: false, representar: false});
+		await serviceRelacoes.criarRelacao(pessoaCriada.bicho_id, process.env.INSTANCIA_ID, {participar: true, editar: false, moderar: false, representar: false});
 	}
 
 	// cria página inicial da pessoa
 	const comunitaria = false;
 	let paginaPadrao = {};
 	paginaPadrao = await servicePaginasPadrao.gerarPaginaPadrao(comunitaria);
-	paginaPadrao.pagina_vid = `${pessoa.bicho_id}/inicio`;
-	const novaPagina = await servicePaginas.criarPagina(pessoa.bicho_id, paginaPadrao);
-	await serviceEdicoes.criarEdicao(pessoa.bicho_id, novaPagina, paginaPadrao.html);
+	paginaPadrao.pagina_vid = `${pessoaCriada.bicho_id}/inicio`;
+	const novaPagina = await servicePaginas.criarPagina(pessoaCriada.bicho_id, paginaPadrao);
+	await serviceEdicoes.criarEdicao(pessoaCriada.bicho_id, novaPagina, paginaPadrao.html);
 
 	req.flash('aviso', 'Cadastro realizado com sucesso! Agora é só entrar!');
 	return res.redirect(303, '/autenticacao/login');

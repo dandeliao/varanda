@@ -18,11 +18,11 @@ exports.verComunidade = async function (comunidade_id) {
 
 exports.criarComunidade = async function (dados, bichoCriadorId) {
 
-	const bichoExistente = await dataBichos.getBicho(dados.bicho_id);
+	const bichoExistente = await dataBichos.getBicho(dados.bicho_id.toLowerCase());
 	if (bichoExistente.rowCount !== 0) throw new Error('Bicho já existe.');
 
 	const bicho = {
-		bicho_id: dados.bicho_id,
+		bicho_id: dados.bicho_id.toLowerCase(),
 		nome: dados.nome ? dados.nome : dados.bicho_id,
 		descricao: dados.descricao ? dados.descricao : `Oi! Bem-vinde à comunidade ${dados.nome ? dados.nome : dados.bicho_id}.`
 	};
@@ -38,7 +38,7 @@ exports.criarComunidade = async function (dados, bichoCriadorId) {
 	}
 
 	let novoBicho = (await dataBichos.postBicho(bicho)).rows[0];
-	const novaComunidade = (await dataComunidades.postComunidade(dados.bicho_id, bichoCriadorId)).rows[0];
+	const novaComunidade = (await dataComunidades.postComunidade(novoBicho.bicho_id, bichoCriadorId.toLowerCase())).rows[0];
 	
 	novoBicho.bicho_criador_id = novaComunidade.bicho_criador_id;
 	novoBicho.participacao_livre = novaComunidade.participacao_livre;

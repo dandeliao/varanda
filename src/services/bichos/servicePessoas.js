@@ -24,7 +24,7 @@ exports.verEmail = async function(pessoa_id) {
 
 exports.registrarPessoa = async function (dados) {
 	let bicho = {
-		bicho_id: dados.bicho_id,
+		bicho_id: dados.bicho_id.toLowerCase(),
 		nome: dados.nome ? dados.nome : dados.bicho_id,
 		descricao: dados.descricao ? dados.descricao : `Oi! Me chamo ${dados.nome ? dados.nome : dados.bicho_id}.`
 	};
