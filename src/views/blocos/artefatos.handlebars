@@ -18,7 +18,7 @@
         <div class="item-artefatos {{#if this.colorir}}colorir{{/if}}">
             <div hx-get="/blocos/artefato-mini?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&artefato={{this.artefato_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
             <div class="pagina-origem">
-                <a href="/{{this.pagina_vid}}">Postado em {{this.pagina_titulo}}</a>
+                <span>Postado em </span><a href="/{{this.pagina_vid}}">{{this.pagina_titulo}}</a>
             </div>
         </div>
     {{/each}}
