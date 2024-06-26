@@ -102,9 +102,6 @@
 
 {{#unless nova_comunidade}}
 <script>
-
-	esticarTextAreas();
-
 	document.getElementById('input-fundo').addEventListener('change', function(event) {
 		let src = URL.createObjectURL(event.target.files[0]);
   		document.getElementById('visualiza-fundo').childNodes[0].style.backgroundImage = `url(${src})`;
@@ -113,14 +110,5 @@
 		let src = URL.createObjectURL(event.target.files[0]);
   		document.getElementById('visualiza-avatar').childNodes[0].src = src;
 	});
-
-	function esticarTextAreas() {
-		let textareas = document.getElementsByTagName('textarea');
-		for (campo of textareas) {
-			campo.style.height = campo.scrollHeight + 'px';
-			campo.style.overflow = "hidden";
-		}
-	}
-	
 </script>
 {{/unless}}

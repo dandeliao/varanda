@@ -76,17 +76,3 @@
 		word-wrap: break-word;
 	}
 </style>
-
-<script>
-
-	esticarTextAreas();
-
-	function esticarTextAreas() {
-		let textareas = document.getElementsByTagName('textarea');
-		for (campo of textareas) {
-			campo.style.height = campo.scrollHeight + 'px';
-			campo.style.overflow = "hidden";
-		}
-	}
-	
-</script>
