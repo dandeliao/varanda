@@ -13,11 +13,23 @@
     {{/if}}
 {{/if}}
     <div class="lote">
+    {{#if bloco.artefatos.novidades}}
+    {{#each bloco.artefatos.lista}}
+        <div class="item-artefatos {{#if this.colorir}}colorir{{/if}}">
+            <div hx-get="/blocos/artefato-mini?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&artefato={{this.artefato_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
+            <div class="pagina-origem">
+                <a href="/{{this.pagina_vid}}">Postado em {{this.pagina_titulo}}</a>
+            </div>
+        </div>
+    {{/each}}
+    {{/if}}
+    {{#unless bloco.artefatos.novidades}}
     {{#each bloco.artefatos.lista}}
         <div class="item-artefatos {{#if this.colorir}}colorir{{/if}}">
             <div hx-get="/blocos/artefato-mini?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&artefato={{this.artefato_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
         </div>
     {{/each}}
+    {{/unless}}
     </div>
     <footer>
     {{#unless bloco.artefatos.acabou}}
@@ -41,8 +53,19 @@
         min-width: 20vw;
     }
     .item-artefatos {
+        position: relative;
         aspect-ratio: 1 / 1;
         overflow: hidden;
+    }
+    .pagina-origem {
+        display: block;
+        position: absolute;
+        z-index: 10;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding: 0.4rem 0;
+        background-color: var(--cor-transparente);
     }
     @media screen and (min-width: 860px) {
         .item-artefatos:nth-child(8n+1) {

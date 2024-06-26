@@ -1,8 +1,10 @@
 const dataArtefatos = require('../../data/artefatos/dataArtefatos');
+const servicePaginas = require('../../services/varandas/servicePaginas');
 const caminhoArtefatos = '../../../user_content/artefatos/em_uso';
 const fs = require('fs');
 const path = require('path');
 const { deletarArquivoArtefato } = require('../../utils/utilArquivos');
+const { vidParaId } = require('../../utils/utilParsers');
 
 exports.verArtefato = async function(artefato_id) {
     let resposta = null;
@@ -30,7 +32,11 @@ exports.verArtefatosNaVaranda = async function(varanda_id, lote) {
 	const artefatos = (await dataArtefatos.getArtefatosNaVaranda(varanda_id, lotereal)).rows;
 	let resposta = [];
 	for (let i = 0; i < artefatos.length; i++) {
-		resposta[i] = {artefato_id: artefatos[i].artefato_id} // coloca apenas o id do artefato na resposta
+		resposta[i] = { // coloca apenas o id e a página do artefato na resposta
+			artefato_id: artefatos[i].artefato_id,
+			pagina_vid: artefatos[i].pagina_vid,
+			pagina_titulo: (await servicePaginas.verPaginas(varanda_id, vidParaId(artefatos[i].pagina_vid))).titulo
+		}
 	}
 	return resposta;
 }
