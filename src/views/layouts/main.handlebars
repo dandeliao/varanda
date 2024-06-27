@@ -53,6 +53,7 @@
             document.getElementById('pe-da-pagina').style.display = null;
             document.getElementById('varanda-janela').style.minHeight = null;
             carregaTema();
+            esticaTextareas();
         }
 
         async function carregaTema() {
@@ -80,10 +81,12 @@
             }
         }
 
-        let tx = document.getElementsByTagName("textarea");
-        for (let i = 0; i < tx.length; i++) {
-            tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
-            tx[i].addEventListener("input", OnInput, false);
+        function esticaTextareas() {
+            let tx = document.getElementsByTagName("textarea");
+            for (let i = 0; i < tx.length; i++) {
+                tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
+                tx[i].addEventListener("input", OnInput, false);
+            }
         }
 
         function OnInput() {
