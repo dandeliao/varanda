@@ -1,7 +1,14 @@
 const serviceBlocos = require('../services/varandas/serviceBlocos');
-const { replaceAsync } = require('./utilMiscellaneous');
 const sanitize = require('sanitize-html');
 require('dotenv').config();
+
+exports.replaceAsync = async (string, regexp, replacerFunction) => {
+    const replacements = await Promise.all(
+        Array.from(string.matchAll(regexp),
+            match => replacerFunction(...match)));
+    let i = 0;
+    return string.replace(regexp, () => replacements[i++]);
+}
 
 exports.sanitizarHtml = async (html, comunitaria) => {
 
@@ -125,7 +132,7 @@ exports.htmlParaHtmx = async (html, varanda_id, pagina_id) => {
 
     // substitui tags customizadas <v-bloco /> por divs htmx
     
-    return await replaceAsync(html, blocoRegex, async (match, p1, p2, p3, p4, p5, p6, p7, p8, p9, offset, string) => {       
+    return await this.replaceAsync(html, blocoRegex, async (match, p1, p2, p3, p4, p5, p6, p7, p8, p9, offset, string) => {       
         // abre div htmx
         let divHtmx = `<div hx-get="/blocos/${p1}`;
         // se existem atributos, os inclui na div htmx
@@ -177,7 +184,7 @@ exports.htmlParaHtmx = async (html, varanda_id, pagina_id) => {
 exports.textoParaHtml = async (texto) => {
     // captura links http(s)://endereco.com, categorias #artes, arrobas @varanda, páginas @varanda/blog-novo e artefatos @varanda/blog-novo/42
     const linkifyRegex = /((?:http[s]?:\/\/.)?(?:www\.)?[-a-zA-Z0-9@%._\+~#=]{2,256}\.[a-z]{2,6}\b(?:[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*))|#(\w+(?:\S)*)|@(([A-Za-z0-9_-]+)(?:\/([A-Za-z0-9_-]+))?(?:\/([A-Za-z0-9_-]+))?)/g;
-    const html = await replaceAsync(texto, linkifyRegex, (match, p1, p2, p3, p4, p5, p6, offset, string) => {
+    const html = await this.replaceAsync(texto, linkifyRegex, (match, p1, p2, p3, p4, p5, p6, offset, string) => {
         // p1 = url, p2 = hashtag, p3 = arroba/pagina/artefato, p4 = arroba, p5 = página, p6 = artefato
         if (p1) { // url
             return `<a href="${p1}">${p1}</a>`;
