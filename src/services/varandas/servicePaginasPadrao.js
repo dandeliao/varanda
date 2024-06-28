@@ -11,6 +11,7 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 			comunitaria: true,
 			html: `<div class="pagina">
   <v-cartao-de-visita/>
+  <v-participantes/>
   <v-paginas/>
   <v-artefatos dado-novidades />
 </div>`

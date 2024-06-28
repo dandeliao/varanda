@@ -377,6 +377,10 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     let pagina = await servicePaginas.verPaginas(obj_render.varanda.bicho_id, obj_render.pagina.pagina_id);
                     dados.pagina = pagina;
                     break;
+                case 'participantes':
+                    let participantes = await serviceRelacoes.verBichosNaComunidade(obj_render.varanda.bicho_id);
+                    dados.participantes = participantes;
+                    break;
                 case 'preferencias':
                     let preferencias = null;
                     if (obj_render.usuarie.logade) { preferencias = await servicePreferencias.verPreferencias(obj_render.usuarie.bicho_id) }
