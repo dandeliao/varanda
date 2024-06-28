@@ -22,10 +22,11 @@ exports.gerarPaginaPadrao = async function (comunitaria) {
 			titulo: 'Início',
 			html: `<div class="pagina">
   <v-cartao-de-visita/>
-  <v-paginas/>
+  <v-comunidades/>
   <div class="bloco">
     <p>meu emoji da sorte é ${emoji}</p>
   </div>
+  <v-paginas/>
 </div>`
 		};
 	}
