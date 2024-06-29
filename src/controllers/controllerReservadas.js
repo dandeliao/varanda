@@ -102,7 +102,12 @@ exports.getFutricarVaranda = asyncHandler(async (req, res, next) => {
 	obj_render = await objetoRenderizavelContexto(obj_render, 'bicho');
 	obj_render = await objetoRenderizavelBloco(obj_render, ['bicho', 'paginas', 'relacao']);
 	const comunidades = await serviceRelacoes.verComunidadesDoBicho(varanda_id);
-	const participantes = await serviceRelacoes.verBichosNaComunidade(varanda_id);
+	let participantes;
+	if (varanda_id === process.env.INSTANCIA_ID) {
+		participantes = await serviceRelacoes.verPessoasNaComunidade(varanda_id);
+	} else {
+		participantes = await serviceRelacoes.verBichosNaComunidade(varanda_id);
+	}
 	obj_render.bloco.futricar = true;
 	obj_render.bloco.comunidades = comunidades;
 	obj_render.bloco.participantes = participantes;

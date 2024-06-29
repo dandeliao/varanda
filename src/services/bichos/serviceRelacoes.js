@@ -1,9 +1,21 @@
 const dataRelacoes = require('../../data/bichos/dataRelacoes');
+const dataPessoas = require('../../data/bichos/dataPessoas');
 
 exports.verBichosNaComunidade = async function (comunidadeId) {
 	const bichosNaComunidade = await dataRelacoes.getBichosNaComunidade(comunidadeId);
 	return bichosNaComunidade.rows;
 };
+
+exports.verPessoasNaComunidade = async function (comunidadeId) {
+	const bichosNaComunidade = (await dataRelacoes.getBichosNaComunidade(comunidadeId)).rows;
+	let pessoas = [];
+	for (bicho of bichosNaComunidade) {
+		if ((await dataPessoas.getPessoa(bicho.bicho_id)).rows[0]) {
+			pessoas.push(bicho);
+		}
+	}
+	return pessoas;
+}
 
 exports.verComunidadesDoBicho = async function (bichoId) {
 	const comunidadesDoBicho = await dataRelacoes.getComunidadesDoBicho(bichoId);
