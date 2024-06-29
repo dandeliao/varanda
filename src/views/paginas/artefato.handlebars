@@ -71,7 +71,7 @@
         <h3 style="text-align:center; padding: 1rem 0;">Comentários:</h3>
         {{#each comentarios}}
         <section class="comentario">
-            <div hx-get="/blocos/artefato?artefato={{this.artefato_id}}&estilo=comentario" hx-trigger="load" hx-push-url="false"></div>
+            <div hx-get="/blocos/comentario?artefato={{this.artefato_id}}&estilo=comentario" hx-trigger="load" hx-push-url="false" hx-swap="outerHTML"></div>
         </section>
         <hr>
         {{/each}}
@@ -165,7 +165,7 @@
     }
 
     .artefato .comentario-em-si {
-        margin-bottom: 0.2rem;
+        margin: 0.2rem 0;
     }
 
     .artefato .comentarios h3 {

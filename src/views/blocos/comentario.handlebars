@@ -1,0 +1,88 @@
+{{#if bloco.artefato.comentario}}
+{{#with bloco.artefato}}
+<div class="comentario">
+    <header>
+        <h5>{{titulo}}</h5>
+        {{#if sensivel}}<button id="botao-sensivel-{{artefato_id}}" onClick="toggleSensivel({{artefato_id}})">Expandir</button>{{/if}}
+    </header>
+    <div class="comentario-em-si {{#if sensivel}}sensivel-oculto{{/if}}" id="sensivel-{{artefato_id}}">
+        {{#if texto}}
+            <div class="texto-comentario">{{{texto}}}</div>
+        {{/if}}
+        {{#if nome_arquivo}}
+            <div class="arquivo">
+                {{#if tipo.imagem}}
+                <img
+                    src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+                    alt="{{descricao}}"
+                    title="{{descricao}}"
+                />
+                {{/if}}
+                {{#if tipo.audio}}
+                <audio
+                    controls
+                    src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+                > Clique para baixar o áudio: <a href="/{{pagina_vid}}/{{artefato_id}}/arquivo">{{nome_arquivo}}.{{extensao}}</a>
+                </audio>
+                <p>Descrição: {{descricao}}</p>
+                {{/if}}
+                {{#if tipo.video}}
+                <video
+                    controls
+                    src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+                > Clique para baixar o vídeo: <a href="/{{pagina_vid}}/{{artefato_id}}/arquivo">{{nome_arquivo}}.{{extensao}}</a>
+                </video>
+                <p>Descrição: {{descricao}}</p>
+                {{/if}}
+            </div>
+        {{/if}}
+    </div>
+    <footer class="autoria">
+            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div>
+            <a class="arroba-autoria" href="/{{bicho_criador_id}}">@{{bicho_criador_id}}</a>
+            <p class="criacao-comentario" hx-get="/{{pagina_vid}}/{{artefato_id}}" hx-push-url="true" hx-target="body">{{criacao}}</p>
+    </footer>
+</div>
+{{/with}}
+{{/if}}
+
+<style>
+    .comentario header h5 {
+        display: inline;
+        margin: 0;
+    }
+    .comentario header button {
+        display: inline;
+        height: 2rem;
+        padding: 0 0.4rem;
+    }
+    .sensivel-oculto {
+        display: none;
+    }
+    .texto-comentario {
+        white-space: pre-wrap;
+        font-size: 1rem;
+    }
+    .arroba-autoria {
+        display: block;
+        margin-left: 0.4rem;
+    }
+    .criacao-comentario {
+        cursor: pointer;
+        text-decoration: underline;
+        margin-left: 0.4rem;
+    }
+</style>
+
+<script>
+    function toggleSensivel(id) {
+        let conteudo = document.getElementById(`sensivel-${id}`);
+        let botao = document.getElementById(`botao-sensivel-${id}`);
+        conteudo.classList.toggle('sensivel-oculto');
+        if (conteudo.classList.contains('sensivel-oculto')) {
+            botao.innerText = 'Expandir';
+        } else {
+            botao.innerText = 'Ocultar';
+        }
+    }
+</script>

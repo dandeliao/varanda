@@ -316,17 +316,6 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                 case 'artefato':
                     let artefato = obj_render.artefato;
                     if (artefato) {
-                        let pagina = await servicePaginas.verPaginas(artefato.varanda_id, vidParaId(artefato.pagina_vid));
-                        /* if (!pagina.publica) {
-                            if (obj_render.usuarie.bicho_id !== obj_render.varanda.bicho_id) {
-                                let relacao = await serviceRelacoes.verRelacao(obj_render.usuarie.bicho_id, obj_render.varanda.bicho_id);
-                                if (!relacao.participar && !relacao.moderar) {
-                                    if (artefato.bicho_criador_id !== obj_render.usuarie.bicho_id) {
-                                        artefato = null;
-                                    }
-                                }
-                            }
-                        } */
                         artefato.tipo = {};
                         artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
                         artefato.texto = await escaparHTML(artefato.texto);
