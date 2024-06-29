@@ -144,11 +144,13 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
     /* contextos específicos */
     switch(tipo) {
         case 'artefato':
-            contexto.um = {
-                url:        `/${obj_render.artefato.pagina_vid}/novo_artefato/editar?em_resposta_a=${obj_render.artefato.artefato_id}`,
-                metodo:     'get',
-                nome:       'comentar',
-                descricao:  'Postar um comentário.'
+            if (obj_render.pagina.postavel && obj_render.artefato.respondivel) {
+                contexto.um = {
+                    url:        `/${obj_render.artefato.pagina_vid}/novo_artefato/editar?em_resposta_a=${obj_render.artefato.artefato_id}`,
+                    metodo:     'get',
+                    nome:       'comentar',
+                    descricao:  'Postar um comentário.'
+                }
             }
             contexto.dois = {
                 funcao:     true,
