@@ -250,6 +250,10 @@ dialog {
     gap: 1rem;
 }
 
+.leitura {
+    max-width: 800px;
+}
+
 .avatar-redondo{
     display: inline-block;
     height: 80px;

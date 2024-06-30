@@ -1,7 +1,7 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
 {{#if artefato}}
 {{#with artefato}}
-<div class="pagina">
+<div class="pagina {{#unless nome_arquivo}}leitura{{/unless}}">
 <div class="bloco artefato">
     {{#if nome_arquivo}}
     <div class="arquivo">
