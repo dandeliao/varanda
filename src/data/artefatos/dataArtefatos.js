@@ -40,7 +40,7 @@ exports.getArtefatosDoBicho = function(bichoCriadorId) {
 
 exports.getComentarios = function(artefato_id) {
 	return pool.query(
-		'SELECT artefato_id FROM artefatos WHERE em_resposta_a_id = $1',
+		'SELECT artefato_id FROM artefatos WHERE em_resposta_a_id = $1 ORDER BY criacao ASC',
 		[artefato_id]
 	);
 };
