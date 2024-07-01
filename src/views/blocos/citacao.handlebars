@@ -1,0 +1,98 @@
+{{#with bloco.artefato}}
+<div class="bloco citacao" style="text-align: left">
+    {{#if titulo}}
+    <header>
+        <h5><a href="/{{pagina_vid}}/{{artefato_id}}" hx-push-url="true">📌 {{titulo}}</a></h5>
+        {{#if sensivel}}<button id="botao-sensivel-{{artefato_id}}" onClick="toggleSensivel({{artefato_id}})">Expandir</button>{{/if}}
+    </header>
+    {{/if}}
+    <div class="citacao-em-si {{#if sensivel}}sensivel-oculto{{/if}}" id="sensivel-{{artefato_id}}">
+        {{#if texto}}
+            <div class="texto-citacao">{{{texto}}}</div>
+        {{/if}}
+        {{#if nome_arquivo}}
+            <div class="arquivo">
+                {{#if tipo.imagem}}
+                <img
+                    src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+                    alt="{{descricao}}"
+                    title="{{descricao}}"
+                />
+                {{/if}}
+                {{#if tipo.audio}}
+                <audio
+                    controls
+                    src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+                > Clique para baixar o áudio: <a href="/{{pagina_vid}}/{{artefato_id}}/arquivo">{{nome_arquivo}}.{{extensao}}</a>
+                </audio>
+                <p>Descrição: {{descricao}}</p>
+                {{/if}}
+                {{#if tipo.video}}
+                <video
+                    controls
+                    src="/{{pagina_vid}}/{{artefato_id}}/arquivo"
+                > Clique para baixar o vídeo: <a href="/{{pagina_vid}}/{{artefato_id}}/arquivo">{{nome_arquivo}}.{{extensao}}</a>
+                </video>
+                <p>Descrição: {{descricao}}</p>
+                {{/if}}
+            </div>
+        {{/if}}
+    </div>
+    <footer class="autoria">
+        <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div>
+        <a class="arroba-autoria" href="/{{bicho_criador_id}}">@{{bicho_criador_id}}</a>
+        <span> - </span>
+        <p class="criacao-citacao" hx-get="/{{pagina_vid}}/{{artefato_id}}" hx-push-url="true" hx-target="body">{{criacao}}</p>
+    </footer>
+</div>
+{{/with}}
+
+<style>
+    .sensivel-oculto {
+        display: none;
+    }
+    .texto-citacao {
+        white-space: pre-wrap;
+        margin-bottom: 0.3rem;
+        font-size: 1rem;
+    }
+    .citacao header {
+        margin-bottom: 1rem;
+    }
+    .citacao header h5 {
+        display: inline;
+        margin: 0;
+    }
+    .citacao header button {
+        display: inline;
+        height: 2rem;
+        padding: 0 0.4rem;
+    }
+    .autoria {
+        display: flex;
+        justify-items: start;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+    .arroba-autoria {
+        display: block;
+    }
+    .criacao-citacao {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+</style>
+
+<script>
+    function toggleSensivel(id) {
+        let conteudo = document.getElementById(`sensivel-${id}`);
+        let botao = document.getElementById(`botao-sensivel-${id}`);
+        conteudo.classList.toggle('sensivel-oculto');
+        if (conteudo.classList.contains('sensivel-oculto')) {
+            botao.innerText = 'Expandir';
+        } else {
+            botao.innerText = 'Ocultar';
+        }
+    }
+</script>
