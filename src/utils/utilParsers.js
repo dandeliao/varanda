@@ -116,8 +116,8 @@ exports.sanitizarHtml = async (html, comunitaria) => {
 exports.escaparHTML = async(texto) => {
     return sanitize(texto, {
         allowedTags: [],
-        allowedAttributes: {},
-        disallowedTagsMode: 'escape'
+        allowedAttributes: false,
+        disallowedTagsMode: 'escape',
     });
 };
 
