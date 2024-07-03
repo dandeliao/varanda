@@ -345,7 +345,6 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     if (figurinha) {
                         figurinha.tipo = {};
                         figurinha.tipo[tipoDeArquivo(figurinha.extensao)] = true;
-                        figurinha.nome_arquivo = figurinha.nome_arquivo + '_fig';
                     }
                     dados.figurinha = figurinha;
                     break;
