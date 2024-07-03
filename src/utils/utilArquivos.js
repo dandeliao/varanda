@@ -15,7 +15,7 @@ exports.separaExtensao = (nomeOriginal) => {
 
 exports.tipoDeArquivo = (extensao) => {
 	let tipo;
-	if (['jpg','jpeg','gif','png','svg','bmp'].includes(extensao)) 											tipo = 'imagem';
+	if (['jpg','jpeg','gif','png','svg','bmp','webp'].includes(extensao)) 											tipo = 'imagem';
 	if (['mp3','opus','wav','aac','flac','3gp','aiff','m4a','ogg','oga','mog','wma'].includes(extensao))	tipo = 'audio';
 	if (['webm','mkv','ogv','avi','mov','wmv','rmvb','mp4','m4v','mpg','mpeg','mpv'].includes(extensao))	tipo = 'video';
 	return tipo;
