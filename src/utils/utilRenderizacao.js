@@ -327,7 +327,7 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                         if (obj_render.query.estilo === 'comentario') {
                             artefato.comentario = true;
                         }
-                        if (obj_render.usuarie.bicho_id === artefato.bicho_criador_id) {
+                        if (obj_render.varanda.bicho_id === artefato.bicho_criador_id) {
                             artefato.si_mesme = true;
                         }
                     }
