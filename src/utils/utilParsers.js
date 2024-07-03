@@ -97,6 +97,8 @@ exports.sanitizarHtml = async (html, comunitaria) => {
             'order': [/^d+$/],
             'flex-grow': [/^d+$/],
             'flex-shrink': [/^d+$/],
+            'flex-basis': [/^\d+(?:px|rem|em|%)$/],
+            'flex': [/^(?:(?:(?:\d+(?:px|rem|em|%)?)*|auto)\s*)+$/],
             'align-self': [/^auto$/, /^flex-start$/, /^flex-end$/, /^center$/, /^baseline$/, /^stretch$/],
 
             // Outras
