@@ -2,7 +2,7 @@
 {{#with bloco.artefato}}
 <div class="comentario">
     <header>
-        <h5>{{titulo}}</h5>
+        <h5><a href="/{{pagina_vid}}/{{artefato_id}}">{{titulo}}</a></h5>
         {{#if sensivel}}<button id="botao-sensivel-{{artefato_id}}" onClick="toggleSensivel({{artefato_id}})">Expandir</button>{{/if}}
     </header>
     <div class="comentario-em-si {{#if sensivel}}sensivel-oculto{{/if}}" id="sensivel-{{artefato_id}}">

@@ -7,7 +7,9 @@ const servicePaginasPadrao  = require('../services/varandas/servicePaginasPadrao
 const serviceArtefatos      = require('../services/artefatos/serviceArtefatos');
 const { dataHumana,
         bichoSurpresa }     = require('./utilMiscellaneous');
-const { vidParaId, escaparHTML }         = require('./utilParsers');
+const { vidParaId,
+        escaparHTML,
+        textoParaHtml }     = require('./utilParsers');
 const { tipoDeArquivo }     = require('./utilArquivos');
 require('dotenv').config();
 
@@ -320,7 +322,7 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     if (artefato) {
                         artefato.tipo = {};
                         artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
-                        artefato.texto = await escaparHTML(artefato.texto);
+                        artefato.texto = await textoParaHtml(await escaparHTML(artefato.texto));
                         artefato.criacao = dataHumana(artefato.criacao);
                         if (obj_render.query.estilo === 'comentario') {
                             artefato.comentario = true;
