@@ -224,7 +224,7 @@ dialog {
     box-sizing: border-box;
     display:    block;
     position:   relative;
-    flex:       40%;
+    flex:       45%;
     align-self: stretch;
     padding:    0.8rem;
     background-color:   var(--cor-fundo);
