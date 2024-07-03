@@ -51,7 +51,9 @@ exports.getArquivo = asyncHandler(async (req, res, next) => {
 		return res.redirect(`/${varanda_id}/${pagina_id}`);
 	}
 
-	const arquivo = path.join(path.resolve(__dirname, '../../'), 'user_content', 'artefatos', 'em_uso', varanda_id, pagina_id, `${artefato.nome_arquivo}.${artefato.extensao}`);
+	let nome_arquivo = req.query.figurinha ? artefato.nome_arquivo + '_fig' : artefato.nome_arquivo;
+
+	const arquivo = path.join(path.resolve(__dirname, '../../'), 'user_content', 'artefatos', 'em_uso', varanda_id, pagina_id, `${nome_arquivo}.${artefato.extensao}`);
 	res.sendFile(arquivo);
 });
 

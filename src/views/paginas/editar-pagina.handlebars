@@ -34,15 +34,22 @@
 		<p>Há algumas tags novas na varanda, que começam com "v-". Você pode usá-las para mostrar postagens, informações do perfil, etc.</p>
 		<br>
 		<p>Experimente colocar algumas destas tags no HTML da página:</p>
-		<ul>
+		<ul class="lista-tags">
+			{{#if varanda.comunitaria}}
+			<li>&lt;v-artefatos/&gt;</li>
+			<li>&lt;v-artefatos dado-novidades /&gt;</li>
+			<li>&lt;v-equipe/&gt;</li>
+			{{/if}}
 			<li>&lt;v-cartao-de-visita/&gt;</li>
 			<li>&lt;v-comunidades/&gt;</li>
 			<li>&lt;v-paginas/&gt;</li>
 			<li>&lt;v-titulo/&gt;</li>
-			<li>&lt;v-equipe/&gt;</li>
 			<li>&lt;v-cabecalho/&gt;</li>
-			<li>&lt;v-artefatos/&gt;</li>
-			<li>&lt;v-artefatos dado-novidades /&gt;</li>
+			<small>(visível em telas pequenas)</small>
+			<li>&lt;v-citacao dado-artefato="70"/&gt;</li>
+			<small>(você pode substituir "70" pelo número de qualquer postagem)</small>
+			<li>&lt;v-figurinha dado-artefato="70"/&gt;</li>
+			<small>(você pode substituir "70" pelo número de qualquer postagem)</small>
 		</ul>
 		<p>Você pode usar class="pagina" no elemento mais externo da página para que ela se comporte como uma página padrão da varanda. Experimente também usar class="bloco" para estilizar blocos de conteúdo.</p>
 		<br>
@@ -74,5 +81,8 @@
 	input[type="file"] {
 		width: 100%;
 		word-wrap: break-word;
+	}
+	.lista-tags li {
+		margin-top: 1rem;
 	}
 </style>

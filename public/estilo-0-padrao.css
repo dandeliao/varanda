@@ -218,7 +218,7 @@ dialog {
     width: 1px;
 }
 
-/* decoração das páginas */
+/* decoração dos blocos */
 
 .bloco {
     box-sizing: border-box;
@@ -236,6 +236,15 @@ dialog {
     border-radius:      var(--raio-borda);
     border-color:       var(--cor-principal);
 }
+
+.figurinha {
+    display: inline;
+    max-height: 31px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+/* decoração das páginas */
 
 .pagina {
     

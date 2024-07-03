@@ -39,10 +39,16 @@
         {{/if}}
     </div>
     <footer class="autoria">
+        {{#unless si_mesme}}
         <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div>
         <a class="arroba-autoria" href="/{{bicho_criador_id}}">@{{bicho_criador_id}}</a>
-        <span> - </span>
-        <p class="criacao-citacao" hx-get="/{{pagina_vid}}/{{artefato_id}}" hx-push-url="true" hx-target="body">{{criacao}}</p>
+        <span>postou em</span>
+        {{/unless}}
+        {{#if si_mesme}}
+        <span>em</span>
+        {{/if}}
+        <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{varanda_id}}" hx-trigger="load"></div>
+        <a class="arroba-autoria" href="/{{varanda_id}}">@{{varanda_id}}</a>
     </footer>
 </div>
 {{/with}}
@@ -50,6 +56,11 @@
 <style>
     .sensivel-oculto {
         display: none;
+    }
+    .citacao {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
     .texto-citacao {
         white-space: pre-wrap;

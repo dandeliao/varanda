@@ -325,6 +325,9 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                         if (obj_render.query.estilo === 'comentario') {
                             artefato.comentario = true;
                         }
+                        if (obj_render.usuarie.bicho_id === artefato.bicho_criador_id) {
+                            artefato.si_mesme = true;
+                        }
                     }
                     dados.artefato = artefato;
                     break;
@@ -336,6 +339,15 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                         comunidades = await serviceRelacoes.verComunidadesDoBicho(obj_render.query.bicho);
                     }
                     dados.comunidades = comunidades;
+                    break;
+                case 'figurinha':
+                    let figurinha = obj_render.artefato;
+                    if (figurinha) {
+                        figurinha.tipo = {};
+                        figurinha.tipo[tipoDeArquivo(figurinha.extensao)] = true;
+                        figurinha.nome_arquivo = figurinha.nome_arquivo + '_fig';
+                    }
+                    dados.figurinha = figurinha;
                     break;
                 case 'lote':
                     let lista = [];
