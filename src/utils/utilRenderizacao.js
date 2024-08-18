@@ -20,6 +20,7 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
     let bicho       = null;
     let pagina      = null;
     let artefato    = null;
+    let usuarie     = null;
     if (bicho_id) {
         bicho = await serviceBichos.verBicho(bicho_id);
         if (!bicho) {
@@ -42,15 +43,13 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
     if (artefato_id) {
         artefato = await serviceArtefatos.verArtefato(artefato_id);
         if (artefato) {
-            if (artefato.pagina_vid === `${bicho_id}/${pagina_id}`) {
-                artefato.tipo = {};
-                artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
-                artefato.texto = await escaparHTML(artefato.texto);
-                artefato.criacao = dataHumana(artefato.criacao);
-                artefato.comentarios = await serviceArtefatos.verComentarios(artefato_id);
-            } else {
-                artefato = null;
-            }
+    let preferencias = null;
+    if (usuarie_id) {
+        preferencias = await servicePreferencias.verPreferencias(usuarie_id);
+        usuarie = {
+			logade:         req.isAuthenticated(),
+            bicho_id:       usuarie_id,
+            preferencias:   preferencias
         }
     }
     const tema = preferencias ? await serviceTemas.verTema(preferencias.tema_id) : 1;
@@ -60,6 +59,7 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
         varanda: bicho,
 		pagina: pagina,
         artefato: artefato,
+        usuarie: usuarie,
         tema: tema,
         flash: {
             aviso: res.locals.flash_aviso,
