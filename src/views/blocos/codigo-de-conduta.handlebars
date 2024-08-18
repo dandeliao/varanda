@@ -1,0 +1,47 @@
+<div class="bloco {{bloco.class}}">
+    <section class="secao-recolhivel preencher" onclick="toggleSecao('conduta')">
+        <header class="clicavel" id="header-conduta">
+            <span class="clicavel">Código de Conduta</span>
+            <svg id="seta-conduta" class="fechado" width="1rem" heigth="1rem" viewBox="0 0 32 32">
+                <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="" d="M 10,2.001 24,16 10,30 z" id="polygon3036"/>
+            </svg>
+        </header>
+        <main class="oculto" id="main-conduta">
+            <p>Espera-se respeito e camaradagem entre as pessoas da comunidade. Caso você se sinta desrespeitade ou incomodade com algum comportamento, fale com a moderação:</p>
+            <br>
+            <p>[caixa de mensagem]</p>
+            <br>
+            <p>A moderação buscará o diálogo quando possível, mas poderá banir participantes que incorram em comportamentos inadmissíveis ou não utilizem adequadamente os avisos de conteúdo.</p>
+            <h5 class="margem-superior-m">Comportamentos inadmissíveis</h5>
+            <ul class="lista">
+                <li>Publicar conteúdo ilegal ou de legalidade duvidosa</li>
+                <li>Defender ou praticar atos racistas, sexistas, capacitistas, transfóbicos, exorsexistas, xenofóbicos, gordofóbicos ou outras formas de ódio direcionado a grupos historicamente marginalizados</li>
+                <li>Ameaçar, assediar, intimidar, usar linguagem violenta, agir de maneira invasiva, insistente ou desrespeitosa com as pessoas da comunidade</li>
+                <li>Padrões de postagem abusivos, como flood, spam e desinformação intencional ("fake news")</li>
+            </ul>
+            <h5 class="margem-superior-m">Aviso de conteúdo</h5>
+            <p>O uso de aviso de conteúdo é obrigatório em todas as postagens que envolvam:</p>
+            <ul class="lista">
+                <li>Trauma ou violência</li>
+                <li>Nudez ou sexo</li>
+                <li>Transtornos psicológicos ou alimentares</li>
+                <li>Vídeos com movimentos rápidos e luzes intermitentes</li>
+                <li>Notícias e eventos que não tenham relação com o tema da comunidade</li>
+                <li>Menção a comportamentos inadmissíveis (definidos acima)</li>
+            </ul>
+        </main>
+    </section>
+</div>
+
+<script>
+	function toggleSecao(secao) {
+		document.getElementById(`main-${secao}`).classList.toggle('oculto');
+		let seta = document.getElementById(`seta-${secao}`);
+		seta.classList.toggle('fechado');
+		if (seta.classList.contains('fechado')) {
+			seta.innerHTML = `<path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M 10,2.001 24,16 10,30 z" id="polygon3036"/>`;
+		} else {
+			seta.innerHTML = `<path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="m2.002 10 13.999 14 14.001-14z"/>`;
+		}
+	}
+</script>
