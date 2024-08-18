@@ -1,0 +1,22 @@
+<div class="bloco sem-borda">
+    <form id="formulario" class="lista-flexivel sem-borda sem-padding preencher" enctype="multipart/form-data" action="/{{varanda.bicho_id}}/{{pagina.pagina_id}}?contexto=bloco" method="post" hx-target=".visualizador-comentarios" hx-push-url="false">
+        <textarea class="preencher" name="texto" placeholder="Escreva seu comentário" aria-label="Escreva seu comentário"></textarea>
+        {{!-- <fieldset>
+			<legend>Arquivo</legend>
+			<label for="descricao">Descrição do arquivo:</label>
+			<textarea class="campo" id="descricao-arquivo" name="descricao" placeholder="Foto de um gato cinza de olhos amarelos com uma expressão de espanto."></textarea>
+			<br><br>
+			<label for="arquivo" hidden>Escolher arquivo para postar</label>
+			<input id="input-arquivo" name="arquivo" type="file" />
+		</fieldset>
+        <br> --}}
+		<input type="hidden" id="em_resposta_a" name="em_resposta_a" value="{{bloco.artefato.artefato_id}}">
+        <button type="submit" class="margem-superior-pp margem-inferior-m">Comentar</button>
+	</form>
+    {{#each bloco.comentarios}}
+    <section class="comentario">
+        <div hx-get="/blocos/comentario?artefato={{this.artefato_id}}&estilo=comentario" hx-trigger="load" hx-push-url="false" hx-swap="outerHTML"></div>
+    </section>
+    <hr>
+    {{/each}}
+</div>

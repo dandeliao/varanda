@@ -152,6 +152,10 @@ exports.postArtefato = asyncHandler(async (req, res, next) => {
 	if (artefato.em_resposta_a_id) {
 		pagina_retorno = `/${artefato.pagina_vid}/${artefato.em_resposta_a_id}`;
 	}
+	if (req.query.contexto = 'bloco') {
+		pagina_retorno = `/blocos/comentarios?artefato=${artefato.em_resposta_a_id}`;
+	}
+
 	req.flash('aviso', 'O artefato foi criado com sucesso!');
 	return res.redirect(303, pagina_retorno);
 

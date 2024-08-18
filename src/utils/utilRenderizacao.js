@@ -43,6 +43,13 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
     if (artefato_id) {
         artefato = await serviceArtefatos.verArtefato(artefato_id);
         if (artefato) {
+            artefato.tipo = {};
+            artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
+            artefato.texto = await escaparHTML(artefato.texto);
+            artefato.criacao = dataHumana(artefato.criacao);
+            artefato.comentarios = await serviceArtefatos.verComentarios(artefato_id);
+        }
+    }
     let preferencias = null;
     if (usuarie_id) {
         preferencias = await servicePreferencias.verPreferencias(usuarie_id);
@@ -139,7 +146,7 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
     /* contexto padrão */
     let contexto = {
         um:     surpresa,
-        dois:   preferencias,
+        dois:   futricar,
     };
 
     /* contextos específicos */
@@ -155,7 +162,7 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
             }
             contexto.dois = {
                 funcao:     true,
-                nome:       'enviar',
+                nome:       'compartilhar',
                 descricao:  'Compartilha a postagem.'
             }
             break;
@@ -168,7 +175,9 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
                 } else if (obj_render.varanda.bicho_id === process.env.INSTANCIA_ID) {
                     contexto.um = criarComunidade;
                 }
-                contexto.dois = clonar;
+                contexto.um = clonar;
+            } else if (obj_render.varanda.bicho_id === obj_render.usuarie.bicho_id) {
+                contexto.um = preferencias;
             }
             break;
         case 'clonar':
@@ -232,17 +241,12 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
             }
             break;
         case 'editar-preferencias':
-            contexto.um = {
+            /* contexto.um = {
                 submit:     true,
                 nome:       'confirmar',
                 descricao:  'Confirma e finaliza a edição da página'
-            };
-            contexto.dois = {
-                url:        `/${obj_render.varanda.bicho_id}/futricar`,
-                metodo:     'get',
-                nome:       'cancelar',
-                descricao:  'Cancela edição de preferências'
-            }
+            }; */
+            contexto.dois = futricar;
             break;
         case 'pagina':
             let relacao = await serviceRelacoes.verRelacao(obj_render.usuarie.bicho_id, obj_render.varanda.bicho_id);
@@ -251,11 +255,15 @@ exports.objetoRenderizavelContexto = async (obj_render, tipo) => {
                 if (comunidade && comunidade.participacao_livre) {
                     contexto.um = participar;    
                 } else {
-                    contexto.um = surpresa;
+                    if (obj_render.varanda.bicho_id === obj_render.usuarie.bicho_id) {
+                        contexto.um = preferencias;
+                    } else {
+                        contexto.um = surpresa;
+                    }
                 }
             } else {
                 if (!obj_render.pagina.postavel) {
-                if (obj_render.varanda.bicho_id === process.env.INSTANCIA_ID) {
+                    if (obj_render.varanda.bicho_id === process.env.INSTANCIA_ID) {
                         contexto.um = criarComunidade;    
                     } else {
                         contexto.um = surpresa;
@@ -313,6 +321,11 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                         if (paginas.length < 2) {
                             paginas.unica = true;
                         }
+                        for(let pagina of paginas) {
+                            if (pagina.pagina_vid === obj_render.pagina.pagina_vid) {
+                                pagina.atual = true;
+                            }
+                        }
                         dados.paginas = paginas;
                     }
                     break;
@@ -329,8 +342,15 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                         if (obj_render.varanda.bicho_id === artefato.bicho_criador_id) {
                             artefato.si_mesme = true;
                         }
+                        if (obj_render.varanda.bicho_id !== artefato.varanda_id) {
+                            artefato.outra_varanda = true;
+                        }
                     }
                     dados.artefato = artefato;
+                    break;
+                case 'comentarios':
+                    let comentarios = await serviceArtefatos.verComentarios(obj_render.artefato.artefato_id);
+                    dados.comentarios = comentarios;
                     break;
                 case 'comunidades':
                     let comunidades;

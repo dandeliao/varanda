@@ -1,0 +1,60 @@
+{{#unless bloco.artefatos.nao_renderizar}}
+{{#if bloco.artefatos.comecou}}
+<div class="bloco preencher {{bloco.class}}">
+    {{#if pagina.postavel}}
+    {{#unless bloco.artefatos.lista}}
+        <br>
+        <p>Nenhuma postagem ainda. Clique em "postar" na barra principal para fazer a primeira.</p>
+    {{/unless}}
+    {{/if}}
+{{/if}}
+    <div class="preencher">
+    {{#each bloco.artefatos.lista}}
+        <div hx-get="/blocos/topico?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&artefato={{this.artefato_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
+    {{/each}}
+    </div>
+    <footer>
+    {{#unless bloco.artefatos.acabou}}
+        <br>
+        <button id="botao-{{bloco.artefatos.proximo_lote}}" hx-get="/blocos/artefatos?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&bicho={{varanda.bicho_id}}{{#if bloco.artefatos.novidades}}&novidades{{/if}}&pagina={{pagina.pagina_id}}&lote={{bloco.artefatos.proximo_lote}}" hx-push-url="false" hx-swap="outerHTML" >Ver mais</button>
+        <div id="lote-{{bloco.artefatos.proximo_lote}}"></div>
+    {{/unless}}
+    </footer>
+{{#if bloco.artefatos.comecou}}</div>{{/if}}
+{{/unless}}
+
+<script>
+    console.log('executou script tópicos'); 
+    window.addEventListener('hashchange', (event) => atualizaVisualizadores(event));
+    function atualizaVisualizadores(e) {
+        let oldMatch = e.oldURL.match(/#(\d+)/);
+        let velho_artefato_id;
+        if (oldMatch) {
+            velho_artefato_id = oldMatch[1];
+        }
+        let newMatch = e.newURL.match(/#(\d+)/);
+        let artefato_id;
+        if (newMatch) {
+            artefato_id = newMatch[1];
+        }
+        if (artefato_id) {
+            if (velho_artefato_id != artefato_id) {
+                document.getElementById(`topico-oculto-${artefato_id}`).click();
+                console.log(`abre-topico #${artefato_id}`)
+            } else {
+                console.log('velho igual ao novo');
+            }
+        } else {
+            let visus = document.getElementsByClassName('visualizador');
+            for (let i = 0; i < visus.length; i++) {
+                visus[i].innerHTML = '';
+                console.log('removeu innerHTML do visualizador de artefato:', visus[i]);
+            }
+            let visusCom = document.getElementsByClassName('visualizador-comentarios');
+            for (let i = 0; i < visusCom.length; i++) {
+                visusCom[i].innerHTML = '';
+                console.log('removeu innerHTML do vis. de comentários:', visusCom[i]);
+            }
+        }
+    }
+</script>
