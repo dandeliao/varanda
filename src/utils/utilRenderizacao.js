@@ -2,6 +2,7 @@ const serviceRelacoes       = require('../services/bichos/serviceRelacoes');
 const serviceBichos         = require('../services/bichos/serviceBichos');
 const serviceComunidades    = require('../services/bichos/serviceComunidades');
 const servicePreferencias   = require('../services/bichos/servicePreferencias');
+const serviceTemas          = require('../services/bichos/serviceTemas');
 const servicePaginas        = require('../services/varandas/servicePaginas');
 const servicePaginasPadrao  = require('../services/varandas/servicePaginasPadrao');
 const serviceArtefatos      = require('../services/artefatos/serviceArtefatos');
@@ -19,6 +20,7 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
     let bicho       = null;
     let pagina      = null;
     let artefato    = null;
+    let usuarie     = null;
     if (bicho_id) {
         bicho = await serviceBichos.verBicho(bicho_id);
         if (!bicho) {
@@ -41,27 +43,24 @@ exports.objetoRenderizavel = async (req, res, bicho_id, pagina_id, artefato_id, 
     if (artefato_id) {
         artefato = await serviceArtefatos.verArtefato(artefato_id);
         if (artefato) {
-            if (artefato.pagina_vid === `${bicho_id}/${pagina_id}`) {
-                artefato.tipo = {};
-                artefato.tipo[tipoDeArquivo(artefato.extensao)] = true;
-                artefato.texto = await escaparHTML(artefato.texto);
-                artefato.criacao = dataHumana(artefato.criacao);
-                artefato.comentarios = await serviceArtefatos.verComentarios(artefato_id);
-            } else {
-                artefato = null;
-            }
+    let preferencias = null;
+    if (usuarie_id) {
+        preferencias = await servicePreferencias.verPreferencias(usuarie_id);
+        usuarie = {
+			logade:         req.isAuthenticated(),
+            bicho_id:       usuarie_id,
+            preferencias:   preferencias
         }
     }
+    const tema = preferencias ? await serviceTemas.verTema(preferencias.tema_id) : 1;
     
     /* preenche objeto renderizável */
     let obj_render =  {
         varanda: bicho,
 		pagina: pagina,
         artefato: artefato,
-        usuarie: {
-			logade: req.isAuthenticated(),
-            bicho_id: usuarie_id
-        },
+        usuarie: usuarie,
+        tema: tema,
         flash: {
             aviso: res.locals.flash_aviso,
             erro:  res.locals.flash_erro,
@@ -386,14 +385,17 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     dados.participantes = participantes;
                     break;
                 case 'preferencias':
+                    dados.temas = await serviceTemas.verTemas();
                     let preferencias = null;
-                    if (obj_render.usuarie.logade) { preferencias = await servicePreferencias.verPreferencias(obj_render.usuarie.bicho_id) }
-                    dados.preferencias = {
-                        tema: {
-                            zero: preferencias ? (preferencias.tema === 0 ? true : false) : false,
-                            um: preferencias ? (preferencias.tema === 1 ? true : false) : false
+                    if (obj_render.usuarie.logade) {
+                        preferencias = await servicePreferencias.verPreferencias(obj_render.usuarie.bicho_id);
+                        for (tema of dados.temas) {
+                            if (tema.tema_id == preferencias.tema_id) {
+                                tema.selecionado = true;
+                            }
                         }
                     }
+                    dados.preferencias = preferencias;                    
                     break;
                 default:
                     if (obj_render.query[variavel]) {
@@ -401,6 +403,9 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
                     }
             }
         }
+    }
+    if (obj_render.query.class) {
+        dados.class = obj_render.query.class.replaceAll(',', ' ');
     }
 
     obj_render.bloco = dados;

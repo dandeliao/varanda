@@ -1,12 +1,13 @@
 {{#if query.futricar}}
-<div class="bloco container">
-	<h2>Cartão de visita:</h2>
+<div class="bloco preencher {{bloco.class}}">
+	<h2 class="titulo-bloco">Cartão de visita:</h2>
 {{/if}}
-<div class="bloco cartao{{#unless query.futricar}} container{{/unless}}" {{#if query.futricar}}style="border: solid 2px;"{{/if}}>
+
+<div class="bloco preencher sem-padding {{bloco.class}}" {{#if query.futricar}}style="border: solid 2px;"{{/if}}>
 	{{#with bloco.bicho}}
     <div hx-get="/blocos/fundo?bicho={{bicho_id}}{{/with}}&momento={{momento}}{{#with bloco.bicho}}" hx-trigger="load"></div>
-	<div class="avatar-redondo avatar-no-cartao" hx-get="/blocos/avatar?bicho={{bicho_id}}{{/with}}&momento={{momento}}"{{#with bloco.bicho}} hx-trigger="load"></div>
-    <div class="informacao">
+	<div class="avatar-no-cartao redondo m" hx-get="/blocos/avatar?bicho={{bicho_id}}{{/with}}&momento={{momento}}"{{#with bloco.bicho}} hx-trigger="load"></div>
+    <div class="informacao texto-centralizado">
         <h2>{{nome}}</h2>
         <a href="/{{bicho_id}}">@{{bicho_id}}</a>
 		<br><br>
@@ -14,93 +15,47 @@
     </div>
 	{{/with}}
 
-	{{#if query.futricar}}
-	<br>
-	{{#if bloco.relacao.participar}}
-	{{#unless query.instancia}}
-	<button onclick="abrirConfirmacao()">Deixar de participar</button>
-	<br><br>
-	{{/unless}}
-	{{/if}}
-
-	{{#if bloco.relacao.representar}}
-	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar perfil</button>
-	<br><br>
-	{{/if}}
-
-	{{#if bloco.relacao.representar}}
-	{{#unless query.instancia}}
-	<button onclick="abrirConfirmacaoApagar()">Apagar comunidade</button>
-	<br><br>
-	{{/unless}}
-	{{/if}}
-
-	{{#if bloco.bicho.meuPerfil}}
-	<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar perfil</button>
-	<br><br>
-	{{/if}}
-	
-{{/if}}
+</div>
 
 {{#if query.futricar}}
+	<div class="lista-flexivel elementos-centralizados margem-superior-m">
+		{{#if bloco.relacao.participar}}
+		{{#unless query.instancia}}
+		<button onclick="abrirConfirmacao()">Deixar de participar</button>
+		{{/unless}}
+		{{/if}}
+
+		{{#if bloco.relacao.representar}}
+		<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar cartão</button>
+		{{/if}}
+
+		{{#if bloco.relacao.representar}}
+		{{#unless query.instancia}}
+		<button onclick="abrirConfirmacaoApagar()">Apagar comunidade</button>
+		{{/unless}}
+		{{/if}}
+
+		{{#if bloco.bicho.meuPerfil}}
+		<button hx-get="/{{bloco.bicho.bicho_id}}/editar-bicho" hx-target="body" hx-push-url="true">Editar perfil</button>
+		{{/if}}
+	</div>
+
+	<dialog class="confirmacao-sair-comunidade">
+	<p>Você quer mesmo sair da comunidade @{{bloco.bicho.bicho_id}}?</p>
+	<br>
+	<button hx-delete="/{{bloco.bicho.bicho_id}}/relacao" hx-target="body" hx-push-url="false">Sim</button>
+	<button onClick="fecharConfirmacao()">Não</button>
+	</dialog>
+
+	<dialog class="confirmacao-apagar-comunidade">
+	<p>Tem certeza de que deseja apagar a comunidade @{{bloco.bicho.bicho_id}}? Todas as páginas e postagens serão removidas e a comunidade deixará de existir.</p>
+	<br>
+	<button hx-delete="/{{bloco.bicho.bicho_id}}" hx-target="body" hx-push-url="true">Sim</button>
+	<button onClick="fecharConfirmacaoApagar()">Não</button>
+	</dialog>
+
 </div>
-{{/if}}
-
-<dialog class="confirmacao-sair-comunidade">
-<p>Você quer mesmo sair da comunidade @{{bloco.bicho.bicho_id}}?</p>
-<br>
-<button hx-delete="/{{bloco.bicho.bicho_id}}/relacao" hx-target="body" hx-push-url="false">Sim</button>
-<button onClick="fecharConfirmacao()">Não</button>
-</dialog>
-
-<dialog class="confirmacao-apagar-comunidade">
-<p>Tem certeza de que deseja apagar a comunidade @{{bloco.bicho.bicho_id}}? Todas as páginas e postagens serão removidas e a comunidade deixará de existir.</p>
-<br>
-<button hx-delete="/{{bloco.bicho.bicho_id}}" hx-target="body" hx-push-url="true">Sim</button>
-<button onClick="fecharConfirmacaoApagar()">Não</button>
-</dialog>
-</div>
-
-<style>
-.container {
-	flex: 45%;
-}
-
-.cartao {
-text-align: center;
-padding: 0;
-width: 100%;
-}
-
-.informacao{
-margin-top: 42px;
-padding: 0 0.8rem 0.8rem 0.8rem;
-}
-
-.descricao {
-	white-space: pre-wrap;
-	margin-bottom: 1rem;
-}
-
-.avatar-no-cartao {
-display: block;
-position: absolute;
-top: 78px;
-margin-left: auto;
-margin-right: auto;
-left: 0;
-right: 0;
-text-align: center;
-}
-
-@media screen and (max-width: 859px) {
-.informacao {
-	padding: 0 0.5rem 0.5rem 0.5rem;
-}
-
-}
-
-</style>
+{{/if}}	
 
 <script>
 		function abrirConfirmacao() {

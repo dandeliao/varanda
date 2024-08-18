@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { vidParaId } = require('./utilParsers');
 require('dotenv').config();
+const pastaTemas 	= '../../public/temas'
 const pastaViews 	= `../views`;
 const pastaUsuaries = `../../${process.env.CONTENT_FOLDER}`
 
@@ -34,6 +35,19 @@ exports.editarArquivoHandlebars = (varanda_id, pagina) => {
 
     return caminho;
 };
+
+exports.editarArquivoTema = (tema_id, nome, conteudo) => {
+
+	// edita ou cria o arquivo css do tema
+	const caminho = path.join(path.resolve(__dirname, pastaTemas), `${tema_id}-${nome}.css`);
+	fs.writeFile(caminho, conteudo, erro => {
+		if (erro) {
+			throw erro;
+		}
+	});
+
+	return caminho;
+}
 
 exports.deletarArquivoHandlebars = (varanda_id, nome_arquivo) => {
     const caminho = path.join(path.resolve(__dirname, pastaViews), 'varandas', `${varanda_id}`, `${nome_arquivo}.handlebars`);

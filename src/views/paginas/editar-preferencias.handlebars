@@ -1,28 +1,27 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
-<div class="pagina">
-	<div class="bloco">
+<div class="pagina editar-preferencias">
+	<div class="bloco espichar">
 		<h1>Preferências de @{{query.bicho}}</h1>
 		<br>
-		<form id="formulario" action="/{{query.bicho}}/preferencias" method="PUT" hx-target="body">
+		<form id="formulario" action="/{{query.bicho}}/preferencias" method="PUT" hx-swap="none" hx-trigger="change" hx-push-url="false">
 			<h3>Tema:</h3>
-			<br>
-			<input id="0" type="radio" name="tema" value="0" {{#if bloco.preferencias.tema.zero}}checked{{/if}}>
-			<label for="0">0 - Flamingo diurno</label>
-			<br><br>
-			<input id="1" type="radio" name="tema" value="1" {{#if bloco.preferencias.tema.um}}checked{{/if}}>
-			<label for="1">1 - Flamingo noturno</label>
+			<fieldset>
+			{{#each bloco.temas}}
+				<input onclick="carregaTema({{this.tema_id}},'{{this.nome}}')" id="{{this.tema_id}}" type="radio" name="tema" value="{{this.tema_id}}" {{#if this.selecionado}}checked{{/if}}>
+				<label for="{{this.tema_id}}">{{this.tema_id}} - {{this.nome}}</label>
+				<br><br>
+			{{/each}}
+			</fieldset>
 		</form>
-		<br><br>
-		<a href="/autenticacao/logout">Sair (logout)</a>
+		<br><br><br><br>
+		<a href="/autenticacao/logout">Sair da Varanda (logout)</a>
 	</div>
 </div>
 
-<style>
-	.pagina {
-		text-align: left;
+<script>
+	function carregaTema(tema_id, nome) {
+		let linkTema = document.getElementById(`link-tema`);
+		linkTema.setAttribute('href', `/temas/${tema_id}-${nome}.css`);
 	}
-	h1 {
-		text-align: center;
-		align-self: stretch;
-	}
-</style>
+
+</script>

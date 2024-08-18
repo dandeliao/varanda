@@ -18,9 +18,15 @@ CREATE TABLE pessoas(
     salt            VARCHAR NOT NULL
 );
 
+CREATE TABLE temas (
+    tema_id         SERIAL PRIMARY KEY NOT NULL,
+    nome            VARCHAR(32) UNIQUE NOT NULL,
+    origem          INTEGER REFERENCES artefatos(artefato_id) ON DELETE SET NULL
+);
+
 CREATE TABLE preferencias(
     bicho_id        VARCHAR(32) PRIMARY KEY REFERENCES bichos(bicho_id) ON DELETE CASCADE,
-    tema            INTEGER NOT NULL DEFAULT 0
+    tema_id         INTEGER REFERENCES temas(tema_id) ON DELETE SET NULL
 );
 
 CREATE TABLE comunidades(

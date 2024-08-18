@@ -1,6 +1,6 @@
 {{#if bloco.artefato.comentario}}
 {{#with bloco.artefato}}
-<div class="comentario">
+<div class="comentario {{bloco.class}}">
     <header>
         <h5><a href="/{{pagina_vid}}/{{artefato_id}}">{{titulo}}</a></h5>
         {{#if sensivel}}<button id="botao-sensivel-{{artefato_id}}" onClick="toggleSensivel({{artefato_id}})">Expandir</button>{{/if}}
@@ -37,43 +37,14 @@
             </div>
         {{/if}}
     </div>
-    <footer class="autoria">
-            <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div>
+    <footer class="lista-flexivel margem-superior-p fonte-p">
+            <div class="redondo pp" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div>
             <a class="arroba-autoria" href="/{{bicho_criador_id}}">@{{bicho_criador_id}}</a>
             <p class="criacao-comentario" hx-get="/{{pagina_vid}}/{{artefato_id}}" hx-push-url="true" hx-target="body">{{criacao}}</p>
     </footer>
 </div>
 {{/with}}
 {{/if}}
-
-<style>
-    .comentario header h5 {
-        display: inline;
-        margin: 0;
-    }
-    .comentario header button {
-        display: inline;
-        height: 2rem;
-        padding: 0 0.4rem;
-    }
-    .sensivel-oculto {
-        display: none;
-    }
-    .texto-comentario {
-        white-space: pre-wrap;
-        margin-bottom: 0.3rem;
-        font-size: 1rem;
-    }
-    .arroba-autoria {
-        display: block;
-        margin-left: 0.4rem;
-    }
-    .criacao-comentario {
-        cursor: pointer;
-        text-decoration: underline;
-        margin-left: 0.4rem;
-    }
-</style>
 
 <script>
     function toggleSensivel(id) {

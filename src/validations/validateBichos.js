@@ -57,7 +57,7 @@ exports.schemaPutFundo = Joi.object().keys({
 
 exports.schemaPutPreferencias = Joi.object().keys({
 	// número do tema
-	tema: Joi.number().integer().min(0).max(3).required()
+	tema_id: Joi.number().integer().required()
 });
 
 exports.schemaPostConvite = Joi.object().keys({

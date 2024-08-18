@@ -1,5 +1,5 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
-<div class="pagina">
+<div class="clonar">
     <form id="formulario" class="bloco" action="/{{varanda.bicho_id}}/clonar" method="post">
         <fieldset name="paginas">
             <legend>Páginas a clonar:</legend>
@@ -24,37 +24,3 @@
     </form>
     <br>
 </div>
-
-<style>
-	.pagina {
-		text-align: left;
-	}
-    .pagina header {
-        display: flex;
-        justify-content: space-between;
-        padding: 0 1rem;
-        align-items: center;
-    }
-	h1 {
-		text-align: center;
-        align-self: stretch;
-	}
-	form {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-    }
-	form > textarea {
-		width: 100%;
-		min-height: 10vh;
-	}
-	form .campo {
-		width: 100%;
-	}
-    textarea {
-        min-height: 6rem;
-    }
-
-</style>

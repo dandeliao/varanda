@@ -129,22 +129,32 @@ exports.sanitizarNomeDeArquivo = (texto) => {
 
 exports.htmlParaHtmx = async (html, varanda_id, pagina_id) => {
     
-    const blocoRegex = /<v-((?:\w+-*)+)(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?\s*\/>/g;
-        // regex captura formatos <v-nome-do-bloco /> e <v-nome-do-bloco dado-prop1="valor" dado-prop2="quem@ta.com  _onde@tu.net" dado-prop3 />
+    const blocoRegex = /<v-((?:\w+-*)+)(?:\s+class="([^"]*)")?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?(?:\s+dado-((?:\w+-*)+)\s*(?:="([^"]*)")?)?\s*\/>/g;
+        // regex captura formatos <v-nome-do-bloco /> e <v-nome-do-bloco class="pequeno quadrado" dado-prop1="valor" dado-prop2="quem@ta.com  _onde@tu.net" dado-prop3 />
 
     // substitui tags customizadas <v-bloco /> por divs htmx
     
-    return await this.replaceAsync(html, blocoRegex, async (match, p1, p2, p3, p4, p5, p6, p7, p8, p9, offset, string) => {       
+    return await this.replaceAsync(html, blocoRegex, async (match, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, offset, string) => {       
         // abre div htmx
         let divHtmx = `<div hx-get="/blocos/${p1}`;
         // se existem atributos, os inclui na div htmx
-        const captured = [p1, [p2, p3], [p4, p5], [p6, p7], [p8, p9]];
+        const captured = [p1, p2, [p3, p4], [p5, p6], [p7, p8], [p9, p10]];
         let temBicho = false;
         let temPagina = false;
-        
+
         divHtmx = divHtmx + `?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}`;
-        if (p2 || p4 || p6 || p8 ) {
-            for (let i = 1; i < captured.length; i++) {
+        if (p2) { // tem class="alguma coisa"
+            divHtmx = divHtmx + '&class='
+            let arrayClasses = p2.split(/\s+/);
+            for (let i = 0; i < arrayClasses.length; i++) {
+                divHtmx = divHtmx + arrayClasses[i];
+                if (arrayClasses[i+1]) {
+                    divHtmx = divHtmx + ',';
+                }
+            }
+        }
+        if (p3 || p5 || p7 || p9 ) { // tem algum dado-prop
+            for (let i = 2; i < captured.length; i++) { // começa em [p3, p4] (por isso i = 2)
                 if (captured[i][0]) {
                     if (captured[i][0] === 'bicho') temBicho = true;
                     if (captured[i][0] === 'pagina') temPagina = true;
@@ -153,7 +163,7 @@ exports.htmlParaHtmx = async (html, varanda_id, pagina_id) => {
                         divHtmx = divHtmx + `=${captured[i][1]}`;
                     }
                 }
-            };
+            }
         }
 
         let bloco = await serviceBlocos.verBloco(p1);

@@ -1,0 +1,529 @@
+/* || CLASSES UTILITÁRIAS */
+
+/* >> posicionamento e decoração << */
+
+.oculto {
+    display: none;
+}
+
+.centro {
+    display: block;
+    margin: 0 auto;
+}
+
+.quadrado {
+    border-radius: var(--raio-borda);
+}
+
+.redondo {
+    border-radius: 50%;
+}
+
+.espichar {
+    grid-column: comeco / fim;
+    flex: 100%;
+}
+
+.espichar-vertical {
+    grid-row: topo / base;
+}
+
+.nao-espichar {
+    grid-column: unset;
+    flex: none;
+}
+
+.preencher {
+    max-width: 100%;
+    width: 100%;
+}
+
+.preencher-vertical {
+    height: 100%;
+    align-self: stretch;
+}
+
+.clicavel {
+    cursor: pointer;
+}
+
+.com-borda {
+    border-style:       var(--estilo-borda);
+    border-width:       var(--espessura-borda);
+    border-radius:      var(--raio-borda);
+    border-color:       var(--cor-fonte-2);
+    box-shadow:         var(--sombreado);
+}
+
+.sem-borda {
+    border-style: none;
+    border-width: 0;
+    box-shadow: none;
+}
+
+.sem-padding {
+    padding: 0;
+}
+
+.com-padding {
+    padding: var(--fresta);   
+}
+
+.com-padding-vertical {
+    padding: var(--fresta) 0;
+}
+
+.com-padding-horizontal {
+    padding: 0 var(--fresta);
+}
+
+.leitura {
+    max-width: 800px;
+}
+
+.altura-contida {
+    display: block;
+    height: 100%;
+    margin: auto;
+    object-fit: contain;
+}
+
+.altura-contida-zoom {
+    display: block;
+    height: 100%;
+    margin: auto;
+    object-fit: cover;
+}
+
+.elementos-centralizados {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.elementos-centralizados-horizontal {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+
+/* margens */
+
+.sem-margem {
+    margin: 0;
+}
+
+.margem-superior-pp {
+    margin-top: 0.3rem;
+}
+
+.margem-superior-p {
+    margin-top: 0.5rem;
+}
+
+.margem-superior-m {
+    margin-top: 1rem;
+}
+
+.margem-superior-g {
+    margin-top: 1.5rem;
+}
+
+.margem-superior-gg {
+    margin-top: 2rem;
+}
+
+.margem-inferior-pp {
+    margin-bottom: 0.3rem;
+}
+
+.margem-inferior-p {
+    margin-bottom: 0.5rem;
+}
+
+.margem-inferior-m {
+    margin-bottom: 1rem;
+}
+
+.margem-inferior-g {
+    margin-bottom: 1.5rem;
+}
+
+.margem-inferior-gg {
+    margin-bottom: 2rem;
+}
+
+.margem-esquerda-pp {
+    margin-left: 0.3rem;
+}
+
+.margem-esquerda-p {
+    margin-left: 0.5rem;
+}
+
+.margem-esquerda-m {
+    margin-left: 1rem;
+}
+
+.margem-esquerda-g {
+    margin-left: 1.5rem;
+}
+
+.margem-esquerda-gg {
+    margin-left: 2rem;
+}
+
+.margem-direita-pp {
+    margin-right: 0.3rem;
+}
+
+.margem-direita-p {
+    margin-right: 0.5rem;
+}
+
+.margem-direita-m {
+    margin-right: 1rem;
+}
+
+.margem-direita-g {
+    margin-right: 1.5rem;
+}
+
+.margem-direita-gg {
+    margin-right: 2rem;
+}
+
+/* >> texto << */
+
+.texto {
+    display: inline;
+    white-space: pre-line;
+}
+
+.texto-centralizado {
+    text-align: center;
+}
+
+.texto-centralizado-vertical {
+    vertical-align: middle;
+}
+
+.texto-a-esquerda {
+    text-align: left;
+}
+
+.texto-a-direita {
+    text-align: right;
+}
+
+.texto-justificado {
+    text-align: justify;
+}
+
+.quebra-linha {
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+/* >> fontes << */
+
+/* tamanho da fonte */
+
+.fonte-pp {
+    font-size: 0.7rem;
+}
+
+.fonte-p {
+    font-size: 0.8rem;
+}
+
+.fonte-m {
+    font-size: 1rem;
+}
+
+.fonte-g {
+    font-size: 1.2rem;
+}
+
+.fonte-gg {
+    font-size: 1.5rem;
+}
+
+.fonte-ggg {
+    font-size: 1.8rem;
+}
+
+/* tipo*/
+
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+.serifa {
+    font-family: 'Lora', serif;
+}
+
+.sem-serifa {
+    font-family: 'Lato', sans-serif;
+}
+
+/* decoracao da fonte */
+
+.sem-negrito {
+    font-weight: normal;
+}
+
+/* >> tamanhos << */
+
+/* variam de ppp a ggg. Cada tamanho tem 3 classes: uma para tamanho horizontal, uma para vertical e uma para ambos.
+   além disso, cada classe tem uma variação com max-height e/ou max-width, que limita apenas o tamanho máximo */
+
+/* ppp */
+
+.ppp {
+    height: 16px;
+    width: 16px;
+    overflow: hidden;
+}
+
+.max-ppp {
+    max-height: 16px;
+    max-width: 16px;
+    overflow: hidden;
+}
+
+.hppp {
+    width: 16px;
+    overflow: hidden;
+}
+
+.max-hppp {
+    max-width: 16px;
+    overflow: hidden;
+}
+
+.vppp {
+    height: 16px;
+    overflow: hidden;
+}
+
+.max-vppp {
+    max-height: 16px;
+    overflow: hidden;
+}
+
+/* pp */
+
+.pp {
+    height: 24px;
+    width: 24px;
+    overflow: hidden;
+}
+
+.max-pp {
+    max-height: 24px;
+    max-width: 24px;
+    overflow: hidden;
+}
+
+.hpp {
+    width: 24px;
+    overflow: hidden;
+}
+
+.max-hpp {
+    max-width: 24px;
+    overflow: hidden;
+}
+
+.vpp {
+    height: 24px;
+    overflow: hidden;
+}
+
+.max-vpp {
+    max-height: 24px;
+    overflow: hidden;
+}
+
+/* p */
+
+.p {
+    height: 52px;
+    width: 52px;
+    overflow: hidden;
+}
+
+.max-p {
+    max-height: 52px;
+    max-width: 52px;
+    overflow: hidden;
+}
+
+.hp {
+    width: 52px;
+    overflow: hidden;
+}
+
+.max-hp {
+    max-width: 52px;
+    overflow: hidden;
+}
+
+.vp {
+    height: 52px;
+    overflow: hidden;
+}
+
+.max-vp {
+    max-height: 52px;
+    overflow: hidden;
+}
+
+/* m */
+
+.m {
+    height: 80px;
+    width: 80px;
+    overflow: hidden;
+}
+
+.max-m {
+    max-height: 80px;
+    max-width: 80px;
+    overflow: hidden;
+}
+
+.hm {
+    width: 80px;
+    overflow: hidden;
+}
+
+.max-hm {
+    max-width: 80px;
+    overflow: hidden;
+}
+
+.vm {
+    height: 80px;
+    overflow: hidden;
+}
+
+.max-vm {
+    max-height: 80px;
+    overflow: hidden;
+}
+
+/* g */
+
+.g {
+    height: 160px;
+    width: 160px;
+    overflow: hidden;
+}
+
+.max-g {
+    max-height: 160px;
+    max-width: 160px;
+    overflow: hidden;
+}
+
+.hg {
+    width: 160px;
+    overflow: hidden;
+}
+
+.max-hg {
+    max-width: 160px;
+    overflow: hidden;
+}
+
+.vg {
+    height: 160px;
+    overflow: hidden;
+}
+
+.max-vg {
+    max-height: 160px;
+    overflow: hidden;
+}
+
+/* gg */
+
+.gg {
+    height: 240px;
+    width: 240px;
+    overflow: hidden;
+}
+
+.max-gg {
+    max-height: 240px;
+    max-width: 240px;
+    overflow: hidden;
+}
+
+.hgg {
+    width: 240px;
+    overflow: hidden;
+}
+
+.max-hgg {
+    max-width: 240px;
+    overflow: hidden;
+}
+
+.vgg {
+    height: 240px;
+    overflow: hidden;
+}
+
+.max-vgg {
+    max-height: 240px;
+    overflow: hidden;
+}
+
+/* ggg */ 
+
+.ggg {
+    height: 512px;
+    width: 512px;
+    overflow: hidden;
+}
+
+.max-ggg {
+    max-height: 512px;
+    max-width: 512px;
+    overflow: hidden;
+}
+
+.hggg {
+    width: 512px;
+    overflow: hidden;
+}
+
+.max-hggg {
+    max-width: 512px;
+    overflow: hidden;
+}
+
+.vggg {
+    height: 512px;
+    overflow: hidden;
+}
+
+.max-vggg {
+    max-height: 512px;
+    overflow: hidden;
+}
+
+/* classes auxiliares */
+
+.oculto-aos-olhos:not(:focus):not(:active) {
+    clip: rect(0 0 0 0);
+    clip-path: inset(100%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}

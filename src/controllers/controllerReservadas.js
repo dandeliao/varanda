@@ -207,7 +207,7 @@ exports.putPreferencias = asyncHandler(async (req, res, next) => {
 	
 	const arroba = req.params.bicho_id;
 	const preferencias = {
-		tema: req.body.tema === '1' ? 1 : 0
+		tema_id: req.body.tema ? parseInt(req.body.tema) : 0
 	}
 	const {error} = schemaPutPreferencias.validate(preferencias, { messages });
 	if (error) {
@@ -231,8 +231,8 @@ exports.putPreferencias = asyncHandler(async (req, res, next) => {
 	}
 
 	await servicePreferencias.editarPreferencias(arroba, preferencias);
-	
-	return res.redirect(303, `/${arroba}/futricar`);
+	return res.status(200);
+
 });
 
 /* ---

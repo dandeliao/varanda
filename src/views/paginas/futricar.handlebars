@@ -1,48 +1,38 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
 <div class="pagina">
-    <div hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}&futricar=true{{#if instancia}}&instancia=true{{/if}}" hx-trigger="load" hx-swap="outerHTML"></div>
-    <div class="bloco paginas">
-        <h2>Páginas</h2>
-        <ul class="lista-paginas">
+    <div class="preencher preencher-vertical" hx-get="/blocos/cartao-de-visita?bicho={{varanda.bicho_id}}&futricar=true{{#if instancia}}&instancia=true{{/if}}" hx-trigger="load" hx-swap="outerHTML"></div>
+    <div class="bloco preencher">
+        <h2 class="titulo-bloco">Páginas</h2>
+        <ul class="lista">
             {{#if bloco.relacao.editar}}
             {{#each bloco.paginas}}
-                <div class="item-paginas">
-                    <li class="link-paginas">
-                        <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
-                    </li>
-                    <div>
-                        <button hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
-                        <button onclick="confirmarRemoverPagina('{{this.titulo}}')">Remover</button>
-                        <dialog class="confirmacao" id="dialogo-remover-{{this.titulo}}">
-                            <p>Você quer mesmo remover a página {{this.titulo}}?</p>
-                            <br>
-                            <button hx-delete="/{{this.pagina_vid}}" hx-target="body" hx-push-url="true">Sim</button>
-                            <button onClick="fechatudo()">Não</button>
-                        </dialog>
-                    </div>
-                </div>
-                <br>
+                <li class="preencher">
+                    <a class="margem-direita-p" href="/{{this.pagina_vid}}">{{this.titulo}}</a>
+                    <button class="vpp fonte-p com-padding-horizontal" hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
+                    <button class="vpp fonte-p com-padding-horizontal" onclick="confirmarRemoverPagina('{{this.titulo}}')">Remover</button>
+                    <dialog class="confirmacao" id="dialogo-remover-{{this.titulo}}">
+                        <p>Você quer mesmo remover a página {{this.titulo}}?</p>
+                        <br>
+                        <button hx-delete="/{{this.pagina_vid}}" hx-target="body" hx-push-url="true">Sim</button>
+                        <button onClick="fechatudo()">Não</button>
+                    </dialog>
+                </li>
             {{/each}}
             <div id="modal" onclick="fechatudo()"></div>
             {{/if}}
             {{#if bloco.bicho.meuPerfil}}
             {{#each bloco.paginas}}
-                <div class="item-paginas">
-                    <li class="link-paginas">
-                        <a href="/{{this.pagina_vid}}">/{{this.titulo}}</a>
-                    </li>
-                    <div>
-                        <button hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
-                        <button onclick="confirmarRemoverPagina('{{this.titulo}}')">Remover</button>
-                        <dialog class="confirmacao" id="dialogo-remover-{{this.titulo}}">
-                            <p>Você quer mesmo remover a página {{this.titulo}}?</p>
-                            <br>
-                            <button hx-delete="/{{this.pagina_vid}}" hx-target="body" hx-push-url="true">Sim</button>
-                            <button onClick="fechatudo()">Não</button>
-                        </dialog>
-                    </div>
-                </div>
-                <br>
+                <li class="preencher">
+                    <a class="margem-direita-p" href="/{{this.pagina_vid}}">/{{this.titulo}}</a>
+                    <button class="vpp fonte-p com-padding-horizontal" hx-get="/{{this.pagina_vid}}/editar" hx-target="body" hx-push-url="true">Editar</button>
+                    <button class="vpp fonte-p com-padding-horizontal" onclick="confirmarRemoverPagina('{{this.titulo}}')">Remover</button>
+                    <dialog class="confirmacao" id="dialogo-remover-{{this.titulo}}">
+                        <p>Você quer mesmo remover a página {{this.titulo}}?</p>
+                        <br>
+                        <button hx-delete="/{{this.pagina_vid}}" hx-target="body" hx-push-url="true">Sim</button>
+                        <button onClick="fechatudo()">Não</button>
+                    </dialog>
+                </li>
             {{/each}}
             <div id="modal" onclick="fechatudo()"></div>
             {{/if}}
@@ -59,148 +49,27 @@
             {{/unless}}
             {{/unless}}
         </ul>
-        <div>
-        {{#if bloco.bicho.comunitario}}
-        {{#if bloco.relacao.editar}}
-        <button class="centralizado" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
-        {{/if}}
-        {{/if}}
-        {{#if bloco.bicho.meuPerfil}}
-        <button class="centralizado" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
-        {{/if}}
+        <div class="margem-superior-g">
+            {{#if bloco.bicho.comunitario}}
+            {{#if bloco.relacao.editar}}
+            <button class="texto-centralizado centro" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
+            {{/if}}
+            {{/if}}
+            {{#if bloco.bicho.meuPerfil}}
+            <button class="texto-centralizado centro" hx-get="/{{varanda.bicho_id}}/nova_pagina/editar" hx-target="body" hx-push-url="true">Nova página</button>
+            {{/if}}
         </div>
     </div>
     {{#if bloco.bicho.comunitario}}
-        <div hx-get="/blocos/equipe?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
+        <div hx-get="/blocos/equipe?bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
         {{#if bloco.participantes}}
-        <div class="bloco">
-            <h2>Participantes</h2>
-            <ul class="lista-bichos">
-                {{#each bloco.participantes}}
-                <li class="item-bicho"><a href="/{{this.bicho_id}}"><span class="avatar-quadrado" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span></a><p class="largura-fixa"><a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a></p></li>
-                {{/each}}
-            </ul>
-            {{#if instancia}}
-            {{#if bloco.relacao.representar}}
-            <br>
-            <div>
-                <button hx-post="/{{varanda.bicho_id}}/convites" hx-target="#convite" hx-push-url="false">Gerar Convite</button>
-                <div id="convite"></div>
-            </div>
-            {{/if}}
-            {{/if}}
-        </div>
+        <div hx-get="/blocos/participantes?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
         {{/if}}
     {{/if}}
     {{#if bloco.comunidades}}
-    <div class="bloco">
-        <h2>Comunidades</h2>
-        <ul class="lista-bichos">
-            {{#each bloco.comunidades}}
-            <li class="item-bicho"><a href="/{{this.comunidade_id}}"><span class="avatar-quadrado" hx-get="/blocos/avatar?bicho={{this.comunidade_id}}" hx-trigger="load"></span></a><p class="largura-fixa"><a class="mini-arroba" href="/{{this.comunidade_id}}">@{{this.comunidade_id}}</a></p></li>
-            {{/each}}
-        </ul>
-    </div>
+    <div hx-get="/blocos/comunidades?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&bicho={{varanda.bicho_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
     {{/if}}
 </div>
-
-<style>
-
-    .lista-bichos {
-        display: flex;
-        gap: 0.2rem;
-        flex-wrap: wrap;
-        padding: 0;
-        margin: 0.9rem auto 0;
-        list-style: none;
-    }
-
-    .paginas {
-        flex: 25%;
-        align-self: stretch;
-        
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .lista-paginas {
-        width: 100%;
-        margin: 0;
-        padding: 0.5rem;
-        list-style: none;
-    }
-
-    .item-bicho {
-        margin-bottom: 0.8rem;
-    }
-
-    .item-paginas {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .link-paginas {
-        display: block;
-        text-align: left;
-        width: 40%;
-        height: auto;
-        word-wrap: break-word;
-    }
-
-    .largura-fixa {
-        display: block;
-        text-align: center;
-        width: 86px;
-        height: auto;
-        margin: 0 auto;
-        word-wrap: break-word;
-    }
-
-    .mini-arroba {
-        font-size: 0.8rem;
-    }
-
-    .confirmacao, .modal {
-        display: none;
-    }
-    .confirmacao-aberta {
-        display: block;
-        z-index: 400;
-        position: absolute;
-        left: 50%;
-        top: 50vh;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        background-color: var(--cor-principal);
-        color: var(--cor-fonte-barra);
-        padding: 2rem;
-        border-radius: 5px;
-    }
-     .modal-aberto {
-        display: block;
-        position: fixed;
-        z-index: 300;
-        left: 0;
-        top: 0;
-        width: 100vw; /* Full width */
-        height: 100vh; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-    }
-
-    @media screen and (max-width: 859px) {
-        .item-paginas {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }   
-    }
-
-</style>
 
 <script>
     function confirmarRemoverPagina(titulo) {

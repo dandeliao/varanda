@@ -5,7 +5,7 @@ exports.verPreferencias = async function (bichoId) {
 	return preferencias.rows[0];
 };
 
-exports.criarPreferencias = async function (bichoId, prefs) { // preferencias é um objeto { tema: <integer> }
+exports.criarPreferencias = async function (bichoId, prefs) { // preferencias é um objeto { tema_id: <integer> }
 	const preferencias = await dataPreferencias.postPreferencias(bichoId, prefs);
 	return preferencias.rows[0];
 };

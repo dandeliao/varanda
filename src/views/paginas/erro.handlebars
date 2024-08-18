@@ -1,33 +1,3 @@
-<header class="varanda-cabecalho">
-    <div></div>
-    <a href="javascript:history.back()">↩ voltar</a>
-</header>
-
+<div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
 <h1>{{bloco.codigo}}</h1>
-<h2>{{bloco.mensagem}}</h2>
-
-<style>
-    .varanda-cabecalho {
-        display: none;
-    }
-    @media screen and (max-width: 859px) {
-        .varanda-cabecalho {
-            width: 100%;
-            height: 1.4rem;
-            position: relative;
-            top: 0;
-            left: 0;
-            padding: 0 0.2rem;
-            z-index: 420;
-
-            color: var(--cor-destaque-2);
-            background-color: var(--cor-principal);
-
-            display: flex;
-            justify-content: space-between;
-        }
-        .varanda-cabecalho a {
-            display: block;
-        }
-    }
-</style>
+<p>{{bloco.mensagem}}</p>

@@ -1,5 +1,5 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
-<div class="pagina">
+<div class="editar-artefato">
 	<form id="formulario" class="bloco" enctype="multipart/form-data" action="/{{#if novo_artefato}}{{varanda.bicho_id}}/{{pagina.pagina_id}}{{/if}}{{#unless novo_artefato}}{{artefato.artefato_id}}{{/unless}}" method="{{metodo}}">
         <fieldset>
             {{#if novo_artefato}}
@@ -40,31 +40,3 @@
 		{{/if}}
 	</form>
 </div>
-
-<style>
-	.pagina {
-		text-align: left;
-	}
-	form {
-        max-width: 860px;
-		width: 100%;
-		margin: 0 auto;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-	}
-    form #titulo{
-		width: 100%;
-	}
-	form textarea {
-		width: 100%;
-		min-height: 20vh;
-		resize: vertical;
-	}
-	input[type="file"] {
-		width: 100%;
-		word-wrap: break-word;
-	}
-</style>
