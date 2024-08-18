@@ -17,6 +17,21 @@ exports.verArtefato = async function(artefato_id) {
     return resposta;
 };
 
+exports.verArtefatosNaInstancia = async function(instancia_id, lote) {
+	let lotereal = lote ? lote : 1;
+	const artefatos = (await dataArtefatos.getArtefatos(lotereal)).rows;
+	let resposta = [];
+	for (let i = 0; i < artefatos.length; i++) {
+		resposta[i] = { // coloca apenas o id, a comunidade e a página do artefato na resposta
+			artefato_id: artefatos[i].artefato_id,
+			varanda_id: artefatos[i].varanda_id,
+			pagina_vid: artefatos[i].pagina_vid,
+			pagina_titulo: (await servicePaginas.verPaginas(artefatos[i].varanda_id, vidParaId(artefatos[i].pagina_vid))).titulo
+		}
+	}
+	return resposta;
+}
+
 exports.verArtefatosNaPagina = async function(varanda_id, pagina_id, lote) {
 	let lotereal = lote ? lote : 1;
 	const artefatos = (await dataArtefatos.getArtefatosNaPagina(`${varanda_id}/${pagina_id}`, lotereal)).rows;
