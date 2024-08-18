@@ -1,48 +1,4 @@
-<header class="varanda-cabecalho {{#unless usuarie.logade}}mostrar{{/unless}}">
+<header class="varanda-cabecalho {{bloco.class}} {{#unless usuarie.logade}}varanda-cabecalho-grande{{/unless}}">
     <a href="/{{bloco.bicho.bicho_id}}">@{{bloco.bicho.bicho_id}}</a>
     <a href="javascript:history.back()">↩ voltar</a>
 </header>
-
-<style>
-    .varanda-cabecalho {
-        display: none;
-    }
-    .mostrar {
-        max-width: 800px;
-        height: 2rem;
-        position: relative;
-        top: 0;
-        margin: 0 auto;
-        padding: 0 0.4rem;
-        z-index: 420;
-
-        color: var(--cor-destaque-2);
-        background-color: var(--cor-principal);
-
-        display: flex;
-        justify-content: space-between;
-    }
-    .mostrar a {
-            display: block;
-    }
-    @media screen and (max-width: 859px) {
-        .varanda-cabecalho {
-            width: 100%;
-            height: 1.4rem;
-            position: relative;
-            top: 0;
-            left: 0;
-            padding: 0 0.2rem;
-            z-index: 420;
-
-            color: var(--cor-destaque-2);
-            background-color: var(--cor-principal);
-
-            display: flex;
-            justify-content: space-between;
-        }
-        .varanda-cabecalho a {
-            display: block;
-        }
-    }
-</style>

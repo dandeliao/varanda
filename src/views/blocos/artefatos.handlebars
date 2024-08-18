@@ -1,108 +1,24 @@
 {{#unless bloco.artefatos.nao_renderizar}}
 {{#if bloco.artefatos.comecou}}
-<div class="bloco artefatos">
+<div class="bloco artefatos {{bloco.class}}">
     {{#if pagina.postavel}}
     {{#unless bloco.artefatos.lista}}
         <p>Nenhuma postagem ainda. Clique em "postar" na barra principal para fazer a primeira.</p>
     {{/unless}}
     {{/if}}
-    {{#if bloco.artefatos.lista}}
-    {{#if bloco.artefatos.novidades}}
-        <h2>Mais recentes:</h2>
-    {{/if}}
-    {{/if}}
 {{/if}}
     <div class="lote">
-    {{#if bloco.artefatos.novidades}}
     {{#each bloco.artefatos.lista}}
         <div class="item-artefatos {{#if this.colorir}}colorir{{/if}}">
-            <div hx-get="/blocos/artefato-mini?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&artefato={{this.artefato_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
-            <div class="pagina-origem">
-                <span>Postado em </span><a href="/{{this.pagina_vid}}">{{this.pagina_titulo}}</a>
-            </div>
+            <div hx-get="/blocos/artefato-mini?flash_aviso={{@root.flash.aviso}}&flash_erro={{@root.flash.erro}}&bicho={{@root.varanda.bicho_id}}&pagina={{@root.pagina.pagina_id}}&artefato={{this.artefato_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
         </div>
     {{/each}}
-    {{/if}}
-    {{#unless bloco.artefatos.novidades}}
-    {{#each bloco.artefatos.lista}}
-        <div class="item-artefatos {{#if this.colorir}}colorir{{/if}}">
-            <div hx-get="/blocos/artefato-mini?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&artefato={{this.artefato_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
-        </div>
-    {{/each}}
-    {{/unless}}
     </div>
     <footer>
     {{#unless bloco.artefatos.acabou}}
-        <button id="botao-{{bloco.artefatos.proximo_lote}}" style="margin:1rem 0 1rem;" hx-get="/blocos/artefatos?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&bicho={{varanda.bicho_id}}{{#if bloco.artefatos.novidades}}&novidades{{/if}}&pagina={{pagina.pagina_id}}&lote={{bloco.artefatos.proximo_lote}}" hx-push-url="false" hx-swap="outerHTML" >Ver mais</button>
+        <button class="centro margem-superior-m margem-inferior-m" id="botao-{{bloco.artefatos.proximo_lote}}" hx-get="/blocos/artefatos?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&bicho={{varanda.bicho_id}}{{#if bloco.artefatos.novidades}}&novidades{{/if}}&pagina={{pagina.pagina_id}}&lote={{bloco.artefatos.proximo_lote}}" hx-push-url="false" hx-swap="outerHTML" >Ver mais</button>
         <div id="lote-{{bloco.artefatos.proximo_lote}}"></div>
     {{/unless}}
     </footer>
 {{#if bloco.artefatos.comecou}}</div>{{/if}}
-
-<style>
-    .artefatos {
-        padding: 0;
-        display: flex;
-        flex: 60%;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    .artefatos h2 {
-        margin-bottom: 0.9rem;
-    }
-    .artefatos footer {
-        width: 100%;;
-    }
-    .lote {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        gap: 0;
-        min-width: 20vw;
-    }
-    .item-artefatos {
-        position: relative;
-        aspect-ratio: 1 / 1;
-        overflow: hidden;
-    }
-    .pagina-origem {
-        display: block;
-        position: absolute;
-        z-index: 10;
-        bottom: 0;
-        width: 100%;
-        text-align: center;
-        font-size: 0.82rem;
-        padding: 0.35rem 0;
-        background-color: var(--cor-transparente);
-    }
-    @media screen and (min-width: 860px) {
-        .item-artefatos:nth-child(8n+1) {
-            background-color: var(--cor-fundo-3);
-        }
-        .item-artefatos:nth-child(8n+3) {
-            background-color: var(--cor-fundo-3);
-        }
-        .item-artefatos:nth-child(8n+6) {
-            background-color: var(--cor-fundo-3);
-        }
-        .item-artefatos:nth-child(8n) {
-            background-color: var(--cor-fundo-3);
-        }
-    }
-    
-    @media screen and (max-width: 859px) {
-        .lote {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-            min-width: 45vw;
-        }
-        .item-artefatos:nth-child(4n+1) {
-            background-color: var(--cor-fundo-3);
-        }
-        .item-artefatos:nth-child(4n) {
-            background-color: var(--cor-fundo-3);
-        }
-    }
-</style>
 {{/unless}}

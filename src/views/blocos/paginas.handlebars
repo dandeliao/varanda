@@ -1,24 +1,10 @@
 {{#unless bloco.paginas.unica}}
-<nav class="lista-paginas">
+<nav class="navegacao {{bloco.class}}">
 {{#each bloco.paginas}}
-    <a href="/{{this.pagina_vid}}">{{this.titulo}}</a>
+    <a 
+        {{#if this.atual}}style="background-color: var(--cor-principal);"{{/if}}
+        href="/{{this.pagina_vid}}"
+    >{{this.titulo}}</a>
 {{/each}}
 </nav>
-
-<style>
-    .lista-paginas {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        width: 100%;
-    }
-    .lista-paginas a {
-        flex: auto;
-        background-color: var(--cor-principal);
-        padding: 0.8rem 0.4rem;
-        display: block;
-    }
-</style>
 {{/unless}}

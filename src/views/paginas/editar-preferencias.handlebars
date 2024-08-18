@@ -1,6 +1,6 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
-<div class="pagina">
-	<div class="bloco">
+<div class="pagina editar-preferencias">
+	<div class="bloco espichar">
 		<h1>Preferências de @{{query.bicho}}</h1>
 		<br>
 		<form id="formulario" action="/{{query.bicho}}/preferencias" method="PUT" hx-swap="none" hx-trigger="change" hx-push-url="false">

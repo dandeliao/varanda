@@ -1,7 +1,7 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
-<div class="pagina">
-	<form id="formulario" class="bloco" action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
-		<fieldset>
+<div class="pagina texto-a-esquerda preencher elementos-centralizados-horizontal">
+	<form id="formulario" class="bloco formulario leitura sem-margem" action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
+		<fieldset class="preencher">
 			{{#if nova_pagina}}
 			<legend>Nova Página</legend>
 			{{/if}}
@@ -9,9 +9,9 @@
 			<legend>Editar Página</legend>
 			{{/unless}}
 			<label for="titulo">Título:</label>
-			<input type="text" id="titulo-pagina" value="{{pagina.titulo}}" name="titulo" required>
+			<input type="text" id="titulo-pagina" class="preencher" value="{{pagina.titulo}}" name="titulo" required>
 		</fieldset>
-		<fieldset>
+		<fieldset class="preencher">
 			<legend>Opções:</legend>
 			{{#if varanda.comunitaria}}
 			<input type="checkbox" name="postavel" {{#if pagina.postavel}}checked{{/if}}{{#if nova_pagina}}checked{{/if}}>
@@ -21,10 +21,9 @@
 			<input type="checkbox" name="publica" {{#if pagina.publica}}checked{{/if}}{{#if nova_pagina}}checked{{/if}}>
 			<label for="publica">Pública (pode ser vista sem fazer login na varanda)</label>
 		</fieldset>
-		<fieldset>
+		<fieldset class="preencher">
 			<legend>HTML</legend>
-			<label for="html">Código:</label>
-			<textarea id="html-pagina" name="html" required>{{pagina.html}}</textarea>
+			<textarea id="html-pagina" class="preencher" name="html" required hx-post="/{{pagina.pagina_vid}}/miniatura" hx-target="#miniatura" hx-trigger="input delay:600ms">{{pagina.html}}</textarea>
 		</fieldset>
 	</form>
 	<div class="bloco">
@@ -57,32 +56,15 @@
 	</div>
 </div>
 
-<style>
-	.pagina {
-		text-align: left;
+<script>
+	function toggleSecao(secao) {
+		document.getElementById(`main-${secao}`).classList.toggle('oculto');
+		let seta = document.getElementById(`seta-${secao}`);
+		seta.classList.toggle('fechado');
+		if (seta.classList.contains('fechado')) {
+			seta.innerHTML = `<path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M 10,2.001 24,16 10,30 z" id="polygon3036"/>`;
+		} else {
+			seta.innerHTML = `<path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="m2.002 10 13.999 14 14.001-14z"/>`;
+		}
 	}
-	form {
-        max-width: 860px;
-		width: 100%;
-		margin: 0 auto;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-	}
-	form #titulo-pagina{
-		width: 100%;
-	}
-	form textarea {
-		width: 100%;
-		min-height: 50vh;
-	}
-	input[type="file"] {
-		width: 100%;
-		word-wrap: break-word;
-	}
-	.lista-tags li {
-		margin-top: 1rem;
-	}
-</style>
+</script>

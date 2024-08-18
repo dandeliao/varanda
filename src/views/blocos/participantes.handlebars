@@ -1,13 +1,13 @@
 {{#if bloco.participantes}}
-<div class="bloco participantes">
-    <h2>Participantes</h2>
-    <ul class="lista-bichos">
+<div class="bloco participantes preencher {{bloco.class}}">
+    <h2 class="titulo-bloco">Participantes</h2>
+    <ul class="lista-flexivel fonte-p">
         {{#each bloco.participantes}}
         <li class="item-bicho">
             <a href="/{{this.bicho_id}}">
-                <span class="avatar-quadrado" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span>
+                <div class="quadrado m" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></div>
             </a>
-            <p class="largura-fixa">
+            <p class="texto-centralizado hm quebra-linha">
                 <a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a>
             </p>
         </li>
@@ -15,29 +15,3 @@
     </ul>
 </div>
 {{/if}}
-
-<style>
-    .lista-bichos {
-        display: flex;
-        gap: 0.2rem;
-        flex-wrap: wrap;
-        padding: 0;
-        margin: 0.9rem auto 0;
-        list-style: none;
-    }
-    .item-bicho {
-        margin-bottom: 0.8rem;
-    }
-    .largura-fixa {
-        display: block;
-        text-align: center;
-        width: 86px;
-        height: auto;
-        margin: 0 auto;
-        word-wrap: break-word;
-    }
-
-    .mini-arroba {
-        font-size: 0.8rem;
-    }
-</style>

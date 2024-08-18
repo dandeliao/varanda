@@ -1,5 +1,5 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
-<div class="pagina">
+<div class="editar-bicho">
 	<form id="formulario" class="bloco" action="/{{#unless nova_comunidade}}{{varanda.bicho_id}}{{/unless}}" method="{{metodo}}" enctype="multipart/form-data">
 		<fieldset>
 			{{#unless nova_comunidade}}
@@ -12,7 +12,7 @@
 			<input class="campo" type="text" id="arroba-bicho" value="{{bloco.bicho.bicho_id}}" name="arroba" placeholder="clube-do-livro" required>
 			<br><br>
 			{{/if}}
-			<label for="nome">Nome:</label>
+			<label for="nome">Nome da comunidade:</label>
 			<input class="campo" type="text" id="nome-bicho" value="{{bloco.bicho.nome}}" name="nome" {{#if nova_comunidade}}placeholder="Clube do Livro"{{/if}}>
 			<br>
 			<br>
@@ -34,7 +34,7 @@
 		<br>
 		<fieldset>
 			<legend>Imagem de perfil</legend>
-			<div class="avatar-quadrado" id="visualiza-avatar" hx-get="/blocos/avatar?bicho={{varanda.bicho_id}}&momento={{momento}}" hx-trigger="load" hx-swap="innerHtml" hx-push-url="false"></div>
+			<div class="quadrado m" id="visualiza-avatar" hx-get="/blocos/avatar?bicho={{varanda.bicho_id}}&momento={{momento}}" hx-trigger="load" hx-swap="innerHtml" hx-push-url="false"></div>
 			<br><br>
 			<label for="descricao_avatar">Descrição da imagem:</label>
 			<textarea class="campo" id="descricao-avatar" name="descricao_avatar" placeholder="Foto de um gato cinza de olhos amarelos com uma expressão de espanto.">{{bloco.bicho.descricao_avatar}}</textarea>
@@ -56,49 +56,6 @@
 		{{/unless}}
 	</form>
 </div>
-
-<style>
-	.pagina {
-		text-align: left;
-	}
-	form {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-	}
-	form #titulo-pagina{
-		width: 100%;
-	}
-	form fieldset {
-		padding: 1rem;
-	}
-	form textarea {
-		width: 100%;
-		min-height: 10vh;
-	}
-	form .campo {
-		width: 100%;
-	}
-
-	#visualiza-fundo {
-		display: block;
-		z-index: 2;
-	}
-	input[type="file"] {
-		width: 100%;
-		word-wrap: break-word;
-	}
-	
-
-	@media screen and (max-width: 859px) {
-		#visualiza-avatar {
-			text-align: center;
-		}
-	}
-
-</style>
 
 {{#unless nova_comunidade}}
 <script>

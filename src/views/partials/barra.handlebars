@@ -1,22 +1,22 @@
 <div id="varanda-barra">
 
     <nav>
-        <button id="varanda-botao-inicio" aria-describedby="descricao-botao-inicio" hx-get="/" hx-target="body" hx-push-url="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="2.1rem" height="2.1rem" viewBox="0 0 460 460"
+        <button class="botao-barra" id="varanda-botao-inicio" aria-describedby="descricao-botao-inicio" hx-get="/" hx-target="body" hx-push-url="true">
+            <svg class="icone-barra" xmlns="http://www.w3.org/2000/svg" width="2.1rem" height="2.1rem" viewBox="0 0 460 460"
                 aria-hidden="true" focusable="false">
                 <path fill="currentColor" stroke="currentColor" d="M230.149,120.939L65.986,256.274c0,0.191-0.048,0.472-0.144,0.855c-0.094,0.38-0.144,0.656-0.144,0.852v137.041    c0,4.948,1.809,9.236,5.426,12.847c3.616,3.613,7.898,5.431,12.847,5.431h109.63V303.664h73.097v109.64h109.629    c4.948,0,9.236-1.814,12.847-5.435c3.617-3.607,5.432-7.898,5.432-12.847V257.981c0-0.76-0.104-1.334-0.288-1.707L230.149,120.939    z"/>
                 <path fill="currentColor" stroke="currentColor" d="M457.122,225.438L394.6,173.476V56.989c0-2.663-0.856-4.853-2.574-6.567c-1.704-1.712-3.894-2.568-6.563-2.568h-54.816    c-2.666,0-4.855,0.856-6.57,2.568c-1.711,1.714-2.566,3.905-2.566,6.567v55.673l-69.662-58.245    c-6.084-4.949-13.318-7.423-21.694-7.423c-8.375,0-15.608,2.474-21.698,7.423L3.172,225.438c-1.903,1.52-2.946,3.566-3.14,6.136    c-0.193,2.568,0.472,4.811,1.997,6.713l17.701,21.128c1.525,1.712,3.521,2.759,5.996,3.142c2.285,0.192,4.57-0.476,6.855-1.998    L230.149,95.817l197.57,164.741c1.526,1.328,3.521,1.991,5.996,1.991h0.858c2.471-0.376,4.463-1.43,5.996-3.138l17.703-21.125    c1.522-1.906,2.189-4.145,1.991-6.716C460.068,229.007,459.021,226.961,457.122,225.438z"/>
             </svg>
-            <span>início</span>
+            <span class="acao-barra">início</span>
             <span id="descricao-botao-inicio" hidden>Retorna para a página inicial da Varanda.</span>
         </button>
-        <button id="varanda-botao-perfil" aria-describedby="descricao-botao-perfil" hx-get="/{{usuarie.bicho_id}}" hx-target="body" hx-push-url="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="2.1rem" height="2.1rem" viewBox="-1.9 -1.9 19 19"
+        <button class="botao-barra" id="varanda-botao-perfil" aria-describedby="descricao-botao-perfil" hx-get="/{{usuarie.bicho_id}}" hx-target="body" hx-push-url="true">
+            <svg class="icone-barra" xmlns="http://www.w3.org/2000/svg" width="2.1rem" height="2.1rem" viewBox="-1.9 -1.9 19 19"
                 aria-hidden="true" focusable="false">            
                 <path fill="currentColor" stroke="currentColor" d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                 <path fill="currentColor" stroke="currentColor" fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
             </svg>
-            <span>perfil</span>
+            <span class="acao-barra">perfil</span>
             <span id="descricao-botao-perfil" hidden>Abre sua página de perfil.</span>
         </button>
     </nav>
@@ -24,18 +24,18 @@
         <a href="/{{varanda.bicho_id}}">@{{varanda.bicho_id}}</a>
     </div>
     <nav>
-        <button id="varanda-botao-contexto-1" aria-describedby="descricao-botao-contexto-1" {{#unless contexto.um.funcao}}{{#unless contexto.um.submit}}hx-{{contexto.um.metodo}}="{{contexto.um.url}}" hx-target="body" hx-push-url="true"{{/unless}}{{/unless}}>
-            <svg id="varanda-svg-contexto-1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"
+        <button class="botao-barra" id="varanda-botao-contexto-1" aria-describedby="descricao-botao-contexto-1" {{#unless contexto.um.funcao}}{{#unless contexto.um.submit}}hx-{{contexto.um.metodo}}="{{contexto.um.url}}" hx-target="body" hx-push-url="true"{{/unless}}{{/unless}}>
+            <svg class="icone-barra" id="varanda-svg-contexto-1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"
                 aria-hidden="true" focusable="false">
             </svg>
-            <span id="varanda-span-contexto-1">{{contexto.um.nome}}</span>
+            <span class="acao-barra" id="varanda-span-contexto-1">{{contexto.um.nome}}</span>
             <span id="descricao-botao-contexto-1" hidden>{{contexto.um.descricao}}</span>
         </button>
-        <button id="varanda-botao-contexto-2" aria-describedby="descricao-botao-contexto-2" {{#unless contexto.dois.funcao}}{{#unless contexto.dois.submit}}hx-{{contexto.dois.metodo}}="{{contexto.dois.url}}" hx-target="body" hx-push-url="true"{{/unless}}{{/unless}}>
-            <svg id="varanda-svg-contexto-2" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"
+        <button class="botao-barra" id="varanda-botao-contexto-2" aria-describedby="descricao-botao-contexto-2" {{#unless contexto.dois.funcao}}{{#unless contexto.dois.submit}}hx-{{contexto.dois.metodo}}="{{contexto.dois.url}}" hx-target="body" hx-push-url="true"{{/unless}}{{/unless}}>
+            <svg class="icone-barra" id="varanda-svg-contexto-2" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 12 12"
                 aria-hidden="true" focusable="false">
             </svg>
-            <span id="varanda-span-contexto-2">{{contexto.dois.nome}}</span>
+            <span class="acao-barra" id="varanda-span-contexto-2">{{contexto.dois.nome}}</span>
             <span id="descricao-botao-contexto-2" hidden>{{contexto.dois.descricao}}</span>
         </button>
     </nav>
@@ -50,8 +50,6 @@
         let nomes = [document.getElementById('varanda-span-contexto-1'), document.getElementById('varanda-span-contexto-2')];
         for (let i = 0; i < nomes.length; i++) {
             botoes[i].removeAttribute('form');
-            icones[i].setAttribute('width', '2rem');
-            icones[i].setAttribute('height', '2rem');
             switch (nomes[i].textContent) {
                 case 'cancelar':
                     icones[i].innerHTML = `<path fill="currentColor" d="M 16,20 26,30 30,26 20,16 30,6 26,2 16,12 6,2 2,6 12,16 2,26 6,30 z"/>`;
@@ -94,7 +92,7 @@
                     icones[i].innerHTML = `<path fill="currentColor" d="M52.5,20l6-6c2-2,2-5,0-7l-5.4-5.4c-2-2-5-2-7,0l-6,6L52.5,20z M35,12.5L5.6,42c6.6-1,2,5.5,4.4,8c2,2,9-2,8,4.4L47.5,25L35,12.5z M3,59.9L3,60c-1.6,0.5-4-0.7-3-3l0,0L2.5,50l7.5,7.5L3,60z"/>`;
                     icones[i].setAttribute('viewBox', '-7 0 72 72');
                     break;
-                case 'enviar':
+                case 'compartilhar':
                     icones[i].innerHTML = `<path fill="currentColor" d="M561.938 158.06L417.94 14.092C387.926-15.922 336 5.097 336 48.032v57.198c-42.45 1.88-84.03 6.55-120.76 17.99-35.17 10.95-63.07 27.58-82.91 49.42C108.22 199.2 96 232.6 96 271.94c0 61.697 33.178 112.455 84.87 144.76 37.546 23.508 85.248-12.651 71.02-55.74-15.515-47.119-17.156-70.923 84.11-78.76V336c0 42.993 51.968 63.913 81.94 33.94l143.998-144c18.75-18.74 18.75-49.14 0-67.88zM384 336V232.16C255.309 234.082 166.492 255.35 206.31 376 176.79 357.55 144 324.08 144 271.94c0-109.334 129.14-118.947 240-119.85V48l144 144-144 144zm24.74 84.493a82.658 82.658 0 0 0 20.974-9.303c7.976-4.952 18.286.826 18.286 10.214V464c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h132c6.627 0 12 5.373 12 12v4.486c0 4.917-2.987 9.369-7.569 11.152-13.702 5.331-26.396 11.537-38.05 18.585a12.138 12.138 0 0 1-6.28 1.777H54a6 6 0 0 0-6 6v340a6 6 0 0 0 6 6h340a6 6 0 0 0 6-6v-25.966c0-5.37 3.579-10.059 8.74-11.541z"/>`;
                     icones[i].setAttribute('viewBox', '0 0 576 512');
                     botoes[i].addEventListener('click', async function() {
@@ -132,7 +130,7 @@
                     //icones[i].innerHTML = `<path fill="currentColor" d="M8,10h2v2H8V10z M14,10h-2v2h2V10z M28,12.829V29h-3v-2h1v-5h-2v7h-3v-2h1v-5h-6.613L17,26.838  V29h-3v-2h0.946l-1.667-5h-1.072L13,26v3h-3v-2h1v-0.901l-1.856-9.278C6.006,16.21,4,14.027,4,11c0-0.682,0.153-2.699,0.801-3.796  l0.333-3.755l3.434,1.717c1.389-0.218,3.429-0.226,4.865,0l3.434-1.717l0.333,3.755C17.847,8.301,18,10.318,18,11  c0,0.718-0.117,1.386-0.331,2H26c0-0.346-0.013-0.598-0.293-0.879l-1-1c-0.566-0.566-0.879-1.32-0.879-2.121  s0.312-1.555,0.879-2.122l0.586-0.585c0.713-0.713,0.713-1.873,0-2.586l1.414-1.414c1.493,1.493,1.493,3.921,0,5.414l-0.586,0.586  C25.932,8.482,25.828,8.733,25.828,9s0.104,0.518,0.293,0.707l1,1C27.687,11.273,28,12.027,28,12.829z M11,15c2.417,0,5-1.051,5-4  c0-0.868-0.164-2.341-0.732-3.046l-0.134-1.403L13.73,7.253c-1.751-0.335-3.612-0.354-5.461,0L6.866,6.551L6.743,7.95  C6.162,8.645,6,10.132,6,11C6,13.949,8.583,15,11,15z M26,20v-5h-9.567c-1.193,1.222-3.005,1.947-5.217,1.992L11.812,20H26z" style="fill: currentColor;"/>`;
                     icones[i].innerHTML = `<path fill="currentColor" d="M288 192h17.1c22.1 38.3 63.5 64 110.9 64c11 0 21.8-1.4 32-4v4 32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V339.2L248 448h56c17.7 0 32 14.3 32 32s-14.3 32-32 32H160c-53 0-96-43-96-96V192.5c0-16.1-12-29.8-28-31.8l-7.9-1C10.5 157.6-1.9 141.6 .2 124s18.2-30 35.7-27.8l7.9 1c48 6 84.1 46.8 84.1 95.3v85.3c34.4-51.7 93.2-85.8 160-85.8zm160 26.5v0c-10 3.5-20.8 5.5-32 5.5c-28.4 0-54-12.4-71.6-32h0c-3.7-4.1-7-8.5-9.9-13.2C325.3 164 320 146.6 320 128v0V32 12 10.7C320 4.8 324.7 .1 330.6 0h.2c3.3 0 6.4 1.6 8.4 4.2l0 .1L352 21.3l27.2 36.3L384 64h64l4.8-6.4L480 21.3 492.8 4.3l0-.1c2-2.6 5.1-4.2 8.4-4.2h.2C507.3 .1 512 4.8 512 10.7V12 32v96c0 17.3-4.6 33.6-12.6 47.6c-11.3 19.8-29.6 35.2-51.4 42.9zM400 128c0-8.8-7.2-16-16-16s-16 7.2-16 16s7.2 16 16 16s16-7.2 16-16zm48 16c8.8 0 16-7.2 16-16s-7.2-16-16-16s-16 7.2-16 16s7.2 16 16 16z"/>`;
                     //icones[i].setAttribute('viewBox', '4 1 30 30');
-                    icones[i].setAttribute('viewBox', '0 0 512 512');
+                    icones[i].setAttribute('viewBox', '0 -40 580 580');
                     break;
                 case 'surpresa':
                     icones[i].innerHTML = `<path fill="currentColor" d="M255.76 44.764c-6.176 0-12.353 1.384-17.137 4.152L85.87 137.276c-9.57 5.536-9.57 14.29 0 19.826l152.753 88.36c9.57 5.536 24.703 5.536 34.272 0l152.753-88.36c9.57-5.535 9.57-14.29 0-19.825l-152.753-88.36c-4.785-2.77-10.96-4.153-17.135-4.153zm-.824 53.11c9.013.097 17.117 2.162 24.31 6.192 4.92 2.758 8.143 5.903 9.666 9.438 1.473 3.507 1.56 8.13.26 13.865l-1.6 5.706c-1.06 4.083-1.28 7.02-.66 8.81.57 1.764 1.983 3.278 4.242 4.544l3.39 1.898-33.235 18.62-3.693-2.067c-4.118-2.306-6.744-4.912-7.883-7.82-1.188-2.935-.99-7.603.594-14.005l1.524-5.748c.887-3.423.973-6.23.26-8.418-.653-2.224-2.134-3.983-4.444-5.277-3.515-1.97-7.726-2.676-12.63-2.123-4.956.526-10.072 2.268-15.35 5.225-4.972 2.785-9.487 6.272-13.55 10.46-4.112 4.162-7.64 8.924-10.587 14.288L171.9 138.21c5.318-5.34 10.543-10.01 15.676-14.013 5.134-4 10.554-7.6 16.262-10.8 14.976-8.39 28.903-13.38 41.78-14.967 3.208-.404 6.315-.59 9.32-.557zm50.757 56.7l26.815 15.024-33.235 18.62-26.816-15.023 33.236-18.62zM75.67 173.84c-5.753-.155-9.664 4.336-9.664 12.28v157.696c0 11.052 7.57 24.163 17.14 29.69l146.93 84.848c9.57 5.526 17.14 1.156 17.14-9.895V290.76c0-11.052-7.57-24.16-17.14-29.688l-146.93-84.847c-2.69-1.555-5.225-2.327-7.476-2.387zm360.773.002c-2.25.06-4.783.83-7.474 2.385l-146.935 84.847c-9.57 5.527-17.14 18.638-17.14 29.69v157.7c0 11.05 7.57 15.418 17.14 9.89L428.97 373.51c9.57-5.527 17.137-18.636 17.137-29.688v-157.7c0-7.942-3.91-12.432-9.664-12.278zm-321.545 63.752c6.553 1.366 12.538 3.038 17.954 5.013 5.415 1.976 10.643 4.417 15.68 7.325 13.213 7.63 23.286 16.324 30.218 26.082 6.932 9.7 10.398 20.046 10.398 31.04 0 5.64-1.055 10.094-3.168 13.364-2.112 3.212-5.714 5.91-10.804 8.094l-5.2 1.92c-3.682 1.442-6.093 2.928-7.23 4.46-1.137 1.472-1.705 3.502-1.705 6.092v3.885l-29.325-16.933v-4.23c0-4.72.892-8.376 2.68-10.97 1.787-2.652 5.552-5.14 11.292-7.467l5.2-2.006c3.087-1.21 5.334-2.732 6.742-4.567 1.46-1.803 2.192-4.028 2.192-6.676 0-4.027-1.3-7.915-3.9-11.66-2.6-3.804-6.227-7.05-10.885-9.74-4.387-2.532-9.126-4.29-14.217-5.272-5.09-1.04-10.398-1.254-15.922-.645v-27.11zm269.54 8.607c1.522 0 2.932.165 4.232.493 6.932 1.696 10.398 8.04 10.398 19.034 0 5.64-1.056 11.314-3.168 17.023-2.112 5.65-5.714 12.507-10.804 20.568l-5.2 7.924c-3.682 5.695-6.093 9.963-7.23 12.807-1.137 2.785-1.705 5.473-1.705 8.063v3.885l-29.325 16.932v-4.23c0-4.72.894-9.41 2.68-14.067 1.79-4.715 5.552-11.55 11.292-20.504l5.2-8.01c3.087-4.776 5.334-8.894 6.742-12.354 1.46-3.492 2.192-6.562 2.192-9.21 0-4.028-1.3-6.414-3.898-7.158-2.6-.8-6.23.142-10.887 2.83-4.387 2.533-9.124 6.25-14.215 11.145-5.09 4.84-10.398 10.752-15.922 17.74v-27.11c6.553-6.2 12.536-11.44 17.95-15.718 5.417-4.278 10.645-7.87 15.68-10.777 10.738-6.2 19.4-9.302 25.99-9.307zm-252.723 94.515l29.326 16.93v30.736l-29.325-16.93v-30.735zm239.246 8.06v30.735l-29.325 16.93v-30.733l29.326-16.932z"/>`;

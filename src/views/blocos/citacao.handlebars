@@ -1,11 +1,9 @@
+<div class="bloco citacao {{bloco.class}}" style="text-align: left">
 {{#with bloco.artefato}}
-<div class="bloco citacao" style="text-align: left">
-    {{#if titulo}}
     <header>
-        <h5><a href="/{{pagina_vid}}/{{artefato_id}}" hx-push-url="true">📌 {{titulo}}</a></h5>
+        <h5><a href="/{{pagina_vid}}/{{artefato_id}}" hx-push-url="true">📌{{#if titulo}} {{titulo}}{{/if}}</a></h5>
         {{#if sensivel}}<button id="botao-sensivel-{{artefato_id}}" onClick="toggleSensivel({{artefato_id}})">Expandir</button>{{/if}}
     </header>
-    {{/if}}
     <div class="citacao-em-si {{#if sensivel}}sensivel-oculto{{/if}}" id="sensivel-{{artefato_id}}">
         {{#if texto}}
             <div class="texto-citacao">{{{texto}}}</div>
@@ -38,62 +36,20 @@
             </div>
         {{/if}}
     </div>
-    <footer class="autoria">
+    <footer class="autoria fonte-p">
         {{#unless si_mesme}}
-        <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div>
+        <div class="redondo pp nao-espichar" hx-get="/blocos/avatar?bicho={{bicho_criador_id}}" hx-trigger="load"></div>
         <a class="arroba-autoria" href="/{{bicho_criador_id}}">@{{bicho_criador_id}}</a>
         <span>postou em</span>
         {{/unless}}
         {{#if si_mesme}}
         <span>em</span>
         {{/if}}
-        <div class="avatar-redondo pequeno" hx-get="/blocos/avatar?bicho={{varanda_id}}" hx-trigger="load"></div>
+        <div class="redondo pp nao-espichar" hx-get="/blocos/avatar?bicho={{varanda_id}}" hx-trigger="load"></div>
         <a class="arroba-autoria" href="/{{varanda_id}}">@{{varanda_id}}</a>
     </footer>
 </div>
 {{/with}}
-
-<style>
-    .sensivel-oculto {
-        display: none;
-    }
-    .citacao {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    .texto-citacao {
-        white-space: pre-wrap;
-        margin-bottom: 0.3rem;
-        font-size: 1rem;
-    }
-    .citacao header {
-        margin-bottom: 1rem;
-    }
-    .citacao header h5 {
-        display: inline;
-        margin: 0;
-    }
-    .citacao header button {
-        display: inline;
-        height: 2rem;
-        padding: 0 0.4rem;
-    }
-    .autoria {
-        display: flex;
-        justify-items: start;
-        gap: 0.5rem;
-        margin-top: 1rem;
-    }
-    .arroba-autoria {
-        display: block;
-    }
-    .criacao-citacao {
-        cursor: pointer;
-        text-decoration: underline;
-    }
-
-</style>
 
 <script>
     function toggleSensivel(id) {

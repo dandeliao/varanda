@@ -1,14 +1,13 @@
-<div class="bloco">
-    <h2>Equipe</h2>
-    <br>
-    <div class="equipe">
+<div class="bloco preencher {{bloco.class}}">
+    <h2 class="titulo-bloco">Equipe</h2>
+    <div class="lista-flexivel">
         <div class="grupo-equipe">
             <p><strong>Representantes:</strong></p>
-            <ul>
+            <ul class="lista-flexivel fonte-p">
                 {{#each bloco.equipe.representantes}}
                 <li class="item-equipe">
                     <a href="/{{this.bicho_id}}">
-                        <span class="avatar-quadrado pequeno" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span>
+                        <div class="quadrado p" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></div>
                     </a>
                     <a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a>
                 </li>
@@ -17,11 +16,11 @@
         </div>
         <div class="grupo-equipe">
             <p><strong>Edição:</strong></p>
-            <ul>
+            <ul class="lista-flexivel fonte-p">
                 {{#each bloco.equipe.edicao}}
                 <li class="item-equipe">
                     <a href="/{{this.bicho_id}}">
-                        <span class="avatar-quadrado pequeno" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span>
+                        <div class="quadrado p" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></div>
                     </a>
                     <a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a>
                 </li>
@@ -30,11 +29,11 @@
         </div>
         <div class="grupo-equipe">
             <p><strong>Moderação:</strong></p>
-            <ul>
+            <ul class="lista-flexivel fonte-p">
                 {{#each bloco.equipe.moderacao}}
                 <li class="item-equipe">
                     <a href="/{{this.bicho_id}}">
-                        <span class="avatar-quadrado pequeno" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></span>
+                        <div class="quadrado p" hx-get="/blocos/avatar?bicho={{this.bicho_id}}" hx-trigger="load"></div>
                     </a>
                     <a class="mini-arroba" href="/{{this.bicho_id}}">@{{this.bicho_id}}</a>
                 </li>
@@ -43,35 +42,6 @@
         </div>
     </div>
     {{#if bloco.relacao.representar}}
-    <button style="margin: 0.4rem 0;" onclick="alert('Em construção')">Editar Equipe</button>
+    <button class="texto-centralizado centro" onclick="alert('Em construção')">Editar Equipe</button>
     {{/if}}
 </div>
-
-<style>
-    .equipe {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 1rem;
-    }
-    .grupo-equipe {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .grupo-equipe > ul {
-        display: flex;
-        flex-direction: row;
-        gap: 0.4rem;
-        list-style-type: none;
-        padding: 0;
-        font-size: small;
-    }
-    .item-equipe {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;        
-    }
-</style>
