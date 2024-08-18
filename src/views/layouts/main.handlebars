@@ -4,18 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/htmx.org@1.9.9" integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" crossorigin="anonymous"></script>
+    
     <link rel="stylesheet" href="/reset.css">
+    {{#unless usuarie}}
+        {{#unless usuarie.preferencias}}
+        <link id="link-tema" rel="stylesheet" href="/temas/1-flamingo-diurno.css">
+        {{/unless}}
+    {{/unless}}
 
-    <link id="link-tema-0" rel="stylesheet" href="/tema-0.css">
-    <link id="link-tema-1" rel="stylesheet" href="/tema-1.css" disabled>
-    <link rel="stylesheet" href="/estilo-0-padrao.css">
+    {{#if usuarie}}
+        {{#if usuarie.preferencias}}
+        <link id="link-tema" rel="stylesheet" href="/temas/{{tema.tema_id}}-{{tema.nome}}.css">
+        {{/if}}
+    {{/if}}
+    <link rel="stylesheet" href="/sistema.css">
+    <link rel="stylesheet" href="/uteis.css">
+    <link rel="stylesheet" href="/componentes.css">
+
     <title>{{varanda.bicho_id}}</title>
     <link rel="shortcut icon" type="image/jpg" href="/favicon.ico">
 </head>
 <body hx-boost="true">
  
-    {{#if usuarie.logade}}
+    {{#if usuarie}}
+        {{#if usuarie.logade}}
         {{> barra}}
+        {{/if}}
     {{/if}}
     
     {{#if flash.aviso}}
@@ -52,33 +66,7 @@
         function descarregos () {
             document.getElementById('pe-da-pagina').style.display = null;
             document.getElementById('varanda-janela').style.minHeight = null;
-            carregaTema();
             esticaTextareas();
-        }
-
-        async function carregaTema() {
-            try {
-                let requestObject = {
-                    method: 'GET',
-                    withCredentials: true,
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' }
-                }
-                let res = await fetch(`/preferencias`, requestObject);
-                const preferencias = await res.json();
-
-                let linkTemaPref = document.getElementById(`link-tema-${preferencias.tema}`);
-                linkTemaPref.disabled = false;
-
-                const temas = ['link-tema-0', 'link-tema-1'];
-                for (let tema of temas) {
-                    if (tema !== `link-tema-${preferencias.tema}`) {
-                        document.getElementById(tema).disabled = true;
-                    }    
-                }
-            } catch {
-                console.log('Erro no carregamento do tema.');
-            }
         }
 
         function esticaTextareas() {

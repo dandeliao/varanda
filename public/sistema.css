@@ -1,0 +1,167 @@
+/* || BARRA */
+
+/* decoração da barra */
+
+#varanda-barra {
+    z-index: 420;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    bottom: auto;
+    left: 0;
+    margin: 0;
+    padding: 0 0.5rem;
+    border-style: none;
+    border-width: none;
+    border-bottom-style: var(--estilo-borda);
+    border-bottom-width: var(--espessura-borda);
+    border-color: var(--cor-borda);
+    
+    height: var(--altura-barra);
+	width: 100%;
+    background-color: var(--cor-principal);
+    color: var(--cor-destaque);
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+
+#varanda-barra > nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.botao-barra {
+    display: inline-block;
+    padding: 0;
+    background-color: var(--cor-principal);
+    height: var(--altura-barra);
+    color: var(--cor-destaque);
+    font-size: 1rem;
+    text-align: left;
+    border-style: hidden;
+}
+.botao-barra:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.botao-barra:active {
+    color: var(--cor-fonte);
+}
+
+.icone-barra {
+    vertical-align: middle;
+    color: var(--cor-destaque);
+    height: calc(var(--altura-barra) - 0.2rem);
+}
+
+.botao-barra:active .icone-barra {
+    color: var(--cor-fonte);
+}
+
+.acao-barra {
+    margin-left: 0.2rem;
+}
+
+#varanda-cabecalho-desktop {
+    display: block;
+}
+
+/* responsividade e funcionalidade da barra e de seus elementos */
+
+@media screen and (max-width: 859px) {
+    
+    #varanda-barra {
+        bottom: 0;
+        top: auto;
+        height: var(--altura-barra-mobile);
+        padding: 0 0.1rem;
+        gap: 0;
+        border-style: none;
+        border-width: none;
+        border-top-style: var(--estilo-borda);
+        border-top-width: var(--espessura-borda);
+    }
+
+    #varanda-barra > nav {
+        gap: 0.2rem;
+    }
+
+    .botao-barra {
+        line-height: 1rem;
+        display: inline-block;
+        padding: 0;
+        background-color: var(--cor-principal);
+        width: auto;
+        height: var(--altura-barra-mobile);
+        text-align: center;
+        font-size: 0.8rem;
+        border-style: hidden;
+        height: var(--altura-barra-mobile);
+    }
+
+    .botao-barra:active {
+        border-style: inset;
+    }
+
+    .icone-barra {
+        min-width: var(--altura-barra-mobile);
+    }
+
+    .acao-barra {
+        display: block;
+        line-height: 0.9rem;
+        margin-top: 0.2rem;
+    }
+
+    #varanda-cabecalho-desktop {
+        display: none;
+    }
+
+}
+
+/* || JANELA */
+
+/* decoração da janela principal */
+
+#varanda-janela {
+    position: absolute;
+    z-index: 0;
+    top: var(--altura-barra);
+    left: 0;
+    min-height: calc(100vh - var(--altura-barra));
+    width: 100%;
+
+    color: var(--cor-fonte);
+    background-color: var(--cor-fundo-2);
+    word-wrap: break-word;
+}
+
+#varanda-janela.sem-login {
+    position: static;
+}
+
+#pe-da-pagina {
+    display: none;
+    height: 0;
+}
+
+/* responsividade da janela principal */
+
+@media screen and (max-width: 859px) {
+    #varanda-janela {
+        position: relative;
+        min-height: calc(100vh - var(--altura-barra-mobile));
+        top: 0;
+    }
+    #pe-da-pagina {
+        display: block;
+        height: var(--altura-barra-mobile);
+    }
+}
