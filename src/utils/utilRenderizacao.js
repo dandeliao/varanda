@@ -404,6 +404,9 @@ exports.objetoRenderizavelBloco = async (obj_render, variaveis) => {
             }
         }
     }
+    if (obj_render.query.class) {
+        dados.class = obj_render.query.class.replaceAll(',', ' ');
+    }
 
     obj_render.bloco = dados;
     return obj_render;
