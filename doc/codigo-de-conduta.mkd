@@ -1,0 +1,33 @@
+# Código de conduta
+
+Espera-se respeito e camaradagem entre as pessoas da comunidade. Caso se sinta desrespeitade ou incomodade com algum comportamento, fale com a moderação:
+
+<v-alo-moderacao/>
+
+A moderação buscará o diálogo quando possível, mas poderá banir participantes que incorram em comportamentos inadmissíveis ou não utilizem adequadamente os avisos de conteúdo.
+
+## Comportamentos inadmissíveis
+
+- Publicar conteúdo ilegal ou de legalidade duvidosa.
+
+- Defender ou praticar atos racistas, sexistas, capacitistas, transfóbicos, exorsexistas, xenofóbicos, gordofóbicos ou outras formas de ódio direcionado a grupos historicamente marginalizados.
+
+- Ameaçar, assediar, intimidar, usar linguagem violenta, agir de maneira invasiva, insistente ou desrespeitosa com as pessoas da comunidade.
+
+- Padrões de postagem abusivos, como flood, spam e desinformação intencional ("fake news").
+
+## Aviso de conteúdo
+
+O uso de aviso de conteúdo é obrigatório em todas as postagens que envolvem:
+
+- Trauma ou violência
+- Nudez ou sexo
+- Transtornos psicológicos ou alimentares
+- Relacionamentos abusivos
+- Vídeos com movimentos rápidos e luzes intermitentes
+- Menção a discurso de ódio
+- Notícias e eventos correntes com grande cobertura jornalística, que não tenham relação direta com o tema da comunidade
+
+O aviso de conteúdo deve ser usado nesses casos mesmo quando se tratar de uma representação artística.
+
+
