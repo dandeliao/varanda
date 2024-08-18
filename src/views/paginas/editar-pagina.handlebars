@@ -26,33 +26,102 @@
 			<textarea id="html-pagina" class="preencher" name="html" required hx-post="/{{pagina.pagina_vid}}/miniatura" hx-target="#miniatura" hx-trigger="input delay:600ms">{{pagina.html}}</textarea>
 		</fieldset>
 	</form>
-	<div class="bloco">
-		<h2>Instruções</h2>
-		<p>Este é o editor de páginas. Você pode dar a cara que você quiser para sua varanda utilizando HTML. Para uma introdução ao HTML, veja: <a href="https://developer.mozilla.org/pt-BR/docs/Learn/HTML/Introduction_to_HTML">Introdução ao HTML (Mozilla MDN)</a>.</p>
-		<br>
-		<p>Há algumas tags novas na varanda, que começam com "v-". Você pode usá-las para mostrar postagens, informações do perfil, etc.</p>
-		<br>
-		<p>Experimente colocar algumas destas tags no HTML da página:</p>
-		<ul class="lista-tags">
-			{{#if varanda.comunitaria}}
-			<li>&lt;v-artefatos/&gt;</li>
-			<li>&lt;v-artefatos dado-novidades /&gt;</li>
-			<li>&lt;v-equipe/&gt;</li>
-			{{/if}}
-			<li>&lt;v-cartao-de-visita/&gt;</li>
-			<li>&lt;v-comunidades/&gt;</li>
-			<li>&lt;v-paginas/&gt;</li>
-			<li>&lt;v-titulo/&gt;</li>
-			<li>&lt;v-cabecalho/&gt;</li>
-			<small>(visível em telas pequenas)</small>
-			<li>&lt;v-citacao dado-artefato="71"/&gt;</li>
-			<small>(você pode substituir "71" pelo número de qualquer postagem)</small>
-			<li>&lt;v-figurinha dado-artefato="71"/&gt;</li>
-			<small>(você pode substituir "71" pelo número de qualquer postagem)</small>
-		</ul>
-		<p>Você pode usar class="pagina" no elemento mais externo da página para que ela se comporte como uma página padrão da varanda. Experimente também usar class="bloco" para estilizar blocos de conteúdo.</p>
-		<br>
-		<p>Quando teminar, é só apertar o botão "confirmar", na barra principal!</p>
+	<div class="lista-flexivel-vertical hggg">
+		<div class="bloco preencher">
+			<h2 class="sem-margem">Prévia</h2>
+			<br>
+			<div class="com-borda preencher">
+				<div id="miniatura" class="visualiza-pagina" hx-get="/{{pagina.pagina_vid}}?miniatura=true" hx-trigger="load"></div>
+			</div>
+		</div>
+		<div class="bloco">
+			<h2>Instruções</h2>
+			<section>
+				<p>Este é o editor de páginas. Você pode dar a cara que você quiser para sua varanda utilizando HTML. Para uma introdução ao HTML, veja: <a href="https://developer.mozilla.org/pt-BR/docs/Learn/HTML/Introduction_to_HTML">Introdução ao HTML (Mozilla MDN)</a>.</p>
+				<br>
+				<p>Algumas dicas:</p>
+			</section>
+			<section class="secao-recolhivel preencher" onclick="toggleSecao('tags')">
+				<header class="clicavel" id="header-tags">
+					<span class="clicavel">Tags HTML especiais</span>
+					<svg id="seta-tags" class="fechado" width="1rem" heigth="1rem" viewBox="0 0 32 32">
+						<path xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="" d="M 10,2.001 24,16 10,30 z" id="polygon3036"/>
+					</svg>
+				</header>
+				<main class="oculto" id="main-tags">
+					<p>A varanda possui tags HTML que interagem com os dados de perfil, postagens, etc. Experimente colocar algumas destas no HTML:</p>
+					<ul class="lista">
+						{{#if varanda.comunitaria}}
+						<li>&lt;v-artefatos/&gt;</li>
+						<li>&lt;v-artefatos dado-novidades /&gt;</li>
+						<li>&lt;v-equipe/&gt;</li>
+						{{/if}}
+						<li>&lt;v-avatar&gt;</li>
+						<li>&lt;v-botao-voltar&gt;</li>
+						<li>&lt;v-cartao-de-visita/&gt;</li>
+						<li>&lt;v-comunidades/&gt;</li>
+						<li>&lt;v-paginas/&gt;</li>
+						<li>&lt;v-titulo/&gt;</li>
+						<li>&lt;v-cabecalho/&gt;<br><small>(visível em telas pequenas)</small></li>
+						<li>&lt;v-citacao dado-artefato="71"/&gt;<br><small>(você pode substituir "71" pelo número de qualquer postagem)</small></li>
+						<li>&lt;v-figurinha dado-artefato="71"/&gt;<br><small>(você pode substituir "71" pelo número de qualquer postagem)</small></li>
+					</ul>
+				</main>
+			</section>
+			<section class="secao-recolhivel preencher" onclick="toggleSecao('classes')">
+				<header class="clicavel" id="header-classes">
+					<span class="clicavel">Classes</span>
+					<svg id="seta-classes" class="fechado" width="1rem" heigth="1rem" viewBox="0 0 32 32">
+						<path xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="" d="M 10,2.001 24,16 10,30 z" id="polygon3036"/>
+					</svg>
+				</header>
+				<main class="oculto" id="main-classes">
+					<div>
+						<p>Você pode usar class="pagina" no elemento mais externo da página para que ela se comporte como uma página padrão da varanda. Por exemplo:</p>
+						<br>
+						<code>
+							&lt;div class="pagina"&gt;...&lt;/div&gt;
+						</code>
+						<br><br>
+						<p>Experimente também usar class="bloco" para estilizar blocos de conteúdo.</p>
+						<br>
+						<p>Outras classes para você experimentar:</p>
+					</div>
+					<ul class="lista">
+						<h4>Elementos e decoração</h4>
+						<li>class="bloco"</li>
+						<li>class="centro"</li>
+						<li>class="espichar"</li>
+						<li>class="espichar-vertical"</li>
+						<li>class="leitura"</li>
+						<li>class="lista-flexivel"</li>
+						<li>class="navegacao"</li>
+						<li>class="pagina"</li>
+						<li>class="preencher"</li>
+						<li>class="preencher-vertical"</li>
+						<li>class="quadrado"</li>
+						<li>class="quebra-linha"</li>
+						<li>class="redondo"</li>
+						
+						<h4>Fonte e texto</h4>
+						<li>class="fonte-pp", class="fonte-p", class="fonte-m", class="fonte-g", class="fonte-gg", class="fonte-ggg"</li>
+						<li>class="serifa"</li>
+						<li>class="sem-serifa"</li>
+						<li>class="texto"</li>
+						<li>class="texto-centralizado"</li>
+						<li>class="texto-a-esquerda"</li>
+						<li>class="texto-a-direita"</li>
+						<li>class="texto-justificado"</li>
+
+						<h4>Tamanho dos elementos</h4>
+						<li>class="ppp", class="pp", class="p", class="m", class="g", class="gg", class="ggg"<br><small>tamanhos quadrados (altura e comprimento são iguais)</small>
+						<li>class="hppp", class="hpp", class="hp", class="hm", class="hg", class="hgg", class="hggg"<br><small>tamanhos horizontais (apenas comprimento)</small></li>
+						<li>class="vppp", class="vpp", class="vp", class="vm", class="vg", class="vgg", class="vggg"<br><small>tamanhos verticais (apenas altura)</small></li>
+					</ul>
+				</main>
+			</section>
+			<p>Quando teminar, é só apertar o botão "confirmar", na barra principal!</p>
+		</div>
 	</div>
 </div>
 

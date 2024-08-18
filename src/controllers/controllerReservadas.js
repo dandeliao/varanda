@@ -10,7 +10,7 @@ const serviceEdicoes									= require('../services/varandas/serviceEdicoes');
 const servicePaginasPadrao								= require('../services/varandas/servicePaginasPadrao');
 const { params, quemEstaAgindo, palavrasReservadas } 	= require('../utils/utilControllers');
 const { objetoRenderizavel, objetoRenderizavelBloco, objetoRenderizavelContexto}	= require('../utils/utilRenderizacao');
-const { vidParaId }										= require('../utils/utilParsers');
+const { vidParaId, htmlParaHtmx }										= require('../utils/utilParsers');
 const { schemaPutPreferencias, schemaPostComunidade }	= require('../validations/validateBichos');
 const { messages } = require('joi-translation-pt-br');
 const fs = require('fs');
@@ -332,4 +332,14 @@ exports.postConvite = asyncHandler(async (req, res, next) => {
 
 	const convite = await serviceConvites.criarConvite(varanda_id, usuarie_id);
 	res.render('partials/convite', {convite: convite.convite_id, layout: false});
+});
+
+exports.postMiniatura = asyncHandler(async (req, res, next) => {
+	const { varanda_id, pagina_id } = params(req);
+	console.log(req.body);
+	const { html } = req.body;
+	const usuarie_id = await quemEstaAgindo(req);
+
+	const htmx = await htmlParaHtmx(html, varanda_id, pagina_id);
+	res.send(htmx);
 });

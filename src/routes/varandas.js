@@ -18,7 +18,8 @@ const { getFutricarVaranda,
         getFundo,
 											putPreferencias, 
 		getClonar,			postClonar,
-							postConvite,			                  	} = require('../controllers/controllerReservadas');
+							postConvite,
+							postMiniatura} = require('../controllers/controllerReservadas');
 const { getArtefato,		postArtefato,	putArtefato, deleteArtefato, 
 		getEditarArtefato,
 		getArquivo,														} = require('../controllers/controllerArtefatos');
@@ -104,6 +105,7 @@ router.get   ('/:bicho_id/:pagina_id',          getPagina		);
 router.get   ('/:bicho_id/:pagina_id/editar',   getEditarPagina );
 
 router.post  ('/:bicho_id',                     postPagina		);
+router.post  ('/:bicho_id/:pagina_id/miniatura',postMiniatura	);
 router.put   ('/:bicho_id/:pagina_id',          putPagina		);
 router.delete('/:bicho_id/:pagina_id',          deletePagina	);
 

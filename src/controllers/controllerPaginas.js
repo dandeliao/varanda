@@ -12,6 +12,7 @@ require('dotenv').config();
 
 exports.getPagina = asyncHandler(async (req, res, next) => {
     const { varanda_id, pagina_id } = params(req);
+	const { miniatura } = req.query;
     let usuarie_id = await quemEstaAgindo(req);
 	let view = `varandas/${varanda_id}/${pagina_id}`;
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
@@ -22,6 +23,9 @@ exports.getPagina = asyncHandler(async (req, res, next) => {
 			req.flash('erro', `A página ${obj_render.pagina.titulo} não é pública. Faça login para acessá-la.`);
 			return res.redirect(`/`);
 		}
+	}
+	if (miniatura) {
+		obj_render.layout = false;
 	}
 	res.render(view, obj_render);
 
