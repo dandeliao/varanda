@@ -1,7 +1,12 @@
 const dataPreferencias = require('../../data/bichos/dataPreferencias');
+require('dotenv').config();
 
 exports.verPreferencias = async function (bichoId) {
-	const preferencias = await dataPreferencias.getPreferencias(bichoId);
+	let bicho_id = bichoId;
+	if (!bichoId) {
+		bicho_id = process.env.INSTANCIA_ID;
+	}
+	const preferencias = await dataPreferencias.getPreferencias(bicho_id);
 	return preferencias.rows[0];
 };
 

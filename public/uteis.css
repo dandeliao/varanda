@@ -38,6 +38,10 @@
     width: 100%;
 }
 
+.preencher-max {
+    max-width: 100%;
+}
+
 .preencher-vertical {
     height: 100%;
     align-self: stretch;

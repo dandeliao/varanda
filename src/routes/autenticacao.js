@@ -3,13 +3,14 @@ const serviceBichos 		= require('../services/bichos/serviceBichos');
 const serviceBichosPadrao 	= require('../services/bichos/serviceBichosPadrao');
 const serviceConvites 		= require('../services/bichos/serviceConvites');
 const serviceComunidades 	= require('../services/bichos/serviceComunidades');
+const servicePreferencias  	= require('../services/bichos/servicePreferencias');
+const serviceRecuperacoes	= require('../services/bichos/serviceRecuperacoes');
 const serviceRelacoes 		= require('../services/bichos/serviceRelacoes');
 const servicePaginasPadrao 	= require('../services/varandas/servicePaginasPadrao');
 const servicePaginas		= require('../services/varandas/servicePaginas');
-const servicePreferencias  	= require('../services/bichos/servicePreferencias');
 const serviceEdicoes		= require('../services/varandas/serviceEdicoes');
 const serviceBlocos			= require('../services/varandas/serviceBlocos');
-const { schemaPostPessoa }	= require('../validations/validateBichos');
+const { schemaPostPessoa, schemaPutRecuperar }	= require('../validations/validateBichos');
 const asyncHandler 			= require('express-async-handler');
 const express 				= require('express');
 const router 				= express.Router();
@@ -31,12 +32,6 @@ router.get('/login', (req, res) => {
 
 });
 
-router.post('/login', passport.authenticate('local', {
-	failureRedirect: '/autenticacao/login',
-	failureFlash: true, // testar flash message, ver localização pt-br
-	successRedirect: '/'
-}));
-
 router.get('/logout', (req, res) => {
 	req.logout(err => {
 		if (err) {
@@ -50,7 +45,6 @@ router.get('/logout', (req, res) => {
 });
 
 router.get('/cadastro', (req, res) => {
-
 	res.render('autenticacao/cadastro', {
 		flash: {
             aviso: res.locals.flash_aviso,
@@ -60,25 +54,68 @@ router.get('/cadastro', (req, res) => {
         },
 		query: req.query ? req.query : null
 	});
-
 });
+
+router.get('/recuperacao', async (req, res) => {
+	const { bicho_id, recuperacao_id } = req.query;
+	const recuperacao = await serviceRecuperacoes.verRecuperacao(bicho_id);
+	let view, obj_render;
+	if (recuperacao && (recuperacao.recuperacao_id === recuperacao_id)) {
+		view = 'autenticacao/recuperacao',
+		obj_render = {
+			flash: {
+				aviso: res.locals.flash_aviso,
+				erro: res.locals.flash_erro,
+				aviso_decod: decodeURIComponent(res.locals.flash_aviso),
+				erro_decod: decodeURIComponent(res.locals.flash_erro)
+			},
+			recuperacao_id: recuperacao_id,
+			bicho_id: bicho_id
+		}
+	} else {
+		req.flash('erro', 'O código de recuperação da conta não foi encontrado.');
+		return res.redirect('/');
+	}
+	return res.render(view, obj_render);
+});
+
+router.put('/recuperacao', (req, res) => {
+	const { value, error } = schemaPutRecuperar.validate(req.body, { messages });
+	if (error) {
+	    req.flash('erro', error.details[0].message);
+        return res.redirect(303, '/autenticacao/recuperacao');
+	}
+	const { bicho_id, recuperacao_id, senha } = req.body;
+	const pessoa = servicePessoas.editarSegredos(bicho_id, { recuperacao_id: recuperacao_id, senha: senha});
+	if (!pessoa) {
+		req.flash('erro', 'Erro no servidor ao tentar alterar a senha.');
+		return res.redirect(303, '/autenticacao/recuperacao');
+	}
+	serviceRecuperacoes.deletarRecuperacao(recuperacao_id);
+	req.flash('aviso', 'Senha alterada com sucesso! Agora é só fazer o login com a senha nova.');
+	return res.redirect(303, '/autenticacao/login');
+});
+
+router.post('/login', passport.authenticate('local', {
+	failureRedirect: '/autenticacao/login',
+	failureFlash: true, // testar flash message, ver localização pt-br
+	successRedirect: '/'
+}));
 
 router.post('/cadastro', asyncHandler( async (req, res) => {
 
     const { value, error } = schemaPostPessoa.validate(req.body, { messages });
-    
 	if (error) {
 	    req.flash('erro', error.details[0].message);
         return res.redirect(303, '/autenticacao/cadastro');
 	}
 
-	let { bicho_id, nome, email, senha } = req.body;
-
+	const { bicho_id, nome, email, senha } = req.body;
 	const pessoa = {
 		bicho_id: bicho_id,
-		nome: req.body.nome,
-		email: req.body.email.toLowerCase(),
-		senha: req.body.senha
+		nome: nome,
+		email: email.toLowerCase(),
+		senha: senha
 	};
 
 	// verifica se é a primeira pessoa a se cadastrar
