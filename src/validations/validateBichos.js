@@ -99,5 +99,7 @@ exports.schemaPostRecuperar = Joi.object().keys({
 exports.schemaPutRecuperar = Joi.object().keys({
 	// recuperacao_id, senha
 	recuperacao_id: Joi.string().guid().required(),
-	senha: Joi.string().min(8).required()
+	senha: Joi.string().min(8).required(),
+	confirma_senha: Joi.string().valid(Joi.ref('senha')).required(),
+	bicho_id: Joi.string().min(1).max(32).pattern(rgx_arroba).required()
 });

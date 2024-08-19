@@ -108,18 +108,21 @@
 /* Formulário */ 
 
 .formulario {
-    max-width: 860px;
-    width: 100%;
-    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
-    gap: 1rem;
+    align-items: stretch;
+    gap: var(--fresta-mobile);
 }
 
 .formulario textarea {
-    min-height: 50vh;
+    min-height: 4rem;
+}
+
+@media screen and (min-width: 860px) {
+    .formulario {
+        gap: var(--fresta);
+    }
 }
 
 /* Listas */
@@ -154,6 +157,14 @@
     flex-wrap: wrap;
     list-style: none;
     padding: 0;
+}
+
+.lista-preenchida {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    gap: var(--fresta-mobile);
+    flex-wrap: nowrap;
 }
 
 /* Menu de Navegação */

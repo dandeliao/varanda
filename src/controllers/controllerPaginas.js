@@ -16,8 +16,8 @@ exports.getPagina = asyncHandler(async (req, res, next) => {
     let usuarie_id = await quemEstaAgindo(req);
 	let view = `varandas/${varanda_id}/${pagina_id}`;
 	let obj_render = await objetoRenderizavel(req, res, varanda_id, pagina_id, null, usuarie_id);
-	if (obj_render.usuarie.logade) {
-		obj_render = await objetoRenderizavelContexto(obj_render, 'pagina');
+	if (obj_render.usuarie ? obj_render.usuarie.logade : obj_render.usuarie) {
+		obj_render = await objetoRenderizavelContexto(obj_render, 'pagina');	
 	} else {
 		if (!obj_render.pagina.publica) {
 			req.flash('erro', `A página ${obj_render.pagina.titulo} não é pública. Faça login para acessá-la.`);
