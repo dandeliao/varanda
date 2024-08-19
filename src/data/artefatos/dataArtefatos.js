@@ -1,8 +1,11 @@
 const pool = require('../../config/database');
 
-exports.getArtefatos = function () {
+exports.getArtefatos = function (lote) {
+	const itensPorLote = 8;
+	const offset = (lote - 1) * itensPorLote;
 	return pool.query(
-		'SELECT * FROM artefatos'
+		'SELECT * FROM artefatos WHERE em_resposta_a_id IS NULL ORDER BY criacao DESC LIMIT $1 OFFSET $2',
+		[itensPorLote, offset]
 	);
 };
 
@@ -40,7 +43,7 @@ exports.getArtefatosDoBicho = function(bichoCriadorId) {
 
 exports.getComentarios = function(artefato_id) {
 	return pool.query(
-		'SELECT artefato_id FROM artefatos WHERE em_resposta_a_id = $1 ORDER BY criacao ASC',
+		'SELECT artefato_id FROM artefatos WHERE em_resposta_a_id = $1 ORDER BY criacao DESC',
 		[artefato_id]
 	);
 };

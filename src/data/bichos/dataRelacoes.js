@@ -16,7 +16,7 @@ exports.getBichosNaComunidade = function (comunidadeId) {
 
 exports.getComunidadesDoBicho = function (bichoId) {
 	return pool.query(
-		'SELECT * FROM relacoes WHERE bicho_id = $1',
+		'SELECT * FROM relacoes JOIN bichos ON relacoes.comunidade_id = bichos.bicho_id WHERE relacoes.bicho_id = $1',
 		[bichoId]
 	);
 };

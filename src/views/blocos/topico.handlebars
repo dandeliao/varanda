@@ -1,0 +1,29 @@
+<div 
+    class="preencher clicavel sem-borda {{bloco.class}}"
+    id="topico-{{bloco.artefato.artefato_id}}"
+    hx-get="/blocos/artefato?artefato={{bloco.artefato.artefato_id}}" hx-trigger="click" hx-target=".visualizador" hx-swap="innerHTML show:#visualizador:top" hx-push-url="/{{varanda.bicho_id}}/{{pagina.pagina_id}}#{{bloco.artefato.artefato_id}}"
+    onclick="toggleTopico('{{bloco.artefato.artefato_id}}')">
+    
+    <h4 class="preecher clicavel texto-centralizado-vertical sem-margem com-padding-vertical sem-negrito">{{bloco.artefato.titulo}}{{#unless bloco.artefato.titulo}}[sem título]{{/unless}}</h4>
+</div>
+
+<div hidden
+    class="oculto-aos-olhos"
+    id="topico-oculto-{{bloco.artefato.artefato_id}}"
+    hx-get="/blocos/artefato?artefato={{bloco.artefato.artefato_id}}" hx-trigger="click" hx-target=".visualizador" hx-swap="innerHTML show:#visualizador:top" hx-push-url="false"
+    onclick="toggleTopico('{{bloco.artefato.artefato_id}}')">
+</div>
+
+<script>
+	function toggleTopico(topico) {
+        let abertos = document.getElementsByClassName('topico-aberto');
+        for (let i = 0; i < abertos.length; i++) {
+            abertos[i].classList.remove('topico-aberto');
+        }        
+        let comentarios = document.getElementsByClassName('visualizador-comentarios');
+        for (let i = 0; i < comentarios.length; i++) {
+            comentarios[i].innerHTML = '';
+        }
+        document.getElementById(`topico-${topico}`).classList.toggle('topico-aberto');
+	}
+</script>
