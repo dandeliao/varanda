@@ -558,7 +558,7 @@
     z-index: 400;
     position: absolute;
     left: 50%;
-    top: 50vh;
+    top: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     background-color: var(--cor-principal);
@@ -869,7 +869,7 @@ video {
     z-index: 400;
     position: absolute;
     left: 50%;
-    top: 50vh;
+    top: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     background-color: var(--cor-principal);
