@@ -214,12 +214,24 @@
 .secao-recolhivel header {
     display: flex;
     justify-content: space-between;
-    padding: 0.6rem 1rem;
+    padding: 0.6rem;
 }
 
 .secao-recolhivel main {
     background-color: var(--cor-fundo);
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 0.6rem;
+}
+
+.secao-recolhivel main p {
+    padding: 0;
+}
+
+.secao-recolhivel main ul {
+    list-style: square inside;
+}
+
+.secao-recolhivel main li {
+    margin-left: 0;
 }
 
 /* ----------------------------------------------------------------------------------------- */
