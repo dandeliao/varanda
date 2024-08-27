@@ -52,7 +52,7 @@ a:visited {
 }
 
 button {
-    padding: 0.7rem 0.4rem;
+    padding: 0.4rem 0.4rem;
     font-family: var(--familia-fonte);
     color: var(--cor-fonte);
     background-color: var(--cor-fundo);
