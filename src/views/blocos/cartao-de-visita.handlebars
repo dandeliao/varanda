@@ -6,7 +6,7 @@
 <div class="bloco preencher sem-padding {{bloco.class}}" {{#if query.futricar}}style="border: solid 2px;"{{/if}}>
 	{{#with bloco.bicho}}
     <div hx-get="/blocos/fundo?bicho={{bicho_id}}{{/with}}&momento={{momento}}{{#with bloco.bicho}}" hx-trigger="load"></div>
-	<div class="avatar-no-cartao redondo m" hx-get="/blocos/avatar?bicho={{bicho_id}}{{/with}}&momento={{momento}}"{{#with bloco.bicho}} hx-trigger="load"></div>
+	<div hx-get="/blocos/avatar?class=avatar-no-cartao,redondo,m&bicho={{bicho_id}}{{/with}}&momento={{momento}}"{{#with bloco.bicho}} hx-trigger="load" hx-swap="outerHTML"></div>
     <div class="informacao texto-centralizado">
         <h2>{{nome}}</h2>
         <a href="/{{bicho_id}}">@{{bicho_id}}</a>

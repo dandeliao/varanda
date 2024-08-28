@@ -307,6 +307,9 @@
 /* avatar */
 
 .avatar {
+    border-width: var(--espessura-borda);
+    border-color: var(--cor-borda);
+    border-style: solid;
     border-radius: var(--raio-borda);
     display: inline-block;
     overflow: hidden;
@@ -390,6 +393,9 @@
     left: 0;
     right: 0;
     text-align: center;
+    border-width: var(--espessura-borda);
+    border-color: var(--cor-borda);
+    border-style: solid;
 }
 
 @media screen and (max-width: 859px) {
