@@ -6,14 +6,14 @@
     --altura-barra:         2rem;
     --altura-barra-mobile:  4rem;
 
-    --cor-principal:        #1d1d1f;
+    --cor-principal:        #080909;
     --cor-transparente:     #1d1d1fd0;
     --cor-destaque:         #d4d3c8;
     --cor-fundo:            #232729;
-    --cor-fundo-2:          #131414;
+    --cor-fundo-2:          #191a1a;
     --cor-fonte:            #f1f1e9;
     --cor-fonte-2:          #bcbdbc;
-    --cor-borda:            #3d3d3d;
+    --cor-borda:            #818181;
 
     --familia-fonte:        'IBM Plex Sans', sans-serif;
     --tamanho-fonte:        16px;
