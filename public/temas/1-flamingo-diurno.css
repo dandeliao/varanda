@@ -56,10 +56,19 @@ button {
     font-family: var(--familia-fonte);
     color: var(--cor-fonte);
     background-color: var(--cor-fundo);
-    font-size: 0.9rem;
-    border-radius: 5px;
-    border-color: var(--cor-destaque);
-    border-width: 2px;
+    font-size: 1rem;
+    border-radius: var(--raio-borda);
+    border-color: var(--cor-fundo-2);
+    border-right-color: var(--cor-fonte);
+    border-bottom-color: var(--cor-fonte);
+    border-width: 1px;
+    border-style: solid;
+}
+
+button:active {
+    border-color: var(--cor-fonte);
+    border-right-color: var(--cor-fundo-2);
+    border-bottom-color: var(--cor-fundo-2);
 }
 
 hr {

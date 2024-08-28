@@ -58,8 +58,16 @@ button {
     font-size: 1rem;
     border-radius: var(--raio-borda);
     border-color: var(--cor-fonte);
+    border-right-color: var(--cor-fundo-2);
+    border-bottom-color: var(--cor-fundo-2);
     border-width: 1px;
-    border-style: outset;
+    border-style: solid;
+}
+
+button:active {
+    border-color: var(--cor-fundo-2);
+    border-right-color: var(--cor-fonte);
+    border-bottom-color: var(--cor-fonte);
 }
 
 hr {

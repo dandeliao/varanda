@@ -57,10 +57,12 @@ button {
     background-color: var(--cor-fundo);
     font-size: 1rem;
     border-radius: var(--raio-borda);
-    border-color: var(--cor-destaque);
-    border-left-color: var(--cor-fundo-2);
-    border-top-color: var(--cor-fundo-2);
+    border-color: var(--cor-fonte);
     border-width: var(--espessura-borda);
+}
+
+button:active {
+    border-color: var(--cor-fundo-2);
 }
 
 hr {
