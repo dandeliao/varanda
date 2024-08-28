@@ -13,11 +13,8 @@
         <div hx-get="/blocos/topico?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&artefato={{this.artefato_id}}" hx-trigger="load" hx-swap="outerHTML"></div>
     {{/each}}
     </div>
-    <footer>
     {{#unless bloco.artefatos.acabou}}
-        <br>
-        <button id="botao-{{bloco.artefatos.proximo_lote}}" hx-get="/blocos/artefatos?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&bicho={{varanda.bicho_id}}{{#if bloco.artefatos.novidades}}&novidades{{/if}}&pagina={{pagina.pagina_id}}&lote={{bloco.artefatos.proximo_lote}}" hx-push-url="false" hx-swap="outerHTML" >Ver mais</button>
-        <div id="lote-{{bloco.artefatos.proximo_lote}}"></div>
+        <button class="margem-superior-p" id="botao-{{bloco.artefatos.proximo_lote}}" hx-get="/blocos/topicos?flash_aviso={{flash.aviso}}&flash_erro={{flash.erro}}&bicho={{varanda.bicho_id}}{{#if bloco.artefatos.novidades}}&novidades{{/if}}&pagina={{pagina.pagina_id}}&lote={{bloco.artefatos.proximo_lote}}" hx-push-url="false" hx-swap="outerHTML" >Ver mais</button>
     {{/unless}}
     </footer>
 {{#if bloco.artefatos.comecou}}</div>{{/if}}
