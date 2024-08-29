@@ -60,7 +60,7 @@
         column-gap: var(--fresta);
         justify-items: stretch;
         align-items: stretch;
-        grid-template-columns: 3fr 5fr 7fr 3fr;
+        grid-template-columns: 2fr 3fr 4fr 2fr;
     }
 
     .forum .bloco {
