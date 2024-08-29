@@ -219,7 +219,7 @@
 
 .secao-recolhivel main {
     background-color: var(--cor-fundo);
-    padding: 0.6rem 0.6rem;
+    padding: 0.6rem 0.3rem;
 }
 
 .secao-recolhivel main p {
