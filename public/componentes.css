@@ -834,11 +834,11 @@ video {
     overflow: scroll;
 }
 
-@media screen and (max-width: calc(859px * 45 / 100)) {
+@media screen and (max-width: 859px) {
     .visualiza-pagina {
+        min-height: 60vh;
+        max-height: 90vh;
         margin: 0 auto;
-        max-width: 100vw;
-        max-height: 210vw;
         zoom: 48%;
     }
 }

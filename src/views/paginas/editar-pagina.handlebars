@@ -1,5 +1,5 @@
 <div hx-get="/blocos/cabecalho?bicho={{varanda.bicho_id}}" hx-trigger="load"></div>
-<div class="pagina texto-a-esquerda preencher elementos-centralizados-horizontal">
+<div class="pagina texto-a-esquerda">
 	<form id="formulario" class="bloco formulario leitura sem-margem" action="/{{varanda.bicho_id}}{{#unless nova_pagina}}/{{pagina.pagina_id}}{{/unless}}" method="{{metodo}}">
 		<fieldset class="preencher">
 			{{#if nova_pagina}}
@@ -26,7 +26,7 @@
 			<textarea id="html-pagina" class="preencher" name="html" required hx-post="/{{pagina.pagina_vid}}/miniatura" hx-target="#miniatura" hx-trigger="input delay:600ms">{{pagina.html}}</textarea>
 		</fieldset>
 	</form>
-	<div class="lista-flexivel-vertical hggg">
+	<div class="lista-flexivel-vertical">
 		<div class="bloco preencher">
 			<h2 class="sem-margem">Prévia</h2>
 			<br>
