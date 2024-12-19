@@ -1,0 +1,87 @@
+// import google font
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* variáveis */
+
+$cor-principal:        #e0b6bc;
+$cor-transparente:     #e0b6bc9f;
+$cor-destaque:         #590820;
+$cor-fundo:            #f9f9f9;
+$cor-fundo-2:          #e0e0e0;
+$cor-fonte:            #232323;
+$cor-fonte-2:          #505050;
+$cor-borda:            #707070;
+
+$base-margin: 0.75rem;
+$base-padding: 0.75rem;
+
+$estilo-borda:         solid;
+$espessura-borda:      1px;
+$raio-borda:           0.05rem;
+$sombreado:            1px 1px 1px rgba(26, 26, 26, 0.2);
+$fresta:               0.5rem;
+$fresta-mobile:        0.3rem;
+
+/* reset */
+* {
+  color: inherit;
+  margin: 0;
+}
+
+body {
+  font-family: Poppins;
+}
+
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: underline;
+}
+
+hr {
+  border: 0;
+  border-top: 1px dotted #efefef;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* elementos */
+
+h1 {
+    color: $cor-fonte;
+}
+
+a {
+    color: $cor-destaque;
+}
+
+button {
+    color: $cor-fonte-2;
+    background-color: $cor-principal;
+    border-style: solid;
+    border-width: $espessura-borda;
+    border-radius: $raio-borda;
+}
+
+.bloco {
+    background-color: $cor-fundo;
+    border-style: solid;
+    border-width: $espessura-borda;
+    border-radius: $raio-borda;
+    margin-bottom: $fresta;
+    margin-right: $fresta;
+}
+
+.pagina {
+    background-color: $cor-fundo-2;
+}
+
+.grid {
+    background-color: $cor-fundo-2;
+    display: flex;
+}
