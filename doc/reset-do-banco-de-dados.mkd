@@ -1,6 +1,6 @@
 # Reiniciar banco de dados
 
-DROP TABLE tags_em_uso, tags, edicoes_artefatos, artefatos, edicoes, blocos, paginas, sessoes, bichos_padrao, relacoes, recuperacoes, convites, comunidades, preferencias, pessoas, bichos;
+DROP TABLE tags_em_uso, tags, edicoes_artefatos, preferencias, temas, artefatos, edicoes, blocos, paginas, sessoes, bichos_padrao, relacoes, recuperacoes, convites, comunidades, pessoas, bichos;
 
 - apagar pastas em user_content/bichos/em_uso
 - apagar pastas em user_content/artefatos/em_uso
