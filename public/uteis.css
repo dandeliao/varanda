@@ -28,13 +28,92 @@
     grid-row: topo / base;
 }
 
-.nao-espichar {
+.nao-espichar { 
     grid-column: unset;
     flex: none;
 }
 
+.grid-altura-1 {
+    grid-row-end: span 1;
+}
+
+.grid-altura-2 {
+    grid-row-end: span 2;
+}
+
+.grid-altura-3 {
+    grid-row-end: span 3;
+}
+
+.grid-altura-4 {
+    grid-row-end: span 4;
+}
+
+.grid-altura-5 {
+    grid-row-end: span 5;
+}
+
+.grid-altura-6 {
+    grid-row-end: span 6;
+}
+
+.grid-altura-7 {
+    grid-row-end: span 7;
+}
+
+.grid-altura-8 {
+    grid-row-end: span 8;
+}
+
+.grid-altura-9 {
+    grid-row-end: span 9;
+}
+
+.grid-altura-10 {
+    grid-row-end: span 10;
+}
+
+.grid-largura-1 {
+    grid-column-end: span 1;
+}
+
+.grid-largura-2 {
+    grid-column-end: span 2;
+}
+
+.grid-largura-3 {
+    grid-column-end: span 3;
+}
+
+.grid-largura-4 {
+    grid-column-end: span 4;
+}
+
+.grid-largura-5 {
+    grid-column-end: span 5;
+}
+
+.grid-largura-6 {
+    grid-column-end: span 6;
+}
+
+.grid-largura-7 {
+    grid-column-end: span 7;
+}
+
+.grid-largura-8 {
+    grid-column-end: span 8;
+}
+
+.grid-largura-9 {
+    grid-column-end: span 9;
+}
+
+.grid-largura-10 {
+    grid-column-end: span 10;
+}
+
 .preencher {
-    max-width: 100%;
     width: 100%;
 }
 
@@ -353,68 +432,136 @@
 /* p */
 
 .p {
-    height: 52px;
-    width: 52px;
+    height: 48px;
+    width: 48px;
     overflow: hidden;
 }
 
 .max-p {
-    max-height: 52px;
-    max-width: 52px;
+    max-height: 48px;
+    max-width: 48px;
     overflow: hidden;
 }
 
 .hp {
-    width: 52px;
+    width: 48px;
     overflow: hidden;
 }
 
 .max-hp {
-    max-width: 52px;
+    max-width: 48px;
     overflow: hidden;
 }
 
 .vp {
-    height: 52px;
+    height: 48px;
     overflow: hidden;
 }
 
 .max-vp {
-    max-height: 52px;
+    max-height: 48px;
     overflow: hidden;
 }
 
 /* m */
 
 .m {
-    height: 80px;
-    width: 80px;
+    height: 64px;
+    width: 64px;
     overflow: hidden;
 }
 
 .max-m {
-    max-height: 80px;
-    max-width: 80px;
+    max-height: 64px;
+    max-width: 64px;
     overflow: hidden;
 }
 
 .hm {
-    width: 80px;
+    width: 64px;
     overflow: hidden;
 }
 
 .max-hm {
-    max-width: 80px;
+    max-width: 64px;
     overflow: hidden;
 }
 
 .vm {
-    height: 80px;
+    height: 64px;
     overflow: hidden;
 }
 
 .max-vm {
+    max-height: 64px;
+    overflow: hidden;
+}
+
+/* mm */
+
+.mm {
+    height: 80px;
+    width: 80px;
+    overflow: hidden;
+}
+
+.max-mm {
     max-height: 80px;
+    max-width: 80px;
+    overflow: hidden;
+}
+
+.hmm {
+    width: 80px;
+    overflow: hidden;
+}
+
+.max-hmm {
+    max-width: 80px;
+    overflow: hidden;
+}
+
+.vmm {
+    height: 80px;
+    overflow: hidden;
+}
+
+.max-vmm {
+    max-height: 80px;
+    overflow: hidden;
+}
+
+/* mmm */
+
+.mmm {
+    height: 120px;
+    width: 120px;
+    overflow: hidden;
+}
+
+.max-mmm {
+    max-height: 120px;
+    max-width: 120px;
+    overflow: hidden;
+}
+
+.hmmm {
+    width: 120px;
+    overflow: hidden;
+}
+
+.max-hmmm {
+    max-width: 120px;
+    overflow: hidden;
+}
+
+.vmmm {
+    height: 120px;
+    overflow: hidden;
+}
+
+.max-vmmm {
+    max-height: 120px;
     overflow: hidden;
 }
 

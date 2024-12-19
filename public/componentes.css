@@ -69,6 +69,43 @@
     }
 }
 
+/* Grid 10x10 */
+
+.grid {
+    width: 100vw;
+    margin: 0 auto;
+    padding: 0;
+    
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-items: center;
+    flex-wrap: wrap;
+    gap: var(--fresta-mobile);
+}
+
+@media screen and (min-width: 860px) {
+    .grid {
+        width: 100%;
+        max-height: calc(100vh - var(--altura-barra));
+        overflow: scroll;
+        padding: var(--fresta) 0;
+        display: grid;
+        gap: 0;
+        row-gap: var(--fresta);
+        column-gap: var(--fresta);
+        justify-items: stretch;
+        align-items: stretch;
+        grid-template-columns: repeat(10, 1fr);
+        grid-template-rows: repeat(10, 1fr);
+    }
+
+    .grid .bloco {
+        max-height: calc(100vh - var(--altura-barra));
+        overflow: scroll;
+    }
+}
+
 /* ----------------------------------------------------------------------------------------- */
 /* >> Componentes Genéricos << */
 
@@ -101,7 +138,8 @@
     .bloco {
         max-width:  none;
         padding:    0.8rem;
-        align-self: start;
+        grid-row-end: span 2;
+        grid-column-end: span 1;
     }
 }
 
